@@ -1,0 +1,28 @@
+{
+  "name": "homectrl-server",
+  "version": "0.1.0",
+  "description": "REST Backend implementing the mozilla IOT spec",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/homectrl-server.git"
+  },
+  "keywords": [
+    "mozilla-iot",
+    "iot"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoboPhred/homectrl-server/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
+  "devDependencies": {
+    "microinject": "^0.5.2",
+    "rimraf": "^2.6.2",
+    "typescript": "^2.9.2"
+  }
+}
