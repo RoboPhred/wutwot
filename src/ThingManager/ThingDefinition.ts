@@ -11,6 +11,7 @@ export interface ThingPropertyDef {
   label: string;
   type: string;
   description: string;
+  href: string;
 }
 
 export interface NumericThingPropertyDef extends ThingPropertyDef {
@@ -28,8 +29,12 @@ export interface ObjectThingPropertyDef extends ThingPropertyDef {
 export interface ThingActionDef {
   label: string;
   description: string;
+  href: string;
 }
 
 export interface ThingEventDef {
+  type: string;
+  unit: string;
   description: string;
+  href: string;
 }
