@@ -7,7 +7,6 @@ export interface ThingActionDef {
 }
 export interface ThingActionInvocation {
     readonly id: string;
-    readonly thingId: string;
     readonly actionId: string;
     readonly timeRequested: string;
 }
