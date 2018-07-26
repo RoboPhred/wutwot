@@ -1,16 +1,36 @@
 import { EventEmitter } from "events";
 
-import { ActionSource, ThingActionDef } from "../../ActionSource";
-import { ThingSource, ThingDef } from "../../ThingSource";
+import uuidV4 from "uuid/v4";
+
+import { ThingDef, ThingSource } from "../../contracts/ThingSource";
+import {
+  ThingActionDef,
+  ActionSource,
+  ThingActionInvocation,
+  ActionStartEventArgs,
+  ActionEndEventArgs
+} from "../../contracts/ActionSource";
+
+const testActionDef: ThingActionDef = Object.freeze({
+  id: "thing-test-action",
+  label: "Do That Thing",
+  description: "A test action",
+  input: { type: "null" as "null" }
+});
 
 export class TestAdapterImpl extends EventEmitter
   implements ThingSource, ActionSource {
   public readonly id: "test-adapter" = "test-adapter";
 
   private readonly _defs: ThingDef[] = [];
+  private readonly _invocations: ThingActionInvocation[] = [];
 
   get things(): ReadonlyArray<ThingDef> {
     return Object.freeze([...this._defs]);
+  }
+
+  get invocations(): ReadonlyArray<ThingActionInvocation> {
+    return Object.freeze([...this._invocations]);
   }
 
   getActions(thingId: string): ReadonlyArray<ThingActionDef> {
@@ -18,12 +38,48 @@ export class TestAdapterImpl extends EventEmitter
       return [];
     }
 
-    const action = Object.freeze({
-      id: "thing-test-action",
-      label: "Do That Thing",
-      description: "A test action"
+    return Object.freeze([testActionDef]);
+  }
+
+  invokeAction(
+    thingId: string,
+    actionId: string,
+    input: any
+  ): ThingActionInvocation {
+    const invocation: ThingActionInvocation = Object.freeze({
+      id: uuidV4(),
+      thingId,
+      actionId,
+      timeRequested: new Date().toISOString()
     });
-    return Object.freeze([action]);
+    console.log("Test action starting on", thingId, "=>", invocation);
+
+    const startE: ActionStartEventArgs = Object.freeze({
+      thingId,
+      action: testActionDef,
+      invocation
+    });
+    this.emit("action.start", startE);
+
+    setTimeout(() => {
+      console.log("Test action ending on", thingId, "=>", invocation);
+      const endE: ActionEndEventArgs = Object.freeze({
+        ...startE,
+        canceled: false
+      });
+
+      const index = this._invocations.indexOf(invocation);
+      if (index > -1) {
+        this._invocations.splice(index, 1);
+        this.emit("action.end", endE);
+      }
+    }, 10 * 1000);
+
+    return invocation;
+  }
+
+  cancelAction() {
+    return false;
   }
 
   public addTestThing(def?: Partial<ThingDef>) {
@@ -40,6 +96,8 @@ export class TestAdapterImpl extends EventEmitter
 
     const finalDef = {
       id,
+      type: "test-thing",
+      description: "A test thing",
       defaultName
     };
     Object.freeze(finalDef);

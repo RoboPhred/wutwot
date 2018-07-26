@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../create-symbol";
 
-import { ThingActionDef } from "./types";
+import { ThingActionDef, ThingActionInvocation } from "./types";
 
 export const ActionSource: Identifier<ActionSource> = createSymbol(
   "ActionSource"
@@ -12,13 +12,35 @@ export interface ActionSource {
 
   getActions(thingId: string): ReadonlyArray<ThingActionDef>;
 
-  on(
-    event: "action.add",
-    handler: (e: { thingId: string; action: ThingActionDef }) => void
-  ): void;
+  invokeAction(
+    thingId: string,
+    actionId: string,
+    input: any
+  ): ThingActionInvocation;
 
-  on(
-    event: "action.remove",
-    handler: (e: { thingId: string; action: ThingActionDef }) => void
-  ): void;
+  cancelAction(actionId: string): boolean;
+
+  invocations: ReadonlyArray<ThingActionInvocation>;
+
+  on(event: "action.add", handler: (e: ActionEventArgs) => void): void;
+
+  on(event: "action.remove", handler: (e: ActionEventArgs) => void): void;
+
+  on(event: "action.start", handler: (e: ActionStartEventArgs) => void): void;
+
+  on(event: "action.end", handler: (e: ActionEndEventArgs) => void): void;
+}
+
+export interface ActionEventArgs {
+  readonly thingId: string;
+  readonly action: ThingActionDef;
+}
+
+export interface ActionStartEventArgs extends ActionEventArgs {
+  readonly invocation: ThingActionInvocation;
+}
+
+export interface ActionEndEventArgs extends ActionEventArgs {
+  readonly invocation: ThingActionInvocation;
+  readonly canceled: boolean;
 }

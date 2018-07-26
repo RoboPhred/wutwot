@@ -4,6 +4,8 @@ import { ThingDef } from "../../../contracts/ThingSource";
 
 import { ThingFactory } from "../ThingFactory";
 import { Thing } from "../Thing";
+import { ThingImpl } from "./ThingImpl";
+import { ActionAggregator } from "../../ActionAggregator/ActionAggregator";
 
 @injectable(ThingFactory)
 export class ThingFactoryImpl implements ThingFactory {
@@ -11,8 +13,12 @@ export class ThingFactoryImpl implements ThingFactory {
 }
 
 const thingFactoryFactory: ServiceFactory = (context: Context) => {
+  // Current feature set does not entirely play nice with
+  //  dynamic factories and constructor params.
+  // https://github.com/RoboPhred/node-microinject/issues/1
   return function thingFactory(def: ThingDef): Thing {
     const container = new Container();
-    container.get();
+    const actionAggregator = container.get(ActionAggregator);
+    return new ThingImpl(def, actionAggregator);
   };
 };

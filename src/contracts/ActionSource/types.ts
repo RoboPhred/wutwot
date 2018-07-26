@@ -5,5 +5,11 @@ export interface ThingActionDef {
   readonly label: string;
   readonly description: string;
   readonly input: JSONSchema6;
-  invoke(input: any): Promise<void>;
+}
+
+export interface ThingActionInvocation {
+  readonly id: string;
+  readonly thingId: string;
+  readonly actionId: string;
+  readonly timeRequested: string;
 }

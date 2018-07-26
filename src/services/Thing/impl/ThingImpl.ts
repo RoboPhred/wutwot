@@ -8,15 +8,16 @@ import { Thing, ThingAction } from "../Thing";
 
 export class ThingImpl implements Thing {
   readonly id: string;
+  readonly type: string;
 
   name: string;
-
-  readonly type: string = "NOT IMPLEMENTED";
-  readonly description: string = "NOT IMPLEMENTED";
+  description: string;
 
   constructor(def: ThingDef, private _actionAggregator: ActionAggregator) {
     this.id = def.id;
+    this.type = def.type;
     this.name = def.defaultName || "Unnamed Thing";
+    this.description = def.defaultDescription || "";
   }
 
   get actions(): ReadonlyRecord<string, ThingAction> {}

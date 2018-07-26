@@ -5,7 +5,7 @@ import { injectable, inject } from "microinject";
 import { autobind } from "core-decorators";
 
 import { TestAdapter } from "../adapters/TestAdapter";
-import { ThingDef } from "../ThingSource";
+import { ThingDef } from "../contracts/ThingSource";
 
 @injectable()
 export class ReplServer {
