@@ -1,96 +1,91 @@
-import { EventEmitter } from "events";
-
 import { injectable, inject } from "microinject";
 
 import {
   ActionSource,
   ThingActionDef,
-  ActionEventArgs
+  ThingActionInvocation
 } from "../../../contracts/ActionSource";
 
 import { ActionAggregator } from "../ActionAggregator";
 
 @injectable(ActionAggregator)
-export class ActionAggregatorImpl extends EventEmitter
-  implements ActionAggregator {
+export class ActionAggregatorImpl implements ActionAggregator {
   readonly id: string = "aggregator";
-
-  private _actions = new Map<string, ActionDetails>();
-
-  get actions(): ReadonlyArray<ThingActionDef> {
-    const actions = Array.from(this._actions.values()).map(x => x.publicAction);
-    Object.freeze(actions);
-    return actions;
-  }
 
   constructor(
     @inject(ActionSource, { all: true })
     private _actionSources: ActionSource[]
-  ) {
-    super();
+  ) {}
 
-    this._actionSources.forEach(source => {
-      source.on("action.add", e => this._addAction(source, e.action));
-
-      source.on("action.remove", e => this._removeAction(source, e.action));
-    });
-  }
-
-  private _addAction(source: ActionSource, action: ThingActionDef) {
-    const publicId = this._scopeActionId(source, action);
-    const publicAction = Object.freeze({
-      ...action,
-      id: publicId
-    });
-
-    let details = this._actions.get(publicId);
-    if (details === undefined) {
-      details = {
-        source,
-        sourceAction: action,
-        publicAction
-      };
-      this._actions.set(publicId, details);
+  getThingActions(thingId: string): ReadonlyArray<ThingActionDef> {
+    const actions: ThingActionDef[] = [];
+    for (const source of this._actionSources) {
+      const sourceActions = source
+        .getThingActions(thingId)
+        .map(x => scopeAction(source, x));
+      actions.push(...sourceActions);
     }
 
-    this._actions.set(publicId, details);
-
-    const e: ActionEventArgs = {
-      action: publicAction
-    };
-
-    this.emit("action.add", e);
+    Object.freeze(actions);
+    return actions;
   }
 
-  private _removeAction(source: ActionSource, action: ThingActionDef) {
-    const publicId = this._scopeActionId(source, action);
-
-    const details = this._actions.get(publicId);
-    if (!details) {
-      return;
+  getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation> {
+    const invocations: ThingActionInvocation[] = [];
+    for (const source of this._actionSources) {
+      const sourceInvocations = source
+        .getThingInvocations(thingId)
+        .map(x => scopeInvocation(source, x));
+      invocations.push(...sourceInvocations);
     }
 
-    this._actions.delete(publicId);
-
-    const e: ActionEventArgs = {
-      action: details.publicAction
-    };
-
-    this.emit("action.remove", e);
+    Object.freeze(invocations);
+    return invocations;
   }
 
-  private _scopeActionId(source: ActionSource, action: ThingActionDef): string {
-    return `${source.id}::${action.id}`;
+  invokeAction(
+    thingId: string,
+    actionId: string,
+    input: any
+  ): ThingActionInvocation {
+    const ids = unscopeId(actionId);
+    if (!ids.id || !ids.sourceId) {
+      throw new Error(
+        `Unknown action id "${actionId}" for thing "${thingId}".`
+      );
+    }
   }
 }
 
-interface ActionDetails {
-  /**
-   * The source that defined this action.
-   */
-  source: ActionSource;
+function scopeAction(
+  source: ActionSource,
+  action: ThingActionDef
+): ThingActionDef {
+  return {
+    ...action,
+    id: scopeId(source, action.id)
+  };
+}
 
-  sourceAction: ThingActionDef;
+function scopeInvocation(
+  source: ActionSource,
+  invocation: ThingActionInvocation
+): ThingActionInvocation {
+  return {
+    ...invocation,
+    id: scopeId(source, invocation.id),
+    actionId: scopeId(source, invocation.actionId)
+  };
+}
 
-  publicAction: ThingActionDef;
+function scopeId(source: ActionSource, id: string): string {
+  return `${source.id}::${id}`;
+}
+
+function unscopeId(id: string): { sourceId: string; id: string } {
+  const parts = id.split("::");
+  return {
+    sourceId: parts[0],
+    id: parts.slice(1).join("::")
+  };
 }

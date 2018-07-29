@@ -6,9 +6,7 @@ import { ThingDef, ThingSource } from "../../contracts/ThingSource";
 import {
   ThingActionDef,
   ActionSource,
-  ThingActionInvocation,
-  ActionStartEventArgs,
-  ActionEndEventArgs
+  ThingActionInvocation
 } from "../../contracts/ActionSource";
 
 const testActionDef: ThingActionDef = Object.freeze({
@@ -29,16 +27,18 @@ export class TestAdapterImpl extends EventEmitter
     return Object.freeze([...this._defs]);
   }
 
-  get invocations(): ReadonlyArray<ThingActionInvocation> {
-    return Object.freeze([...this._invocations]);
-  }
-
-  getActions(thingId: string): ReadonlyArray<ThingActionDef> {
+  getThingActions(thingId: string): ReadonlyArray<ThingActionDef> {
     if (!this._defs.find(x => x.id === thingId)) {
       return [];
     }
 
     return Object.freeze([testActionDef]);
+  }
+
+  getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation> {
+    const results = this._invocations.filter(x => x.thingId === thingId);
+    Object.freeze(results);
+    return results;
   }
 
   invokeAction(
@@ -54,31 +54,23 @@ export class TestAdapterImpl extends EventEmitter
     });
     console.log("Test action starting on", thingId, "=>", invocation);
 
-    const startE: ActionStartEventArgs = Object.freeze({
-      thingId,
-      action: testActionDef,
-      invocation
-    });
-    this.emit("action.start", startE);
-
     setTimeout(() => {
-      console.log("Test action ending on", thingId, "=>", invocation);
-      const endE: ActionEndEventArgs = Object.freeze({
-        ...startE,
-        canceled: false
-      });
-
       const index = this._invocations.indexOf(invocation);
       if (index > -1) {
+        console.log("Test action ending on", thingId, "=>", invocation);
         this._invocations.splice(index, 1);
-        this.emit("action.end", endE);
       }
     }, 10 * 1000);
 
     return invocation;
   }
 
-  cancelAction() {
+  cancelAction(invocationId: string) {
+    const index = this._invocations.findIndex(x => x.id === invocationId);
+    if (index) {
+      this._invocations.splice(index, 1);
+      return true;
+    }
     return false;
   }
 
