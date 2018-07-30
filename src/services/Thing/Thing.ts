@@ -6,28 +6,8 @@ export interface Thing {
   readonly type: string;
   readonly description: string;
 
-  // readonly properties: ReadonlyRecord<string, ThingProperty>;
-  // readonly events: ReadonlyRecord<string, ThingEventDef>;
   readonly actions: ReadonlyRecord<string, ThingAction>;
 }
-
-// export interface ThingProperty {
-//   readonly label: string;
-//   readonly type: string;
-//   readonly description: string;
-// }
-
-// export interface NumericThingProperty extends ThingProperty {
-//   readonly type: "number";
-//   readonly unit?: string;
-//   readonly minimum?: number;
-//   readonly maximum?: number;
-// }
-
-// export interface ObjectThingProperty extends ThingProperty {
-//   readonly type: "object";
-//   readonly properties: ReadonlyRecord<string, ThingProperty>;
-// }
 
 export interface ThingAction {
   readonly id: string;
@@ -44,9 +24,3 @@ export interface ThingActionRequest {
   cancel(): boolean;
   wait(): Promise<void>;
 }
-
-// export interface ThingEventDef {
-//   readonly type: string;
-//   readonly unit: string;
-//   readonly description: string;
-// }

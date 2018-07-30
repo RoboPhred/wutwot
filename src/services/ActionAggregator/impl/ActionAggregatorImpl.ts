@@ -54,6 +54,31 @@ export class ActionAggregatorImpl implements ActionAggregator {
         `Unknown action id "${actionId}" for thing "${thingId}".`
       );
     }
+
+    const source = this._actionSources.find(x => x.id === ids.sourceId);
+    if (!source) {
+      throw new Error(
+        `Unknown action id "${actionId}" for thing "${thingId}".`
+      );
+    }
+
+    const invocation = source.invokeAction(thingId, ids.id, input);
+    const scopedInvocation = scopeInvocation(source, invocation);
+    return scopedInvocation;
+  }
+
+  cancelAction(invocationId: string): boolean {
+    const ids = unscopeId(invocationId);
+    if (!ids.id || !ids.sourceId) {
+      throw new Error(`Unknown invocation id "${invocationId}".`);
+    }
+
+    const source = this._actionSources.find(x => x.id === ids.sourceId);
+    if (!source) {
+      throw new Error(`Unknown invocation id "${invocationId}".`);
+    }
+
+    return source.cancelAction(ids.id);
   }
 }
 
