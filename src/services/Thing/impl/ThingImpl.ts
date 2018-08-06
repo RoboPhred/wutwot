@@ -2,9 +2,10 @@ import { ReadonlyRecord } from "../../../types";
 
 import { ThingDef } from "../../../contracts/ThingSource";
 
-import { ActionAggregator } from "../../ActionAggregator/ActionAggregator";
+import { ActionAggregator } from "../../ActionAggregator";
 
 import { Thing, ThingAction } from "../Thing";
+import { ThingActionImpl } from "./ThingActionImpl";
 
 export class ThingImpl implements Thing {
   readonly id: string;
@@ -21,6 +22,14 @@ export class ThingImpl implements Thing {
   }
 
   get actions(): ReadonlyRecord<string, ThingAction> {
-    return this._actionAggregator.getThingActions(this.id);
+    // TODO: Make these persistent.  Need event support.
+    const actions = this._actionAggregator
+      .getThingActions(this.id)
+      .map(def => new ThingActionImpl(def, this._actionAggregator));
+    const records: Record<string, ThingAction> = {};
+    for (const action of actions) {
+      records[action.id] = action;
+    }
+    return Object.freeze(records);
   }
 }

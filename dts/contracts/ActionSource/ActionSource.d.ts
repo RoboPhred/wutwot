@@ -1,6 +1,5 @@
 import { Identifier } from "microinject";
 import { ThingActionDef, ThingActionInvocation } from "./types";
-import { ThingDef } from "../ThingSource";
 export declare const ActionSource: Identifier<ActionSource>;
 /**
  * A source of thing actions.
@@ -18,73 +17,25 @@ export interface ActionSource {
      */
     readonly id: string;
     /**
-     * All action definitions this action source provides.
-     * This may change over time as actions are discovered.
-     *
-     * See events: "action.add", "action.remove"
-     */
-    readonly actions: ReadonlyArray<ThingActionDef>;
-    readonly invocations: ReadonlyArray<ThingActionInvocation>;
-    /**
      * Determines what actions are supported on the given thing.
-     * @param thingDef The thing definition to fetch actions for.
+     * @param thingId The id of the thing to fetch actions for.
      */
-    getThingActions(thingDef: ThingDef): ReadonlyArray<ThingActionDef>;
+    getThingActions(thingId: string): ReadonlyArray<ThingActionDef>;
     /**
      * Gets an array of invocations pending for the given thing.
-     * @param thingDef The thing definition to fetch invocations for.
+     * @param thingId The id of the thing to fetch invocations for.
      */
-    getThingInvocations(thingDef: ThingDef): ReadonlyArray<ThingActionInvocation>;
+    getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation>;
     /**
      *
-     * @param thingDef The thing definition of the thing to
-     * @param actionId
-     * @param input
+     * @param thingId The id of the thing of the thing to invoke the action on.
+     * @param actionId The id of the action to invoke.
+     * @param input The action input.
      */
-    invokeAction(thingDef: ThingDef, actionId: string, input: any): ThingActionInvocation;
+    invokeAction(thingId: string, actionId: string, input: any): ThingActionInvocation;
     /**
      * Cancels a running action.
-     * @param thingId The id of the thing on which the action is running.
-     * @param actionId The id of the action to cancel.
+     * @param invocationId The id of the invocation to cancel.
      */
-    cancelAction(thingId: string, actionId: string): boolean;
-    /**
-     * Raised when an action is added.
-     * The action may not be attached to any things at this point.
-     */
-    on(event: "action.add", handler: (e: ActionEventArgs) => void): void;
-    /**
-     * Raised when an action is removed.
-     * The action should not be attached to any things at this point.
-     */
-    on(event: "action.remove", handler: (e: ActionEventArgs) => void): void;
-    /**
-     * Raised when an action is attached to a thing.
-     */
-    on(event: "action.attach", handler: (e: ActionThingEventArgs) => void): void;
-    /**
-     * Raised when an action is detatched from a thing.
-     */
-    on(event: "action.detatch", handler: (e: ActionThingEventArgs) => void): void;
-    /**
-     * Raised when an action invocation has started.
-     */
-    on(event: "action.start", handler: (e: ActionStartEventArgs) => void): void;
-    /**
-     * Raised when an action invocation has ended.
-     */
-    on(event: "action.end", handler: (e: ActionEndEventArgs) => void): void;
-}
-export interface ActionEventArgs {
-    readonly action: ThingActionDef;
-}
-export interface ActionThingEventArgs extends ActionEventArgs {
-    readonly thingId: string;
-}
-export interface ActionStartEventArgs extends ActionEventArgs {
-    readonly invocation: ThingActionInvocation;
-}
-export interface ActionEndEventArgs extends ActionEventArgs {
-    readonly invocation: ThingActionInvocation;
-    readonly canceled: boolean;
+    cancelInvocation(invocationId: string): boolean;
 }

@@ -11,12 +11,11 @@ export interface ThingAction {
     readonly label: string;
     readonly description: string;
     readonly requests: ReadonlyArray<ThingActionRequest>;
-    invoke(input: any): Promise<ThingActionRequest>;
+    invoke(input: any): ThingActionRequest;
 }
 export interface ThingActionRequest {
     readonly id: string;
     readonly timeRequested: string;
     readonly status: string;
     cancel(): boolean;
-    wait(): Promise<void>;
 }

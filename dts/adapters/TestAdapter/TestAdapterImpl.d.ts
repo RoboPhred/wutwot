@@ -7,10 +7,10 @@ export declare class TestAdapterImpl extends EventEmitter implements ThingSource
     private readonly _defs;
     private readonly _invocations;
     readonly things: ReadonlyArray<ThingDef>;
-    readonly invocations: ReadonlyArray<ThingActionInvocation>;
-    getActions(thingId: string): ReadonlyArray<ThingActionDef>;
+    getThingActions(thingId: string): ReadonlyArray<ThingActionDef>;
+    getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation>;
     invokeAction(thingId: string, actionId: string, input: any): ThingActionInvocation;
-    cancelAction(): boolean;
+    cancelInvocation(invocationId: string): boolean;
     addTestThing(def?: Partial<ThingDef>): void;
     removeTestThing(id?: string): void;
 }

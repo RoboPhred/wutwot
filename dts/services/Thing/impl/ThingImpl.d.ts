@@ -1,6 +1,6 @@
 import { ReadonlyRecord } from "../../../types";
 import { ThingDef } from "../../../contracts/ThingSource";
-import { ActionAggregator } from "../../ActionAggregator/ActionAggregator";
+import { ActionAggregator } from "../../ActionAggregator";
 import { Thing, ThingAction } from "../Thing";
 export declare class ThingImpl implements Thing {
     private _actionAggregator;

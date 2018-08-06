@@ -32,7 +32,7 @@ export class ThingManagerImpl extends EventEmitter implements ThingManager {
       return;
     }
 
-    const thing = this._thingFactory(thingDef);
+    const thing = this._thingFactory.createThing(thingDef);
     this._discoveredThings.set(id, thing);
   }
 

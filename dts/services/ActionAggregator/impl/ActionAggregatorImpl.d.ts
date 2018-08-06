@@ -1,14 +1,11 @@
-/// <reference types="node" />
-import { EventEmitter } from "events";
-import { ActionSource, ThingActionDef } from "../../../contracts/ActionSource";
+import { ActionSource, ThingActionDef, ThingActionInvocation } from "../../../contracts/ActionSource";
 import { ActionAggregator } from "../ActionAggregator";
-export declare class ActionAggregatorImpl extends EventEmitter implements ActionAggregator {
+export declare class ActionAggregatorImpl implements ActionAggregator {
     private _actionSources;
     readonly id: string;
-    private _actions;
-    readonly actions: ReadonlyArray<ThingActionDef>;
     constructor(_actionSources: ActionSource[]);
-    private _addAction;
-    private _removeAction;
-    private _scopeActionId;
+    getThingActions(thingId: string): ReadonlyArray<ThingActionDef>;
+    getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation>;
+    invokeAction(thingId: string, actionId: string, input: any): ThingActionInvocation;
+    cancelInvocation(invocationId: string): boolean;
 }
