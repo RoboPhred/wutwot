@@ -20,5 +20,7 @@ export class ThingImpl implements Thing {
     this.description = def.defaultDescription || "";
   }
 
-  get actions(): ReadonlyRecord<string, ThingAction> {}
+  get actions(): ReadonlyRecord<string, ThingAction> {
+    return this._actionAggregator.getThingActions(this.id);
+  }
 }

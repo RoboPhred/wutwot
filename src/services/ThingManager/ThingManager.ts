@@ -9,7 +9,4 @@ export const ThingManager: Identifier<ThingManager> = createSymbol(
 );
 export interface ThingManager {
   things: ReadonlyArray<Thing>;
-
-  on(event: "thing.add", handler: (thing: Thing) => void): void;
-  on(event: "thing.remove", handler: (thing: Thing) => void): void;
 }

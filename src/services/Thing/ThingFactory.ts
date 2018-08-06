@@ -9,4 +9,6 @@ import { Thing } from "./Thing";
 export const ThingFactory: Identifier<ThingFactory> = createSymbol(
   "ThingFactory"
 );
-export type ThingFactory = (def: ThingDef) => Thing;
+export interface ThingFactory {
+  createThing(def: ThingDef): Thing;
+}

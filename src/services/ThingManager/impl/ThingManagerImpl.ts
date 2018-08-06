@@ -18,13 +18,6 @@ export class ThingManagerImpl extends EventEmitter implements ThingManager {
     private _thingSources: ThingSource[]
   ) {
     super();
-
-    this._thingSources.forEach(source => {
-      source.on("thing.add", e => this._addThing(e.thing));
-      source.on("thing.remove", e => this._removeThing(e.thing));
-
-      source.things.forEach(def => this._addThing(def));
-    });
   }
 
   get things(): ReadonlyArray<Thing> {

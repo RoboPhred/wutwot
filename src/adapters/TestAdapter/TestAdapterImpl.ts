@@ -9,7 +9,7 @@ import {
   ThingActionInvocation
 } from "../../contracts/ActionSource";
 
-const testActionDef: ThingActionDef = Object.freeze({
+const testActionDef = Object.freeze({
   id: "thing-test-action",
   label: "Do That Thing",
   description: "A test action",
@@ -32,7 +32,12 @@ export class TestAdapterImpl extends EventEmitter
       return [];
     }
 
-    return Object.freeze([testActionDef]);
+    return Object.freeze([
+      {
+        ...testActionDef,
+        thingId
+      }
+    ]);
   }
 
   getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation> {
@@ -65,7 +70,7 @@ export class TestAdapterImpl extends EventEmitter
     return invocation;
   }
 
-  cancelAction(invocationId: string) {
+  cancelInvocation(invocationId: string) {
     const index = this._invocations.findIndex(x => x.id === invocationId);
     if (index) {
       this._invocations.splice(index, 1);

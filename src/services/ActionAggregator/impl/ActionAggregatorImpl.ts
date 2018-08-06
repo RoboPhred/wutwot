@@ -67,7 +67,7 @@ export class ActionAggregatorImpl implements ActionAggregator {
     return scopedInvocation;
   }
 
-  cancelAction(invocationId: string): boolean {
+  cancelInvocation(invocationId: string): boolean {
     const ids = unscopeId(invocationId);
     if (!ids.id || !ids.sourceId) {
       throw new Error(`Unknown invocation id "${invocationId}".`);
@@ -78,7 +78,7 @@ export class ActionAggregatorImpl implements ActionAggregator {
       throw new Error(`Unknown invocation id "${invocationId}".`);
     }
 
-    return source.cancelAction(ids.id);
+    return source.cancelInvocation(ids.id);
   }
 }
 

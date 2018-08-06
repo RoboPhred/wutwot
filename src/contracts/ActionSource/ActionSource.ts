@@ -52,5 +52,5 @@ export interface ActionSource {
    * Cancels a running action.
    * @param invocationId The id of the invocation to cancel.
    */
-  cancelAction(invocationId: string): boolean;
+  cancelInvocation(invocationId: string): boolean;
 }
