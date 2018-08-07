@@ -6,6 +6,7 @@ export declare class TestAdapterImpl extends EventEmitter implements ThingSource
     readonly id: "test-adapter";
     private readonly _defs;
     private readonly _invocations;
+    constructor();
     readonly things: ReadonlyArray<ThingDef>;
     getThingActions(thingId: string): ReadonlyArray<ThingActionDef>;
     getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation>;

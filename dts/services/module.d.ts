@@ -1,1 +1,1 @@
-export default function createServicesModule(): import("../../../../RoboPhred/homectrl-server/node_modules/microinject/dts/module").ContainerModule;
+export default function createServicesModule(): import("microinject/dts/module").ContainerModule;

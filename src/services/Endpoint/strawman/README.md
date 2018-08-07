@@ -3,15 +3,42 @@ Use relation decorators to automate the endpoints:
 ```
 @restObjectRoot('/')
 ThingManager {
-  @relation('things')
-  get things(): Thing[] { ... }
+  @resource('things')
+  get things(): ReadonlyRecord<string, Thing>
 }
 
 Thing {
-  @property
+  @id
   readonly id: string;
 
-  @relation('properties')
-  get actions(): ThingAction[]
+  @property
+  readonly description: string;
+
+  @resource('actions')
+  get actions(): ReadonlyRecord<string, ThingAction>
+}
+
+ThingAction {
+  @id
+  readonly id: string;
+
+  @resource('/')
+  get requests(): ReadonlyRecord<string, ThingActionRequest>
+}
+```
+
+binding config?
+idea for config driven DI, possible extension to microinject
+
+```
+{
+  $type: "endpoint",
+  $name: "WOTEndpoint",
+  controllers: [
+    {
+      $type: "RelationRESTController",
+      root: { $type: "ThingManager" }
+    }
+  ]
 }
 ```

@@ -2,14 +2,12 @@ import { Container } from "microinject";
 
 import createModule from "./module";
 
-import { ReplServer } from "./Repl/ReplServer";
+import { Entrypoint } from "./contracts";
 
 const appModule = createModule();
 
 const container = new Container();
 container.load(appModule);
 
-if (process.stdin.isTTY) {
-  const repl = container.get(ReplServer);
-  repl.start();
-}
+const repl = container.getAll(Entrypoint);
+repl.forEach(x => x.start());
