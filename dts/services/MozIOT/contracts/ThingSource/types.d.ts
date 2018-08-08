@@ -1,10 +1,14 @@
+import { ThingSource } from "./ThingSource";
+import { ReadonlyRecord } from "../../../../types";
 export interface ThingDef {
-    readonly id: string;
-    readonly type: string;
-    readonly defaultName?: string;
-    readonly defaultDescription?: string;
+    readonly thingId: string;
+    readonly thingTypes?: string[];
+    readonly thingDefaultName?: string;
+    readonly thingDefaultDescription?: string;
+    readonly metadata?: ReadonlyRecord<string, any>;
 }
-export declare namespace ThingDef {
-    function equals(a: ThingDef, b: ThingDef): boolean;
-    function isSameType(a: ThingDef, b: ThingDef): boolean;
+export interface ThingContext extends ThingDef {
+    readonly thingOwner: ThingSource;
+    readonly thingOwnerThingId: string;
+    readonly metadata: Record<string, any>;
 }

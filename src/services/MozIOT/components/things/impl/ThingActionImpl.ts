@@ -4,10 +4,16 @@ import {
   ActionSource
 } from "../../../contracts/ActionSource";
 
+import { ThingContext } from "../../../contracts";
+
 import { ThingAction, ThingActionRequest } from "../Thing";
 
 export class ThingActionImpl implements ThingAction {
-  constructor(private _def: ThingActionDef, private _source: ActionSource) {}
+  constructor(
+    private _def: ThingActionDef,
+    private _thingContext: ThingContext,
+    private _source: ActionSource
+  ) {}
 
   get id(): string {
     return this._def.id;
@@ -23,7 +29,7 @@ export class ThingActionImpl implements ThingAction {
 
   get requests(): ReadonlyArray<ThingActionRequest> {
     const invocations = this._source
-      .getThingInvocations(this._def.thingId)
+      .getThingInvocations(this._thingContext)
       .filter(x => x.actionId === this._def.id);
     const requests = invocations.map(x => this._invocationToRequest(x));
     return Object.freeze(requests);
@@ -31,7 +37,7 @@ export class ThingActionImpl implements ThingAction {
 
   invoke(input: any): ThingActionRequest {
     const invocation = this._source.invokeAction(
-      this._def.thingId,
+      this._thingContext,
       this._def.id,
       input
     );

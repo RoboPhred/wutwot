@@ -7,21 +7,21 @@ import {
 } from "../../../contracts/ActionSource";
 
 import { ActionAggregator } from "../ActionAggregator";
+import { ThingContext } from "../../../contracts";
 
 @injectable(ActionAggregator)
 export class ActionAggregatorImpl implements ActionAggregator {
   readonly id: string = "aggregator";
 
   constructor(
-    @inject(ActionSource, { all: true })
-    private _actionSources: ActionSource[]
+    @inject(ActionSource, { all: true }) private _actionSources: ActionSource[]
   ) {}
 
-  getThingActions(thingId: string): ReadonlyArray<ThingActionDef> {
+  getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
     const actions: ThingActionDef[] = [];
     for (const source of this._actionSources) {
       const sourceActions = source
-        .getThingActions(thingId)
+        .getThingActions(thingContext)
         .map(x => scopeAction(source, x));
       actions.push(...sourceActions);
     }
@@ -30,11 +30,13 @@ export class ActionAggregatorImpl implements ActionAggregator {
     return actions;
   }
 
-  getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation> {
+  getThingInvocations(
+    thingContext: ThingContext
+  ): ReadonlyArray<ThingActionInvocation> {
     const invocations: ThingActionInvocation[] = [];
     for (const source of this._actionSources) {
       const sourceInvocations = source
-        .getThingInvocations(thingId)
+        .getThingInvocations(thingContext)
         .map(x => scopeInvocation(source, x));
       invocations.push(...sourceInvocations);
     }
@@ -44,25 +46,25 @@ export class ActionAggregatorImpl implements ActionAggregator {
   }
 
   invokeAction(
-    thingId: string,
+    thingContext: ThingContext,
     actionId: string,
     input: any
   ): ThingActionInvocation {
     const ids = unscopeId(actionId);
     if (!ids.id || !ids.sourceId) {
       throw new Error(
-        `Unknown action id "${actionId}" for thing "${thingId}".`
+        `Unknown action id "${actionId}" for thing "${thingContext.thingId}".`
       );
     }
 
     const source = this._actionSources.find(x => x.id === ids.sourceId);
     if (!source) {
       throw new Error(
-        `Unknown action id "${actionId}" for thing "${thingId}".`
+        `Unknown action id "${actionId}" for thing "${thingContext}".`
       );
     }
 
-    const invocation = source.invokeAction(thingId, ids.id, input);
+    const invocation = source.invokeAction(thingContext, ids.id, input);
     const scopedInvocation = scopeInvocation(source, invocation);
     return scopedInvocation;
   }

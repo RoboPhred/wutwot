@@ -9,7 +9,8 @@ import {
   ThingDef,
   ThingActionDef,
   ThingActionInvocation,
-  ThingSource
+  ThingSource,
+  ThingContext
 } from "../MozIOT";
 
 const testActionDef = Object.freeze({
@@ -39,42 +40,57 @@ export class TestAdapterImpl extends EventEmitter
     return Object.freeze([...this._defs]);
   }
 
-  getThingActions(thingId: string): ReadonlyArray<ThingActionDef> {
-    if (!this._defs.find(x => x.id === thingId)) {
+  getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
+    if (!this._defs.find(x => x.thingId === thingContext.thingOwnerThingId)) {
       return [];
     }
 
     return Object.freeze([
       {
         ...testActionDef,
-        thingId
+        thingId: thingContext.thingId
       }
     ]);
   }
 
-  getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation> {
-    const results = this._invocations.filter(x => x.thingId === thingId);
+  getThingInvocations(
+    thingContext: ThingContext
+  ): ReadonlyArray<ThingActionInvocation> {
+    const results = this._invocations.filter(
+      x => x.thingId === thingContext.thingId
+    );
     Object.freeze(results);
     return results;
   }
 
   invokeAction(
-    thingId: string,
+    thingContext: ThingContext,
     actionId: string,
     input: any
   ): ThingActionInvocation {
     const invocation: ThingActionInvocation = Object.freeze({
       id: uuidV4(),
-      thingId,
+      thingId: thingContext.thingId,
       actionId,
       timeRequested: new Date().toISOString()
     });
-    console.log("Test action starting on", thingId, "=>", invocation);
+    console.log(
+      "Test action starting on",
+      thingContext.thingId,
+      "=>",
+      invocation
+    );
+    this._invocations.push(invocation);
 
     setTimeout(() => {
       const index = this._invocations.indexOf(invocation);
       if (index > -1) {
-        console.log("Test action ending on", thingId, "=>", invocation);
+        console.log(
+          "Test action ending on",
+          thingContext.thingId,
+          "=>",
+          invocation
+        );
         this._invocations.splice(index, 1);
       }
     }, 10 * 1000);
@@ -96,16 +112,15 @@ export class TestAdapterImpl extends EventEmitter
       def = {};
     }
 
-    const id =
-      def.id ||
+    const thingId =
+      def.thingId ||
       `test-device-${Math.random()
         .toString()
         .substr(2)}`;
-    const defaultName = def.defaultName || `Named: ${id}`;
+    const defaultName = def.thingDefaultName || `Named: ${thingId}`;
 
     const finalDef = {
-      id,
-      type: "test-thing",
+      thingId,
       description: "A test thing",
       defaultName
     };
@@ -122,10 +137,10 @@ export class TestAdapterImpl extends EventEmitter
     }
 
     if (id == null) {
-      id = this._defs[0].id;
+      id = this._defs[0].thingId;
     }
 
-    const index = this._defs.findIndex(x => x.id === id);
+    const index = this._defs.findIndex(x => x.thingId === id);
     if (index === -1) {
       return;
     }

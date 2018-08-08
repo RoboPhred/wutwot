@@ -1,6 +1,6 @@
 import { ReadonlyRecord } from "../../../../../types";
 
-import { ThingDef } from "../../../contracts/ThingSource";
+import { ThingContext } from "../../../contracts/ThingSource";
 
 import { ActionAggregator } from "../../actions/ActionAggregator";
 
@@ -10,27 +10,28 @@ import { ThingActionImpl } from "./ThingActionImpl";
 
 export class ThingImpl implements Thing {
   readonly id: string;
-  readonly type: string;
+  readonly types: string[];
 
   name: string;
   description: string;
 
-  constructor(def: ThingDef, private _actionAggregator: ActionAggregator) {
-    this.id = def.id;
-    this.type = def.type;
-    this.name = def.defaultName || "Unnamed Thing";
-    this.description = def.defaultDescription || "";
+  constructor(
+    private _context: ThingContext,
+    private _actionAggregator: ActionAggregator
+  ) {
+    this.id = _context.thingId;
+    this.types = _context.thingTypes || [];
+    this.name = _context.thingDefaultName || "Unnamed Thing";
+    this.description = _context.thingDefaultDescription || "";
   }
 
-  get actions(): ReadonlyRecord<string, ThingAction> {
+  get actions(): ReadonlyArray<ThingAction> {
     // TODO: Make these persistent.  Need event support.
     const actions = this._actionAggregator
-      .getThingActions(this.id)
-      .map(def => new ThingActionImpl(def, this._actionAggregator));
-    const records: Record<string, ThingAction> = {};
-    for (const action of actions) {
-      records[action.id] = action;
-    }
-    return Object.freeze(records);
+      .getThingActions(this._context)
+      .map(
+        def => new ThingActionImpl(def, this._context, this._actionAggregator)
+      );
+    return Object.freeze(actions);
   }
 }

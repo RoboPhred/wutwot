@@ -3,6 +3,7 @@ import { Identifier } from "microinject";
 import createSymbol from "../../create-symbol";
 
 import { ThingActionDef, ThingActionInvocation } from "./types";
+import { ThingContext } from "../ThingSource";
 
 export const ActionSource: Identifier<ActionSource> = createSymbol(
   "ActionSource"
@@ -26,15 +27,17 @@ export interface ActionSource {
 
   /**
    * Determines what actions are supported on the given thing.
-   * @param thingId The id of the thing to fetch actions for.
+   * @param thingContext The context of the thing to fetch actions for.
    */
-  getThingActions(thingId: string): ReadonlyArray<ThingActionDef>;
+  getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef>;
 
   /**
    * Gets an array of invocations pending for the given thing.
-   * @param thingId The id of the thing to fetch invocations for.
+   * @param thingContext The context of the thing to fetch invocations for.
    */
-  getThingInvocations(thingId: string): ReadonlyArray<ThingActionInvocation>;
+  getThingInvocations(
+    thingContext: ThingContext
+  ): ReadonlyArray<ThingActionInvocation>;
 
   /**
    *
@@ -43,7 +46,7 @@ export interface ActionSource {
    * @param input The action input.
    */
   invokeAction(
-    thingId: string,
+    thingContext: ThingContext,
     actionId: string,
     input: any
   ): ThingActionInvocation;

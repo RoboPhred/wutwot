@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/core-decorators": "^0.20.0",
     "@types/json-schema": "^6.0.1",
+    "@types/lodash": "^4.14.116",
     "@types/node": "^10.5.2",
     "@types/uuid": "^3.4.3",
     "microinject": "^0.5.2",
@@ -35,6 +36,7 @@
   },
   "dependencies": {
     "core-decorators": "^0.20.0",
+    "lodash": "^4.17.10",
     "uuid": "^3.3.2"
   }
 }

@@ -1,26 +1,83 @@
 import { EventEmitter } from "events";
 
+import { cloneDeep } from "lodash";
+
 import { inject, injectable } from "microinject";
 
-import { ThingSource, ThingDef } from "../../../contracts/ThingSource";
+import {
+  ThingSource,
+  ThingDefEventArgs,
+  ThingIdEventArgs,
+  ThingContext
+} from "../../../contracts/ThingSource";
 
 import { Thing } from "../Thing";
 import { ThingFactory } from "../ThingFactory";
 import { ThingManager } from "../ThingManager";
-import { ThingAggregator } from "../ThingAggregator";
 
 @injectable(ThingManager)
 export class ThingManagerImpl extends EventEmitter implements ThingManager {
+  private _things = new Map<string, Thing>();
+
   constructor(
     @inject(ThingFactory) private _thingFactory: ThingFactory,
-    @inject(ThingAggregator) private _thingAggregator: ThingAggregator
+    @inject(ThingSource, { all: true }) private _thingSources: ThingSource[]
   ) {
     super();
+
+    this._thingSources.forEach(source => {
+      source.on("thing.add", this._onThingAdded.bind(this, source));
+      source.on("thing.remove", this._onThingRemoved.bind(this, source));
+
+      source.things.forEach(def =>
+        this._onThingAdded(source, {
+          thingId: def.thingId,
+          thingDef: def
+        })
+      );
+    });
   }
 
   get things(): ReadonlyArray<Thing> {
-    const thingDefs = this._thingAggregator.things;
-    const thingImpls = thingDefs.map(x => this._thingFactory.createThing(x));
-    return Object.freeze(thingImpls);
+    return Object.freeze(Array.from(this._things.values()));
+  }
+
+  private _onThingAdded(source: ThingSource, e: ThingDefEventArgs) {
+    const externalId = this._createExternalId(e.thingDef.thingId, source);
+    if (this._things.has(externalId)) {
+      return;
+    }
+
+    const context: ThingContext = {
+      ...e.thingDef,
+      thingId: externalId,
+      thingOwnerThingId: e.thingId,
+      thingOwner: source,
+      metadata: e.thingDef.metadata ? cloneDeep(e.thingDef.metadata) : {}
+    };
+
+    const thing = this._thingFactory.createThing(context);
+
+    this._things.set(externalId, thing);
+
+    this.emit("thing.add", {
+      thingId: e.thingId,
+      thing: thing
+    });
+  }
+
+  private _onThingRemoved(source: ThingSource, e: ThingIdEventArgs) {
+    const externalId = this._createExternalId(e.thingId, source);
+    if (!this._things.delete(externalId)) {
+      return;
+    }
+
+    this.emit("thing.remove", {
+      thingId: externalId
+    });
+  }
+
+  private _createExternalId(defId: string, source: ThingSource) {
+    return `${source.id}--${defId}`;
   }
 }

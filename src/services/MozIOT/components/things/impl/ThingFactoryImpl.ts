@@ -1,6 +1,6 @@
 import { injectable, inject } from "microinject";
 
-import { ThingDef } from "../../../contracts/ThingSource";
+import { ThingContext } from "../../../contracts/ThingSource";
 
 import { ActionAggregator } from "../../actions/ActionAggregator";
 
@@ -14,7 +14,7 @@ export class ThingFactoryImpl implements ThingFactory {
     @inject(ActionAggregator) private _actionAggregator: ActionAggregator
   ) {}
 
-  createThing(def: ThingDef): Thing {
-    return new ThingImpl(def, this._actionAggregator);
+  createThing(context: ThingContext): Thing {
+    return new ThingImpl(context, this._actionAggregator);
   }
 }
