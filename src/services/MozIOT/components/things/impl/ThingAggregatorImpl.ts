@@ -8,8 +8,7 @@ export class ThingAggregatorImpl implements ThingAggregator {
   readonly id: string = "aggregator";
 
   constructor(
-    @inject(ThingSource, { all: true })
-    private _thingSources: ThingSource[]
+    @inject(ThingSource, { all: true }) private _thingSources: ThingSource[]
   ) {}
 
   get things(): ReadonlyArray<ThingDef> {
