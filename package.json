@@ -27,6 +27,8 @@
   "devDependencies": {
     "@types/core-decorators": "^0.20.0",
     "@types/json-schema": "^6.0.1",
+    "@types/koa": "^2.0.46",
+    "@types/koa-router": "^7.0.31",
     "@types/lodash": "^4.14.116",
     "@types/node": "^10.5.2",
     "@types/uuid": "^3.4.3",
@@ -36,6 +38,8 @@
   },
   "dependencies": {
     "core-decorators": "^0.20.0",
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0",
     "lodash": "^4.17.10",
     "uuid": "^3.3.2"
   }

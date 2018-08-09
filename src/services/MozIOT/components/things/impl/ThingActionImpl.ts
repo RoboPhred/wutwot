@@ -27,6 +27,10 @@ export class ThingActionImpl implements ThingAction {
     return this._def.description;
   }
 
+  get input(): any {
+    return this._def.input;
+  }
+
   get requests(): ReadonlyArray<ThingActionRequest> {
     const invocations = this._source
       .getThingInvocations(this._thingContext)

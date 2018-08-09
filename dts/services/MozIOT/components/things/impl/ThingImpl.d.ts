@@ -1,3 +1,4 @@
+import { ReadonlyRecord } from "../../../../../types";
 import { ThingContext } from "../../../contracts/ThingSource";
 import { ActionAggregator } from "../../actions/ActionAggregator";
 import { Thing, ThingAction } from "../Thing";
@@ -9,5 +10,5 @@ export declare class ThingImpl implements Thing {
     name: string;
     description: string;
     constructor(_context: ThingContext, _actionAggregator: ActionAggregator);
-    readonly actions: ReadonlyArray<ThingAction>;
+    readonly actions: ReadonlyRecord<string, ThingAction>;
 }
