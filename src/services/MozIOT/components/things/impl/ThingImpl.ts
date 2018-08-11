@@ -25,13 +25,16 @@ export class ThingImpl implements Thing {
     this.description = _context.thingDefaultDescription || "";
   }
 
-  get actions(): ReadonlyArray<ThingAction> {
+  get actions(): ReadonlyRecord<string, ThingAction> {
     // TODO: Make these persistent.  Need event support.
-    const actions = this._actionAggregator
-      .getThingActions(this._context)
-      .map(
-        def => new ThingActionImpl(def, this._context, this._actionAggregator)
+    const actions: Record<string, ThingAction> = {};
+    this._actionAggregator.getThingActions(this._context).forEach(def => {
+      actions[def.id] = new ThingActionImpl(
+        def,
+        this._context,
+        this._actionAggregator
       );
+    });
     return Object.freeze(actions);
   }
 }

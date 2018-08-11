@@ -1,10 +1,12 @@
+import { ReadonlyRecord } from "../../../../types";
+
 export interface Thing {
   readonly id: string;
   name: string;
   readonly types: string[];
   readonly description: string;
 
-  readonly actions: ReadonlyArray<ThingAction>;
+  readonly actions: ReadonlyRecord<string, ThingAction>;
 }
 
 export interface ThingAction {
