@@ -41,6 +41,10 @@ export class TestAdapterImpl extends EventEmitter
   }
 
   getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
+    if (thingContext.thingOwner !== this) {
+      return [];
+    }
+
     if (!this._defs.find(x => x.thingId === thingContext.thingOwnerThingId)) {
       return [];
     }
