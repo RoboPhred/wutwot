@@ -8,7 +8,6 @@ import Router from "koa-router";
 import { ThingManager } from "../../MozIOT/components/things/ThingManager";
 import { Entrypoint } from "../../../contracts";
 import { Thing } from "../../MozIOT/components/things/Thing";
-import { createContext } from "vm";
 
 @injectable()
 @provides(Entrypoint)
@@ -85,9 +84,4 @@ export class EndpointImpl implements Entrypoint {
       events: {}
     };
   }
-}
-
-function applyRouter(target: Router, source: Router) {
-  target.use(source.routes());
-  target.use(source.allowedMethods());
 }
