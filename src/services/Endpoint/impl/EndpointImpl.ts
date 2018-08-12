@@ -66,8 +66,41 @@ export class EndpointImpl implements Entrypoint {
         ]
       };
     });
+    const propertiesRouter = this._createPropertiesRouter();
+    router.use(
+      `/:thingId/properties`,
+      propertiesRouter.routes(),
+      propertiesRouter.allowedMethods()
+    );
+    const actionsRouter = this._createActionsRouter();
+    router.use(
+      `/:thingId/actions`,
+      actionsRouter.routes(),
+      actionsRouter.allowedMethods()
+    );
+    const eventsRouter = this._createEventsRouter();
+    router.use(
+      `/:thingId/events`,
+      eventsRouter.routes(),
+      eventsRouter.allowedMethods()
+    );
 
     return router;
+  }
+
+  private _createPropertiesRouter(): Router {
+    // TODO:
+    return new Router({});
+  }
+
+  private _createActionsRouter(): Router {
+    // TODO
+    return new Router();
+  }
+
+  private _createEventsRouter(): Router {
+    // TODO
+    return new Router();
   }
 
   private _getRestThing(thing: Thing) {
