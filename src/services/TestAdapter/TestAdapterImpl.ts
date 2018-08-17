@@ -8,13 +8,13 @@ import {
   ActionSource,
   ThingDef,
   ThingActionDef,
-  ThingActionInvocation,
+  ThingActionRequestDef,
   ThingSource,
   ThingContext
 } from "../MozIOT";
 
 const testActionDef = Object.freeze({
-  id: "thing-test-action",
+  actionId: "thing-test-action",
   label: "Do That Thing",
   description: "A test action",
   input: { type: "null" as "null" }
@@ -29,7 +29,7 @@ export class TestAdapterImpl extends EventEmitter
   public readonly id: "test-adapter" = "test-adapter";
 
   private readonly _defs: ThingDef[] = [];
-  private readonly _invocations: ThingActionInvocation[] = [];
+  private readonly _invocations: ThingActionRequestDef[] = [];
 
   constructor() {
     super();
@@ -57,9 +57,9 @@ export class TestAdapterImpl extends EventEmitter
     ]);
   }
 
-  getThingInvocations(
+  getThingActionRequests(
     thingContext: ThingContext
-  ): ReadonlyArray<ThingActionInvocation> {
+  ): ReadonlyArray<ThingActionRequestDef> {
     const results = this._invocations.filter(
       x => x.thingId === thingContext.thingId
     );
@@ -67,43 +67,40 @@ export class TestAdapterImpl extends EventEmitter
     return results;
   }
 
-  invokeAction(
+  requestAction(
     thingContext: ThingContext,
     actionId: string,
     input: any
-  ): ThingActionInvocation {
-    const invocation: ThingActionInvocation = Object.freeze({
-      id: uuidV4(),
+  ): ThingActionRequestDef {
+    const request: ThingActionRequestDef = Object.freeze({
+      requestId: uuidV4(),
       thingId: thingContext.thingId,
       actionId,
       timeRequested: new Date().toISOString()
     });
-    console.log(
-      "Test action starting on",
-      thingContext.thingId,
-      "=>",
-      invocation
-    );
-    this._invocations.push(invocation);
+    console.log("Test action starting on", thingContext.thingId, "=>", request);
+    this._invocations.push(request);
 
     setTimeout(() => {
-      const index = this._invocations.indexOf(invocation);
+      const index = this._invocations.indexOf(request);
       if (index > -1) {
         console.log(
           "Test action ending on",
           thingContext.thingId,
           "=>",
-          invocation
+          request
         );
         this._invocations.splice(index, 1);
       }
     }, 10 * 1000);
 
-    return invocation;
+    return request;
   }
 
   cancelInvocation(invocationId: string) {
-    const index = this._invocations.findIndex(x => x.id === invocationId);
+    const index = this._invocations.findIndex(
+      x => x.requestId === invocationId
+    );
     if (index) {
       this._invocations.splice(index, 1);
       return true;

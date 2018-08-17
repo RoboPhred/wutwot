@@ -12,5 +12,5 @@ export declare class ThingActionImpl implements ThingAction {
     readonly input: any;
     readonly requests: ReadonlyArray<ThingActionRequest>;
     invoke(input: any): ThingActionRequest;
-    private _invocationToRequest;
+    private _requestDefToRequest;
 }

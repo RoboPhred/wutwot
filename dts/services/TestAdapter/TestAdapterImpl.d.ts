@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { EventEmitter } from "events";
-import { ActionSource, ThingDef, ThingActionDef, ThingActionInvocation, ThingSource, ThingContext } from "../MozIOT";
+import { ActionSource, ThingDef, ThingActionDef, ThingActionRequestDef, ThingSource, ThingContext } from "../MozIOT";
 export declare class TestAdapterImpl extends EventEmitter implements ThingSource, ActionSource {
     readonly id: "test-adapter";
     private readonly _defs;
@@ -8,8 +8,8 @@ export declare class TestAdapterImpl extends EventEmitter implements ThingSource
     constructor();
     readonly things: ReadonlyArray<ThingDef>;
     getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef>;
-    getThingInvocations(thingContext: ThingContext): ReadonlyArray<ThingActionInvocation>;
-    invokeAction(thingContext: ThingContext, actionId: string, input: any): ThingActionInvocation;
+    getThingActionRequests(thingContext: ThingContext): ReadonlyArray<ThingActionRequestDef>;
+    requestAction(thingContext: ThingContext, actionId: string, input: any): ThingActionRequestDef;
     cancelInvocation(invocationId: string): boolean;
     addTestThing(def?: Partial<ThingDef>): void;
     removeTestThing(id?: string): void;

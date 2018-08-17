@@ -29,7 +29,7 @@ export class ThingImpl implements Thing {
     // TODO: Make these persistent.  Need event support.
     const actions: Record<string, ThingAction> = {};
     this._actionAggregator.getThingActions(this._context).forEach(def => {
-      actions[def.id] = new ThingActionImpl(
+      actions[def.actionId] = new ThingActionImpl(
         def,
         this._context,
         this._actionAggregator

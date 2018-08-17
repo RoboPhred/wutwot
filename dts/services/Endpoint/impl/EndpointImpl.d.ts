@@ -6,5 +6,8 @@ export declare class EndpointImpl implements Entrypoint {
     constructor(_thingManager: ThingManager);
     start(): void;
     private _createThingsRouter;
+    private _createPropertiesRouter;
+    private _createActionsRouter;
+    private _createEventsRouter;
     private _getRestThing;
 }

@@ -5,20 +5,20 @@ import uuidV4 from "uuid/v4";
 import {
   ActionSource,
   ThingContext,
-  ThingActionInvocation,
+  ThingActionRequestDef,
   ThingActionDef
 } from "../MozIOT";
 
 @injectable(ActionSource)
 export class TestAddonActionSource implements ActionSource {
-  private _invocationsById = new Map<string, ThingActionInvocation>();
+  private _invocationsById = new Map<string, ThingActionRequestDef>();
   private readonly _actionId = "test-addon-action";
 
   readonly id = "TestAddonActionSource";
 
   getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
     const def: ThingActionDef = {
-      id: this._actionId,
+      actionId: this._actionId,
       thingId: thingContext.thingId,
       description: "A third party addon action",
       input: { type: "null" },
@@ -27,52 +27,47 @@ export class TestAddonActionSource implements ActionSource {
     return Object.freeze([def]);
   }
 
-  getThingInvocations(
+  getThingActionRequests(
     thingContext: ThingContext
-  ): ReadonlyArray<ThingActionInvocation> {
+  ): ReadonlyArray<ThingActionRequestDef> {
     const invocations = Array.from(this._invocationsById.values()).filter(
       x => x.thingId === thingContext.thingId
     );
     return Object.freeze(invocations);
   }
 
-  invokeAction(
+  requestAction(
     thingContext: ThingContext,
     actionId: string
-  ): ThingActionInvocation {
+  ): ThingActionRequestDef {
     if (actionId !== this._actionId) {
       throw new Error(
         "This action source does not control the requested action."
       );
     }
 
-    const invocation: ThingActionInvocation = Object.freeze({
-      id: uuidV4(),
+    const request: ThingActionRequestDef = Object.freeze({
+      requestId: uuidV4(),
       thingId: thingContext.thingId,
       actionId,
       timeRequested: new Date().toISOString()
     });
-    console.log(
-      "Test action starting on",
-      thingContext.thingId,
-      "=>",
-      invocation
-    );
-    this._invocationsById.set(invocation.id, invocation);
+    console.log("Test action starting on", thingContext.thingId, "=>", request);
+    this._invocationsById.set(request.requestId, request);
 
     setTimeout(() => {
-      if (this._invocationsById.has(invocation.id)) {
-        this._invocationsById.delete(invocation.id);
+      if (this._invocationsById.has(request.requestId)) {
+        this._invocationsById.delete(request.requestId);
         console.log(
           "Test action ending on",
           thingContext.thingId,
           "=>",
-          invocation
+          request
         );
       }
     }, 10 * 1000);
 
-    return invocation;
+    return request;
   }
 
   cancelInvocation(invocationId: string): boolean {

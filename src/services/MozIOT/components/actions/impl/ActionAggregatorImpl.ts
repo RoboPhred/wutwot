@@ -3,7 +3,7 @@ import { injectable, inject } from "microinject";
 import {
   ActionSource,
   ThingActionDef,
-  ThingActionInvocation
+  ThingActionRequestDef
 } from "../../../contracts/ActionSource";
 
 import { ActionAggregator } from "../ActionAggregator";
@@ -30,13 +30,13 @@ export class ActionAggregatorImpl implements ActionAggregator {
     return actions;
   }
 
-  getThingInvocations(
+  getThingActionRequests(
     thingContext: ThingContext
-  ): ReadonlyArray<ThingActionInvocation> {
-    const invocations: ThingActionInvocation[] = [];
+  ): ReadonlyArray<ThingActionRequestDef> {
+    const invocations: ThingActionRequestDef[] = [];
     for (const source of this._actionSources) {
       const sourceInvocations = source
-        .getThingInvocations(thingContext)
+        .getThingActionRequests(thingContext)
         .map(x => scopeInvocation(source, x));
       invocations.push(...sourceInvocations);
     }
@@ -45,11 +45,11 @@ export class ActionAggregatorImpl implements ActionAggregator {
     return invocations;
   }
 
-  invokeAction(
+  requestAction(
     thingContext: ThingContext,
     actionId: string,
     input: any
-  ): ThingActionInvocation {
+  ): ThingActionRequestDef {
     const ids = unscopeId(actionId);
     if (!ids.id || !ids.sourceId) {
       throw new Error(
@@ -64,7 +64,7 @@ export class ActionAggregatorImpl implements ActionAggregator {
       );
     }
 
-    const invocation = source.invokeAction(thingContext, ids.id, input);
+    const invocation = source.requestAction(thingContext, ids.id, input);
     const scopedInvocation = scopeInvocation(source, invocation);
     return scopedInvocation;
   }
@@ -90,17 +90,17 @@ function scopeAction(
 ): ThingActionDef {
   return {
     ...action,
-    id: scopeId(source, action.id)
+    actionId: scopeId(source, action.actionId)
   };
 }
 
 function scopeInvocation(
   source: ActionSource,
-  invocation: ThingActionInvocation
-): ThingActionInvocation {
+  invocation: ThingActionRequestDef
+): ThingActionRequestDef {
   return {
     ...invocation,
-    id: scopeId(source, invocation.id),
+    requestId: scopeId(source, invocation.requestId),
     actionId: scopeId(source, invocation.actionId)
   };
 }

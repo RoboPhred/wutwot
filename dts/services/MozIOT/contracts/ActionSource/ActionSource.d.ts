@@ -1,5 +1,5 @@
 import { Identifier } from "microinject";
-import { ThingActionDef, ThingActionInvocation } from "./types";
+import { ThingActionDef, ThingActionRequestDef } from "./types";
 import { ThingContext } from "../ThingSource";
 export declare const ActionSource: Identifier<ActionSource>;
 /**
@@ -26,14 +26,14 @@ export interface ActionSource {
      * Gets an array of invocations pending for the given thing.
      * @param thingContext The context of the thing to fetch invocations for.
      */
-    getThingInvocations(thingContext: ThingContext): ReadonlyArray<ThingActionInvocation>;
+    getThingActionRequests(thingContext: ThingContext): ReadonlyArray<ThingActionRequestDef>;
     /**
      *
      * @param thingId The id of the thing of the thing to invoke the action on.
      * @param actionId The id of the action to invoke.
      * @param input The action input.
      */
-    invokeAction(thingContext: ThingContext, actionId: string, input: any): ThingActionInvocation;
+    requestAction(thingContext: ThingContext, actionId: string, input: any): ThingActionRequestDef;
     /**
      * Cancels a running action.
      * @param invocationId The id of the invocation to cancel.

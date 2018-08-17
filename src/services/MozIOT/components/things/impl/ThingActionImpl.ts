@@ -1,6 +1,6 @@
 import {
   ThingActionDef,
-  ThingActionInvocation,
+  ThingActionRequestDef,
   ActionSource
 } from "../../../contracts/ActionSource";
 
@@ -16,7 +16,7 @@ export class ThingActionImpl implements ThingAction {
   ) {}
 
   get id(): string {
-    return this._def.id;
+    return this._def.actionId;
   }
 
   get label(): string {
@@ -33,27 +33,27 @@ export class ThingActionImpl implements ThingAction {
 
   get requests(): ReadonlyArray<ThingActionRequest> {
     const invocations = this._source
-      .getThingInvocations(this._thingContext)
-      .filter(x => x.actionId === this._def.id);
-    const requests = invocations.map(x => this._invocationToRequest(x));
+      .getThingActionRequests(this._thingContext)
+      .filter(x => x.actionId === this._def.actionId);
+    const requests = invocations.map(x => this._requestDefToRequest(x));
     return Object.freeze(requests);
   }
 
   invoke(input: any): ThingActionRequest {
-    const invocation = this._source.invokeAction(
+    const invocation = this._source.requestAction(
       this._thingContext,
-      this._def.id,
+      this._def.actionId,
       input
     );
-    return this._invocationToRequest(invocation);
+    return this._requestDefToRequest(invocation);
   }
 
-  private _invocationToRequest(
-    invocation: ThingActionInvocation
+  private _requestDefToRequest(
+    invocation: ThingActionRequestDef
   ): ThingActionRequest {
     const source = this._source;
     const request = {
-      id: invocation.id,
+      id: invocation.requestId,
       timeRequested: invocation.timeRequested,
       status: "pending",
       cancel() {
@@ -61,7 +61,7 @@ export class ThingActionImpl implements ThingAction {
           return false;
         }
         request.status = "cancelled";
-        return source.cancelInvocation(invocation.id);
+        return source.cancelInvocation(invocation.requestId);
       }
     };
     return request;

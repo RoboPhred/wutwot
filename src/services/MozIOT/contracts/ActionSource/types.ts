@@ -4,7 +4,7 @@ import { JSONSchema6 } from "json-schema";
  * A definition of an action to perform.
  */
 export interface ThingActionDef {
-  readonly id: string;
+  readonly actionId: string;
   readonly thingId: string;
   readonly label: string;
   readonly description: string;
@@ -14,8 +14,8 @@ export interface ThingActionDef {
 /**
  * A description of an action being performed.
  */
-export interface ThingActionInvocation {
-  readonly id: string;
+export interface ThingActionRequestDef {
+  readonly requestId: string;
   readonly thingId: string;
   readonly actionId: string;
   readonly timeRequested: string;
