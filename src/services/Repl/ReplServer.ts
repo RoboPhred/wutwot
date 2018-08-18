@@ -7,8 +7,7 @@ import { autobind } from "core-decorators";
 import { Entrypoint } from "../../contracts";
 
 import { TestAdapter } from "../TestAdapter";
-import { ThingDef } from "../MozIOT";
-import { ThingManager } from "../MozIOT/components/things/ThingManager";
+import { ThingManager, ThingDef } from "../MozIOT";
 
 @injectable(Entrypoint)
 export class ReplServer implements Entrypoint {

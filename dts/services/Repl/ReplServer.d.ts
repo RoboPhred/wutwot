@@ -1,6 +1,6 @@
 import { Entrypoint } from "../../contracts";
 import { TestAdapter } from "../TestAdapter";
-import { ThingManager } from "../MozIOT/components/things/ThingManager";
+import { ThingManager } from "../MozIOT";
 export declare class ReplServer implements Entrypoint {
     private _testAdapter;
     private _thingManager;

@@ -5,9 +5,9 @@ import { mapValues } from "lodash";
 import Koa from "koa";
 import Router from "koa-router";
 
-import { ThingManager } from "../../MozIOT/components/things/ThingManager";
 import { Entrypoint } from "../../../contracts";
-import { Thing } from "../../MozIOT/components/things/Thing";
+
+import { ThingManager, Thing } from "../../MozIOT";
 
 @injectable()
 @provides(Entrypoint)

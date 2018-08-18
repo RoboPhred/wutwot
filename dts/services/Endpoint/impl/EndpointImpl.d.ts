@@ -1,5 +1,5 @@
-import { ThingManager } from "../../MozIOT/components/things/ThingManager";
 import { Entrypoint } from "../../../contracts";
+import { ThingManager } from "../../MozIOT";
 export declare class EndpointImpl implements Entrypoint {
     private _thingManager;
     private _app;

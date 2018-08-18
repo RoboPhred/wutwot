@@ -11,7 +11,8 @@ import {
   ThingActionRequestDef,
   ThingSource,
   ThingContext,
-  ThingActionContext
+  ThingActionContext,
+  ThingActionRequestContext
 } from "../MozIOT";
 
 const testActionDef = Object.freeze({
@@ -31,7 +32,7 @@ export class TestAdapterImpl extends EventEmitter
   public readonly id: "test-adapter" = "test-adapter";
 
   private readonly _defs: ThingDef[] = [];
-  private readonly _invocations: ThingActionRequestDef[] = [];
+  private readonly _requests: ThingActionRequestDef[] = [];
 
   constructor() {
     super();
@@ -62,7 +63,7 @@ export class TestAdapterImpl extends EventEmitter
   getThingActionRequests(
     thingContext: ThingContext
   ): ReadonlyArray<ThingActionRequestDef> {
-    const results = this._invocations.filter(
+    const results = this._requests.filter(
       x => x.thingId === thingContext.thingId
     );
     Object.freeze(results);
@@ -77,18 +78,20 @@ export class TestAdapterImpl extends EventEmitter
       requestId: uuidV4(),
       thingId: actionContext.thingId,
       actionId: actionContext.actionId,
-      timeRequested: new Date().toISOString()
+      requestCreatedTime: new Date().toISOString(),
+      requestMetadata: {}
     });
+
     console.log(
       "Test action starting on",
       actionContext.thingId,
       "=>",
       request
     );
-    this._invocations.push(request);
+    this._requests.push(request);
 
     setTimeout(() => {
-      const index = this._invocations.indexOf(request);
+      const index = this._requests.indexOf(request);
       if (index > -1) {
         console.log(
           "Test action ending on",
@@ -96,19 +99,19 @@ export class TestAdapterImpl extends EventEmitter
           "=>",
           request
         );
-        this._invocations.splice(index, 1);
+        this._requests.splice(index, 1);
       }
     }, 10 * 1000);
 
     return request;
   }
 
-  cancelRequest(invocationId: string) {
-    const index = this._invocations.findIndex(
-      x => x.requestId === invocationId
-    );
+  cancelRequest(requestContext: ThingActionRequestContext) {
+    const { requestId } = requestContext;
+
+    const index = this._requests.findIndex(x => x.requestId === requestId);
     if (index) {
-      this._invocations.splice(index, 1);
+      this._requests.splice(index, 1);
       return true;
     }
     return false;
