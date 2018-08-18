@@ -14,12 +14,24 @@ export interface ThingActionDef {
   readonly actionMetadata: ReadonlyRecord<string, any>;
 }
 
+export interface ThingActionContext extends ThingActionDef {
+  actionSourceId: string;
+  actionSourceActionId: string;
+}
+
 /**
  * A description of an action being performed.
  */
 export interface ThingActionRequestDef {
-  readonly requestId: string;
   readonly thingId: string;
   readonly actionId: string;
-  readonly timeRequested: string;
+  readonly requestId: string;
+  readonly requestCreatedTime: string;
+  readonly requestMetadata: ReadonlyRecord<string, any>;
+}
+
+export interface ThingActionRequestContext extends ThingActionRequestDef {
+  actionSourceId: string;
+  actionSourceActionId: string;
+  actionSourceRequestId: string;
 }

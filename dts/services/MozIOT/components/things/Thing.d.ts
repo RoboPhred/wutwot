@@ -12,7 +12,7 @@ export interface ThingAction {
     readonly description: string;
     readonly requests: ReadonlyArray<ThingActionRequest>;
     readonly input: any;
-    invoke(input: any): ThingActionRequest;
+    request(input: any): ThingActionRequest;
 }
 export interface ThingActionRequest {
     readonly id: string;

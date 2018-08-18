@@ -1,4 +1,3 @@
-import { ThingSource } from "./ThingSource";
 import { ReadonlyRecord } from "../../../../types";
 
 export interface ThingDef {
@@ -10,7 +9,6 @@ export interface ThingDef {
 }
 
 export interface ThingContext extends ThingDef {
-  readonly thingOwner: ThingSource;
-  readonly thingOwnerThingId: string;
-  readonly thingMetadata: Record<string, any>;
+  readonly thingSourceId: string;
+  readonly thingSourceThingId: string;
 }

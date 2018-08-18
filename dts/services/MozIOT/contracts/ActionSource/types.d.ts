@@ -1,20 +1,32 @@
 import { JSONSchema6 } from "json-schema";
+import { DeepImmutable, ReadonlyRecord } from "../../../../types";
 /**
  * A definition of an action to perform.
  */
 export interface ThingActionDef {
     readonly actionId: string;
     readonly thingId: string;
-    readonly label: string;
-    readonly description: string;
-    readonly input: JSONSchema6;
+    readonly actionLabel: string;
+    readonly actionDescription: string;
+    readonly actionInput: DeepImmutable<JSONSchema6>;
+    readonly actionMetadata: ReadonlyRecord<string, any>;
+}
+export interface ThingActionContext extends ThingActionDef {
+    actionSourceId: string;
+    actionSourceActionId: string;
 }
 /**
  * A description of an action being performed.
  */
 export interface ThingActionRequestDef {
-    readonly requestId: string;
     readonly thingId: string;
     readonly actionId: string;
-    readonly timeRequested: string;
+    readonly requestId: string;
+    readonly requestCreatedTime: string;
+    readonly requestMetadata: ReadonlyRecord<string, any>;
+}
+export interface ThingActionRequestContext extends ThingActionRequestDef {
+    actionSourceId: string;
+    actionSourceActionId: string;
+    actionSourceRequestId: string;
 }

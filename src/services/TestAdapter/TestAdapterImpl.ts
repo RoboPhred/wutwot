@@ -10,14 +10,16 @@ import {
   ThingActionDef,
   ThingActionRequestDef,
   ThingSource,
-  ThingContext
+  ThingContext,
+  ThingActionContext
 } from "../MozIOT";
 
 const testActionDef = Object.freeze({
   actionId: "thing-test-action",
-  label: "Do That Thing",
-  description: "A test action",
-  input: { type: "null" as "null" }
+  actionLabel: "Do That Thing",
+  actionDescription: "A test action",
+  actionInput: { type: "null" as "null" },
+  actionMetadata: {}
 });
 
 @injectable()
@@ -41,11 +43,11 @@ export class TestAdapterImpl extends EventEmitter
   }
 
   getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
-    if (thingContext.thingOwner !== this) {
+    if (thingContext.thingSourceId !== this.id) {
       return [];
     }
 
-    if (!this._defs.find(x => x.thingId === thingContext.thingOwnerThingId)) {
+    if (!this._defs.find(x => x.thingId === thingContext.thingSourceThingId)) {
       return [];
     }
 
@@ -68,17 +70,21 @@ export class TestAdapterImpl extends EventEmitter
   }
 
   requestAction(
-    thingContext: ThingContext,
-    actionId: string,
+    actionContext: ThingActionContext,
     input: any
   ): ThingActionRequestDef {
     const request: ThingActionRequestDef = Object.freeze({
       requestId: uuidV4(),
-      thingId: thingContext.thingId,
-      actionId,
+      thingId: actionContext.thingId,
+      actionId: actionContext.actionId,
       timeRequested: new Date().toISOString()
     });
-    console.log("Test action starting on", thingContext.thingId, "=>", request);
+    console.log(
+      "Test action starting on",
+      actionContext.thingId,
+      "=>",
+      request
+    );
     this._invocations.push(request);
 
     setTimeout(() => {
@@ -86,7 +92,7 @@ export class TestAdapterImpl extends EventEmitter
       if (index > -1) {
         console.log(
           "Test action ending on",
-          thingContext.thingId,
+          actionContext.thingId,
           "=>",
           request
         );
@@ -97,7 +103,7 @@ export class TestAdapterImpl extends EventEmitter
     return request;
   }
 
-  cancelInvocation(invocationId: string) {
+  cancelRequest(invocationId: string) {
     const index = this._invocations.findIndex(
       x => x.requestId === invocationId
     );

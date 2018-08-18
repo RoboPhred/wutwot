@@ -6,5 +6,5 @@ export declare class TestAddonActionSource implements ActionSource {
     getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef>;
     getThingActionRequests(thingContext: ThingContext): ReadonlyArray<ThingActionRequestDef>;
     requestAction(thingContext: ThingContext, actionId: string): ThingActionRequestDef;
-    cancelInvocation(invocationId: string): boolean;
+    cancelRequest(invocationId: string): boolean;
 }

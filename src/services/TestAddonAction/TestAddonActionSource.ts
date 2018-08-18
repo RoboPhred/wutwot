@@ -71,7 +71,7 @@ export class TestAddonActionSource implements ActionSource {
     return request;
   }
 
-  cancelInvocation(invocationId: string): boolean {
+  cancelRequest(invocationId: string): boolean {
     if (!this._invocationsById.has(invocationId)) {
       return false;
     }

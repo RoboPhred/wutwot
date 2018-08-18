@@ -2,8 +2,10 @@ import { injectable, inject } from "microinject";
 
 import {
   ActionSource,
-  ThingActionDef,
-  ThingActionRequestDef
+  ThingActionRequestDef,
+  ThingActionContext,
+  ThingActionRequestContext,
+  ThingActionDef
 } from "../../../contracts/ActionSource";
 
 import { ActionAggregator } from "../ActionAggregator";
@@ -11,18 +13,29 @@ import { ThingContext } from "../../../contracts";
 
 @injectable(ActionAggregator)
 export class ActionAggregatorImpl implements ActionAggregator {
-  readonly id: string = "aggregator";
+  private _actionSources = new Map<string, ActionSource>();
 
   constructor(
-    @inject(ActionSource, { all: true }) private _actionSources: ActionSource[]
-  ) {}
+    @inject(ActionSource, { all: true }) actionSources: ActionSource[]
+  ) {
+    for (const source of actionSources) {
+      // TODO: Could skip source IDs and auto-prefix where needed.
+      if (this._actionSources.has(source.id)) {
+        throw new Error(`Duplicate source ID ${source.id}.`);
+      }
+      this._actionSources.set(source.id, source);
+    }
+  }
 
-  getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
-    const actions: ThingActionDef[] = [];
-    for (const source of this._actionSources) {
+  getThingActions(
+    thingContext: ThingContext
+  ): ReadonlyArray<ThingActionContext> {
+    const actions: ThingActionContext[] = [];
+    for (const source of this._actionSources.values()) {
       const sourceActions = source
         .getThingActions(thingContext)
-        .map(x => scopeAction(source, x));
+        .map(actionDef => this._actionToContext(source, actionDef));
+
       actions.push(...sourceActions);
     }
 
@@ -32,87 +45,80 @@ export class ActionAggregatorImpl implements ActionAggregator {
 
   getThingActionRequests(
     thingContext: ThingContext
-  ): ReadonlyArray<ThingActionRequestDef> {
-    const invocations: ThingActionRequestDef[] = [];
-    for (const source of this._actionSources) {
+  ): ReadonlyArray<ThingActionRequestContext> {
+    const contexts: ThingActionRequestContext[] = [];
+    for (const source of this._actionSources.values()) {
       const sourceInvocations = source
         .getThingActionRequests(thingContext)
-        .map(x => scopeInvocation(source, x));
-      invocations.push(...sourceInvocations);
+        .map(request => {
+          const context = this._requestToContext(source, request);
+          return context;
+        });
+      contexts.push(...sourceInvocations);
     }
 
-    Object.freeze(invocations);
-    return invocations;
+    Object.freeze(contexts);
+    return contexts;
   }
 
   requestAction(
-    thingContext: ThingContext,
-    actionId: string,
+    actionContext: ThingActionContext,
     input: any
-  ): ThingActionRequestDef {
-    const ids = unscopeId(actionId);
-    if (!ids.id || !ids.sourceId) {
+  ): ThingActionRequestContext {
+    const { actionId, actionSourceId } = actionContext;
+
+    const source = this._actionSources.get(actionSourceId);
+    if (!source) {
       throw new Error(
-        `Unknown action id "${actionId}" for thing "${thingContext.thingId}".`
+        `Unknown action source id "${actionId}" for context "${JSON.stringify(
+          actionContext
+        )}".`
       );
     }
 
-    const source = this._actionSources.find(x => x.id === ids.sourceId);
+    const request = source.requestAction(actionContext, input);
+    const context = this._requestToContext(source, request);
+    return context;
+  }
+
+  cancelRequest(requestContext: ThingActionRequestContext): boolean {
+    const { actionSourceId } = requestContext;
+    const source = this._actionSources.get(actionSourceId);
     if (!source) {
       throw new Error(
-        `Unknown action id "${actionId}" for thing "${thingContext}".`
+        `Unknown action id "${actionSourceId}" in request ${JSON.stringify(
+          requestContext
+        )}.`
       );
     }
 
-    const invocation = source.requestAction(thingContext, ids.id, input);
-    const scopedInvocation = scopeInvocation(source, invocation);
-    return scopedInvocation;
+    return source.cancelRequest(requestContext);
   }
 
-  cancelInvocation(invocationId: string): boolean {
-    const ids = unscopeId(invocationId);
-    if (!ids.id || !ids.sourceId) {
-      throw new Error(`Unknown invocation id "${invocationId}".`);
-    }
-
-    const source = this._actionSources.find(x => x.id === ids.sourceId);
-    if (!source) {
-      throw new Error(`Unknown invocation id "${invocationId}".`);
-    }
-
-    return source.cancelInvocation(ids.id);
+  private _actionToContext(
+    source: ActionSource,
+    actionDef: ThingActionDef
+  ): ThingActionContext {
+    const context: ThingActionContext = {
+      ...actionDef,
+      actionSourceId: source.id,
+      actionSourceActionId: actionDef.actionId,
+      actionId: `${source.id}--${actionDef.actionId}`
+    };
+    return context;
   }
-}
 
-function scopeAction(
-  source: ActionSource,
-  action: ThingActionDef
-): ThingActionDef {
-  return {
-    ...action,
-    actionId: scopeId(source, action.actionId)
-  };
-}
-
-function scopeInvocation(
-  source: ActionSource,
-  invocation: ThingActionRequestDef
-): ThingActionRequestDef {
-  return {
-    ...invocation,
-    requestId: scopeId(source, invocation.requestId),
-    actionId: scopeId(source, invocation.actionId)
-  };
-}
-
-function scopeId(source: ActionSource, id: string): string {
-  return `${source.id}::${id}`;
-}
-
-function unscopeId(id: string): { sourceId: string; id: string } {
-  const parts = id.split("::");
-  return {
-    sourceId: parts[0],
-    id: parts.slice(1).join("::")
-  };
+  private _requestToContext(
+    source: ActionSource,
+    request: ThingActionRequestDef
+  ): ThingActionRequestContext {
+    const context: ThingActionRequestContext = {
+      ...request,
+      requestId: `${source.id}--${request.requestId}`,
+      actionSourceId: source.id,
+      actionSourceActionId: `${source.id}--${request.actionId}`,
+      actionSourceRequestId: request.requestId
+    };
+    return context;
+  }
 }

@@ -1,67 +1,67 @@
 import {
-  ThingActionDef,
-  ThingActionRequestDef,
-  ActionSource
+  ThingActionContext,
+  ThingActionRequestContext
 } from "../../../contracts/ActionSource";
 
-import { ThingContext } from "../../../contracts";
+import { ActionAggregator } from "../../actions/ActionAggregator";
 
 import { ThingAction, ThingActionRequest } from "../Thing";
+import { ThingContext } from "../../../contracts";
 
 export class ThingActionImpl implements ThingAction {
   constructor(
-    private _def: ThingActionDef,
     private _thingContext: ThingContext,
-    private _source: ActionSource
+    private _actionContext: ThingActionContext,
+    private _actionAggregator: ActionAggregator
   ) {}
 
   get id(): string {
-    return this._def.actionId;
+    return this._actionContext.actionId;
   }
 
   get label(): string {
-    return this._def.actionLabel;
+    return this._actionContext.actionLabel;
   }
 
   get description(): string {
-    return this._def.actionDescription;
+    return this._actionContext.actionDescription;
   }
 
   get input(): any {
-    return this._def.actionInput;
+    return this._actionContext.actionInput;
   }
 
   get requests(): ReadonlyArray<ThingActionRequest> {
-    const invocations = this._source
+    const requests = this._actionAggregator
       .getThingActionRequests(this._thingContext)
-      .filter(x => x.actionId === this._def.actionId);
-    const requests = invocations.map(x => this._requestDefToRequest(x));
-    return Object.freeze(requests);
+      .filter(x => x.actionId === this._actionContext.actionId);
+
+    const instances = requests.map(x => this._requestfToInstance(x));
+    return Object.freeze(instances);
   }
 
-  invoke(input: any): ThingActionRequest {
-    const invocation = this._source.requestAction(
-      this._thingContext,
-      this._def.actionId,
+  request(input: any): ThingActionRequest {
+    const invocation = this._actionAggregator.requestAction(
+      this._actionContext,
       input
     );
-    return this._requestDefToRequest(invocation);
+    return this._requestfToInstance(invocation);
   }
 
-  private _requestDefToRequest(
-    invocation: ThingActionRequestDef
+  private _requestfToInstance(
+    requestContext: ThingActionRequestContext
   ): ThingActionRequest {
-    const source = this._source;
+    const source = this._actionAggregator;
     const request = {
-      id: invocation.requestId,
-      timeRequested: invocation.timeRequested,
+      id: requestContext.requestId,
+      timeRequested: requestContext.requestCreatedTime,
       status: "pending",
       cancel() {
         if (request.status === "cancelled") {
           return false;
         }
         request.status = "cancelled";
-        return source.cancelInvocation(invocation.requestId);
+        return source.cancelRequest(requestContext);
       }
     };
     return request;

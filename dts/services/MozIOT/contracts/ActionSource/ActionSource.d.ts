@@ -1,6 +1,6 @@
 import { Identifier } from "microinject";
-import { ThingActionDef, ThingActionRequestDef } from "./types";
 import { ThingContext } from "../ThingSource";
+import { ThingActionDef, ThingActionRequestDef, ThingActionContext, ThingActionRequestContext } from "./types";
 export declare const ActionSource: Identifier<ActionSource>;
 /**
  * A source of thing actions.
@@ -29,14 +29,13 @@ export interface ActionSource {
     getThingActionRequests(thingContext: ThingContext): ReadonlyArray<ThingActionRequestDef>;
     /**
      *
-     * @param thingId The id of the thing of the thing to invoke the action on.
-     * @param actionId The id of the action to invoke.
+     * @param actionContext The context the action to invoke.
      * @param input The action input.
      */
-    requestAction(thingContext: ThingContext, actionId: string, input: any): ThingActionRequestDef;
+    requestAction(actionContext: ThingActionContext, input: any): ThingActionRequestDef;
     /**
-     * Cancels a running action.
-     * @param invocationId The id of the invocation to cancel.
+     * Cancels a pending request.
+     * @param requestContext The context of the request to cancel.
      */
-    cancelInvocation(invocationId: string): boolean;
+    cancelRequest(requestContext: ThingActionRequestContext): boolean;
 }
