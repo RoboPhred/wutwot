@@ -20,9 +20,10 @@ export class TestAddonActionSource implements ActionSource {
     const def: ThingActionDef = {
       actionId: this._actionId,
       thingId: thingContext.thingId,
-      description: "A third party addon action",
-      input: { type: "null" },
-      label: "Addon Action"
+      actionDescription: "A third party addon action",
+      actionInput: { type: "null" },
+      actionLabel: "Addon Action",
+      actionMetadata: {}
     };
     return Object.freeze([def]);
   }

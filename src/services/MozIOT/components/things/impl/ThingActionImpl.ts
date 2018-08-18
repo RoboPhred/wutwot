@@ -20,15 +20,15 @@ export class ThingActionImpl implements ThingAction {
   }
 
   get label(): string {
-    return this._def.label;
+    return this._def.actionLabel;
   }
 
   get description(): string {
-    return this._def.description;
+    return this._def.actionDescription;
   }
 
   get input(): any {
-    return this._def.input;
+    return this._def.actionInput;
   }
 
   get requests(): ReadonlyArray<ThingActionRequest> {

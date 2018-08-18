@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../create-symbol";
 
-import { ThingDef, ThingContext } from "../../contracts/ThingSource";
+import { ThingContext } from "../../contracts/ThingSource";
 
 import { Thing } from "./Thing";
 

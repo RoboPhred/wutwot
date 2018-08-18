@@ -53,7 +53,9 @@ export class ThingManagerImpl extends EventEmitter implements ThingManager {
       thingId: externalId,
       thingOwnerThingId: e.thingId,
       thingOwner: source,
-      metadata: e.thingDef.metadata ? cloneDeep(e.thingDef.metadata) : {}
+      thingMetadata: e.thingDef.thingMetadata
+        ? cloneDeep(e.thingDef.thingMetadata)
+        : {}
     };
 
     const thing = this._thingFactory.createThing(context);
