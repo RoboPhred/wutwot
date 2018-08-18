@@ -43,9 +43,9 @@ export class TestAddonActionSource implements ActionSource {
     actionContext: ThingActionContext,
     input: any
   ): ThingActionRequestDef {
-    const { thingId, actionId } = actionContext;
+    const { thingId, actionId, actionSourceActionId } = actionContext;
 
-    if (actionId !== this._actionId) {
+    if (actionSourceActionId !== this._actionId) {
       throw new Error(
         "This action source does not control the requested action."
       );
@@ -73,7 +73,7 @@ export class TestAddonActionSource implements ActionSource {
   }
 
   cancelRequest(requestContext: ThingActionRequestContext): boolean {
-    const { requestId } = requestContext;
+    const { actionSourceRequestId: requestId } = requestContext;
     if (!this._requestsById.has(requestId)) {
       return false;
     }

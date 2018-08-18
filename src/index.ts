@@ -1,3 +1,6 @@
+import { install as installSourceMapSupport } from "source-map-support";
+installSourceMapSupport();
+
 import { Container } from "microinject";
 
 import createModule from "./module";
