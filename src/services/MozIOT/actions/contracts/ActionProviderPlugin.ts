@@ -1,8 +1,6 @@
 import { Identifier } from "microinject";
 
-import createSymbol from "../../../create-symbol";
-
-import { ThingContext } from "../../../things";
+import createSymbol from "../../create-symbol";
 
 import {
   ThingActionDef,
@@ -11,9 +9,9 @@ import {
   ThingActionRequestContext
 } from "./types";
 
-export const ThingActionSource: Identifier<ThingActionSource> = createSymbol(
-  "ThingActionSource"
-);
+export const ActionProviderPlugin: Identifier<
+  ActionProviderPlugin
+> = createSymbol("ActionProviderPlugin");
 
 /**
  * A source of thing actions.
@@ -24,7 +22,7 @@ export const ThingActionSource: Identifier<ThingActionSource> = createSymbol(
  * This may be implemented on the same class as the ThingSource,
  * or it may be seperated to provide actions in a mixin style.
  */
-export interface ThingActionSource {
+export interface ActionProviderPlugin {
   /**
    * The ID of the action source.  Used to disambiguate
    * actions when multiple sources are in play on a single thing.
@@ -34,23 +32,25 @@ export interface ThingActionSource {
   onRegisterThingActionSource(plugin: ThingActionSourcePlugin): void;
 
   /**
-   *
-   * @param actionContext The context the action to invoke.
+   * Request an action execution.
+   * @param action The context the action to invoke.
    * @param input The action input.
    */
-  requestAction(
-    actionContext: ThingActionContext,
-    input: any
-  ): ThingActionRequestDef;
+  onActionRequested(action: ThingActionContext, input: any): void;
 
   /**
    * Cancels a pending request.
    * @param requestContext The context of the request to cancel.
    */
-  cancelRequest(requestContext: ThingActionRequestContext): boolean;
+  onActionRequestCancelRequested(
+    requestContext: ThingActionRequestContext
+  ): boolean;
 }
 
 export interface ThingActionSourcePlugin {
-  addThingAction(def: ThingActionDef): ThingActionContext;
-  addThingActionRequest(def: ThingActionRequestDef): ThingActionRequestContext;
+  addAction(def: ThingActionDef): ThingActionContext;
+  removeAction(actionId: string): void;
+
+  addActionRequest(def: ThingActionRequestDef): ThingActionRequestContext;
+  removeActionRequest(requestId: string): void;
 }

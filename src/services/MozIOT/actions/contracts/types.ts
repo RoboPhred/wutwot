@@ -1,6 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 
-import { ReadonlyRecord, DeepImmutable } from "../../../../../types";
+import { DeepImmutable, ReadonlyRecord } from "../../../../types";
 
 /**
  * A definition of an action to perform.

@@ -3,14 +3,14 @@ import { injectable, provides, singleton } from "microinject";
 import uuidV4 from "uuid/v4";
 
 import {
-  ThingActionSource,
   ThingDef,
   ThingActionRequestDef,
   ThingProviderPlugin,
   ThingActionContext,
   ThingActionRequestContext,
   ThingProviderPluginAdapter,
-  ThingActionSourcePlugin
+  ThingActionSourcePlugin,
+  ActionProviderPlugin
 } from "../MozIOT";
 
 const testActionDef = Object.freeze({
@@ -22,10 +22,11 @@ const testActionDef = Object.freeze({
 });
 
 @injectable()
-@provides(ThingProviderPlugin)
-@provides(ThingActionSource)
 @singleton()
-export class TestAdapterImpl implements ThingProviderPlugin, ThingActionSource {
+@provides(ThingProviderPlugin)
+@provides(ActionProviderPlugin)
+export class TestAdapterImpl
+  implements ThingProviderPlugin, ActionProviderPlugin {
   public readonly id: "test-adapter" = "test-adapter";
 
   private _thingPlugin: ThingProviderPluginAdapter = null as any;
@@ -52,10 +53,7 @@ export class TestAdapterImpl implements ThingProviderPlugin, ThingActionSource {
     this.addTestThing();
   }
 
-  requestAction(
-    actionContext: ThingActionContext,
-    input: any
-  ): ThingActionRequestDef {
+  onActionRequested(actionContext: ThingActionContext, input: any) {
     const request: ThingActionRequestDef = Object.freeze({
       requestId: uuidV4(),
       thingId: actionContext.thingId,
@@ -85,15 +83,16 @@ export class TestAdapterImpl implements ThingProviderPlugin, ThingActionSource {
       }
     }, 10 * 1000);
 
-    return request;
+    this._actionPlugin.addActionRequest(request);
   }
 
-  cancelRequest(requestContext: ThingActionRequestContext) {
+  onActionRequestCancelRequested(requestContext: ThingActionRequestContext) {
     const { requestId } = requestContext;
 
     const index = this._requests.findIndex(x => x.requestId === requestId);
     if (index) {
       this._requests.splice(index, 1);
+      this._actionPlugin.removeActionRequest(requestContext.requestId);
       return true;
     }
     return false;
@@ -122,7 +121,7 @@ export class TestAdapterImpl implements ThingProviderPlugin, ThingActionSource {
     };
 
     this._thingPlugin.addThing(finalDef);
-    this._actionPlugin.addThingAction({
+    this._actionPlugin.addAction({
       ...testActionDef,
       thingId
     });
