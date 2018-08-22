@@ -1,18 +1,16 @@
-import { EventEmitter } from "events";
-
 import { injectable, provides, singleton } from "microinject";
 
 import uuidV4 from "uuid/v4";
 
 import {
-  ActionSource,
+  ThingActionSource,
   ThingDef,
-  ThingActionDef,
   ThingActionRequestDef,
-  ThingSource,
-  ThingContext,
+  ThingProviderPlugin,
   ThingActionContext,
-  ThingActionRequestContext
+  ThingActionRequestContext,
+  ThingProviderPluginAdapter,
+  ThingActionSourcePlugin
 } from "../MozIOT";
 
 const testActionDef = Object.freeze({
@@ -24,50 +22,34 @@ const testActionDef = Object.freeze({
 });
 
 @injectable()
-@provides(ThingSource)
-@provides(ActionSource)
+@provides(ThingProviderPlugin)
+@provides(ThingActionSource)
 @singleton()
-export class TestAdapterImpl extends EventEmitter
-  implements ThingSource, ActionSource {
+export class TestAdapterImpl implements ThingProviderPlugin, ThingActionSource {
   public readonly id: "test-adapter" = "test-adapter";
 
-  private readonly _defs: ThingDef[] = [];
+  private _thingPlugin: ThingProviderPluginAdapter = null as any;
+  private _actionPlugin: ThingActionSourcePlugin = null as any;
+
   private readonly _requests: ThingActionRequestDef[] = [];
 
-  constructor() {
-    super();
+  constructor() {}
+
+  // TODO: onRegisterThingSource and onRegisterActionSource can be combined
+  //  if we are smarter about how we check for what implements what.
+  // TODO: For best results, pass it in the ctor using the yet
+  //  incomplete microinject instantiation time parameter stuff.
+
+  onRegisterThingProvider(plugin: ThingProviderPluginAdapter) {
+    this._thingPlugin = plugin;
+    // One of these will noop as both will not be called yet.
     this.addTestThing();
   }
 
-  get things(): ReadonlyArray<ThingDef> {
-    return Object.freeze([...this._defs]);
-  }
-
-  getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef> {
-    if (thingContext.thingSourceId !== this.id) {
-      return [];
-    }
-
-    if (!this._defs.find(x => x.thingId === thingContext.thingSourceThingId)) {
-      return [];
-    }
-
-    return Object.freeze([
-      {
-        ...testActionDef,
-        thingId: thingContext.thingId
-      }
-    ]);
-  }
-
-  getThingActionRequests(
-    thingContext: ThingContext
-  ): ReadonlyArray<ThingActionRequestDef> {
-    const results = this._requests.filter(
-      x => x.thingId === thingContext.thingId
-    );
-    Object.freeze(results);
-    return results;
+  onRegisterThingActionSource(plugin: ThingActionSourcePlugin) {
+    this._actionPlugin = plugin;
+    // One of these will noop as both will not be called yet.
+    this.addTestThing();
   }
 
   requestAction(
@@ -117,7 +99,11 @@ export class TestAdapterImpl extends EventEmitter
     return false;
   }
 
-  public addTestThing(def?: Partial<ThingDef>) {
+  addTestThing(def?: Partial<ThingDef>) {
+    if (!this._actionPlugin || !this._thingPlugin) {
+      return;
+    }
+
     if (!def) {
       def = {};
     }
@@ -134,30 +120,15 @@ export class TestAdapterImpl extends EventEmitter
       description: "A test thing",
       defaultName
     };
-    Object.freeze(finalDef);
 
-    this._defs.push(finalDef);
-
-    this.emit("thing.add", { thing: finalDef });
+    this._thingPlugin.addThing(finalDef);
+    this._actionPlugin.addThingAction({
+      ...testActionDef,
+      thingId
+    });
   }
 
-  public removeTestThing(id?: string) {
-    if (this._defs.length === 0) {
-      return;
-    }
-
-    if (id == null) {
-      id = this._defs[0].thingId;
-    }
-
-    const index = this._defs.findIndex(x => x.thingId === id);
-    if (index === -1) {
-      return;
-    }
-
-    const def = this._defs[index];
-    this._defs.splice(index, 1);
-
-    this.emit("thing.remove", { thing: def });
+  removeTestThing(thingId: string) {
+    this._thingPlugin.removeThing(thingId);
   }
 }

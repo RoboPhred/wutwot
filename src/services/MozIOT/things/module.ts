@@ -1,9 +1,9 @@
 import { ContainerModule } from "microinject";
 
-import { ThingFactoryImpl } from "./components/impl/ThingFactoryImpl";
-import { ThingManagerImpl } from "./components/impl/ThingManagerImpl";
+import { ThingPluginManagerImpl } from "./components/impl/ThingPluginManagerImpl";
+import { ThingRegistryImpl } from "./components/impl/ThingRegistryImpl";
 
 export default new ContainerModule(bind => {
-  bind(ThingFactoryImpl);
-  bind(ThingManagerImpl);
+  bind(ThingPluginManagerImpl);
+  bind(ThingRegistryImpl);
 });

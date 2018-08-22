@@ -2,13 +2,14 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../create-symbol";
 
-import { Thing } from "./Thing";
+import { ThingContext } from "../contracts";
 
-export const ThingManager: Identifier<ThingManager> = createSymbol(
-  "ThingManager"
+export const ThingRegistry: Identifier<ThingRegistry> = createSymbol(
+  "ThingRegistry"
 );
-export interface ThingManager {
-  things: ReadonlyArray<Thing>;
+
+export interface ThingRegistry {
+  readonly things: ReadonlyMap<string, ThingContext>;
 
   on(event: "thing.add", handler: (e: ThingAddedEventArgs) => void): this;
   on(event: "thing.remove", handler: (e: ThingRemovedEventArgs) => void): this;
@@ -16,7 +17,7 @@ export interface ThingManager {
 
 export interface ThingAddedEventArgs {
   thingId: string;
-  thing: Thing;
+  thing: ThingContext;
 }
 
 export interface ThingRemovedEventArgs {

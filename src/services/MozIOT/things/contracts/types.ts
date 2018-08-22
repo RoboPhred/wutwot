@@ -1,4 +1,4 @@
-import { ReadonlyRecord } from "../../../../../types";
+import { ReadonlyRecord } from "../../../../types";
 
 export interface ThingDef {
   readonly thingId: string;
@@ -9,6 +9,6 @@ export interface ThingDef {
 }
 
 export interface ThingContext extends ThingDef {
-  readonly thingSourceId: string;
-  readonly thingSourceThingId: string;
+  readonly thingProviderId: string;
+  readonly thingProviderThingId: string;
 }
