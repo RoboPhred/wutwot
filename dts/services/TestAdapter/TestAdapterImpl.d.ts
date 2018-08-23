@@ -1,16 +1,14 @@
-/// <reference types="node" />
-import { EventEmitter } from "events";
-import { ActionSource, ThingDef, ThingActionDef, ThingActionRequestDef, ThingSource, ThingContext, ThingActionContext, ThingActionRequestContext } from "../MozIOT";
-export declare class TestAdapterImpl extends EventEmitter implements ThingSource, ActionSource {
+import { ThingDef, ThingProviderPlugin, ThingActionContext, ThingActionRequestContext, ThingProviderPluginAdapter, ThingActionSourcePlugin, ActionProviderPlugin } from "../MozIOT";
+export declare class TestAdapterImpl implements ThingProviderPlugin, ActionProviderPlugin {
     readonly id: "test-adapter";
-    private readonly _defs;
+    private _thingPlugin;
+    private _actionPlugin;
     private readonly _requests;
     constructor();
-    readonly things: ReadonlyArray<ThingDef>;
-    getThingActions(thingContext: ThingContext): ReadonlyArray<ThingActionDef>;
-    getThingActionRequests(thingContext: ThingContext): ReadonlyArray<ThingActionRequestDef>;
-    requestAction(actionContext: ThingActionContext, input: any): ThingActionRequestDef;
-    cancelRequest(requestContext: ThingActionRequestContext): boolean;
+    onRegisterThingProvider(plugin: ThingProviderPluginAdapter): void;
+    onRegisterThingActionSource(plugin: ThingActionSourcePlugin): void;
+    onActionRequested(actionContext: ThingActionContext, input: any): void;
+    onActionRequestCancelRequested(requestContext: ThingActionRequestContext): boolean;
     addTestThing(def?: Partial<ThingDef>): void;
-    removeTestThing(id?: string): void;
+    removeTestThing(thingId: string): void;
 }

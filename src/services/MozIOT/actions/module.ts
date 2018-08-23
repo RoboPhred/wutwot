@@ -1,7 +1,7 @@
 import { ContainerModule } from "microinject";
 
-import { ActionAggregatorImpl } from "./components/impl/ActionAggregatorImpl";
+import { ThingRepositoryImpl } from "./components/impl/ActionRepositoryImpl";
 
 export default new ContainerModule(bind => {
-  bind(ActionAggregatorImpl);
+  bind(ThingRepositoryImpl);
 });

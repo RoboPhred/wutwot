@@ -7,14 +7,14 @@ import Router from "koa-router";
 
 import { Entrypoint } from "../../../contracts";
 
-import { ThingManager, Thing } from "../../MozIOT";
+import { MozIOT, Thing } from "../../MozIOT";
 
 @injectable()
 @provides(Entrypoint)
 export class EndpointImpl implements Entrypoint {
   private _app: Koa | undefined;
 
-  constructor(@inject(ThingManager) private _thingManager: ThingManager) {}
+  constructor(@inject(MozIOT) private _mozIoT: MozIOT) {}
 
   start(): void {
     this._app = new Koa();
@@ -32,7 +32,7 @@ export class EndpointImpl implements Entrypoint {
     const router = new Router({ prefix: "/things" });
 
     router.get("/", (ctx, next) => {
-      ctx.body = this._thingManager.things.map(x => ({
+      ctx.body = Array.from(this._mozIoT.things.values()).map(x => ({
         ...this._getRestThing(x),
         href: router.url("get-thing", x.id)
       }));
@@ -41,7 +41,7 @@ export class EndpointImpl implements Entrypoint {
 
     router.get("get-thing", "/:thingId", (ctx, next) => {
       const { thingId } = ctx.params;
-      const thing = this._thingManager.things.find(x => x.id === thingId);
+      const thing = this._mozIoT.things.get(thingId);
       if (!thing) {
         ctx.throw(404);
         next();

@@ -1,1 +1,2 @@
-export * from "./ThingSource";
+export * from "./ThingProviderPlugin";
+export * from "./types";

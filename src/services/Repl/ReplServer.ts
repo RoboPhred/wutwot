@@ -7,15 +7,15 @@ import { autobind } from "core-decorators";
 import { Entrypoint } from "../../contracts";
 
 import { TestAdapter } from "../TestAdapter";
-import { ThingManager, ThingDef } from "../MozIOT";
+import { MozIOT, ThingDef } from "../MozIOT";
 
 @injectable(Entrypoint)
 export class ReplServer implements Entrypoint {
   private _replServer: repl.REPLServer | undefined;
 
   constructor(
-    @inject(TestAdapter) private _testAdapter: TestAdapter,
-    @inject(ThingManager) private _thingManager: ThingManager
+    @inject(MozIOT) private _mozIoT: MozIOT,
+    @inject(TestAdapter) private _testAdapter: TestAdapter
   ) {}
 
   start() {
@@ -31,7 +31,7 @@ export class ReplServer implements Entrypoint {
       prompt: ">"
     });
     const reset = (context: any) => {
-      context.thingManager = this._thingManager;
+      context.thingManager = this._mozIoT;
     };
     reset(this._replServer.context);
     this._replServer.on("reset", reset);
@@ -56,6 +56,9 @@ export class ReplServer implements Entrypoint {
 
   @autobind()
   private _removeTestThing(id: string) {
-    this._testAdapter.removeTestThing(id.length > 0 ? id : undefined);
+    if (!id || id.length === 0) {
+      return;
+    }
+    this._testAdapter.removeTestThing(id);
   }
 }

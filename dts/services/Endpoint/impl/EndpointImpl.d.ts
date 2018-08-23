@@ -1,9 +1,9 @@
 import { Entrypoint } from "../../../contracts";
-import { ThingManager } from "../../MozIOT";
+import { MozIOT } from "../../MozIOT";
 export declare class EndpointImpl implements Entrypoint {
-    private _thingManager;
+    private _mozIoT;
     private _app;
-    constructor(_thingManager: ThingManager);
+    constructor(_mozIoT: MozIOT);
     start(): void;
     private _createThingsRouter;
     private _createPropertiesRouter;

@@ -1,3 +1,3 @@
-export * from "./Thing";
-export * from "./ThingFactory";
-export * from "./ThingManager";
+export * from "./ThingPluginManager";
+export * from "./ThingRegistry";
+export * from "./ThingRepository";

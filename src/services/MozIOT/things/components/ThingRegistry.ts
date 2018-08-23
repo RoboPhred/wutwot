@@ -9,7 +9,9 @@ export const ThingRegistry: Identifier<ThingRegistry> = createSymbol(
 );
 
 export interface ThingRegistry {
-  readonly things: ReadonlyMap<string, ThingContext>;
+  readonly things: ReadonlyArray<ThingContext>;
+
+  get(thingId: string): ThingContext | undefined;
 
   on(event: "thing.add", handler: (e: ThingAddedEventArgs) => void): this;
   on(event: "thing.remove", handler: (e: ThingRemovedEventArgs) => void): this;
