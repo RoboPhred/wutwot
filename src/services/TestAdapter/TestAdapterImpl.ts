@@ -120,10 +120,10 @@ export class TestAdapterImpl
       defaultName
     };
 
-    this._thingPlugin.addThing(finalDef);
+    const context = this._thingPlugin.addThing(finalDef);
     this._actionPlugin.addAction({
       ...testActionDef,
-      thingId
+      thingId: context.thingId
     });
   }
 
