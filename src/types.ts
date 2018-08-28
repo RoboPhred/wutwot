@@ -2,6 +2,8 @@ export type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
   Record<K, V>
 >;
 
+export type MaybeArray<T> = T | T[];
+
 /**
  * Deep readonly / immutability from https://github.com/Microsoft/TypeScript/issues/13923
  */

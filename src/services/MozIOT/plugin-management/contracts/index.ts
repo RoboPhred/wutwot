@@ -1,2 +1,1 @@
-export * from "./ThingProviderPlugin";
-export * from "./types";
+export * from "./MozIotPlugin";

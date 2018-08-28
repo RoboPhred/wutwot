@@ -5,13 +5,9 @@ import { mapValues } from "lodash";
 import Koa from "koa";
 import Router from "koa-router";
 
-import { Entrypoint } from "../../../contracts";
-
-import { MozIOT, Thing } from "../../MozIOT";
-
 @injectable()
 @provides(Entrypoint)
-export class EndpointImpl implements Entrypoint {
+export class Endpoint implements Entrypoint {
   private _app: Koa | undefined;
 
   constructor(@inject(MozIOT) private _mozIoT: MozIOT) {}

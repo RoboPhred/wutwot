@@ -1,3 +1,6 @@
 import { composeModules } from "microinject";
 
-export default composeModules();
+import pluginModule from "./plugin-management/module";
+
+const mozIotModule = composeModules(pluginModule);
+export default mozIotModule;
