@@ -12,9 +12,9 @@ export interface Thing {
   readonly id: string;
 
   /**
-   * The ID of the plugin that created this thing.
+   * The plugin that created this thing.
    */
-  readonly ownerPluginId: string;
+  readonly ownerPlugin: object;
 
   /**
    * The name of the thing.

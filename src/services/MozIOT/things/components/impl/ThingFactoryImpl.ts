@@ -11,7 +11,7 @@ import { ThingImpl } from "./ThingImpl";
 @singleton()
 @provides(ThingFactory)
 export class ThingFactoryImpl implements ThingFactory {
-  createThing(def: ThingDef, ownerId: string): Thing {
-    return new ThingImpl(def, uuidV4(), ownerId);
+  createThing(def: ThingDef, owner: object): Thing {
+    return new ThingImpl(def, uuidV4(), owner);
   }
 }

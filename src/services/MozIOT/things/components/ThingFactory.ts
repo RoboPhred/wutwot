@@ -8,5 +8,5 @@ export const ThingFactory: Identifier<ThingFactory> = createSymbol(
   "ThingFactory"
 );
 export interface ThingFactory {
-  createThing(def: ThingDef, ownerId: string): Thing;
+  createThing(def: ThingDef, owner: object): Thing;
 }

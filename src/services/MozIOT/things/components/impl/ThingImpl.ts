@@ -8,7 +8,7 @@ export class ThingImpl implements Thing {
   constructor(
     private _def: ThingDef,
     private _id: string,
-    private _ownerId: string
+    private _owner: object
   ) {
     this._def = {
       ..._def
@@ -20,8 +20,8 @@ export class ThingImpl implements Thing {
     return this._id;
   }
 
-  get ownerPluginId(): string {
-    return this._ownerId;
+  get ownerPlugin(): object {
+    return this._owner;
   }
 
   get name(): string {
