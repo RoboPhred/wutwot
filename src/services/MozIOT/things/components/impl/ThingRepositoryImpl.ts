@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
 
-import { injectable, provides, singleton, inject } from "microinject";
+import { injectable, provides, singleton } from "microinject";
 
-import { Thing, ThingDef } from "../../types";
+import { Thing } from "../../types";
 
 import { ThingRepository } from "../ThingRepository";
 
@@ -12,8 +12,6 @@ import {
   ThingRemovedEventArgs
 } from "../ThingRegistry";
 
-import { ThingFactory } from "../ThingFactory";
-
 @injectable()
 @singleton()
 @provides(ThingRepository)
@@ -22,7 +20,7 @@ export class ThingRepositoryImpl extends EventEmitter
   implements ThingRepository {
   private _things = new Map<string, Thing>();
 
-  constructor(@inject(ThingFactory) private _thingFactory: ThingFactory) {
+  constructor() {
     super();
   }
 
@@ -34,8 +32,7 @@ export class ThingRepositoryImpl extends EventEmitter
     return this._things.get(thingId);
   }
 
-  addThing(def: ThingDef): void {
-    const thing = this._thingFactory.createThing(def);
+  addThing(thing: Thing): void {
     if (this._things.has(thing.id)) {
       throw new Error("Duplicate thingId.");
     }

@@ -13,7 +13,7 @@ export interface Thing {
   /**
    * The ID of the plugin that created this thing.
    */
-  readonly providerPluginId: string;
+  readonly ownerPluginId: string;
 
   /**
    * The name of the thing.

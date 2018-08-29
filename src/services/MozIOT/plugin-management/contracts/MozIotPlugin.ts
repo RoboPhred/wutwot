@@ -8,8 +8,7 @@ import {
 } from "../../../../types";
 
 import createSymbol from "../../create-symbol";
-
-import { ThingContext } from "../../things";
+import { Thing, ThingDef } from "../../things";
 
 export const MozIotPlugin: Identifier<MozIotPlugin> = createSymbol(
   "MozIotPlugin"
@@ -28,9 +27,9 @@ export interface MozIotPluginContext {
    * @param capabilities Capabilities to apply to the thing.
    */
   addThing(
-    def: AddThingRequest,
+    def: ThingDef,
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
-  ): ThingContext;
+  ): Thing;
 
   /**
    * Removes a thing from the system.
@@ -42,12 +41,12 @@ export interface MozIotPluginContext {
   /**
    * Gets an array of all things known to the system.
    */
-  getThings(): ThingContext[];
+  getThings(): Thing[];
 
   /**
    * Gets an array of all things owned by this plugin.
    */
-  getOwnThings(): ThingContext[];
+  getOwnThings(): Thing[];
 
   /**
    * Adds one or more capabilities to a thing.
@@ -61,12 +60,6 @@ export interface MozIotPluginContext {
     thingId: string,
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
   ): void;
-}
-
-export interface AddThingRequest {
-  readonly name?: string;
-  readonly description?: string;
-  readonly metadata?: ReadonlyRecord<string, any>;
 }
 
 export type ThingCapabilityDef =

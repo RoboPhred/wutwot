@@ -1,3 +1,9 @@
 import { ContainerModule } from "microinject";
 
-export default new ContainerModule(bind => {});
+import { PluginAdapterFactoryImpl } from "./components/impl/PluginAdapterFactoryImpl";
+import { PluginManagerImpl } from "./components/impl/PluginManagerImpl";
+
+export default new ContainerModule(bind => {
+  bind(PluginAdapterFactoryImpl);
+  bind(PluginManagerImpl);
+});

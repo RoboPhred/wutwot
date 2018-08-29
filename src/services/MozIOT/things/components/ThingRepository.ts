@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../create-symbol";
 
-import { ThingDef } from "../types";
+import { Thing } from "../types";
 
 import { ThingRegistry } from "./ThingRegistry";
 
@@ -11,6 +11,6 @@ export const ThingRepository: Identifier<ThingRepository> = createSymbol(
 );
 
 export interface ThingRepository extends ThingRegistry {
-  addThing(thing: ThingDef): void;
+  addThing(thing: Thing): void;
   removeThing(thingId: string): void;
 }
