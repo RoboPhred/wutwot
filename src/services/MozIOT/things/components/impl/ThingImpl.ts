@@ -1,9 +1,9 @@
 import { ReadonlyRecord } from "../../../../../types";
 
 import { ThingAction } from "../../../actions";
+import { ActionRegistry } from "../../../actions/components";
 
 import { Thing, ThingDef } from "../../types";
-import { ActionRegistry } from "../../../actions/components";
 
 export class ThingImpl implements Thing {
   private readonly _metadata: Record<string, any>;

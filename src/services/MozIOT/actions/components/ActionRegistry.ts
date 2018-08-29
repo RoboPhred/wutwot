@@ -8,8 +8,6 @@ export const ActionRegistry: Identifier<ActionRegistry> = createSymbol(
   "ActionRegistry"
 );
 export interface ActionRegistry {
-  [Symbol.iterator]: ThingAction;
-
   get(thingId: string, actionId: string): ThingAction | undefined;
 
   getForThing(thingId: string): ThingAction[];

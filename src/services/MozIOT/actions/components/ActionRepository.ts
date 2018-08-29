@@ -12,5 +12,5 @@ export const ActionRepository: Identifier<ActionRepository> = createSymbol(
 
 export interface ActionRepository extends ActionRegistry {
   addAction(thingId: string, action: ThingAction): void;
-  removeThing(thingId: string): void;
+  removeAction(thingId: string, actionId: string): void;
 }

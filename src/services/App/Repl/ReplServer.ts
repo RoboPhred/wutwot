@@ -10,7 +10,7 @@ import { MozIot } from "../../MozIot";
 export class ReplServer implements Entrypoint {
   private _replServer: repl.REPLServer | undefined;
 
-  constructor(@inject(MozIot) private _mozIoT: MozIot) {}
+  constructor(@inject(MozIot) private _mozIot: MozIot) {}
 
   start() {
     if (this._replServer) {
@@ -25,7 +25,7 @@ export class ReplServer implements Entrypoint {
       prompt: ">"
     });
     const reset = (context: any) => {
-      context.thingManager = this._mozIoT;
+      context.mozIot = this._mozIot;
     };
     reset(this._replServer.context);
     this._replServer.on("reset", reset);

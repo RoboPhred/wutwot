@@ -1,8 +1,8 @@
 import { Entrypoint } from "../contracts";
 import { MozIot } from "../../MozIot";
 export declare class ReplServer implements Entrypoint {
-    private _mozIoT;
+    private _mozIot;
     private _replServer;
-    constructor(_mozIoT: MozIot);
+    constructor(_mozIot: MozIot);
     start(): void;
 }

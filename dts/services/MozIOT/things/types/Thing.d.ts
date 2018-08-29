@@ -1,5 +1,5 @@
 import { ReadonlyRecord } from "../../../../types";
-import { ThingAction } from "./ThingAction";
+import { ThingAction } from "../../actions/types/ThingAction";
 /**
  * Describes a thing in the system.
  */
@@ -10,9 +10,9 @@ export interface Thing {
      */
     readonly id: string;
     /**
-     * The ID of the plugin that created this thing.
+     * The plugin that created this thing.
      */
-    readonly ownerPluginId: string;
+    readonly ownerPlugin: object;
     /**
      * The name of the thing.
      */
