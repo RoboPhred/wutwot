@@ -1,5 +1,5 @@
 import { ReadonlyRecord } from "../../../../types";
-import { ThingAction } from "./ThingAction";
+import { ThingAction } from "../../actions/types/ThingAction";
 
 /**
  * Describes a thing in the system.

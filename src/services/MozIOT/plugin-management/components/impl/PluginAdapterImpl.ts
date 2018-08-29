@@ -9,22 +9,23 @@ import {
 import { Thing, ThingDef } from "../../../things";
 import { ThingRepository } from "../../../things/components/ThingRepository";
 import { ThingFactory } from "../../../things/components/ThingFactory";
+import { ActionFactory, ActionRepository } from "../../../actions/components";
 
 export class PluginAdapterImpl {
   constructor(
     private _plugin: MozIotPlugin,
     private _thingFactory: ThingFactory,
-    private _thingRepository: ThingRepository
+    private _thingRepository: ThingRepository,
+    // TODO: Too much responsibility; need to abstract
+    //  sequence of factory.create() + repository.add().
+    private _actionFactory: ActionFactory,
+    private _actionRepository: ActionRepository
   ) {
     const pluginContext: MozIotPluginContext = {
       addThing: this._addThing.bind(this),
-
       removeThing: this._removeThing.bind(this),
-
       getThings: this._getThings.bind(this),
-
       getOwnThings: this._getOwnThings.bind(this),
-
       addCapability: this._addCapability.bind(this)
     };
 
@@ -70,6 +71,24 @@ export class PluginAdapterImpl {
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
   ): void {
     const flatCaps = ([] as ThingCapabilityDef[]).concat(...capabilities);
-    throw new Error("Method not implemented.");
+
+    for (const cap of flatCaps) {
+      switch (cap.capabilityType) {
+        case "action":
+          {
+            const action = this._actionFactory.createAction(
+              cap,
+              thingId,
+              this._plugin
+            );
+            this._actionRepository.addAction(thingId, action);
+          }
+          break;
+        default:
+          throw new Error(
+            `Capability "${cap.capabilityType}" not implemented.`
+          );
+      }
+    }
   }
 }

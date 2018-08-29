@@ -1,6 +1,9 @@
 import { ReadonlyRecord } from "../../../../../types";
 
-import { Thing, ThingAction, ThingDef } from "../../types";
+import { ThingAction } from "../../../actions";
+
+import { Thing, ThingDef } from "../../types";
+import { ActionRegistry } from "../../../actions/components";
 
 export class ThingImpl implements Thing {
   private readonly _metadata: Record<string, any>;
@@ -8,7 +11,8 @@ export class ThingImpl implements Thing {
   constructor(
     private _def: ThingDef,
     private _id: string,
-    private _owner: object
+    private _owner: object,
+    private _actionRegistry: ActionRegistry
   ) {
     this._def = {
       ..._def
@@ -42,7 +46,11 @@ export class ThingImpl implements Thing {
   }
 
   get actions(): ReadonlyRecord<string, ThingAction> {
-    // TODO: actions from capabilities
-    return {};
+    const actions: Record<string, ThingAction> = {};
+    this._actionRegistry.getForThing(this._id).forEach(action => {
+      actions[action.id] = action;
+    });
+
+    return Object.seal(actions);
   }
 }

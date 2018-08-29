@@ -1,14 +1,10 @@
-import { JSONSchema6 } from "json-schema";
 import { Identifier } from "microinject";
 
-import {
-  ReadonlyRecord,
-  DeepImmutableObject,
-  MaybeArray
-} from "../../../../types";
+import { MaybeArray } from "../../../../types";
 
 import createSymbol from "../../create-symbol";
 import { Thing, ThingDef } from "../../things";
+import { ThingActionDef } from "../../actions";
 
 export const MozIotPlugin: Identifier<MozIotPlugin> = createSymbol(
   "MozIotPlugin"
@@ -76,11 +72,4 @@ export interface ThingTypeDef {
 
 export interface ThingActionCapabilityDef extends ThingActionDef {
   capabilityType: "action";
-}
-
-export interface ThingActionDef {
-  readonly ["@type"]: string;
-  readonly label: string;
-  readonly description: string;
-  readonly input: DeepImmutableObject<JSONSchema6>;
 }
