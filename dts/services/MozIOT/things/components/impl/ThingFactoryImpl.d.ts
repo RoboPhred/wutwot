@@ -1,9 +1,5 @@
-import { ActionAggregator } from "../../../actions";
-import { ThingContext } from "../../contracts";
+import { ThingDef, Thing } from "../../types";
 import { ThingFactory } from "../ThingFactory";
-import { Thing } from "../Thing";
 export declare class ThingFactoryImpl implements ThingFactory {
-    private _actionAggregator;
-    constructor(_actionAggregator: ActionAggregator);
-    createThing(context: ThingContext): Thing;
+    createThing(def: ThingDef, ownerId: string): Thing;
 }

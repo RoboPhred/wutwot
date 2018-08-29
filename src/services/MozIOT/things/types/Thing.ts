@@ -1,4 +1,5 @@
 import { ReadonlyRecord } from "../../../../types";
+import { ThingAction } from "./ThingAction";
 
 /**
  * Describes a thing in the system.
@@ -34,6 +35,8 @@ export interface Thing {
    * Additional metadata describing the thing.
    */
   readonly metadata: Record<string, any>;
+
+  readonly actions: ReadonlyRecord<string, ThingAction>;
 }
 
 /**
@@ -45,5 +48,5 @@ export interface Thing {
 export interface ThingDef {
   readonly name: string;
   readonly description: string;
-  readonly metadata: ReadonlyRecord<string, any>;
+  readonly metadata?: ReadonlyRecord<string, any>;
 }

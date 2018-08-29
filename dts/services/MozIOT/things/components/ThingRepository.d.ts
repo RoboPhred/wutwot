@@ -1,7 +1,8 @@
 import { Identifier } from "microinject";
-import { ThingContext } from "../contracts";
+import { Thing } from "../types";
+import { ThingRegistry } from "./ThingRegistry";
 export declare const ThingRepository: Identifier<ThingRepository>;
-export interface ThingRepository {
-    addThing(thing: ThingContext): void;
+export interface ThingRepository extends ThingRegistry {
+    addThing(thing: Thing): void;
     removeThing(thingId: string): void;
 }

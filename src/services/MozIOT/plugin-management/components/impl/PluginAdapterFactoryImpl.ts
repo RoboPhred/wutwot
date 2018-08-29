@@ -1,4 +1,4 @@
-import { injectable, provides, inject } from "microinject";
+import { injectable, provides, inject, singleton } from "microinject";
 
 import { ThingFactory, ThingRepository } from "../../../things/components";
 
@@ -9,6 +9,7 @@ import { PluginAdapter } from "../PluginAdapter";
 import { PluginAdapterImpl } from "./PluginAdapterImpl";
 
 @injectable()
+@singleton()
 @provides(PluginAdapterFactory)
 export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
   constructor(

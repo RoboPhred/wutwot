@@ -1,7 +1,6 @@
 import { Identifier } from "microinject";
-import { ThingContext } from "../contracts";
-import { Thing } from "./Thing";
+import { ThingDef, Thing } from "../types";
 export declare const ThingFactory: Identifier<ThingFactory>;
 export interface ThingFactory {
-    createThing(context: ThingContext): Thing;
+    createThing(def: ThingDef, ownerId: string): Thing;
 }

@@ -5,18 +5,20 @@ import { mapValues } from "lodash";
 import Koa from "koa";
 import Router from "koa-router";
 
+import { MozIot, Thing } from "../../MozIot";
+
+import { Entrypoint } from "../contracts";
+
 @injectable()
 @provides(Entrypoint)
 export class Endpoint implements Entrypoint {
   private _app: Koa | undefined;
 
-  constructor(@inject(MozIOT) private _mozIoT: MozIOT) {}
+  constructor(@inject(MozIot) private _mozIoT: MozIot) {}
 
   start(): void {
     this._app = new Koa();
 
-    // const router = new Router();
-    // applyRouter(router, this._createThingsRouter());
     const router = this._createThingsRouter();
     this._app.use(router.routes());
     this._app.use(router.allowedMethods());
@@ -37,7 +39,7 @@ export class Endpoint implements Entrypoint {
 
     router.get("get-thing", "/:thingId", (ctx, next) => {
       const { thingId } = ctx.params;
-      const thing = this._mozIoT.things.get(thingId);
+      const thing = this._mozIoT.things.find(x => x.id === thingId);
       if (!thing) {
         ctx.throw(404);
         next();

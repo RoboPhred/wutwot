@@ -1,1 +1,1 @@
-{"version":3,"file":"module.js","sourceRoot":"","sources":["../../../src/services/MozIOT/module.ts"],"names":[],"mappings":";;;;;AAAA,6CAA6C;AAE7C,8DAA6C;AAC7C,6DAA2C;AAE3C,kBAAe,4BAAc,CAAC,gBAAa,EAAE,gBAAY,CAAC,CAAC"}
+{"version":3,"file":"module.js","sourceRoot":"","sources":["../../../src/services/MozIot/module.ts"],"names":[],"mappings":";;;;;AAAA,6CAA6C;AAE7C,wEAAsD;AACtD,6DAA0C;AAE1C,MAAM,YAAY,GAAG,4BAAc,CAAC,gBAAY,EAAE,gBAAW,CAAC,CAAC;AAC/D,kBAAe,YAAY,CAAC"}

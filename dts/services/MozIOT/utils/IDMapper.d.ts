@@ -1,4 +1,4 @@
-export declare class IDMapper {
+export declare class IdMapper {
     private _ids;
     private _nextRollingPostfix;
     createId(root: string): string;

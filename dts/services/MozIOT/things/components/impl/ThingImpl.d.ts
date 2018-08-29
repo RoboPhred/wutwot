@@ -1,14 +1,16 @@
 import { ReadonlyRecord } from "../../../../../types";
-import { ActionAggregator } from "../../../actions";
-import { ThingContext } from "../../contracts";
-import { Thing, ThingAction } from "../Thing";
+import { Thing, ThingAction, ThingDef } from "../../types";
 export declare class ThingImpl implements Thing {
-    private _thingContext;
-    private _actionAggregator;
+    private _def;
+    private _id;
+    private _ownerId;
+    private readonly _metadata;
+    constructor(_def: ThingDef, _id: string, _ownerId: string);
     readonly id: string;
-    readonly types: string[];
-    name: string;
-    description: string;
-    constructor(_thingContext: ThingContext, _actionAggregator: ActionAggregator);
+    readonly ownerPluginId: string;
+    readonly name: string;
+    readonly types: ReadonlyArray<string>;
+    readonly description: string;
+    readonly metadata: Record<string, any>;
     readonly actions: ReadonlyRecord<string, ThingAction>;
 }

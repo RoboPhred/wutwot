@@ -1,3 +1,3 @@
 import createSymbol from "../../create-symbol";
 
-export default createSymbol.bind(null, "MozIOT");
+export default createSymbol.bind(null, "MozIot");

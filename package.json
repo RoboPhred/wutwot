@@ -4,7 +4,7 @@
   "description": "REST Backend implementing the mozilla IOT spec",
   "main": "lib/index.js",
   "scripts": {
-    "clean": "rimraf lib",
+    "clean": "rimraf lib dts",
     "build": "npm run clean && npm run build:compile",
     "watch": "npm run clean && npm run build:watch",
     "build:compile": "tsc -p src",
