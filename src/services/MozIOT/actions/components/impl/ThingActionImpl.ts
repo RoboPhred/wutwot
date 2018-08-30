@@ -1,7 +1,9 @@
 import { JSONSchema6 } from "json-schema";
 
-import { ThingAction, ThingActionDef } from "../../types";
 import { DeepImmutableObject } from "../../../../../types";
+
+import { ThingAction, ThingActionDef } from "../../types";
+import { ThingActionRequest } from "../../../action-requests";
 
 export class ThingActionImpl implements ThingAction {
   constructor(
@@ -35,7 +37,9 @@ export class ThingActionImpl implements ThingAction {
     return this._def.input;
   }
 
-  request(input: any): void {
+  get requests(): ReadonlyArray<ThingActionRequest> {}
+
+  request(input: any): ThingActionRequest {
     this._def.request(input);
   }
 }

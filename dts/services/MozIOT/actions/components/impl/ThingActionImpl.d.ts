@@ -1,6 +1,7 @@
 import { JSONSchema6 } from "json-schema";
-import { ThingAction, ThingActionDef } from "../../types";
 import { DeepImmutableObject } from "../../../../../types";
+import { ThingAction, ThingActionDef } from "../../types";
+import { ThingActionRequest } from "../../../action-requests";
 export declare class ThingActionImpl implements ThingAction {
     private _def;
     private _id;
@@ -13,5 +14,6 @@ export declare class ThingActionImpl implements ThingAction {
     readonly label: string;
     readonly description: string;
     readonly input: DeepImmutableObject<JSONSchema6>;
-    request(input: any): void;
+    readonly requests: ReadonlyArray<ThingActionRequest>;
+    request(input: any): ThingActionRequest;
 }

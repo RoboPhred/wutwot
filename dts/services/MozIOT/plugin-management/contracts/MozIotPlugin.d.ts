@@ -1,7 +1,7 @@
 import { Identifier } from "microinject";
 import { MaybeArray } from "../../../../types";
 import { Thing, ThingDef } from "../../things";
-import { ThingActionDef } from "../../actions";
+import { ThingActionDef, ThingActionRequestToken } from "../../actions";
 export declare const MozIotPlugin: Identifier<MozIotPlugin>;
 export interface MozIotPlugin {
     readonly id: string;
@@ -38,6 +38,7 @@ export interface MozIotPluginContext {
      * @param capabilities the capabilities to add.
      */
     addCapability(thingId: string, ...capabilities: MaybeArray<ThingCapabilityDef>[]): void;
+    addActionRequest(thingId: string, actionId: string): ThingActionRequestToken;
 }
 export declare type ThingCapabilityDef = ThingTypeCapabilityDef | ThingActionCapabilityDef;
 export interface ThingTypeCapabilityDef extends ThingTypeDef {

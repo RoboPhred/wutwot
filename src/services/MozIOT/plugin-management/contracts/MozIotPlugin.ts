@@ -3,8 +3,10 @@ import { Identifier } from "microinject";
 import { MaybeArray } from "../../../../types";
 
 import createSymbol from "../../create-symbol";
+
 import { Thing, ThingDef } from "../../things";
 import { ThingActionDef } from "../../actions";
+import { ThingActionRequestToken } from "../../action-requests";
 
 export const MozIotPlugin: Identifier<MozIotPlugin> = createSymbol(
   "MozIotPlugin"
@@ -56,6 +58,8 @@ export interface MozIotPluginContext {
     thingId: string,
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
   ): void;
+
+  addActionRequest(thingId: string, actionId: string): ThingActionRequestToken;
 }
 
 export type ThingCapabilityDef =
