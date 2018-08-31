@@ -9,12 +9,10 @@ export const ActionRequestRegistry: Identifier<
 > = createSymbol("ActionRequestRegistry");
 export interface ActionRequestRegistry {
   get(
-    thingId: string,
-    actionId: string,
     requestId: string
   ): ThingActionRequest | undefined;
 
-  getForAction(thingId: string, actionId: string): ThingActionRequest[];
+  getForThingAction(thingId: string, actionId: string): ThingActionRequest[];
 
   on(
     event: "request.add",
