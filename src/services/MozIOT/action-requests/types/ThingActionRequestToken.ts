@@ -1,10 +1,6 @@
 import { ThingActionRequestStatus } from "./ThingActionRequestStatus";
+import { ThingActionRequest } from "./ThingActionRequest";
 
-export interface ThingActionRequestToken {
-  readonly id: string;
-  readonly timeRequested: string;
-  readonly input: any;
-  readonly status: ThingActionRequestStatus;
-
+export interface ThingActionRequestToken extends ThingActionRequest {
   setStatus(status: ThingActionRequestStatus): void;
 }

@@ -5,7 +5,9 @@ import { DeepImmutableObject } from "../../../../../types";
 import { ThingAction, ThingActionDef } from "../../types";
 
 import { ThingActionRequest } from "../../../action-requests";
-import { ActionRequestRegistry } from "../../../action-requests/components/ActionRequestRegistry";
+
+import { ActionRequestFactory } from "../../../action-requests/components/ActionRequestFactory";
+import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
 
 export class ThingActionImpl implements ThingAction {
   constructor(
@@ -13,7 +15,8 @@ export class ThingActionImpl implements ThingAction {
     private _id: string,
     private _thingId: string,
     private _owner: object,
-    private _actionRegistry: ActionRequestRegistry
+    private _actionRequestFactory: ActionRequestFactory,
+    private _actionRepository: ActionRequestRepository
   ) {}
 
   get id(): string {
@@ -42,11 +45,18 @@ export class ThingActionImpl implements ThingAction {
 
   get requests(): ReadonlyArray<ThingActionRequest> {
     return Object.seal(
-      this._actionRegistry.getForThingAction(this._thingId, this._id)
+      this._actionRepository.getForThingAction(this._thingId, this._id)
     );
   }
 
   request(input: any): ThingActionRequest {
-    this._def.request(input);
+    const { request, token } = this._actionRequestFactory.createActionRequest(
+      this._thingId,
+      this._id,
+      input,
+      new Date().toISOString()
+    );
+    this._def.request(input, token);
+    return request;
   }
 }
