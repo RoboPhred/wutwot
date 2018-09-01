@@ -12,6 +12,7 @@ import { MozIot, Thing } from "../../MozIot";
 
 import { Entrypoint } from "../contracts";
 import { ThingAction } from "../../MozIot/actions";
+import { ThingActionRequest } from "../../MozIot/action-requests";
 
 @injectable()
 @provides(Entrypoint)
@@ -27,7 +28,7 @@ export class Endpoint implements Entrypoint {
     const actionsRouter = this._createActionsRouter();
     const actionUrlFactory = (thingId: string, actionId?: string) => {
       if (actionId) {
-        return actionsRouter.url("get-action", {
+        return actionsRouter.url("get-requests", {
           thingId,
           actionId
         });
@@ -106,12 +107,30 @@ export class Endpoint implements Entrypoint {
   private _createActionsRouter(): Router {
     const router = new Router({ prefix: "/things/:thingId/actions" });
 
-    router.get("get-actions", `/`, (ctx, next) => {
-      const thing = this._mozIoT.things.find(x => x.id === ctx.params.thingId);
+    const getThing = (ctx: Router.IRouterContext): Thing => {
+      const thingId = ctx.params.thingId;
+      const thing = this._mozIoT.things.find(x => x.id === thingId);
       if (!thing) {
-        ctx.throw(HttpStatusCodes.NOT_FOUND);
-        return;
+        return ctx.throw(HttpStatusCodes.NOT_FOUND);
       }
+
+      return thing;
+    };
+
+    const getAction = (ctx: Router.IRouterContext): ThingAction => {
+      const thing = getThing(ctx);
+
+      const actionId = ctx.params.actionId;
+      if (!has(thing.actions, actionId)) {
+        return ctx.throw(HttpStatusCodes.NOT_FOUND);
+      }
+
+      const action = thing.actions[actionId];
+      return action;
+    };
+
+    router.get("get-actions", `/`, (ctx, next) => {
+      const thing = getThing(ctx);
 
       const body: any = {};
       for (const actionId in thing.actions) {
@@ -122,52 +141,69 @@ export class Endpoint implements Entrypoint {
       next();
     });
 
-    router.get("get-action", `/:actionId`, (ctx, next) => {
-      // Not defined by the spec.
+    router.get("get-requests", `/:actionId`, (ctx, next) => {
       const { thingId, actionId } = ctx.params;
 
-      const thing = this._mozIoT.things.find(x => x.id === thingId);
-      if (!thing) {
-        ctx.throw(HttpStatusCodes.NOT_FOUND);
-        return;
-      }
+      const action = getAction(ctx);
 
-      if (!has(thing.actions, actionId)) {
-        ctx.throw(HttpStatusCodes.NOT_FOUND);
-        return;
-      }
-
-      const action = thing.actions[actionId];
-      ctx.body = this._getRestAction(action);
+      ctx.body = action.requests.map(x => ({
+        [x.id]: {
+          ...this._getRestActionRequest(x),
+          href: router.url("get-request", {
+            thingId,
+            actionId,
+            requestId: x.id
+          })
+        }
+      }));
       next();
     });
 
     router.post("post-action", `/:actionId`, (ctx, next) => {
-      // Not defined by the spec.
-      const { thingId, actionId } = ctx.params;
-
       const contentType = ctx.request.headers["content-type"];
       if (!contentType || !contentType.startsWith("application/json")) {
         ctx.throw(HttpStatusCodes.BAD_REQUEST);
         return;
       }
 
-      const thing = this._mozIoT.things.find(x => x.id === thingId);
-      if (!thing) {
-        ctx.throw(HttpStatusCodes.NOT_FOUND);
-        return;
-      }
+      const { thingId, actionId } = ctx.params;
 
-      if (!has(thing.actions, actionId)) {
-        ctx.throw(HttpStatusCodes.NOT_FOUND);
-        return;
-      }
-
-      const action = thing.actions[actionId];
+      const action = getAction(ctx);
 
       // TODO: Validate json against schema.
       //  Should probably do this in request executor.
-      action.request(ctx.request.body);
+      const request = action.request(ctx.request.body);
+      ctx.body = {
+        ...this._getRestActionRequest(request),
+        href: router.url("get-request", {
+          thingId,
+          actionId,
+          requestId: request.id
+        })
+      };
+      ctx.status = HttpStatusCodes.CREATED;
+      next();
+    });
+
+    router.get("get-request", `/:actionId/:requestId`, (ctx, next) => {
+      const action = getAction(ctx);
+
+      const { thingId, actionId, requestId } = ctx.params;
+
+      const request = action.requests.find(x => x.id === requestId);
+
+      if (!request) {
+        return ctx.throw(HttpStatusCodes.NOT_FOUND);
+      }
+
+      ctx.body = {
+        ...this._getRestActionRequest(request),
+        href: router.url("get-request", {
+          thingId,
+          actionId,
+          requestId: request.id
+        })
+      };
     });
 
     return router;
@@ -202,6 +238,15 @@ export class Endpoint implements Entrypoint {
       label: action.label,
       description: action.description,
       input: action.input
+    };
+  }
+
+  private _getRestActionRequest(request: ThingActionRequest) {
+    return {
+      input: request.input,
+      status: request.status,
+      timeRequested: request.timeRequested,
+      timeCompleted: request.timeCompleted || undefined
     };
   }
 }

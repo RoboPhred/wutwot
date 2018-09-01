@@ -57,6 +57,7 @@ export class ThingActionImpl implements ThingAction {
       new Date().toISOString()
     );
     this._def.request(input, token);
+    this._actionRepository.addRequest(request);
     return request;
   }
 }
