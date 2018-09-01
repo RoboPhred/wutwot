@@ -1,7 +1,8 @@
 import { Identifier } from "microinject";
 import { MaybeArray } from "../../../../types";
 import { Thing, ThingDef } from "../../things";
-import { ThingActionDef, ThingActionRequestToken } from "../../actions";
+import { ThingActionDef } from "../../actions";
+import { ThingActionRequestToken } from "../../action-requests";
 export declare const MozIotPlugin: Identifier<MozIotPlugin>;
 export interface MozIotPlugin {
     readonly id: string;

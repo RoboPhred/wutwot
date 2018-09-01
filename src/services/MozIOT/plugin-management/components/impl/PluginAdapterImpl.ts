@@ -16,8 +16,6 @@ export class PluginAdapterImpl {
     private _plugin: MozIotPlugin,
     private _thingFactory: ThingFactory,
     private _thingRepository: ThingRepository,
-    // TODO: Too much responsibility; need to abstract
-    //  sequence of factory.create() + repository.add().
     private _actionFactory: ActionFactory,
     private _actionRepository: ActionRepository
   ) {

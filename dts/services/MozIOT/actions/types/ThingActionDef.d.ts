@@ -1,6 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 import { DeepImmutableObject } from "../../../../types";
-import { ThingActionRequestToken } from "./ThingActionRequestToken";
+import { ThingActionRequestToken } from "../../action-requests";
 export interface ThingActionDef {
     readonly ["@type"]?: string;
     readonly label: string;
