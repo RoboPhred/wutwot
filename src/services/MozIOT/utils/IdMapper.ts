@@ -1,24 +1,11 @@
-export class IdMapper {
-  private _ids = new Set<string>();
-  private _nextRollingPostfix = 1;
+import { Identifier } from "microinject";
 
-  createId(root: string): string {
-    let id = root;
-    while (this._ids.has(id)) {
-      id = `${root}-${this._nextRollingPostfix++}`;
-    }
-    return id;
-  }
+import createSymbol from "../create-symbol";
 
-  retireId(id: string): boolean {
-    return this._ids.delete(id);
-  }
-
-  [Symbol.iterator]() {
-    return this._ids[Symbol.iterator]();
-  }
-
-  has(id: string): boolean {
-    return this._ids.has(id);
-  }
+export const IdMapper: Identifier<IdMapper> = createSymbol("IdMapper");
+export interface IdMapper {
+  createId(name: string): string;
+  retireId(id: string): boolean;
+  [Symbol.iterator](): IterableIterator<string>;
+  has(id: string): boolean;
 }

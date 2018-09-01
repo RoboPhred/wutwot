@@ -8,7 +8,7 @@ export class TestPlugin implements MozIotPlugin {
   onRegisterPlugin(plugin: MozIotPluginContext): void {
     plugin.addThing(
       {
-        name: "test-thing-1",
+        name: "Test Thing 1",
         description: ""
       },
       {
