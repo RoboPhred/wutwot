@@ -4,7 +4,11 @@ import { ThingActionRequest, ThingActionRequestToken } from "../../types";
 
 import { ActionRequestFactory } from "../ActionRequestFactory";
 import { ThingActionRequestStatus } from "../../types/ThingActionRequestStatus";
+import { injectable, singleton, provides } from "microinject";
 
+@injectable()
+@singleton()
+@provides(ActionRequestFactory)
 export class ActionRequestFactoryImpl implements ActionRequestFactory {
   createActionRequest(
     thingId: string,

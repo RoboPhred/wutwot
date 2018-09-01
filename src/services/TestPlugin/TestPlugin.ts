@@ -1,4 +1,5 @@
 import { MozIotPlugin, MozIotPluginContext } from "../MozIot";
+import { ThingActionRequestStatus } from "../MozIot/action-requests/types/ThingActionRequestStatus";
 
 export class TestPlugin implements MozIotPlugin {
   readonly id: string = "test-plugin";
@@ -14,10 +15,24 @@ export class TestPlugin implements MozIotPlugin {
         label: "Test action",
         description: "This is a Test Action",
         input: { type: "null" },
-        request(input) {
-          console.log("Test action performed");
+        request: async (input, token) => {
+          console.log("Test action pending");
+
+          await wait(1000);
+          token.setStatus(ThingActionRequestStatus.Started);
+          console.log("Test action started");
+
+          await wait(1000);
+          token.setStatus(ThingActionRequestStatus.Completed);
+          console.log("Test action completed");
         }
       }
     );
   }
+}
+
+function wait(delay: number): Promise<void> {
+  return new Promise(accept => {
+    setTimeout(accept, delay);
+  });
 }

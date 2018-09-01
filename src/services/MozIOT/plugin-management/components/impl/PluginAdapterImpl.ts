@@ -7,9 +7,15 @@ import {
 } from "../../contracts";
 
 import { Thing, ThingDef } from "../../../things";
-import { ThingRepository } from "../../../things/components/ThingRepository";
-import { ThingFactory } from "../../../things/components/ThingFactory";
+import { ThingRepository, ThingFactory } from "../../../things/components";
+
 import { ActionFactory, ActionRepository } from "../../../actions/components";
+
+import { ThingActionRequestToken } from "../../../action-requests";
+import {
+  ActionRequestFactory,
+  ActionRequestRepository
+} from "../../../action-requests/components";
 
 export class PluginAdapterImpl {
   constructor(
@@ -17,14 +23,17 @@ export class PluginAdapterImpl {
     private _thingFactory: ThingFactory,
     private _thingRepository: ThingRepository,
     private _actionFactory: ActionFactory,
-    private _actionRepository: ActionRepository
+    private _actionRepository: ActionRepository,
+    private _actionRequestFactory: ActionRequestFactory,
+    private _actionRequestRepository: ActionRequestRepository
   ) {
     const pluginContext: MozIotPluginContext = {
       addThing: this._addThing.bind(this),
       removeThing: this._removeThing.bind(this),
       getThings: this._getThings.bind(this),
       getOwnThings: this._getOwnThings.bind(this),
-      addCapability: this._addCapability.bind(this)
+      addCapability: this._addCapability.bind(this),
+      addActionRequest: this._addActionRequest.bind(this)
     };
 
     _plugin.onRegisterPlugin(pluginContext);
@@ -88,5 +97,31 @@ export class PluginAdapterImpl {
           );
       }
     }
+  }
+
+  private _addActionRequest(
+    thingId: string,
+    actionId: string,
+    input: any,
+    timeRequested: string
+  ): ThingActionRequestToken {
+    const action = this._actionRepository.get(thingId, actionId);
+    if (!action) {
+      throw new Error("No action exists on the given thing with the given id.");
+    }
+
+    if (action.ownerPlugin !== this._plugin) {
+      throw new Error("The plugin does not own the requested action.");
+    }
+
+    const { request, token } = this._actionRequestFactory.createActionRequest(
+      thingId,
+      actionId,
+      input,
+      timeRequested
+    );
+
+    this._actionRequestRepository.addRequest(request);
+    return token;
   }
 }

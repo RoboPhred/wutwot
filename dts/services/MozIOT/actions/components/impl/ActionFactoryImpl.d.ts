@@ -1,7 +1,7 @@
 import { ThingActionDef, ThingAction } from "../../types";
-import { ActionFactory } from "../ActionFactory";
 import { ActionRequestFactory } from "../../../action-requests/components/ActionRequestFactory";
 import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
+import { ActionFactory } from "../ActionFactory";
 export declare class ActionFactoryImpl implements ActionFactory {
     private _actionRequestFactory;
     private _actionRequestRepository;
