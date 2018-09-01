@@ -10,4 +10,5 @@ export declare class Endpoint implements Entrypoint {
     private _createActionsRouter;
     private _createEventsRouter;
     private _getRestThing;
+    private _getRestAction;
 }
