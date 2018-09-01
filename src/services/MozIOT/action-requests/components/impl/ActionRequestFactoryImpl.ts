@@ -1,10 +1,13 @@
+import { injectable, singleton, provides } from "microinject";
 import uuidV4 from "uuid/v4";
 
-import { ThingActionRequest, ThingActionRequestToken } from "../../types";
+import {
+  ThingActionRequest,
+  ThingActionRequestStatus,
+  ThingActionRequestToken
+} from "../../types";
 
 import { ActionRequestFactory } from "../ActionRequestFactory";
-import { ThingActionRequestStatus } from "../../types/ThingActionRequestStatus";
-import { injectable, singleton, provides } from "microinject";
 
 @injectable()
 @singleton()
