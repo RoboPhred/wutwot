@@ -6,10 +6,8 @@ import {
   ThingCapabilityDef
 } from "../../contracts";
 
-import { Thing, ThingDef } from "../../../things";
-import { ThingRepository, ThingFactory } from "../../../things/components";
-
-import { ActionFactory, ActionRepository } from "../../../actions/components";
+import { ThingService, Thing, ThingDef } from "../../../things";
+import { ActionService } from "../../../actions";
 
 import { ThingActionRequestToken } from "../../../action-requests";
 import {
@@ -20,10 +18,8 @@ import {
 export class PluginAdapterImpl {
   constructor(
     private _plugin: MozIotPlugin,
-    private _thingFactory: ThingFactory,
-    private _thingRepository: ThingRepository,
-    private _actionFactory: ActionFactory,
-    private _actionRepository: ActionRepository,
+    private _thingService: ThingService,
+    private _actionService: ActionService,
     private _actionRequestFactory: ActionRequestFactory,
     private _actionRequestRepository: ActionRequestRepository
   ) {
@@ -43,34 +39,32 @@ export class PluginAdapterImpl {
     def: ThingDef,
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
   ): Thing {
-    const thing = this._thingFactory.createThing(def, this._plugin);
-    this._thingRepository.addThing(thing);
-
+    const thing = this._thingService.addThing(def, this._plugin);
     this._addCapability(thing.id, ...capabilities);
     return thing;
   }
 
   private _removeThing(thingId: string): void {
-    const thing = this._thingRepository.get(thingId);
+    const thing = this._thingService.getThing(thingId);
     if (!thing) {
       throw new Error("No thing exists by the provided thingId.");
     }
 
     if (thing.ownerPlugin !== this._plugin) {
-      throw new Error("The plugin does not own the requested thing.");
+      throw new Error("The plugin does not own the specified thing.");
     }
 
-    this._thingRepository.removeThing(thingId);
+    this._thingService.removeThing(thingId);
   }
 
   private _getThings(): Thing[] {
-    return Array.from(this._thingRepository);
+    return this._thingService.getThings();
   }
 
   private _getOwnThings(): Thing[] {
-    return Array.from(this._thingRepository).filter(
-      x => x.ownerPlugin === this._plugin
-    );
+    return this._thingService
+      .getThings()
+      .filter(x => x.ownerPlugin === this._plugin);
   }
 
   private _addCapability(
@@ -82,14 +76,7 @@ export class PluginAdapterImpl {
     for (const cap of flatCaps) {
       switch (cap.capabilityType) {
         case "action":
-          {
-            const action = this._actionFactory.createAction(
-              cap,
-              thingId,
-              this._plugin
-            );
-            this._actionRepository.addAction(thingId, action);
-          }
+          this._actionService.addAction(thingId, cap, this._plugin);
           break;
         default:
           throw new Error(
@@ -105,7 +92,7 @@ export class PluginAdapterImpl {
     input: any,
     timeRequested: string
   ): ThingActionRequestToken {
-    const action = this._actionRepository.get(thingId, actionId);
+    const action = this._actionService.getAction(thingId, actionId);
     if (!action) {
       throw new Error("No action exists on the given thing with the given id.");
     }
