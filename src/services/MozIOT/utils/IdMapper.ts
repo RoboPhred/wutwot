@@ -1,11 +1,31 @@
-import { Identifier } from "microinject";
+export class IdMapper {
+  private _ids = new Set<string>();
+  private _nextRollingPostfix = 1;
 
-import createSymbol from "../create-symbol";
+  createId(name: string): string {
+    let id = cleanName(name);
+    while (this._ids.has(id)) {
+      id = `${name}-${this._nextRollingPostfix++}`;
+    }
+    return id;
+  }
 
-export const IdMapper: Identifier<IdMapper> = createSymbol("IdMapper");
-export interface IdMapper {
-  createId(name: string): string;
-  retireId(id: string): boolean;
-  [Symbol.iterator](): IterableIterator<string>;
-  has(id: string): boolean;
+  retireId(id: string): boolean {
+    return this._ids.delete(id);
+  }
+
+  [Symbol.iterator]() {
+    return this._ids[Symbol.iterator]();
+  }
+
+  has(id: string): boolean {
+    return this._ids.has(id);
+  }
+}
+
+function cleanName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "");
 }

@@ -1,12 +1,8 @@
 import { injectable, provides, inject, singleton } from "microinject";
 
 import { ThingService } from "../../../things";
+import { ThingTypesService } from "../../../thing-types";
 import { ActionService } from "../../../actions";
-
-import {
-  ActionRequestFactory,
-  ActionRequestRepository
-} from "../../../action-requests/components";
 import { ActionRequestService } from "../../../action-requests";
 
 import { MozIotPlugin } from "../../contracts";
@@ -22,6 +18,7 @@ import { PluginAdapterImpl } from "./PluginAdapterImpl";
 export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
   constructor(
     @inject(ThingService) private _thingService: ThingService,
+    @inject(ThingTypesService) private _typesService: ThingTypesService,
     @inject(ActionService) private _actionService: ActionService,
     @inject(ActionRequestService) private _requestService: ActionRequestService
   ) {}
@@ -30,6 +27,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
     return new PluginAdapterImpl(
       plugin,
       this._thingService,
+      this._typesService,
       this._actionService,
       this._requestService
     );

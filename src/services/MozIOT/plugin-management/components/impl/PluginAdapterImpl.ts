@@ -14,11 +14,13 @@ import {
   ActionRequestService,
   ThingActionRequestToken
 } from "../../../action-requests";
+import { ThingTypesService } from "../../../thing-types";
 
 export class PluginAdapterImpl {
   constructor(
     private _plugin: MozIotPlugin,
     private _thingService: ThingService,
+    private _thingTypesService: ThingTypesService,
     private _actionService: ActionService,
     private _actionRequestService: ActionRequestService
   ) {
@@ -74,13 +76,14 @@ export class PluginAdapterImpl {
 
     for (const cap of flatCaps) {
       switch (cap.capabilityType) {
+        case "type":
+          this._thingTypesService.addType(thingId, cap.type);
+          break;
         case "action":
           this._actionService.addAction(thingId, cap, this._plugin);
           break;
         default:
-          throw new Error(
-            `Capability "${cap.capabilityType}" not implemented.`
-          );
+          throwUnknownCapability(cap);
       }
     }
   }
@@ -108,4 +111,9 @@ export class PluginAdapterImpl {
     );
     return token;
   }
+}
+
+function throwUnknownCapability(def: never): never {
+  const type = (def as ThingCapabilityDef).capabilityType;
+  throw new Error(`Unknown capability type "${type}".`);
 }

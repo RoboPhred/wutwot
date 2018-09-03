@@ -18,6 +18,10 @@ export class ActionServiceImpl implements ActionService {
     return this._repository.get(thingId, actionId);
   }
 
+  getForThing(thingId: string): ThingAction[] {
+    return this._repository.getForThing(thingId);
+  }
+
   addAction(thingId: string, def: ThingActionDef, owner: object): ThingAction {
     const action = this._factory.createAction(def, thingId, owner);
     this._repository.addAction(thingId, action);

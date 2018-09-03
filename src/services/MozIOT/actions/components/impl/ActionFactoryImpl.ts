@@ -1,11 +1,11 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
-import uuidV4 from "uuid/v4";
-
-import { ThingActionDef, ThingAction } from "../../types";
+import { IdMapper } from "../../../utils";
 
 import { ActionRequestFactory } from "../../../action-requests/components/ActionRequestFactory";
 import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
+
+import { ThingActionDef, ThingAction } from "../../types";
 
 import { ActionFactory } from "../ActionFactory";
 
@@ -15,6 +15,8 @@ import { ThingActionImpl } from "./ThingActionImpl";
 @singleton()
 @provides(ActionFactory)
 export class ActionFactoryImpl implements ActionFactory {
+  private _thingActionIdMappers = new Map<string, IdMapper>();
+
   constructor(
     @inject(ActionRequestFactory)
     private _actionRequestFactory: ActionRequestFactory,
@@ -27,9 +29,16 @@ export class ActionFactoryImpl implements ActionFactory {
     thingId: string,
     owner: object
   ): ThingAction {
+    let idMapper = this._thingActionIdMappers.get(thingId);
+    if (idMapper == null) {
+      idMapper = new IdMapper();
+      this._thingActionIdMappers.set(thingId, idMapper);
+    }
+    const id = idMapper.createId(action.label);
+
     return new ThingActionImpl(
       action,
-      uuidV4(),
+      id,
       thingId,
       owner,
       this._actionRequestFactory,

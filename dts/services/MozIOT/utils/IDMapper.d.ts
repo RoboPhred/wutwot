@@ -1,6 +1,6 @@
-import { Identifier } from "microinject";
-export declare const IdMapper: Identifier<IdMapper>;
-export interface IdMapper {
+export declare class IdMapper {
+    private _ids;
+    private _nextRollingPostfix;
     createId(name: string): string;
     retireId(id: string): boolean;
     [Symbol.iterator](): IterableIterator<string>;

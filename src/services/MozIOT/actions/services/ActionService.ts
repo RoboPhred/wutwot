@@ -9,6 +9,8 @@ export const ActionService: Identifier<ActionService> = createSymbol(
 );
 export interface ActionService {
   getAction(thingId: string, actionId: string): ThingAction | undefined;
+  getForThing(thingId: string): ThingAction[];
+
   addAction(
     thingId: string,
     action: ThingActionDef,

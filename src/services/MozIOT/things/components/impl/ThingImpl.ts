@@ -1,7 +1,8 @@
 import { ReadonlyRecord } from "../../../../../types";
 
-import { ThingAction } from "../../../actions";
-import { ActionRegistry } from "../../../actions/components";
+import { ThingTypesService } from "../../../thing-types";
+
+import { ActionService, ThingAction } from "../../../actions";
 
 import { Thing, ThingDef } from "../../types";
 
@@ -12,7 +13,8 @@ export class ThingImpl implements Thing {
     private _def: ThingDef,
     private _id: string,
     private _owner: object,
-    private _actionRegistry: ActionRegistry
+    private _typesService: ThingTypesService,
+    private _actionService: ActionService
   ) {
     this._def = {
       ..._def
@@ -33,8 +35,7 @@ export class ThingImpl implements Thing {
   }
 
   get types(): ReadonlyArray<string> {
-    // TODO: Types from capabilities.
-    return [];
+    return this._typesService.getTypes(this._id);
   }
 
   get description(): string {
@@ -47,7 +48,7 @@ export class ThingImpl implements Thing {
 
   get actions(): ReadonlyRecord<string, ThingAction> {
     const actions: Record<string, ThingAction> = {};
-    this._actionRegistry.getForThing(this._id).forEach(action => {
+    this._actionService.getForThing(this._id).forEach(action => {
       actions[action.id] = action;
     });
 

@@ -12,6 +12,10 @@ export class TestPlugin implements MozIotPlugin {
         description: ""
       },
       {
+        capabilityType: "type",
+        type: "TestThing"
+      },
+      {
         capabilityType: "action",
         label: "Test action",
         description: "This is a Test Action",

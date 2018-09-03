@@ -220,6 +220,7 @@ export class Endpoint implements Entrypoint {
   ) {
     return {
       name: thing.name,
+      "@types": thing.types,
       description: thing.description,
       properties: {},
       actions: mapValues(thing.actions, action => ({
