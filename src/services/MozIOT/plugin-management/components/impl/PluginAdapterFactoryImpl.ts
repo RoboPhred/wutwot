@@ -7,6 +7,7 @@ import {
   ActionRequestFactory,
   ActionRequestRepository
 } from "../../../action-requests/components";
+import { ActionRequestService } from "../../../action-requests";
 
 import { MozIotPlugin } from "../../contracts";
 
@@ -22,10 +23,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
   constructor(
     @inject(ThingService) private _thingService: ThingService,
     @inject(ActionService) private _actionService: ActionService,
-    @inject(ActionRequestFactory)
-    private _actionRequestFactory: ActionRequestFactory,
-    @inject(ActionRequestRepository)
-    private _actionRequestRepository: ActionRequestRepository
+    @inject(ActionRequestService) private _requestService: ActionRequestService
   ) {}
 
   createPluginAdapter(plugin: MozIotPlugin): PluginAdapter {
@@ -33,8 +31,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
       plugin,
       this._thingService,
       this._actionService,
-      this._actionRequestFactory,
-      this._actionRequestRepository
+      this._requestService
     );
   }
 }

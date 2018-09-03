@@ -7,21 +7,20 @@ import {
 } from "../../contracts";
 
 import { ThingService, Thing, ThingDef } from "../../../things";
+
 import { ActionService } from "../../../actions";
 
-import { ThingActionRequestToken } from "../../../action-requests";
 import {
-  ActionRequestFactory,
-  ActionRequestRepository
-} from "../../../action-requests/components";
+  ActionRequestService,
+  ThingActionRequestToken
+} from "../../../action-requests";
 
 export class PluginAdapterImpl {
   constructor(
     private _plugin: MozIotPlugin,
     private _thingService: ThingService,
     private _actionService: ActionService,
-    private _actionRequestFactory: ActionRequestFactory,
-    private _actionRequestRepository: ActionRequestRepository
+    private _actionRequestService: ActionRequestService
   ) {
     const pluginContext: MozIotPluginContext = {
       addThing: this._addThing.bind(this),
@@ -101,14 +100,12 @@ export class PluginAdapterImpl {
       throw new Error("The plugin does not own the requested action.");
     }
 
-    const { request, token } = this._actionRequestFactory.createActionRequest(
+    const token = this._actionRequestService.addRequest(
       thingId,
       actionId,
       input,
       timeRequested
     );
-
-    this._actionRequestRepository.addRequest(request);
     return token;
   }
 }
