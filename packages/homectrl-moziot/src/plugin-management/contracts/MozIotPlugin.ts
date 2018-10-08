@@ -1,6 +1,6 @@
 import { Identifier } from "microinject";
 
-import { MaybeArray } from "../../../../types";
+import { MaybeArray } from "../../types";
 
 import createSymbol from "../../create-symbol";
 

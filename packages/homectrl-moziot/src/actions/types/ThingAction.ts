@@ -1,6 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 
-import { DeepImmutableObject } from "../../../../types";
+import { DeepImmutableObject } from "../../types";
 
 import { ThingActionRequest } from "../../action-requests";
 

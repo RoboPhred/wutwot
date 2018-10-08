@@ -1,4 +1,4 @@
-import { ReadonlyRecord } from "../../../../../types";
+import { ReadonlyRecord } from "../../../types";
 
 import { ThingTypesService } from "../../../thing-types";
 

@@ -1,6 +1,8 @@
-import { MozIotPlugin, MozIotPluginContext } from "../MozIot";
-
-import { ThingActionRequestStatus } from "../MozIot/action-requests";
+import {
+  MozIotPlugin,
+  MozIotPluginContext,
+  ThingActionRequestStatus
+} from "homectrl-moziot";
 
 export class TestPlugin implements MozIotPlugin {
   readonly id: string = "test-plugin";
