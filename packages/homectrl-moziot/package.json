@@ -1,0 +1,26 @@
+{
+  "name": "homectrl-moziot",
+  "version": "1.0.0",
+  "description": "Home automation thing manager modeled around Mozilla IOT concepts.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/homectrl-server.git"
+  },
+  "keywords": [
+    "mozilla-iot",
+    "iot"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoboPhred/homectrl-server/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
+  "dependencies": {
+    "microinject": "^0.5.2"
+  }
+}
