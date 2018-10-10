@@ -1,0 +1,14 @@
+{
+"folders": [
+	{
+		"path": "packages\\homectrl-server"
+	},
+	{
+		"path": "packages\\homectrl-plugin-test"
+	},
+	{
+		"path": "packages\\homectrl-moziot"
+	}
+],
+  "settings": {}
+}

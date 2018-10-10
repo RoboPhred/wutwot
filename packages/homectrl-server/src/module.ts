@@ -1,8 +1,8 @@
 import { ContainerModule } from "microinject";
 
-import { Entrypoint } from "./contracts";
-
 import { MozIot } from "homectrl-moziot";
+
+import { Entrypoint } from "./contracts";
 
 import { ReplServer } from "./Repl";
 import { Endpoint } from "./Endpoint";

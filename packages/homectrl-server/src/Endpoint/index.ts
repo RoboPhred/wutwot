@@ -8,11 +8,14 @@ import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-bodyparser";
 
-import { MozIot, Thing } from "../../MozIot";
+import {
+  MozIot,
+  Thing,
+  ThingAction,
+  ThingActionRequest
+} from "homectrl-moziot";
 
 import { Entrypoint } from "../contracts";
-import { ThingAction } from "../../MozIot/actions";
-import { ThingActionRequest } from "../../MozIot/action-requests";
 
 @injectable()
 @provides(Entrypoint)

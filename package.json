@@ -5,7 +5,8 @@
     "postinstall": "lerna bootstrap",
     "clean": "lerna run --parallel clean",
     "build": "lerna run --scope homectrl-moziot build && lerna run --scope homectrl-plugin-test build && lerna run --scope homectrl-server build",
-    "start": "lerna run --scope homectrl-server --stream start"
+    "start": "lerna run --scope homectrl-server --stream start",
+    "lerna": "lerna"
   },
   "repository": {
     "type": "git",

@@ -3,8 +3,8 @@ import { Container } from "microinject";
 import appModule from "./module";
 
 import { Entrypoint } from "./contracts";
-import { MozIot } from "../MozIot";
-import { TestPlugin } from "../TestPlugin/TestPlugin";
+import { MozIot } from "homectrl-moziot";
+import { TestPlugin } from "homectrl-plugin-test";
 
 export class App {
   private readonly _container = new Container();

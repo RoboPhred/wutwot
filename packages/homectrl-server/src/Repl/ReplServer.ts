@@ -2,9 +2,9 @@ import repl from "repl";
 
 import { injectable, inject } from "microinject";
 
-import { Entrypoint } from "../contracts";
+import { MozIot } from "homectrl-moziot";
 
-import { MozIot } from "../../MozIot";
+import { Entrypoint } from "../contracts";
 
 @injectable(Entrypoint)
 export class ReplServer implements Entrypoint {
