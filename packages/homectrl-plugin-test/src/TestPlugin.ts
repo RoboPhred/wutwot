@@ -11,7 +11,7 @@ export class TestPlugin implements MozIotPlugin {
     plugin.addThing(
       {
         name: "Test Thing 1",
-        description: ""
+        description: "This is a test thing"
       },
       {
         capabilityType: "type",
