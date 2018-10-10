@@ -29,6 +29,7 @@ export class Endpoint implements Entrypoint {
     this._app.use(bodyParser());
 
     const actionsRouter = this._createActionsRouter();
+    applyRouter(this._app, actionsRouter);
     const actionUrlFactory = (thingId: string, actionId?: string) => {
       if (actionId) {
         return actionsRouter.url("get-requests", {
@@ -41,20 +42,15 @@ export class Endpoint implements Entrypoint {
         });
       }
     };
-    this._app.use(actionsRouter.routes());
-    this._app.use(actionsRouter.allowedMethods());
 
     const propertiesRouter = this._createPropertiesRouter();
-    this._app.use(propertiesRouter.routes());
-    this._app.use(propertiesRouter.allowedMethods());
+    applyRouter(this._app, propertiesRouter);
 
     const eventsRouter = this._createEventsRouter();
-    this._app.use(eventsRouter.routes());
-    this._app.use(eventsRouter.allowedMethods());
+    applyRouter(this._app, eventsRouter);
 
     const thingsRouter = this._createThingsRouter(actionUrlFactory);
-    this._app.use(thingsRouter.routes());
-    this._app.use(thingsRouter.allowedMethods());
+    applyRouter(this._app, thingsRouter);
 
     this._app.listen(8080);
   }
@@ -253,4 +249,9 @@ export class Endpoint implements Entrypoint {
       timeCompleted: request.timeCompleted || undefined
     };
   }
+}
+
+function applyRouter(app: Koa, router: Router) {
+  app.use(router.routes());
+  app.use(router.allowedMethods());
 }

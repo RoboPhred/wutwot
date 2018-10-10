@@ -7,7 +7,8 @@
     "clean": "rimraf lib",
     "prebuild": "npm run clean",
     "build": "tsc -p src",
-    "start": "node lib/index.js"
+    "start": "node lib/index.js",
+    "watch": "npm run build -- -w"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,11 @@
 import { Container } from "microinject";
 
+import { MozIot } from "homectrl-moziot";
+import { TestPlugin } from "homectrl-plugin-test";
+
 import appModule from "./module";
 
 import { Entrypoint } from "./contracts";
-import { MozIot } from "homectrl-moziot";
-import { TestPlugin } from "homectrl-plugin-test";
 
 export class App {
   private readonly _container = new Container();
