@@ -1,14 +1,17 @@
 {
-"folders": [
-	{
-		"path": "packages\\homectrl-server"
-	},
-	{
-		"path": "packages\\homectrl-plugin-test"
-	},
-	{
-		"path": "packages\\homectrl-moziot"
-	}
-],
+  "folders": [
+    {
+      "path": "packages\\homectrl-server"
+    },
+    {
+      "path": "packages\\homectrl-plugin-test"
+    },
+    {
+      "path": "packages\\homectrl-moziot"
+    },
+    {
+      "path": "packages\\homectrl-frontend"
+    }
+  ],
   "settings": {}
 }
