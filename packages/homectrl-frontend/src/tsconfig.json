@@ -11,6 +11,10 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "../lib",
     "declaration": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": "../node_modules",
+    "paths": {
+      "@/*": ["../src/*"]
+    }
   }
 }
