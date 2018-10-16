@@ -7,6 +7,7 @@ import HttpStatusCodes from "http-status-codes";
 import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-bodyparser";
+import cors from "@koa/cors";
 
 import {
   MozIot,
@@ -26,6 +27,7 @@ export class Endpoint implements Entrypoint {
 
   start(): void {
     this._app = new Koa();
+    this._app.use(cors());
     this._app.use(bodyParser());
 
     const actionsRouter = this._createActionsRouter();

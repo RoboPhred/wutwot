@@ -14,23 +14,34 @@ export interface ThingGridProps {
   className?: string;
 }
 const styles = createStyles({
+  root: {
+    margin: 5
+  },
   gridItem: {
     width: itemSize,
-    height: itemSize
+    height: itemSize,
+    margin: 2
   }
 });
 type Props = ThingGridProps & StyleProps<typeof styles>;
 const ThingGrid: React.SFC<Props> = ({ className, classes }) => (
-  <ThingsDataSource>
-    {({ things }) => (
-      <GridList className={className} cellHeight={cellSize} spacing={10}>
-        {things.map(thing => (
-          <GridListTile>
-            <ThingGridItem className={classes.gridItem} thing={thing} />
-          </GridListTile>
-        ))}
-      </GridList>
-    )}
-  </ThingsDataSource>
+  <div className={classes.root}>
+    <ThingsDataSource>
+      {({ things, error }) => (
+        <React.Fragment>
+          {error && <span>{error.message}</span>}
+          {things && (
+            <GridList className={className} cellHeight={cellSize} spacing={10}>
+              {things.map((thing, i) => (
+                <GridListTile key={i}>
+                  <ThingGridItem className={classes.gridItem} thing={thing} />
+                </GridListTile>
+              ))}
+            </GridList>
+          )}
+        </React.Fragment>
+      )}
+    </ThingsDataSource>
+  </div>
 );
 export default withStyles(styles)(ThingGrid);

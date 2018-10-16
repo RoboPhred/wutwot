@@ -9,6 +9,7 @@ const PATHS = {
   dist: resolvePath("./dist")
 };
 const PUBLIC_URL = "/";
+const HOMECTRL_API_URL = "http://localhost:8080";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -86,7 +87,8 @@ module.exports = {
 
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        HOMECTRL_API_URL: JSON.stringify(HOMECTRL_API_URL)
       }
     }),
 
