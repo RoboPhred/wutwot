@@ -15,7 +15,8 @@ const styles = createStyles({
   thingGrid: {
     flexGrow: 1,
     minWidth: 0,
-    width: "100%"
+    width: "100%",
+    margin: 5
   }
 });
 
