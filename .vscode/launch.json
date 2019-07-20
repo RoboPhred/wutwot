@@ -8,8 +8,8 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/src/index.ts",
-      "outFiles": ["${workspaceFolder}/lib/**/*.js"],
+      "program": "${workspaceFolder}/packages/homectrl-server/src/index.ts",
+      "outFiles": ["${workspaceFolder}/packages/homectrl-server/lib/**/*.js"],
       "sourceMaps": true,
       "console": "integratedTerminal"
     }
