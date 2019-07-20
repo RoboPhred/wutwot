@@ -10,14 +10,18 @@ import { ActionRequestFactory } from "../../../action-requests/components/Action
 import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
 
 export class ThingActionImpl implements ThingAction {
+  private _def: ThingActionDef;
+
   constructor(
-    private _def: ThingActionDef,
+    def: ThingActionDef,
     private _id: string,
     private _thingId: string,
     private _owner: object,
     private _actionRequestFactory: ActionRequestFactory,
     private _actionRepository: ActionRequestRepository
-  ) {}
+  ) {
+    this._def = { ...def };
+  }
 
   get id(): string {
     return this._id;
