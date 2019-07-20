@@ -6,6 +6,7 @@ import { TestPlugin } from "homectrl-plugin-test";
 import appModule from "./module";
 
 import { Entrypoint } from "./contracts";
+import { RootURL, Port } from "./config";
 
 export class App {
   private readonly _container = new Container();
@@ -13,6 +14,8 @@ export class App {
   constructor() {
     this._container.load(appModule);
 
+    this._container.bind(RootURL).toConstantValue("http://localhost:8080");
+    this._container.bind(Port).toConstantValue(8080);
     this._container.get(MozIot).registerPlugin(new TestPlugin());
   }
 
