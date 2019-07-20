@@ -91,7 +91,7 @@ export class PluginAdapterImpl {
   private _addActionRequest(
     thingId: string,
     actionId: string,
-    input: any,
+    input: object,
     timeRequested: string
   ): ThingActionRequestToken {
     const action = this._actionService.getAction(thingId, actionId);

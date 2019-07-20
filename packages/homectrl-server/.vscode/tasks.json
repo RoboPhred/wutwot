@@ -24,6 +24,17 @@
         "panel": "dedicated"
       },
       "problemMatcher": ["$tsc-watch"]
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "isBackground": true,
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated"
+      }
     }
   ]
 }

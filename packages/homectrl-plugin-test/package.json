@@ -24,10 +24,10 @@
   },
   "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
   "devDependencies": {
-    "@types/node": "^10.11.4",
+    "@types/node": "^12.6.8",
     "homectrl-moziot": "^1.0.0",
-    "rimraf": "^2.6.2",
-    "typescript": "^3.1.1"
+    "rimraf": "^2.6.3",
+    "typescript": "^3.5.3"
   },
   "peerDependencies": {
     "homectrl-moziot": "^1.0.0"

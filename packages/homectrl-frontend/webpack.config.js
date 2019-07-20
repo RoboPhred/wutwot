@@ -60,10 +60,7 @@ module.exports = {
         use: [
           "style-loader",
           {
-            loader: "css-loader",
-            options: {
-              minimize: isProd ? true : false
-            }
+            loader: "css-loader"
           }
         ]
       },

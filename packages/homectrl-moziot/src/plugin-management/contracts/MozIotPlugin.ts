@@ -59,7 +59,12 @@ export interface MozIotPluginContext {
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
   ): void;
 
-  addActionRequest(thingId: string, actionId: string): ThingActionRequestToken;
+  addActionRequest(
+    thingId: string,
+    actionId: string,
+    input: object,
+    timeRequested: string
+  ): ThingActionRequestToken;
 }
 
 export type ThingCapabilityDef =

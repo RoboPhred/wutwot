@@ -22,7 +22,7 @@ export class ActionRequestServiceImpl implements ActionRequestService {
   addRequest(
     thingId: string,
     actionId: string,
-    input: any,
+    input: object,
     timeRequested: string
   ): ThingActionRequestToken {
     const { request, token } = this._factory.createActionRequest(

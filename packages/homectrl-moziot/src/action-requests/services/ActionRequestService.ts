@@ -11,7 +11,7 @@ export interface ActionRequestService {
   addRequest(
     thingId: string,
     actionId: string,
-    input: any,
+    input: object,
     timeRequested: string
   ): ThingActionRequestToken;
 }
