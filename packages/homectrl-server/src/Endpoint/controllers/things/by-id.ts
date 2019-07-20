@@ -20,7 +20,7 @@ export class ThingById {
     if (!thing) {
       throw createError(
         HttpStatusCodes.NOT_FOUND,
-        `No Thing exists with an ID of "${thingId}".`
+        "A Thing with the specified ID was not found."
       );
     }
     return this._restifier.thingToRest(thing);
