@@ -1,6 +1,7 @@
 import { injectable, inject } from "microinject";
-import { Thing } from "homectrl-moziot";
+import { Thing, ThingAction } from "homectrl-moziot";
 import { URL } from "url";
+import { mapValues } from "lodash";
 
 import { RootURL } from "../config";
 
@@ -17,8 +18,8 @@ export class Restifier {
       id: joinURL(this._rootURL, "things", thing.id),
       title: thing.name,
       description: thing.description,
+      actions: mapValues(thing.actions, x => this.actionToRest(x, false)),
       // TODO: properties
-      // TODO: actions
       // TODO: events
       links: isPrimary
         ? [
@@ -27,6 +28,18 @@ export class Restifier {
             createLink("events", `/things/${thing.id}/events`)
           ]
         : undefined
+    };
+  }
+
+  public actionToRest(action: ThingAction, isPrimary: boolean = true): object {
+    return {
+      "@type": action.type,
+      title: action.label,
+      description: action.description,
+      input: action.input,
+      links: [
+        createLink("href", `/things/${action.thingId}/actions/${action.id}`)
+      ]
     };
   }
 }
