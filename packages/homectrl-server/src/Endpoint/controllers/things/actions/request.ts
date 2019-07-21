@@ -4,10 +4,11 @@ import {
   getActionOrThrow,
   getRequestOrThrow
 } from "../../../controller-utils";
-import { inject } from "microinject";
+import { inject, injectable } from "microinject";
 import { MozIot } from "homectrl-moziot";
 import { Restifier } from "../../../restifier";
 
+@injectable()
 @controller("/things/:thingId/actions/:actionId/:requestId")
 export class ThingActionRequest {
   constructor(
