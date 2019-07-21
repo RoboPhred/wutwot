@@ -39,6 +39,10 @@ export class ThingActionImpl implements ThingAction {
     return this._def.label;
   }
 
+  get type(): string | undefined {
+    return this._def.type;
+  }
+
   get description(): string {
     return this._def.description;
   }

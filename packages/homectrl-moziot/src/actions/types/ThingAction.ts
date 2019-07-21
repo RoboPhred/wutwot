@@ -9,6 +9,7 @@ export interface ThingAction {
   readonly thingId: string;
   readonly ownerPlugin: object;
   readonly label: string;
+  readonly type: string | undefined;
   readonly description: string;
   readonly input: DeepImmutableObject<JSONSchema6>;
 
