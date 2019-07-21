@@ -1,5 +1,6 @@
 import express from "express";
 import { injectable, provides, inject } from "microinject";
+import helmet from "helmet";
 
 import { Entrypoint } from "../contracts";
 import { Port } from "../config";
@@ -17,6 +18,8 @@ export class Endpoint implements Entrypoint {
 
   start() {
     const app = express();
+    app.use(helmet());
+
     const routes = this._controllers.map(controller =>
       createControllerRouter(controller)
     );
