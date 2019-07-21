@@ -11,9 +11,11 @@ export interface ControllerMetadata {
 export interface ControllerMethodMetadata {
   method: string;
   args?: ControllerMethodArgMetadata[];
+  status?: number;
 }
 export interface ControllerMethodArgMetadata {
   param?: string;
+  body?: boolean;
 }
 
 export function controller<TFunction extends Function>(
@@ -41,6 +43,28 @@ export function get(): (
   };
 }
 
+export function post(): (
+  target: any,
+  propertyKey: string,
+  descriptor: PropertyDescriptor
+) => void {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    mergeMethodMetadata(target, propertyKey, {
+      method: "post"
+    });
+  };
+}
+
+export function status(
+  code: number
+): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    mergeMethodMetadata(target, propertyKey, {
+      status: code
+    });
+  };
+}
+
 export function param(
   name: string
 ): (target: any, propertyKey: string, parameterIndex: number) => void {
@@ -48,6 +72,22 @@ export function param(
     const args: ControllerMethodArgMetadata[] = [];
     args[parameterIndex] = {
       param: name
+    };
+    mergeMethodMetadata(target, propertyKey, {
+      args
+    });
+  };
+}
+
+export function body(): (
+  target: any,
+  propertyKey: string,
+  parameterIndex: number
+) => void {
+  return (target: any, propertyKey: string, parameterIndex: number) => {
+    const args: ControllerMethodArgMetadata[] = [];
+    args[parameterIndex] = {
+      body: true
     };
     mergeMethodMetadata(target, propertyKey, {
       args

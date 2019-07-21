@@ -7,6 +7,7 @@ import {
 } from "express";
 import { forEach } from "lodash";
 import HttpStatusCodes from "http-status-codes";
+import bodyParser from "body-parser";
 
 import { Controller } from "./services";
 import { ControllerMethodMetadata, ControllerMetadata } from "./decorators";
@@ -16,6 +17,7 @@ export function createControllerRouter(controller: Controller): Router {
   const methodsMetadata = (controller as any)[ControllerMethodsMetadataKey];
 
   const router = Router();
+  router.use(bodyParser.json());
 
   forEach(methodsMetadata, (metadata, key) =>
     createControllerMethod(router, controller, key, metadata)
@@ -42,6 +44,9 @@ function createControllerMethod(
     case "get":
       router.get(controllerMetadata.path, handler);
       break;
+    case "post":
+      router.post(controllerMetadata.path, handler);
+      break;
     default:
       throw new Error(
         `Unhandled controller route method type "${methodMetadata.method}".`
@@ -59,7 +64,7 @@ function createControllerMethodHandler(
     try {
       const args = getControllerMethodHandlerArgs(req, res, metadata);
       const body = (controller as any)[propertyName].apply(controller, args);
-      res.status(200).send(body);
+      res.status(metadata.status || HttpStatusCodes.OK).send(body);
     } catch (e) {
       // TODO log better
       console.error(e);
@@ -76,6 +81,9 @@ function getControllerMethodHandlerArgs(
   return (metadata.args || []).map(arg => {
     if (arg.param) {
       return req.params[arg.param];
+    }
+    if (arg.body) {
+      return req.body;
     }
     return undefined;
   });

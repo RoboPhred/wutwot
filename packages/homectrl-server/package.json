@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "homectrl-moziot": "^1.0.0",
     "homectrl-plugin-test": "^1.0.0",
@@ -35,6 +36,7 @@
     "source-map-support": "^0.5.12"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.17.0",
     "@types/express": "^4.17.0",
     "@types/http-errors": "^1.6.1",
     "@types/lodash": "^4.14.136",

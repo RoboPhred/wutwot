@@ -1,5 +1,5 @@
 import { injectable, inject } from "microinject";
-import { Thing, ThingAction } from "homectrl-moziot";
+import { Thing, ThingAction, ThingActionRequest } from "homectrl-moziot";
 import { URL } from "url";
 import { mapValues } from "lodash";
 
@@ -18,20 +18,21 @@ export class Restifier {
       id: joinURL(this._rootURL, "things", thing.id),
       title: thing.name,
       description: thing.description,
-      actions: mapValues(thing.actions, x => this.actionToRest(x, false)),
+      actions: mapValues(thing.actions, x => this.actionToRest(x)),
       // TODO: properties
       // TODO: events
-      links: isPrimary
-        ? [
-            createLink("properties", `/things/${thing.id}/properties`),
-            createLink("actions", `/things/${thing.id}/actions`),
-            createLink("events", `/things/${thing.id}/events`)
-          ]
-        : undefined
+      links: buildArray(
+        !isPrimary && createLink("href", `/things/${thing.id}`),
+        isPrimary && [
+          createLink("properties", `/things/${thing.id}/properties`),
+          createLink("actions", `/things/${thing.id}/actions`),
+          createLink("events", `/things/${thing.id}/events`)
+        ]
+      )
     };
   }
 
-  public actionToRest(action: ThingAction, isPrimary: boolean = true): object {
+  public actionToRest(action: ThingAction): object {
     return {
       "@type": action.type,
       title: action.label,
@@ -40,6 +41,21 @@ export class Restifier {
       links: [
         createLink("href", `/things/${action.thingId}/actions/${action.id}`)
       ]
+    };
+  }
+
+  public actionRequestToRest(
+    request: ThingActionRequest,
+    isPrimary: boolean = true
+  ): object {
+    return {
+      input: request.input,
+      href: `/things/${request.thingId}/actions/${request.actionId}/${
+        request.id
+      }`,
+      timeRequested: isPrimary ? request.timeRequested : undefined,
+      timeCompleted: isPrimary ? request.timeCompleted || undefined : undefined,
+      status: request.status
     };
   }
 }
@@ -64,4 +80,11 @@ function createLink(rel: string, href: string) {
     rel,
     href
   };
+}
+
+function buildArray<T>(...args: (T | T[] | false)[]): T[] {
+  return ([] as T[]).concat(...args.filter(isNotFalsey));
+}
+function isNotFalsey<T>(val: T | null | undefined | false): val is T {
+  return Boolean(val);
 }
