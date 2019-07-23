@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.1.1",
     "cross-env": "^5.2.0",
     "css-loader": "^3.1.0",
     "file-loader": "^4.1.0",
@@ -47,6 +48,9 @@
     "material-ui": "^0.20.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
+    "redux-saga": "^1.0.5",
     "typeface-roboto": "0.0.75",
     "whatwg-fetch": "^3.0.0"
   }

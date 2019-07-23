@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { Thing } from "@/services/homectrl/types/Thing";
+import { Thing } from "../types/Thing";
+import { getThings } from "../api";
 
 export interface ThingsDataSourceProps {
   children(data: { error: Error | null; things: Thing[] | null }): JSX.Element;
@@ -28,17 +29,16 @@ export default class ThingsDataSource extends React.Component<Props, State> {
   }
 
   private async fetchData() {
-    const response = await fetch(`${process.env.HOMECTRL_API_URL}/things`);
-    if (response.status !== 200) {
+    try {
+      const things = await getThings();
       this.setState({
-        error: new Error(response.statusText)
+        error: null,
+        things
       });
-      return;
+    } catch (e) {
+      this.setState({
+        error: e.message
+      });
     }
-    const result = await response.json();
-    this.setState({
-      error: null,
-      things: result
-    });
   }
 }

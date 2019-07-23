@@ -1,3 +1,6 @@
 type StyleProps<T> = { classes: { [K in keyof T]: string } };
 
-declare const HOMECTRL_API_URL: string;
+interface Window {
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
+  __REDUX_DEVTOOLS_EXTENSION__?: any;
+}
