@@ -16,7 +16,7 @@ export class Restifier {
       "@context": WOT_CONTEXT,
       "@type": thing.types,
       id: joinURL(this._rootURL, "things", thing.id),
-      title: thing.name,
+      title: thing.title,
       description: thing.description,
       actions: mapValues(thing.actions, x => this.actionToRest(x)),
       // TODO: properties
@@ -34,8 +34,8 @@ export class Restifier {
 
   public actionToRest(action: ThingAction): object {
     return {
-      "@type": action.type,
-      title: action.label,
+      "@type": action.semanticType,
+      title: action.title,
       description: action.description,
       input: action.input,
       links: [
