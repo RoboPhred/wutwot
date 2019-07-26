@@ -1,15 +1,17 @@
 import { composeModules } from "microinject";
 
-import actionModule from "./actions/module";
 import actionRequestModule from "./action-requests/module";
+import actionModule from "./actions/module";
 import pluginModule from "./plugin-management/module";
+import propertiesModule from "./properties/module";
 import thingTypesModule from "./thing-types/module";
 import thingModule from "./things/module";
 
 const mozIotModule = composeModules(
-  actionModule,
   actionRequestModule,
+  actionModule,
   pluginModule,
+  propertiesModule,
   thingTypesModule,
   thingModule
 );

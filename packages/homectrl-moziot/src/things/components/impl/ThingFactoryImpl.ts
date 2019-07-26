@@ -21,7 +21,7 @@ export class ThingFactoryImpl implements ThingFactory {
   ) {}
 
   createThing(def: ThingDef, owner: object): Thing {
-    const id = this._idMapper.createId(def.name);
+    const id = this._idMapper.createId(def.title);
     return new ThingImpl(
       def,
       id,

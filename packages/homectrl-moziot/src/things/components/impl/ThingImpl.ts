@@ -30,8 +30,8 @@ export class ThingImpl implements Thing {
     return this._owner;
   }
 
-  get name(): string {
-    return this._def.name;
+  get title(): string {
+    return this._def.title;
   }
 
   get types(): ReadonlyArray<string> {

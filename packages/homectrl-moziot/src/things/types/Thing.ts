@@ -20,7 +20,7 @@ export interface Thing {
   /**
    * The name of the thing.
    */
-  readonly name: string;
+  readonly title: string;
 
   /**
    * An array of types describing the thing
@@ -41,16 +41,4 @@ export interface Thing {
    * The actions this thing supports.
    */
   readonly actions: ReadonlyRecord<string, ThingAction>;
-}
-
-/**
- * Describes the minimum set of unique properties required to create a thing.
- *
- * All other properties present on Thing are derived from other sources,
- * such as capabilities.
- */
-export interface ThingDef {
-  readonly name: string;
-  readonly description: string;
-  readonly metadata?: ReadonlyRecord<string, any>;
 }
