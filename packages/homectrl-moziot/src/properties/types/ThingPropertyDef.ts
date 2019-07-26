@@ -9,4 +9,6 @@ export interface ThingPropertyDef {
   maximum?: number;
   multipleOf?: number;
   readOnly?: boolean;
+
+  initialValue: any;
 }

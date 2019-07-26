@@ -1,3 +1,7 @@
 import { ContainerModule } from "microinject";
 
-export default new ContainerModule(bind => {});
+import { PropertyServiceImpl } from "./services/impl/PropertyServiceImpl";
+
+export default new ContainerModule(bind => {
+  bind(PropertyServiceImpl);
+});

@@ -73,7 +73,8 @@ export interface MozIotPluginContext {
 
 export type ThingCapabilityDef =
   | ThingTypeCapabilityDef
-  | ThingActionCapabilityDef;
+  | ThingActionCapabilityDef
+  | ThingPropertyCapabilityDef;
 
 export interface ThingTypeCapabilityDef extends ThingTypeDef {
   capabilityType: "type";
@@ -83,10 +84,10 @@ export interface ThingTypeDef {
   type: string;
 }
 
-export interface ThingPropertyCapabilityDef extends ThingPropertyDef {
-  capabilityType: "property";
-}
-
 export interface ThingActionCapabilityDef extends ThingActionDef {
   capabilityType: "action";
+}
+
+export interface ThingPropertyCapabilityDef extends ThingPropertyDef {
+  capabilityType: "property";
 }

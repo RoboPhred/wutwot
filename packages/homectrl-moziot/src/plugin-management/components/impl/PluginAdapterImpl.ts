@@ -15,6 +15,7 @@ import {
   ThingActionRequestToken
 } from "../../../action-requests";
 import { ThingTypesService } from "../../../thing-types";
+import { PropertyService } from "../../../properties";
 
 export class PluginAdapterImpl {
   constructor(
@@ -22,7 +23,8 @@ export class PluginAdapterImpl {
     private _thingService: ThingService,
     private _thingTypesService: ThingTypesService,
     private _actionService: ActionService,
-    private _actionRequestService: ActionRequestService
+    private _actionRequestService: ActionRequestService,
+    private _propertyService: PropertyService
   ) {
     const pluginContext: MozIotPluginContext = {
       addThing: this._addThing.bind(this),
@@ -78,6 +80,9 @@ export class PluginAdapterImpl {
       switch (cap.capabilityType) {
         case "type":
           this._thingTypesService.addType(thingId, cap.capabilityType);
+          break;
+        case "property":
+          this._propertyService.addProperty(thingId, cap, this._plugin);
           break;
         case "action":
           this._actionService.addAction(thingId, cap, this._plugin);
