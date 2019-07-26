@@ -1,5 +1,6 @@
 export interface Thing {
-  name: string;
-  types: string[];
+  "@type": string[];
+  id: string;
+  title: string;
   description: string;
 }

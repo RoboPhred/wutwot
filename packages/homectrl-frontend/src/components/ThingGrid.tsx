@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { createStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import ThingsDataSource from "@/services/homectrl/components/ThingsDataSource";
@@ -8,8 +9,16 @@ import ThingGridItem from "./ThingGridItem";
 export interface ThingGridProps {
   className?: string;
 }
-type Props = ThingGridProps;
-const ThingGrid: React.SFC<Props> = ({ className }) => (
+
+const styles = createStyles({
+  gridItem: {
+    width: "calc(100% * (1/2) - 2px)",
+    height: "200px"
+  }
+});
+
+type Props = ThingGridProps & StyleProps<typeof styles>;
+const ThingGrid: React.SFC<Props> = ({ className, classes }) => (
   <ThingsDataSource>
     {({ things, error }) => (
       <div className={className}>
@@ -18,7 +27,10 @@ const ThingGrid: React.SFC<Props> = ({ className }) => (
           <Grid container spacing={8}>
             {things.map((thing, i) => (
               <Grid item key={i} xs={6}>
-                <ThingGridItem thing={thing} />
+                <ThingGridItem
+                  className={classes.gridItem}
+                  thingId={thing.id}
+                />
               </Grid>
             ))}
           </Grid>
@@ -27,4 +39,4 @@ const ThingGrid: React.SFC<Props> = ({ className }) => (
     )}
   </ThingsDataSource>
 );
-export default ThingGrid;
+export default withStyles(styles)(ThingGrid);
