@@ -34,7 +34,7 @@ export class ActionFactoryImpl implements ActionFactory {
       idMapper = new IdMapper();
       this._thingActionIdMappers.set(thingId, idMapper);
     }
-    const id = idMapper.createId(action.label);
+    const id = idMapper.createId(action.title);
 
     return new ThingActionImpl(
       action,

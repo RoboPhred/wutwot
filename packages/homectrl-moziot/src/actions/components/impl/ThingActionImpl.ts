@@ -35,8 +35,8 @@ export class ThingActionImpl implements ThingAction {
     return this._owner;
   }
 
-  get label(): string {
-    return this._def.label;
+  get title(): string {
+    return this._def.title;
   }
 
   get semanticType(): string | undefined {

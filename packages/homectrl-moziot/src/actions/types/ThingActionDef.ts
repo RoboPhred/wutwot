@@ -5,7 +5,7 @@ import { DeepImmutableObject } from "../../types";
 import { ThingActionRequestToken } from "../../action-requests";
 
 export interface ThingActionDef {
-  readonly label: string;
+  readonly title: string;
   readonly semanticType?: string;
   readonly description: string;
   readonly input: DeepImmutableObject<JSONSchema6>;

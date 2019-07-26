@@ -1,5 +1,5 @@
 export interface ThingPropertyDef {
-  label: string;
+  title: string;
   semanticType?: string;
   description: string;
   type: "null" | "object" | "array" | "number" | "integer" | "string";
