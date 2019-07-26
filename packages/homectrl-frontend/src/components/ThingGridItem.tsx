@@ -4,8 +4,9 @@ import classnames from "classnames";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
-import FloatingButton from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 
 import ThingDataSource from "@/services/homectrl/components/ThingDataSource";
@@ -38,9 +39,9 @@ const ThingGridItem: React.SFC<Props> = ({ className, classes, thingId }) => (
               <Typography variant="h5">{thing.title}</Typography>
               <Typography variant="body1">{thing.description}</Typography>
             </CardContent>
-            <FloatingButton className={classes.menuButton}>
+            <Button className={classes.menuButton}>
               <MenuIcon />
-            </FloatingButton>
+            </Button>
           </>
         )}
       </Card>

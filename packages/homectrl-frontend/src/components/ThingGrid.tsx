@@ -12,7 +12,7 @@ export interface ThingGridProps {
 
 const styles = createStyles({
   gridItem: {
-    width: "calc(100% * (1/2) - 2px)",
+    width: "200px",
     height: "200px"
   }
 });
