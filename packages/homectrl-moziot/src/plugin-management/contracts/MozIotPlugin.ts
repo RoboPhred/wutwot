@@ -7,6 +7,7 @@ import createSymbol from "../../create-symbol";
 import { Thing, ThingDef } from "../../things";
 import { ThingActionDef } from "../../actions";
 import { ThingActionRequestToken } from "../../action-requests";
+import { ThingPropertyDef } from "../../properties/types/ThingPropertyDef";
 
 export const MozIotPlugin: Identifier<MozIotPlugin> = createSymbol(
   "MozIotPlugin"
@@ -59,6 +60,9 @@ export interface MozIotPluginContext {
     ...capabilities: MaybeArray<ThingCapabilityDef>[]
   ): void;
 
+  /**
+   * Add an action request to the specified action.
+   */
   addActionRequest(
     thingId: string,
     actionId: string,
@@ -77,6 +81,10 @@ export interface ThingTypeCapabilityDef extends ThingTypeDef {
 
 export interface ThingTypeDef {
   type: string;
+}
+
+export interface ThingPropertyCapabilityDef extends ThingPropertyDef {
+  capabilityType: "property";
 }
 
 export interface ThingActionCapabilityDef extends ThingActionDef {
