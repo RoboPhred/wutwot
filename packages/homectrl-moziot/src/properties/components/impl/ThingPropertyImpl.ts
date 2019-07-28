@@ -1,8 +1,20 @@
+import { PropertyValueRegistry } from "../../../property-values";
+
 import { ThingProperty, ThingPropertyDef } from "../../types";
 
 export class ThingPropertyImpl implements ThingProperty {
-  constructor(private _def: ThingPropertyDef, private _id: string) {
+  constructor(
+    private _def: ThingPropertyDef,
+    private _id: string,
+    private _thingId: string,
+    private _owner: object,
+    private _propertyValueRegistry: PropertyValueRegistry
+  ) {
     this._def = { ..._def };
+  }
+
+  get ownerPlugin(): object {
+    return this._owner;
   }
 
   get id(): string {
@@ -25,7 +37,7 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._def.type;
   }
 
-  get unit(): string {
+  get unit(): string | undefined {
     return this._def.unit;
   }
 
@@ -50,10 +62,10 @@ export class ThingPropertyImpl implements ThingProperty {
   }
 
   get value(): any {
-    return;
+    return this._propertyValueRegistry.getValue(this._thingId, this._id);
   }
 
   setValue(value: any): void {
-    throw new Error("Method not implemented.");
+    this._def.valueChangeRequested(this._thingId, this._id, value);
   }
 }

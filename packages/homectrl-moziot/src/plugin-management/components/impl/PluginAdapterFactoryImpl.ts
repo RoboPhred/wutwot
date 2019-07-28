@@ -11,6 +11,8 @@ import { PluginAdapterFactory } from "../PluginAdapterFactory";
 import { PluginAdapter } from "../PluginAdapter";
 
 import { PluginAdapterImpl } from "./PluginAdapterImpl";
+import { PropertyService } from "../../../properties";
+import { PropertyValueRegistry } from "../../../property-values";
 
 @injectable()
 @singleton()
@@ -20,7 +22,10 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
     @inject(ThingService) private _thingService: ThingService,
     @inject(ThingTypesService) private _typesService: ThingTypesService,
     @inject(ActionService) private _actionService: ActionService,
-    @inject(ActionRequestService) private _requestService: ActionRequestService
+    @inject(ActionRequestService) private _requestService: ActionRequestService,
+    @inject(PropertyService) private _propertyService: PropertyService,
+    @inject(PropertyValueRegistry)
+    private _propertyValueRegistry: PropertyValueRegistry
   ) {}
 
   createPluginAdapter(plugin: MozIotPlugin): PluginAdapter {
@@ -29,7 +34,9 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
       this._thingService,
       this._typesService,
       this._actionService,
-      this._requestService
+      this._requestService,
+      this._propertyService,
+      this._propertyValueRegistry
     );
   }
 }

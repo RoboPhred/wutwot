@@ -1,6 +1,7 @@
 import { ReadonlyRecord } from "../../types";
 
 import { ThingAction } from "../../actions";
+import { ThingProperty } from "../../properties";
 
 /**
  * Describes a thing in the system.
@@ -41,4 +42,9 @@ export interface Thing {
    * The actions this thing supports.
    */
   readonly actions: ReadonlyRecord<string, ThingAction>;
+
+  /**
+   * Properties of this thing.
+   */
+  readonly properties: ReadonlyRecord<string, ThingProperty>;
 }

@@ -1,7 +1,8 @@
 import {
   MozIotPlugin,
   MozIotPluginContext,
-  ThingActionRequestStatus
+  ThingActionRequestStatus,
+  ThingActionRequestToken
 } from "homectrl-moziot";
 
 export class TestPlugin implements MozIotPlugin {
@@ -10,7 +11,7 @@ export class TestPlugin implements MozIotPlugin {
   onRegisterPlugin(plugin: MozIotPluginContext): void {
     plugin.addThing(
       {
-        name: "Test Thing 1",
+        title: "Test Thing 1",
         description: "This is a test thing"
       },
       {
@@ -19,11 +20,11 @@ export class TestPlugin implements MozIotPlugin {
       },
       {
         capabilityType: "action",
-        label: "Test action",
+        title: "Test action",
         description: "This is a Test Action",
         semanticType: "TestAction",
         input: { type: "null" },
-        request: async (input, token) => {
+        request: async (input: any, token: ThingActionRequestToken) => {
           console.log("Test action pending");
 
           await wait(1000);
@@ -33,6 +34,21 @@ export class TestPlugin implements MozIotPlugin {
           await wait(1000);
           token.setStatus(ThingActionRequestStatus.Completed);
           console.log("Test action completed");
+        }
+      },
+      {
+        capabilityType: "property",
+        title: "Test property",
+        description: "This is a Test Property",
+        type: "string",
+        initialValue: "hello",
+        valueChangeRequested: (
+          thingId: string,
+          propertyId: string,
+          value: any
+        ) => {
+          console.log("Test value changed");
+          plugin.setPropertyValue(thingId, propertyId, value);
         }
       }
     );

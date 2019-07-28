@@ -16,6 +16,7 @@ import {
 } from "../../../action-requests";
 import { ThingTypesService } from "../../../thing-types";
 import { PropertyService } from "../../../properties";
+import { PropertyValueRegistry } from "../../../property-values";
 
 export class PluginAdapterImpl {
   constructor(
@@ -24,7 +25,8 @@ export class PluginAdapterImpl {
     private _thingTypesService: ThingTypesService,
     private _actionService: ActionService,
     private _actionRequestService: ActionRequestService,
-    private _propertyService: PropertyService
+    private _propertyService: PropertyService,
+    private _propertyValueRegistry: PropertyValueRegistry
   ) {
     const pluginContext: MozIotPluginContext = {
       addThing: this._addThing.bind(this),
@@ -32,7 +34,8 @@ export class PluginAdapterImpl {
       getThings: this._getThings.bind(this),
       getOwnThings: this._getOwnThings.bind(this),
       addCapability: this._addCapability.bind(this),
-      addActionRequest: this._addActionRequest.bind(this)
+      addActionRequest: this._addActionRequest.bind(this),
+      setPropertyValue: this._setPropertyValue.bind(this)
     };
 
     _plugin.onRegisterPlugin(pluginContext);
@@ -115,6 +118,25 @@ export class PluginAdapterImpl {
       timeRequested
     );
     return token;
+  }
+
+  private _setPropertyValue(
+    thingId: string,
+    propertyId: string,
+    value: any
+  ): void {
+    const property = this._propertyService.getProperty(thingId, propertyId);
+    if (!property) {
+      throw new Error(
+        "No property exists on the given thing with the given id."
+      );
+    }
+
+    if (property.ownerPlugin !== this._plugin) {
+      throw new Error("The plugin does not own the requested property.");
+    }
+
+    this._propertyValueRegistry.setValue(thingId, propertyId, value);
   }
 }
 

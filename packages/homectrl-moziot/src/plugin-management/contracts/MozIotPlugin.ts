@@ -62,6 +62,10 @@ export interface MozIotPluginContext {
 
   /**
    * Add an action request to the specified action.
+   * @param thingId The ID of the thing on which the action resides.
+   * @param actionId The ID of the action to create a request for.
+   * @param input The input of the request
+   * @param timeRequested The timestamp at which the action was requested.
    */
   addActionRequest(
     thingId: string,
@@ -69,6 +73,14 @@ export interface MozIotPluginContext {
     input: object,
     timeRequested: string
   ): ThingActionRequestToken;
+
+  /**
+   * Sets a property value for a given property.
+   * @param thingId The ID of the thing on which the property resides.
+   * @param propertyId The ID of the property to set.
+   * @param value The value to set the property to.
+   */
+  setPropertyValue(thingId: string, propertyId: string, value: any): void;
 }
 
 export type ThingCapabilityDef =

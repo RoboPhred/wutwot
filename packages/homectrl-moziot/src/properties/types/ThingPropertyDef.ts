@@ -3,7 +3,7 @@ export interface ThingPropertyDef {
   semanticType?: string;
   description: string;
   type: "null" | "object" | "array" | "number" | "integer" | "string";
-  unit: string;
+  unit?: string;
   enum?: string[];
   minimum?: number;
   maximum?: number;
@@ -12,5 +12,5 @@ export interface ThingPropertyDef {
 
   initialValue: any;
 
-  propertyChangeRequested(value: any): Promise<void>;
+  valueChangeRequested(thingId: string, propertyId: string, value: any): void;
 }

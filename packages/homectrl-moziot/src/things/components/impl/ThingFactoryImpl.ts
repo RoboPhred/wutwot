@@ -8,6 +8,7 @@ import { ThingDef, Thing } from "../../types";
 import { ThingFactory } from "../ThingFactory";
 import { ThingImpl } from "./ThingImpl";
 import { ThingTypesService } from "../../../thing-types";
+import { PropertyService } from "../../../properties";
 
 @injectable()
 @singleton()
@@ -17,7 +18,8 @@ export class ThingFactoryImpl implements ThingFactory {
 
   constructor(
     @inject(ThingTypesService) private _thingTypesService: ThingTypesService,
-    @inject(ActionService) private _actionService: ActionService
+    @inject(ActionService) private _actionService: ActionService,
+    @inject(PropertyService) private _propertyService: PropertyService
   ) {}
 
   createThing(def: ThingDef, owner: object): Thing {
@@ -27,7 +29,8 @@ export class ThingFactoryImpl implements ThingFactory {
       id,
       owner,
       this._thingTypesService,
-      this._actionService
+      this._actionService,
+      this._propertyService
     );
   }
 }

@@ -6,6 +6,7 @@ import { PropertyFactory } from "../../components/PropertyFactory";
 import { PropertyRepository } from "../../components";
 
 import { PropertyService } from "../PropertyService";
+import { PropertyValueRegistry } from "../../../property-values";
 
 @injectable()
 @singleton()
@@ -13,7 +14,9 @@ import { PropertyService } from "../PropertyService";
 export class PropertyServiceImpl implements PropertyService {
   constructor(
     @inject(PropertyFactory) private _propertyFactory: PropertyFactory,
-    @inject(PropertyRepository) private _propertyRepository: PropertyRepository
+    @inject(PropertyRepository) private _propertyRepository: PropertyRepository,
+    @inject(PropertyValueRegistry)
+    private _propertyValueRegistry: PropertyValueRegistry
   ) {}
 
   getProperty(thingId: string, propertyId: string): ThingProperty | undefined {
@@ -35,6 +38,11 @@ export class PropertyServiceImpl implements PropertyService {
       owner
     );
     this._propertyRepository.addProperty(thingId, property);
+    this._propertyValueRegistry.setValue(
+      thingId,
+      property.id,
+      propertyDef.initialValue
+    );
     return property;
   }
 }
