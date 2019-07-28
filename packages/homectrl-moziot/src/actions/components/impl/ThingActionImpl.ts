@@ -3,9 +3,12 @@ import { JSONSchema6 } from "json-schema";
 import { DeepImmutableObject } from "../../../types";
 
 import { ThingAction, ThingActionDef } from "../../types";
+import { validateOrThrow } from "../../../json-schema";
 
 import { ThingActionRequest } from "../../../action-requests";
 
+// TODO: Components should not be used outside their service scope.
+//  We need to access this functionality from an action-request service.
 import { ActionRequestFactory } from "../../../action-requests/components/ActionRequestFactory";
 import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
 
@@ -58,6 +61,8 @@ export class ThingActionImpl implements ThingAction {
   }
 
   request(input: any): ThingActionRequest {
+    validateOrThrow(input, this._def.input);
+
     const status = this._def.onActionInvocationRequested(
       this._thingId,
       this._id,

@@ -1,4 +1,7 @@
+import { JSONSchema6 } from "json-schema";
+
 import { ThingProperty, ThingPropertyDef } from "../../types";
+import { validateOrThrow } from "../../../json-schema";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
@@ -73,6 +76,14 @@ export class ThingPropertyImpl implements ThingProperty {
   }
 
   setValue(value: any): void {
+    const schema: JSONSchema6 = {
+      type: this._def.type,
+      enum: this._def.enum,
+      minimum: this._def.minimum,
+      maximum: this._def.maximum,
+      multipleOf: this._def.multipleOf
+    };
+    validateOrThrow(value, schema);
     this._def.onValueChangeRequested(this._thingId, this._id, value);
   }
 }
