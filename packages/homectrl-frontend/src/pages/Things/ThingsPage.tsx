@@ -4,7 +4,8 @@ import { createStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import ThingsDataSource from "@/services/homectrl/components/ThingsDataSource";
-import ThingGridItem from "./ThingGridItem";
+
+import ThingGridItem from "./components/ThingGridItem";
 
 export interface ThingGridProps {
   className?: string;
@@ -18,7 +19,7 @@ const styles = createStyles({
 });
 
 type Props = ThingGridProps & StyleProps<typeof styles>;
-const ThingGrid: React.SFC<Props> = ({ className, classes }) => (
+const ThingsPage: React.SFC<Props> = ({ className, classes }) => (
   <ThingsDataSource>
     {({ things, error }) => (
       <div className={className}>
@@ -39,4 +40,4 @@ const ThingGrid: React.SFC<Props> = ({ className, classes }) => (
     )}
   </ThingsDataSource>
 );
-export default withStyles(styles)(ThingGrid);
+export default withStyles(styles)(ThingsPage);

@@ -3,7 +3,8 @@ import * as React from "react";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 import AppBar from "./AppBar";
-import ThingGrid from "./ThingGrid";
+
+import Router from "@/router";
 
 const styles = createStyles({
   root: {
@@ -24,7 +25,7 @@ type Props = StyleProps<typeof styles>;
 const App: React.SFC<Props> = ({ classes }) => (
   <div className={classes.root}>
     <AppBar />
-    <ThingGrid className={classes.thingGrid} />
+    <Router />
   </div>
 );
 export default withStyles(styles)(App);

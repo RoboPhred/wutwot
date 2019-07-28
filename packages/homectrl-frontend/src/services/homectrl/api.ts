@@ -26,6 +26,49 @@ export async function getThing(thingId: string): Promise<Thing> {
   return result as Thing;
 }
 
+export async function getThingPropertyValue(
+  thingId: string,
+  propertyId: string
+): Promise<any> {
+  if (!isHomectrlThingUrl(thingId)) {
+    throw new Error("ThingId is not a valid homectrl url.");
+  }
+
+  const response = await fetch(`${thingId}/properties/${propertyId}`);
+  if (response.status !== 200) {
+    throw new Error(response.statusText);
+  }
+
+  const result = await response.json();
+  return result[propertyId];
+}
+
+export async function setThingPropertyValue(
+  thingId: string,
+  propertyId: string,
+  value: any
+): Promise<any> {
+  if (!isHomectrlThingUrl(thingId)) {
+    throw new Error("ThingId is not a valid homectrl url.");
+  }
+
+  const response = await fetch(`${thingId}/properties/${propertyId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      [propertyId]: value
+    })
+  });
+  if (response.status !== 200) {
+    throw new Error(response.statusText);
+  }
+
+  const result = await response.json();
+  return result[propertyId];
+}
+
 function isHomectrlThingUrl(url: string): boolean {
   return url.startsWith(`${API_ROOT}/things/`);
 }

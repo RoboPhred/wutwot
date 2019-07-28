@@ -3,7 +3,8 @@ import {
   MozIotPluginContext,
   ThingActionRequestStatus,
   ThingPropertyCapabilityDef,
-  ThingActionCapabilityDef
+  ThingActionCapabilityDef,
+  ThingPropertyType
 } from "homectrl-moziot";
 
 import { Subject } from "rxjs";
@@ -22,7 +23,12 @@ export class TestPlugin implements MozIotPlugin {
         type: "TestThing"
       },
       createTestAction("Test Action", "This is a Test Action"),
-      createTestProperty("Test Property", "This is a Test Property")
+      createTestProperty("Test Property", "This is a Test Property"),
+      createTestProperty("OnOff", "An On/Off property", {
+        initialValue: false,
+        type: "boolean",
+        semanticType: "OnOffProperty"
+      })
     );
   }
 }
@@ -64,17 +70,24 @@ function createTestAction(
   };
 }
 
+export interface PropertyOpts {
+  type?: ThingPropertyType;
+  initialValue?: any;
+  semanticType?: string;
+}
 function createTestProperty(
   title: string,
-  description: string
+  description: string,
+  opts: PropertyOpts = {}
 ): ThingPropertyCapabilityDef {
   const values = new Subject<string>();
   return {
     capabilityType: "property",
     title,
     description,
-    type: "string",
-    initialValue: "hello",
+    type: opts.type || "string",
+    initialValue: opts.initialValue || "hello",
+    semanticType: opts.semanticType || undefined,
     values,
     onValueChangeRequested: (
       thingId: string,

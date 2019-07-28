@@ -1,7 +1,12 @@
 import { JSONSchema6 } from "json-schema";
 
-import { ThingProperty, ThingPropertyDef } from "../../types";
 import { validateOrThrow } from "../../../json-schema";
+
+import {
+  ThingProperty,
+  ThingPropertyDef,
+  ThingPropertyType
+} from "../../types";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
@@ -43,7 +48,7 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._def.description;
   }
 
-  get type(): "string" | "number" | "object" | "null" | "array" | "integer" {
+  get type(): ThingPropertyType {
     return this._def.type;
   }
 

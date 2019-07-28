@@ -5,7 +5,14 @@ import HttpStatusCodes from "http-status-codes";
 import { has } from "lodash";
 
 import { Restifier } from "../../../Restifier";
-import { controller, get, put, param, body } from "../../../infrastructure";
+import {
+  controller,
+  get,
+  put,
+  param,
+  body,
+  status
+} from "../../../infrastructure";
 import { getThingOrThrow, getPropertyOrThrow } from "../../../controller-utils";
 
 @injectable()

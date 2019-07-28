@@ -2,15 +2,17 @@ import * as React from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+import { HashRouter as Router } from "react-router-dom";
+
 import StoreProvider from "./store/components/StoreProvider";
 import App from "./components/App";
 
 const Root = () => (
-  <React.Fragment>
+  <Router>
     <CssBaseline />
     <StoreProvider>
       <App />
     </StoreProvider>
-  </React.Fragment>
+  </Router>
 );
 export default Root;

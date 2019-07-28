@@ -1,10 +1,12 @@
 import { Observable } from "rxjs";
 
+import { ThingPropertyType } from "./ThingProperty";
+
 export interface ThingPropertyDef {
   title: string;
   semanticType?: string;
   description: string;
-  type: "null" | "object" | "array" | "number" | "integer" | "string";
+  type: ThingPropertyType;
   unit?: string;
   enum?: string[];
   minimum?: number;
