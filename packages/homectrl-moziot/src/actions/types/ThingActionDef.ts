@@ -9,5 +9,10 @@ export interface ThingActionDef {
   readonly semanticType?: string;
   readonly description: string;
   readonly input: DeepImmutableObject<JSONSchema6>;
-  request(input: any, token: ThingActionRequestToken): void;
+  onActionInvocationRequested(
+    thingId: string,
+    actionId: string,
+    input: any,
+    token: ThingActionRequestToken
+  ): void;
 }

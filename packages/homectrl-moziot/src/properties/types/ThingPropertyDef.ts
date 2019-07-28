@@ -12,5 +12,5 @@ export interface ThingPropertyDef {
 
   initialValue: any;
 
-  valueChangeRequested(thingId: string, propertyId: string, value: any): void;
+  onValueChangeRequested(thingId: string, propertyId: string, value: any): void;
 }

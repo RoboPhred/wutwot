@@ -24,7 +24,12 @@ export class TestPlugin implements MozIotPlugin {
         description: "This is a Test Action",
         semanticType: "TestAction",
         input: { type: "null" },
-        request: async (input: any, token: ThingActionRequestToken) => {
+        onActionInvocationRequested: async (
+          thingId: string,
+          actionId: string,
+          input: any,
+          token: ThingActionRequestToken
+        ) => {
           console.log("Test action pending");
 
           await wait(1000);
@@ -42,7 +47,7 @@ export class TestPlugin implements MozIotPlugin {
         description: "This is a Test Property",
         type: "string",
         initialValue: "hello",
-        valueChangeRequested: (
+        onValueChangeRequested: (
           thingId: string,
           propertyId: string,
           value: any

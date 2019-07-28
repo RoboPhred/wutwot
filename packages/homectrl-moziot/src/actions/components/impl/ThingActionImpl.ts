@@ -64,7 +64,12 @@ export class ThingActionImpl implements ThingAction {
       input,
       new Date().toISOString()
     );
-    this._def.request(input, token);
+    this._def.onActionInvocationRequested(
+      this._thingId,
+      this._id,
+      input,
+      token
+    );
     this._actionRepository.addRequest(request);
     return request;
   }

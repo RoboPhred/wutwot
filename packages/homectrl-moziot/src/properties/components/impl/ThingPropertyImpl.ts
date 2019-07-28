@@ -66,6 +66,6 @@ export class ThingPropertyImpl implements ThingProperty {
   }
 
   setValue(value: any): void {
-    this._def.valueChangeRequested(this._thingId, this._id, value);
+    this._def.onValueChangeRequested(this._thingId, this._id, value);
   }
 }
