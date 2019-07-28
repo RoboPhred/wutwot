@@ -1,5 +1,5 @@
 import { injectable, inject } from "microinject";
-import { MozIot } from "homectrl-moziot";
+import { MozIot, SchemaValidationError } from "homectrl-moziot";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 
@@ -51,7 +51,15 @@ export class ThingActionById {
     }
     const input = body[actionId];
     const action = getActionOrThrow(thing, actionId);
-    const request = action.request(input);
-    return this._restifier.actionRequestToRest(request, false);
+
+    try {
+      const request = action.request(input);
+      return this._restifier.actionRequestToRest(request, false);
+    } catch (e) {
+      if (e instanceof SchemaValidationError) {
+        throw createError(HttpStatusCodes.BAD_REQUEST, e.message);
+      }
+      throw e;
+    }
   }
 }

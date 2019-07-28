@@ -1,5 +1,5 @@
 import { injectable, inject } from "microinject";
-import { MozIot } from "homectrl-moziot";
+import { MozIot, SchemaValidationError } from "homectrl-moziot";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { has } from "lodash";
@@ -43,7 +43,16 @@ export class PropertiesById {
       );
     }
     const value = body[propertyId];
-    property.setValue(value);
+
+    try {
+      property.setValue(value);
+    } catch (e) {
+      if (e instanceof SchemaValidationError) {
+        throw createError(HttpStatusCodes.BAD_REQUEST, e.message);
+      }
+      throw e;
+    }
+
     return {
       [propertyId]: value
     };
