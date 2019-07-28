@@ -1,6 +1,6 @@
 import { ContainerModule, composeModules } from "microinject";
 
-import { Restifier } from "./restifier";
+import { Restifier } from "./Restifier";
 import { Endpoint } from "./Endpoint";
 
 import ControllersModule from "./controllers/module";
