@@ -1,4 +1,5 @@
 export interface ThingProperty {
+  readonly id: string;
   readonly title: string;
   readonly semanticType: string | undefined;
   readonly description: string;
@@ -12,5 +13,5 @@ export interface ThingProperty {
 
   readonly value: any;
 
-  set(value: any): void;
+  setValue(value: any): void;
 }

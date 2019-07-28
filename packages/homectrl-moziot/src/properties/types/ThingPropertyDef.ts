@@ -11,4 +11,6 @@ export interface ThingPropertyDef {
   readOnly?: boolean;
 
   initialValue: any;
+
+  propertyChangeRequested(value: any): Promise<void>;
 }

@@ -21,7 +21,7 @@ export class TestPlugin implements MozIotPlugin {
         capabilityType: "action",
         label: "Test action",
         description: "This is a Test Action",
-        type: "TestAction",
+        semanticType: "TestAction",
         input: { type: "null" },
         request: async (input, token) => {
           console.log("Test action pending");
