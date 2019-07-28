@@ -1,8 +1,9 @@
 import { Identifier } from "microinject";
+import { Observable } from "rxjs";
 
 import createSymbol from "../../create-symbol";
 
-import { ThingActionRequest, ThingActionRequestToken } from "../types";
+import { ThingActionRequest, ThingActionRequestStatus } from "../types";
 
 export const ActionRequestFactory: Identifier<
   ActionRequestFactory
@@ -12,6 +13,7 @@ export interface ActionRequestFactory {
     thingId: string,
     actionId: string,
     input: object,
-    timeRequested: string
-  ): { request: ThingActionRequest; token: ThingActionRequestToken };
+    timeRequested: string,
+    status: Observable<ThingActionRequestStatus>
+  ): ThingActionRequest;
 }

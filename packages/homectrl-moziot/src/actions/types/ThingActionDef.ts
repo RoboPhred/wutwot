@@ -1,8 +1,9 @@
 import { JSONSchema6 } from "json-schema";
+import { Observable } from "rxjs";
 
 import { DeepImmutableObject } from "../../types";
 
-import { ThingActionRequestToken } from "../../action-requests";
+import { ThingActionRequestStatus } from "../../action-requests";
 
 export interface ThingActionDef {
   readonly title: string;
@@ -12,7 +13,6 @@ export interface ThingActionDef {
   onActionInvocationRequested(
     thingId: string,
     actionId: string,
-    input: any,
-    token: ThingActionRequestToken
-  ): void;
+    input: any
+  ): Observable<ThingActionRequestStatus>;
 }

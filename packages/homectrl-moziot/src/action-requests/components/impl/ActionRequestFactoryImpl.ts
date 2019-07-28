@@ -1,11 +1,11 @@
 import { injectable, singleton, provides } from "microinject";
 import uuidV4 from "uuid/v4";
+import { Observable } from "rxjs";
 
-import { ThingActionRequest, ThingActionRequestToken } from "../../types";
+import { ThingActionRequest, ThingActionRequestStatus } from "../../types";
 
 import { ActionRequestFactory } from "../ActionRequestFactory";
 
-import { ThingActionRequestTokenImpl } from "./ThingActionRequestTokenImpl";
 import { ThingActionRequestImpl } from "./ThingActionRequestImpl";
 
 @injectable()
@@ -16,17 +16,18 @@ export class ActionRequestFactoryImpl implements ActionRequestFactory {
     thingId: string,
     actionId: string,
     input: object,
-    timeRequested: string
-  ): { request: ThingActionRequest; token: ThingActionRequestToken } {
-    const token = new ThingActionRequestTokenImpl(
-      uuidV4(),
+    timeRequested: string,
+    status: Observable<ThingActionRequestStatus>
+  ): ThingActionRequest {
+    const id = uuidV4();
+    const request = new ThingActionRequestImpl(
+      id,
       thingId,
       actionId,
       input,
-      timeRequested
+      timeRequested,
+      status
     );
-    const request = new ThingActionRequestImpl(token);
-
-    return { token, request };
+    return request;
   }
 }

@@ -1,21 +1,22 @@
+import { Observable } from "rxjs";
+
 import { MaybeArray } from "../../../types";
+import { ThingService, Thing, ThingDef } from "../../../things";
+import { ActionService } from "../../../actions";
+
+import {
+  ActionRequestService,
+  ThingActionRequestStatus,
+  ThingActionRequest
+} from "../../../action-requests";
+import { ThingTypesService } from "../../../thing-types";
+import { PropertyService } from "../../../properties";
 
 import {
   MozIotPlugin,
   MozIotPluginContext,
   ThingCapabilityDef
 } from "../../contracts";
-
-import { ThingService, Thing, ThingDef } from "../../../things";
-
-import { ActionService } from "../../../actions";
-
-import {
-  ActionRequestService,
-  ThingActionRequestToken
-} from "../../../action-requests";
-import { ThingTypesService } from "../../../thing-types";
-import { PropertyService } from "../../../properties";
 
 export class PluginAdapterImpl {
   constructor(
@@ -97,8 +98,9 @@ export class PluginAdapterImpl {
     thingId: string,
     actionId: string,
     input: object,
-    timeRequested: string
-  ): ThingActionRequestToken {
+    timeRequested: string,
+    status: Observable<ThingActionRequestStatus>
+  ): ThingActionRequest {
     const action = this._actionService.getAction(thingId, actionId);
     if (!action) {
       throw new Error("No action exists on the given thing with the given id.");
@@ -108,13 +110,14 @@ export class PluginAdapterImpl {
       throw new Error("The plugin does not own the requested action.");
     }
 
-    const token = this._actionRequestService.addRequest(
+    const request = this._actionRequestService.addRequest(
       thingId,
       actionId,
       input,
-      timeRequested
+      timeRequested,
+      status
     );
-    return token;
+    return request;
   }
 }
 

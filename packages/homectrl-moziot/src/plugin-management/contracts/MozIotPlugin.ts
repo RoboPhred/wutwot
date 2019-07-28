@@ -1,4 +1,5 @@
 import { Identifier } from "microinject";
+import { Observable } from "rxjs";
 
 import { MaybeArray } from "../../types";
 
@@ -6,8 +7,11 @@ import createSymbol from "../../create-symbol";
 
 import { Thing, ThingDef } from "../../things";
 import { ThingActionDef } from "../../actions";
-import { ThingActionRequestToken } from "../../action-requests";
-import { ThingPropertyDef } from "../../properties/types/ThingPropertyDef";
+import {
+  ThingActionRequestStatus,
+  ThingActionRequest
+} from "../../action-requests";
+import { ThingPropertyDef } from "../../properties";
 
 export const MozIotPlugin: Identifier<MozIotPlugin> = createSymbol(
   "MozIotPlugin"
@@ -66,13 +70,15 @@ export interface MozIotPluginContext {
    * @param actionId The ID of the action to create a request for.
    * @param input The input of the request
    * @param timeRequested The timestamp at which the action was requested.
+   * @param status An observable producing status updates for this request.
    */
   addActionRequest(
     thingId: string,
     actionId: string,
     input: object,
-    timeRequested: string
-  ): ThingActionRequestToken;
+    timeRequested: string,
+    status: Observable<ThingActionRequestStatus>
+  ): ThingActionRequest;
 }
 
 export type ThingCapabilityDef =

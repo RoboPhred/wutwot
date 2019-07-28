@@ -1,37 +1,68 @@
-import {
-  ThingActionRequest,
-  ThingActionRequestToken,
-  ThingActionRequestStatus
-} from "../../types";
+import { Observable } from "rxjs";
+
+import { ThingActionRequest, ThingActionRequestStatus } from "../../types";
 
 export class ThingActionRequestImpl implements ThingActionRequest {
-  constructor(private _token: ThingActionRequestToken) {}
+  private _lastStatus: ThingActionRequestStatus;
+  private _timeCompleted: string | null = null;
+
+  constructor(
+    private _id: string,
+    private _thingId: string,
+    private _actionId: string,
+    private _input: any,
+    private _timeRequested: string,
+    status: Observable<ThingActionRequestStatus>
+  ) {
+    this._lastStatus = ThingActionRequestStatus.Pending;
+    status.subscribe({
+      next: status => {
+        if (ThingActionRequestStatus.canTransition(this._lastStatus, status)) {
+          this._lastStatus = status;
+        }
+        if (this._lastStatus === ThingActionRequestStatus.Completed) {
+          this._timeCompleted = new Date().toISOString();
+        }
+      },
+      complete: () => {
+        if (!ThingActionRequestStatus.isFinalStatus(this._lastStatus)) {
+          this._lastStatus = ThingActionRequestStatus.Completed;
+          this._timeCompleted = new Date().toISOString();
+        }
+      },
+      error: () => {
+        if (!ThingActionRequestStatus.isFinalStatus(this._lastStatus)) {
+          this._lastStatus = ThingActionRequestStatus.Error;
+        }
+      }
+    });
+  }
 
   get id(): string {
-    return this._token.id;
+    return this._id;
   }
 
   get thingId(): string {
-    return this._token.thingId;
+    return this._thingId;
   }
 
   get actionId(): string {
-    return this._token.actionId;
+    return this._actionId;
   }
 
   get input(): any {
-    return this._token.input;
+    return this._input;
   }
 
   get timeRequested(): string {
-    return this._token.timeRequested;
+    return this._timeRequested;
   }
 
   get timeCompleted(): string | null {
-    return this._token.timeCompleted;
+    return this._timeCompleted;
   }
 
   get status(): ThingActionRequestStatus {
-    return this._token.status;
+    return this._lastStatus;
   }
 }

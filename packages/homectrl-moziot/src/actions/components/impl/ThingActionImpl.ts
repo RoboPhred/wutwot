@@ -58,18 +58,20 @@ export class ThingActionImpl implements ThingAction {
   }
 
   request(input: any): ThingActionRequest {
-    const { request, token } = this._actionRequestFactory.createActionRequest(
+    const status = this._def.onActionInvocationRequested(
+      this._thingId,
+      this._id,
+      input
+    );
+
+    const request = this._actionRequestFactory.createActionRequest(
       this._thingId,
       this._id,
       input,
-      new Date().toISOString()
+      new Date().toISOString(),
+      status
     );
-    this._def.onActionInvocationRequested(
-      this._thingId,
-      this._id,
-      input,
-      token
-    );
+
     this._actionRepository.addRequest(request);
     return request;
   }

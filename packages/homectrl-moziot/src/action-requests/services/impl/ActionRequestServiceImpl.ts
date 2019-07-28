@@ -1,11 +1,11 @@
 import { inject, injectable, singleton, provides } from "microinject";
-
-import { ThingActionRequestToken } from "../../types";
+import { Observable } from "rxjs";
 
 import {
   ActionRequestFactory,
   ActionRequestRepository
 } from "../../components";
+import { ThingActionRequestStatus, ThingActionRequest } from "../../types";
 
 import { ActionRequestService } from "../ActionRequestService";
 
@@ -23,16 +23,18 @@ export class ActionRequestServiceImpl implements ActionRequestService {
     thingId: string,
     actionId: string,
     input: object,
-    timeRequested: string
-  ): ThingActionRequestToken {
-    const { request, token } = this._factory.createActionRequest(
+    timeRequested: string,
+    status: Observable<ThingActionRequestStatus>
+  ): ThingActionRequest {
+    const request = this._factory.createActionRequest(
       thingId,
       actionId,
       input,
-      timeRequested
+      timeRequested,
+      status
     );
 
     this._repository.addRequest(request);
-    return token;
+    return request;
   }
 }

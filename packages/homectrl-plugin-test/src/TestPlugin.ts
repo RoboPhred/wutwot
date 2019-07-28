@@ -2,11 +2,12 @@ import {
   MozIotPlugin,
   MozIotPluginContext,
   ThingActionRequestStatus,
-  ThingActionRequestToken,
-  ThingPropertyCapabilityDef
+  ThingPropertyCapabilityDef,
+  ThingActionCapabilityDef
 } from "homectrl-moziot";
 
-import { Subject } from "rxjs";
+import { Subject, of, merge } from "rxjs";
+import { map, delay } from "rxjs/operators";
 
 export class TestPlugin implements MozIotPlugin {
   readonly id: string = "test-plugin";
@@ -21,32 +22,50 @@ export class TestPlugin implements MozIotPlugin {
         capabilityType: "type",
         type: "TestThing"
       },
-      {
-        capabilityType: "action",
-        title: "Test action",
-        description: "This is a Test Action",
-        semanticType: "TestAction",
-        input: { type: "null" },
-        onActionInvocationRequested: async (
-          thingId: string,
-          actionId: string,
-          input: any,
-          token: ThingActionRequestToken
-        ) => {
-          console.log("Test action pending");
-
-          await wait(1000);
-          token.setStatus(ThingActionRequestStatus.Started);
-          console.log("Test action started");
-
-          await wait(1000);
-          token.setStatus(ThingActionRequestStatus.Completed);
-          console.log("Test action completed");
-        }
-      },
+      createTestAction("Test Action", "This is a Test Action"),
       createTestProperty("Test Property", "This is a Test Property")
     );
   }
+}
+
+function createTestAction(
+  title: string,
+  description: string
+): ThingActionCapabilityDef {
+  return {
+    capabilityType: "action",
+    title,
+    description,
+    semanticType: "TestAction",
+    input: { type: "null" },
+    onActionInvocationRequested: (
+      thingId: string,
+      actionId: string,
+      input: any
+    ) => {
+      // TODO: There should be a more intuitive way of mixing promises (delays) and observables.
+      // Probably write a generator iterator that resolves promises but forwards values out of an observable.
+      //  ...Probably something like that in rxjs already, but I couldn't find it.
+      console.log("Test action pending");
+      const dummy = of(null);
+      return merge(
+        dummy.pipe(
+          delay(1000),
+          map(x => {
+            console.log("Test action started");
+            return ThingActionRequestStatus.Started;
+          })
+        ),
+        dummy.pipe(
+          delay(2000),
+          map(x => {
+            console.log("Test action completed");
+            return ThingActionRequestStatus.Completed;
+          })
+        )
+      );
+    }
+  };
 }
 
 function createTestProperty(
