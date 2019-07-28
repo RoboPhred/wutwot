@@ -2,8 +2,11 @@ import {
   MozIotPlugin,
   MozIotPluginContext,
   ThingActionRequestStatus,
-  ThingActionRequestToken
+  ThingActionRequestToken,
+  ThingPropertyCapabilityDef
 } from "homectrl-moziot";
+
+import { Subject } from "rxjs";
 
 export class TestPlugin implements MozIotPlugin {
   readonly id: string = "test-plugin";
@@ -41,23 +44,32 @@ export class TestPlugin implements MozIotPlugin {
           console.log("Test action completed");
         }
       },
-      {
-        capabilityType: "property",
-        title: "Test property",
-        description: "This is a Test Property",
-        type: "string",
-        initialValue: "hello",
-        onValueChangeRequested: (
-          thingId: string,
-          propertyId: string,
-          value: any
-        ) => {
-          console.log("Test value changed");
-          plugin.setPropertyValue(thingId, propertyId, value);
-        }
-      }
+      createTestProperty("Test Property", "This is a Test Property")
     );
   }
+}
+
+function createTestProperty(
+  title: string,
+  description: string
+): ThingPropertyCapabilityDef {
+  const values = new Subject<string>();
+  return {
+    capabilityType: "property",
+    title,
+    description,
+    type: "string",
+    initialValue: "hello",
+    values,
+    onValueChangeRequested: (
+      thingId: string,
+      propertyId: string,
+      value: any
+    ) => {
+      console.log("Test value changed");
+      values.next(value);
+    }
+  };
 }
 
 function wait(delay: number): Promise<void> {

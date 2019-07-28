@@ -1,4 +1,4 @@
-import { injectable, singleton, provides, inject } from "microinject";
+import { injectable, singleton, provides } from "microinject";
 
 import { IdMapper } from "../../../utils";
 
@@ -6,18 +6,12 @@ import { ThingPropertyDef, ThingProperty } from "../../types";
 
 import { PropertyFactory } from "../PropertyFactory";
 import { ThingPropertyImpl } from "./ThingPropertyImpl";
-import { PropertyValueRegistry } from "../../../property-values";
 
 @injectable()
 @singleton()
 @provides(PropertyFactory)
 export class PropertyFactoryImpl implements PropertyFactory {
   private _thingPropertyIdMappers = new Map<string, IdMapper>();
-
-  constructor(
-    @inject(PropertyValueRegistry)
-    private _propertyValueRegistry: PropertyValueRegistry
-  ) {}
 
   createProperty(
     propertyDef: ThingPropertyDef,
@@ -31,12 +25,6 @@ export class PropertyFactoryImpl implements PropertyFactory {
     }
     const id = idMapper.createId(propertyDef.title);
 
-    return new ThingPropertyImpl(
-      propertyDef,
-      id,
-      thingId,
-      owner,
-      this._propertyValueRegistry
-    );
+    return new ThingPropertyImpl(propertyDef, id, thingId, owner);
   }
 }

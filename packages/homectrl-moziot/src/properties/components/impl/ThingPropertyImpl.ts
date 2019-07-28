@@ -1,16 +1,19 @@
-import { PropertyValueRegistry } from "../../../property-values";
-
 import { ThingProperty, ThingPropertyDef } from "../../types";
 
 export class ThingPropertyImpl implements ThingProperty {
+  private _lastValue: any;
+
   constructor(
     private _def: ThingPropertyDef,
     private _id: string,
     private _thingId: string,
-    private _owner: object,
-    private _propertyValueRegistry: PropertyValueRegistry
+    private _owner: object
   ) {
     this._def = { ..._def };
+    this._lastValue = this._def.initialValue;
+    this._def.values.subscribe({
+      next: (value: any) => (this._lastValue = value)
+    });
   }
 
   get ownerPlugin(): object {
@@ -62,7 +65,7 @@ export class ThingPropertyImpl implements ThingProperty {
   }
 
   get value(): any {
-    return this._propertyValueRegistry.getValue(this._thingId, this._id);
+    return this._lastValue;
   }
 
   setValue(value: any): void {

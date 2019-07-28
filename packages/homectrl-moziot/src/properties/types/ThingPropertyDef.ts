@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export interface ThingPropertyDef {
   title: string;
   semanticType?: string;
@@ -11,6 +13,8 @@ export interface ThingPropertyDef {
   readOnly?: boolean;
 
   initialValue: any;
+
+  values: Observable<any>;
 
   onValueChangeRequested(thingId: string, propertyId: string, value: any): void;
 }

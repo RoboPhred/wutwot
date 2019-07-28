@@ -26,6 +26,7 @@
   "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
   "dependencies": {
     "microinject": "^0.5.2",
+    "rxjs": "^6.5.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

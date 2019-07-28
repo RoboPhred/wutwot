@@ -31,5 +31,8 @@
   },
   "peerDependencies": {
     "homectrl-moziot": "^1.0.0"
+  },
+  "dependencies": {
+    "rxjs": "^6.5.2"
   }
 }
