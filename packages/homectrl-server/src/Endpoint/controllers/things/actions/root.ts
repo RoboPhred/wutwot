@@ -4,7 +4,7 @@ import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { mapValues } from "lodash";
 
-import { Restifier } from "../../../restifier";
+import { Restifier } from "../../../Restifier";
 import {
   controller,
   get,

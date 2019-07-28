@@ -24,6 +24,10 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._id;
   }
 
+  get thingId(): string {
+    return this._thingId;
+  }
+
   get title(): string {
     return this._def.title;
   }

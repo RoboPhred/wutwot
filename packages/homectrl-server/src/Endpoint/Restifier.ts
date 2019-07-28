@@ -4,6 +4,10 @@ import { URL } from "url";
 import { mapValues } from "lodash";
 
 import { RootURL } from "../config";
+import {
+  ThingProperty,
+  PropertyEventSource
+} from "homectrl-moziot/dts/properties";
 
 const WOT_CONTEXT = "https://iot.mozilla.org/schemas/";
 
@@ -19,7 +23,7 @@ export class Restifier {
       title: thing.title,
       description: thing.description,
       actions: mapValues(thing.actions, x => this.actionToRest(x)),
-      // TODO: properties
+      properties: mapValues(thing.properties, x => this.propertyToRest(x)),
       // TODO: events
       links: buildArray(
         !isPrimary && createLink("href", `/things/${thing.id}`),
@@ -40,6 +44,27 @@ export class Restifier {
       input: action.input,
       links: [
         createLink("href", `/things/${action.thingId}/actions/${action.id}`)
+      ]
+    };
+  }
+
+  public propertyToRest(property: ThingProperty): object {
+    return {
+      title: property.title,
+      description: property.description,
+      "@type": property.semanticType,
+      type: property.type,
+      unit: property.unit,
+      minimum: property.minimum,
+      maximum: property.maximum,
+      multipleOf: property.multipleOf,
+      enum: property.enum,
+      readOnly: property.readOnly,
+      links: [
+        createLink(
+          "href",
+          `/things/${property.thingId}/properties/${property.id}`
+        )
       ]
     };
   }

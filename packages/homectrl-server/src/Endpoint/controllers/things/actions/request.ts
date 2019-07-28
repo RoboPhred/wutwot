@@ -1,12 +1,13 @@
+import { MozIot } from "homectrl-moziot";
+import { inject, injectable } from "microinject";
+
 import { controller, get, param } from "../../../infrastructure";
 import {
   getThingOrThrow,
   getActionOrThrow,
   getRequestOrThrow
 } from "../../../controller-utils";
-import { inject, injectable } from "microinject";
-import { MozIot } from "homectrl-moziot";
-import { Restifier } from "../../../restifier";
+import { Restifier } from "../../../Restifier";
 
 @injectable()
 @controller("/things/:thingId/actions/:actionId/:requestId")

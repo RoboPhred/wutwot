@@ -47,6 +47,9 @@ function createControllerMethod(
     case "post":
       router.post(controllerMetadata.path, handler);
       break;
+    case "put":
+      router.put(controllerMetadata.path, handler);
+      break;
     default:
       throw new Error(
         `Unhandled controller route method type "${methodMetadata.method}".`

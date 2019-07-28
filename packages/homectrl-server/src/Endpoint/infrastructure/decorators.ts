@@ -55,6 +55,18 @@ export function post(): (
   };
 }
 
+export function put(): (
+  target: any,
+  propertyKey: string,
+  descriptor: PropertyDescriptor
+) => void {
+  return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    mergeMethodMetadata(target, propertyKey, {
+      method: "put"
+    });
+  };
+}
+
 export function status(
   code: number
 ): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void {

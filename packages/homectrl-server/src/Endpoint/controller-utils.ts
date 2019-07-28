@@ -7,6 +7,7 @@ import {
   ThingActionRequest
 } from "homectrl-moziot";
 import { has } from "lodash";
+import { ThingProperty } from "homectrl-moziot/dts/properties";
 
 export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
   const thing = mozIot.things.find(x => x.id === thingId);
@@ -45,4 +46,18 @@ export function getRequestOrThrow(
     );
   }
   return request;
+}
+
+export function getPropertyOrThrow(
+  thing: Thing,
+  propertyId: string,
+  errorCode: number = HttpStatusCodes.NOT_FOUND
+): ThingProperty {
+  if (!has(thing.properties, propertyId)) {
+    throw createError(
+      errorCode,
+      "A ThingProperty on the given Thing with the specified ID was not found."
+    );
+  }
+  return thing.properties[propertyId];
 }

@@ -1,7 +1,7 @@
 import { injectable, inject } from "microinject";
 import { MozIot } from "homectrl-moziot";
 
-import { Restifier } from "../../restifier";
+import { Restifier } from "../../Restifier";
 import { controller, get, param } from "../../infrastructure";
 import { getThingOrThrow } from "../../controller-utils";
 

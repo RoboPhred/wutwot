@@ -2,6 +2,8 @@ export interface ThingProperty {
   readonly ownerPlugin: object;
 
   readonly id: string;
+  readonly thingId: string;
+
   readonly title: string;
   readonly semanticType: string | undefined;
   readonly description: string;
