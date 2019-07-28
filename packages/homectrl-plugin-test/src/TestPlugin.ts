@@ -6,8 +6,7 @@ import {
   ThingActionCapabilityDef
 } from "homectrl-moziot";
 
-import { Subject, of, merge } from "rxjs";
-import { map, delay } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 export class TestPlugin implements MozIotPlugin {
   readonly id: string = "test-plugin";
@@ -46,24 +45,21 @@ function createTestAction(
       // TODO: There should be a more intuitive way of mixing promises (delays) and observables.
       // Probably write a generator iterator that resolves promises but forwards values out of an observable.
       //  ...Probably something like that in rxjs already, but I couldn't find it.
-      console.log("Test action pending");
-      const dummy = of(null);
-      return merge(
-        dummy.pipe(
-          delay(1000),
-          map(x => {
-            console.log("Test action started");
-            return ThingActionRequestStatus.Started;
-          })
-        ),
-        dummy.pipe(
-          delay(2000),
-          map(x => {
-            console.log("Test action completed");
-            return ThingActionRequestStatus.Completed;
-          })
-        )
-      );
+      var status = new Subject<ThingActionRequestStatus>();
+      const doWork = async () => {
+        console.log("Test action pending");
+
+        await wait(1000);
+        console.log("Test action started");
+        status.next(ThingActionRequestStatus.Started);
+
+        await wait(1000);
+        console.log("Test action completed");
+        // Will auto advance status to Completed
+        status.complete();
+      };
+      doWork().catch(e => status.error(e));
+      return status;
     }
   };
 }
