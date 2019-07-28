@@ -1,8 +1,9 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
-import { PropertyValueRegistry } from "../PropertyValueRegistry";
 import { ThingEventSource } from "../../../things";
 import { PropertyEventSource } from "../../../properties";
+
+import { PropertyValueRegistry } from "../PropertyValueRegistry";
 
 @injectable()
 @singleton()

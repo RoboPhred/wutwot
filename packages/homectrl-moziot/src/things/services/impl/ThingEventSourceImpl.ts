@@ -1,20 +1,20 @@
 import { EventEmitter } from "events";
 import { injectable, singleton, provides } from "microinject";
 
+import { Thing } from "../../types";
+import { ThingEventSink } from "../../components/ThingEventSink";
+
 import {
   ThingEventSource,
   ThingAddedEventArgs,
   ThingRemovedEventArgs
-} from "../../services";
-
-import { ThingEventSink } from "../ThingEventSink";
-import { Thing } from "../../types";
+} from "../ThingEventSource";
 
 @injectable()
 @singleton()
 @provides(ThingEventSource)
 @provides(ThingEventSink)
-export class ThingEventeerImpl extends EventEmitter
+export class ThingEventSourceImpl extends EventEmitter
   implements ThingEventSource, ThingEventSink {
   onThingAdded(thingId: string, thing: Thing): void {
     const e: ThingAddedEventArgs = {
