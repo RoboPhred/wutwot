@@ -1,23 +1,21 @@
-import { EventEmitter } from "events";
-
-import { injectable, singleton, provides } from "microinject";
+import { injectable, singleton, provides, inject } from "microinject";
 
 import { ThingProperty } from "../../types";
 
-import {
-  PropertyRegistry,
-  ThingPropertyAddedEventArgs,
-  ThingPropertyRemovedEventArgs
-} from "../PropertyRegistry";
+import { PropertyRegistry } from "../PropertyRegistry";
 import { PropertyRepository } from "../PropertyRepository";
+import { PropertyEventSink } from "../PropertyEventSink";
 
 @injectable()
 @singleton()
 @provides(PropertyRegistry)
 @provides(PropertyRepository)
-export class PropertyRepositoryImpl extends EventEmitter
-  implements PropertyRepository {
+export class PropertyRepositoryImpl implements PropertyRepository {
   private _propertiesByThingId = new Map<string, ThingProperty[]>();
+
+  constructor(
+    @inject(PropertyEventSink) private _propertyEventSink: PropertyEventSink
+  ) {}
 
   addProperty(thingId: string, property: ThingProperty): void {
     let properties = this._propertiesByThingId.get(thingId);
@@ -31,13 +29,7 @@ export class PropertyRepositoryImpl extends EventEmitter
     }
 
     properties.push(property);
-
-    const e: ThingPropertyAddedEventArgs = {
-      thingId,
-      propertyId: property.id,
-      property
-    };
-    this.emit("property.add", e);
+    this._propertyEventSink.onPropertyAdded(thingId, property.id, property);
   }
 
   removeProperty(thingId: string, propertyId: string): void {
@@ -45,12 +37,7 @@ export class PropertyRepositoryImpl extends EventEmitter
     const idx = properties.findIndex(x => x.id === propertyId);
     if (idx !== -1) {
       properties.splice(idx, 1);
-
-      const e: ThingPropertyRemovedEventArgs = {
-        thingId,
-        propertyId
-      };
-      this.emit("property.remove", e);
+      this._propertyEventSink.onPropertyRemoved(thingId, propertyId);
     }
   }
 

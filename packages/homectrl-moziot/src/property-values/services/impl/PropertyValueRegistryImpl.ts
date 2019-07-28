@@ -1,14 +1,30 @@
-import { injectable, singleton, provides } from "microinject";
+import { injectable, singleton, provides, inject } from "microinject";
 
 import { PropertyValueRegistry } from "../PropertyValueRegistry";
+import { ThingEventSource } from "../../../things";
+import { PropertyEventSource } from "../../../properties";
 
 @injectable()
 @singleton()
 @provides(PropertyValueRegistry)
 export class PropertyValueRegistryImpl implements PropertyValueRegistry {
-  // TODO: Prune thingIds that are removed
-  // TODO: Prune properties that are removed
   private _propertyValueMap = new Map<string, Map<string, any>>();
+
+  constructor(
+    @inject(ThingEventSource) thingEventSource: ThingEventSource,
+    @inject(PropertyEventSource) propertyEventSource: PropertyEventSource
+  ) {
+    thingEventSource.on("thing.remove", ({ thingId }) => {
+      this._propertyValueMap.delete(thingId);
+    });
+    propertyEventSource.on("property.remove", ({ thingId, propertyId }) => {
+      const properties = this._propertyValueMap.get(thingId);
+      if (!properties) {
+        return;
+      }
+      properties.delete(propertyId);
+    });
+  }
 
   getValue(thingId: string, propertyId: string) {
     const thingProperties = this._propertyValueMap.get(thingId);

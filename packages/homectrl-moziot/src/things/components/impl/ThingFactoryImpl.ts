@@ -5,10 +5,12 @@ import { ActionService } from "../../../actions";
 
 import { ThingDef, Thing } from "../../types";
 
-import { ThingFactory } from "../ThingFactory";
-import { ThingImpl } from "./ThingImpl";
 import { ThingTypesService } from "../../../thing-types";
 import { PropertyService } from "../../../properties";
+
+import { ThingFactory } from "../ThingFactory";
+
+import { ThingImpl } from "./ThingImpl";
 
 @injectable()
 @singleton()

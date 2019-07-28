@@ -1,28 +1,22 @@
-import { EventEmitter } from "events";
-
-import { injectable, provides, singleton } from "microinject";
+import { injectable, provides, singleton, inject } from "microinject";
 
 import { Thing } from "../../types";
 
 import { ThingRepository } from "../ThingRepository";
 
-import {
-  ThingRegistry,
-  ThingAddedEventArgs,
-  ThingRemovedEventArgs
-} from "../ThingRegistry";
+import { ThingRegistry } from "../ThingRegistry";
+import { ThingEventSink } from "../ThingEventSink";
 
 @injectable()
 @singleton()
 @provides(ThingRepository)
 @provides(ThingRegistry)
-export class ThingRepositoryImpl extends EventEmitter
-  implements ThingRepository {
+export class ThingRepositoryImpl implements ThingRepository {
   private _things = new Map<string, Thing>();
 
-  constructor() {
-    super();
-  }
+  constructor(
+    @inject(ThingEventSink) private _thingEventSink: ThingEventSink
+  ) {}
 
   [Symbol.iterator](): IterableIterator<Thing> {
     return this._things.values();
@@ -38,20 +32,12 @@ export class ThingRepositoryImpl extends EventEmitter
     }
 
     this._things.set(thing.id, thing);
-
-    const e: ThingAddedEventArgs = {
-      thingId: thing.id,
-      thing
-    };
-    this.emit("thing.add", e);
+    this._thingEventSink.onThingAdded(thing.id, thing);
   }
 
   removeThing(thingId: string): void {
     if (this._things.delete(thingId)) {
-      const e: ThingRemovedEventArgs = {
-        thingId
-      };
-      this.emit("thing.remove", e);
+      this._thingEventSink.onThingRemoved(thingId);
     }
   }
 }
