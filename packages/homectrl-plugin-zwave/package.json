@@ -1,0 +1,28 @@
+{
+  "name": "homectrl-plugin-zwave",
+  "version": "1.0.0",
+  "description": "Z-Wave support for HomeCTRL",
+  "main": "lib/index.js",
+  "types": "dts/index.d.ts",
+  "scripts": {
+    "clean": "rimraf lib",
+    "prebuild": "npm run clean",
+    "build": "tsc -p src"
+  },
+  "keywords": [
+    "HomeCTRL",
+    "Z-Wave",
+    "zwave"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "dependencies": {
+    "microinject": "^0.5.2",
+    "serialport": "^7.1.5"
+  },
+  "devDependencies": {
+    "@types/serialport": "^7.0.4",
+    "rimraf": "^2.6.3",
+    "typescript": "^3.5.3"
+  }
+}
