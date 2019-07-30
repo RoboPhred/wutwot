@@ -3,7 +3,7 @@ import { injectable, singleton, provides, inject } from "microinject";
 import { IdMapper } from "../../../utils";
 import { ActionService } from "../../../actions";
 
-import { ThingDef, Thing } from "../../types";
+import { ThingDef, Thing, validateThingDefOrThrow } from "../../types";
 
 import { ThingTypesService } from "../../../thing-types";
 import { PropertyService } from "../../../properties";
@@ -25,7 +25,7 @@ export class ThingFactoryImpl implements ThingFactory {
   ) {}
 
   createThing(def: ThingDef, owner: object): Thing {
-    // TODO: Validate def
+    validateThingDefOrThrow(def);
     const id = this._idMapper.createId(def.title);
     return new ThingImpl(
       def,

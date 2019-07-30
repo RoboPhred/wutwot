@@ -20,3 +20,5 @@ export interface ThingPropertyDef {
 
   onValueChangeRequested(thingId: string, propertyId: string, value: any): void;
 }
+
+// TODO: Validator.  Validate in factory.

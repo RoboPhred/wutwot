@@ -44,9 +44,24 @@ export class ZWavePlugin implements MozIotPlugin {
   @autobind()
   private _handleNodeAdded({ node }: ZWaveNodeAddedEvent) {
     const thing = this._plugin.addThing({
-      title: node.name,
+      title: `${node.name} [${node.id}]`.trim(),
       description: `${node.product} (${node.manufacturer})`
     });
+    for (const class_id of Object.keys(node.classes).map(Number)) {
+      for (const index of Object.keys(node.classes[class_id]).map(Number)) {
+        for (const instance of Object.keys(node.classes[class_id][index]).map(
+          Number
+        )) {
+          this._handleValueAdded({
+            nodeId: node.id,
+            commandClass: class_id,
+            index,
+            instance,
+            value: node.classes[class_id][index][instance]
+          });
+        }
+      }
+    }
     this._thingsByNodeId.set(node.id, thing);
   }
 
@@ -68,50 +83,63 @@ export class ZWavePlugin implements MozIotPlugin {
     }
   }
 
-  private _addBinarySwitchValue(value: ZWaveValue) {
-    const thing = this._thingsByNodeId.get(value.node_id);
+  private _addBinarySwitchValue(zWaveValue: ZWaveValue) {
+    const thing = this._thingsByNodeId.get(zWaveValue.node_id);
     if (!thing) {
       return;
     }
 
-    this._zwave.enablePolling(value);
+    // this._zwave.enablePolling(value);
+    let isRemoved = false;
+    const values = Observable.create((o: Observer<boolean>) => {
+      function handleChange({ value: changedValue }: ZWaveValueChangedEvent) {
+        if (!areValuesSame(zWaveValue, changedValue)) {
+          return;
+        }
+        o.next(Boolean(changedValue.value));
+      }
+      function handleRemove({
+        nodeId,
+        commandClass,
+        index
+      }: ZWaveValueRemovedEvent) {
+        if (
+          zWaveValue.node_id !== nodeId ||
+          zWaveValue.class_id !== commandClass ||
+          zWaveValue.index !== index
+        ) {
+          return;
+        }
+        unsub();
+      }
+      const unsub = () => {
+        o.complete();
+        this._zwaveEvents.removeListener("value.changed", handleChange);
+        this._zwaveEvents.removeListener("value.removed", handleRemove);
+        isRemoved = true;
+        // TODO: remove capability
+      };
+      this._zwaveEvents.on("value.changed", handleChange);
+      this._zwaveEvents.on("value.removed", handleRemove);
+    });
 
     this._plugin.addCapability(thing.id, {
       capabilityType: "property",
-      title: value.label,
-      description: value.help,
+      title: "Switch", //value.label || "unnamed",
+      description: zWaveValue.label,
       type: "boolean",
-      initialValue: Boolean(value.value),
-      values: Observable.create((o: Observer<boolean>) => {
-        function handleChange({ value: changedValue }: ZWaveValueChangedEvent) {
-          if (!areValuesSame(value, changedValue)) {
-            return;
-          }
-          o.next(Boolean(changedValue.value));
+      initialValue: Boolean(zWaveValue.value),
+      values,
+      onValueChangeRequested: (
+        thingId: string,
+        propertyId: string,
+        value: boolean
+      ) => {
+        if (isRemoved) {
+          return;
         }
-        function handleRemove({
-          nodeId,
-          commandClass,
-          index
-        }: ZWaveValueRemovedEvent) {
-          if (
-            value.node_id !== nodeId ||
-            value.class_id !== commandClass ||
-            value.index !== index
-          ) {
-            return;
-          }
-          unsub();
-        }
-        const unsub = () => {
-          o.complete();
-          this._zwaveEvents.removeListener("value.changed", handleChange);
-          this._zwaveEvents.removeListener("value.removed", handleRemove);
-        };
-        this._zwaveEvents.on("value.changed", handleChange);
-        this._zwaveEvents.on("value.removed", handleRemove);
-      }),
-      onValueChangeRequested(thingId, propertyId, value: boolean) {}
+        this._zwave.setValue(zWaveValue, value);
+      }
     });
   }
 }

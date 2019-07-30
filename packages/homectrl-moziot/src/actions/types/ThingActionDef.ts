@@ -16,3 +16,5 @@ export interface ThingActionDef {
     input: any
   ): Observable<ThingActionRequestStatus>;
 }
+
+// TODO: Validator.  Validate in factory.

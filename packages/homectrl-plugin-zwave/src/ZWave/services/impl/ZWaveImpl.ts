@@ -7,18 +7,14 @@ import { AdapterDiscoverer } from "../../components/AdapterDiscoverer";
 
 import { ZWave } from "../ZWave";
 import { ZWaveEventSink } from "../../components";
-
-interface NodeData extends NodeInfo {
-  id: number;
-  classes: Record<number, Record<number, Value>>;
-}
+import { ZWaveNode } from "../../types";
 
 @injectable()
 @provides(ZWave)
 export class ZWaveImpl implements ZWave {
   private _zwave: OZW;
 
-  private _nodes: Record<number, NodeData> = {};
+  private _nodes: Record<number, ZWaveNode> = {};
 
   constructor(
     @inject(AdapterDiscoverer) private _adapterDiscoverer: AdapterDiscoverer,
@@ -48,19 +44,17 @@ export class ZWaveImpl implements ZWave {
         }
       });
       console.log("available", nodeId);
+      this._zwaveEventSink.onNodeAdded(this._nodes[nodeId]);
     });
     this._zwave.on("node ready", (nodeId: number, nodeInfo: NodeInfo) => {
       merge(this._nodes, {
         [nodeId]: {
           id: nodeId,
+          classes: {},
           ...nodeInfo
         }
       });
       console.log("ready", nodeId);
-      this._zwaveEventSink.onNodeAdded({
-        id: nodeId,
-        ...nodeInfo
-      });
     });
     this._zwave.on(
       "value added",
@@ -69,7 +63,9 @@ export class ZWaveImpl implements ZWave {
           [nodeId]: {
             classes: {
               [comclass]: {
-                [value.index]: value
+                [value.index]: {
+                  [value.instance]: value
+                }
               }
             }
           }
@@ -85,7 +81,9 @@ export class ZWaveImpl implements ZWave {
           [nodeId]: {
             classes: {
               [comclass]: {
-                [value.index]: value
+                [value.index]: {
+                  [value.instance]: value
+                }
               }
             }
           }
@@ -111,6 +109,10 @@ export class ZWaveImpl implements ZWave {
     this._zwave.on("node removed", (nodeid: number) => {
       delete this._nodes[nodeid];
     });
+  }
+
+  setValue(valueId: ValueId, value: string | number | boolean): void {
+    this._zwave.setValue(valueId, value);
   }
 
   enablePolling(valueId: ValueId): void {
