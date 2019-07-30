@@ -1,9 +1,11 @@
-import { ContainerModule } from "microinject";
+import { composeModules, ContainerModule } from "microinject";
 
-import { AdapterDiscovererImpl } from "./components/impl/AdapterDiscovererImpl";
-import { ZWaveImpl } from "./services/impl/ZWave";
+import zwaveModule from "./ZWave/module";
+import { ZWavePlugin } from "./ZWavePlugin/ZWavePlugin";
 
-export default new ContainerModule(bind => {
-  bind(AdapterDiscovererImpl);
-  bind(ZWaveImpl);
-});
+export default composeModules(
+  zwaveModule,
+  new ContainerModule(bind => {
+    bind(ZWavePlugin);
+  })
+);

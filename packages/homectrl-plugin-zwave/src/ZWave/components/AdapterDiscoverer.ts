@@ -1,5 +1,5 @@
 import { Identifier } from "microinject";
-import createSymbol from "../create-symbol";
+import createSymbol from "../../create-symbol";
 
 export const AdapterDiscoverer: Identifier<AdapterDiscoverer> = createSymbol(
   "AdapterDiscoverer"

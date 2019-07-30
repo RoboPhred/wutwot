@@ -17,10 +17,16 @@
   "author": "William Matthews",
   "license": "MIT",
   "dependencies": {
+    "core-decorators": "^0.20.0",
+    "homectrl-moziot": "^1.0.0",
+    "lodash": "^4.17.15",
     "microinject": "^0.5.2",
+    "openzwave-shared": "^1.5.6",
+    "rxjs": "^6.5.2",
     "serialport": "^7.1.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.136",
     "@types/serialport": "^7.0.4",
     "rimraf": "^2.6.3",
     "typescript": "^3.5.3"

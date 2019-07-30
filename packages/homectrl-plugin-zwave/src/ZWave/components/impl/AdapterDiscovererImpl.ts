@@ -4,7 +4,7 @@ import { injectable, provides } from "microinject";
 import { AdapterDiscoverer } from "../AdapterDiscoverer";
 
 // TODO: Make configurable
-const adapters = require("../../../config/zwave-adapters.json");
+const adapters = require("../../../../config/zwave-adapters.json");
 
 @injectable()
 @provides(AdapterDiscoverer)
@@ -52,7 +52,7 @@ function pickUsbSerialPort(ports: PortInfo[]): string | null {
 
     const port = findSerialPortByIDs(ports, vendor, product);
     if (port) {
-      return port.comName;
+      return `\\\\.\\${port.comName}`;
     }
   }
 

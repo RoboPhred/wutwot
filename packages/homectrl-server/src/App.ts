@@ -1,6 +1,6 @@
 import { Container } from "microinject";
 
-import { MozIot } from "homectrl-moziot";
+import { MozIot, MozIotPlugin } from "homectrl-moziot";
 import { TestPlugin } from "homectrl-plugin-test";
 import zwaveModule from "homectrl-plugin-zwave";
 
@@ -19,7 +19,11 @@ export class App {
     this._container.bind(Port).toConstantValue(8080);
     this._container.bind(CorsOrigin).toConstantValue("*");
 
-    this._container.get(MozIot).registerPlugin(new TestPlugin());
+    const mozIot = this._container.get(MozIot);
+    mozIot.registerPlugin(new TestPlugin());
+
+    const plugins = this._container.getAll(MozIotPlugin);
+    plugins.forEach(plugin => mozIot.registerPlugin(plugin));
   }
 
   run() {

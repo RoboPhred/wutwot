@@ -1,4 +1,4 @@
 import module from "./module";
 export default module;
 
-export * from "./services";
+export * from "./ZWave/services";

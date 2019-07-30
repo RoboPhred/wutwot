@@ -4,6 +4,10 @@ export class IdMapper {
 
   createId(name: string): string {
     let id = cleanName(name);
+    if (id == "") {
+      throw new Error("Name is required.");
+    }
+
     while (this._ids.has(id)) {
       id = `${name}-${this._nextRollingPostfix++}`;
     }
@@ -25,6 +29,7 @@ export class IdMapper {
 
 function cleanName(name: string): string {
   return name
+    .trim()
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9\-]/g, "");
