@@ -28,6 +28,12 @@ export class TestPlugin implements MozIotPlugin {
         initialValue: false,
         type: "boolean",
         semanticType: "OnOffProperty"
+      }),
+      createTestProperty("Brightness", "A Brightness Property", {
+        type: "number",
+        initialValue: 0,
+        minimum: 0,
+        maximum: 255
       })
     );
   }
@@ -74,6 +80,8 @@ export interface PropertyOpts {
   type?: ThingPropertyType;
   initialValue?: any;
   semanticType?: string;
+  minimum?: number;
+  maximum?: number;
 }
 function createTestProperty(
   title: string,
@@ -88,6 +96,8 @@ function createTestProperty(
     type: opts.type || "string",
     initialValue: opts.initialValue || "hello",
     semanticType: opts.semanticType || undefined,
+    minimum: opts.minimum || undefined,
+    maximum: opts.maximum || undefined,
     values,
     onValueChangeRequested: (
       thingId: string,
