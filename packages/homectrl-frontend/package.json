@@ -25,11 +25,13 @@
   "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
+    "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
-    "@types/react-redux": "^7.1.1",
+    "@types/react-redux": "^7.1.2",
     "@types/react-router": "^5.0.3",
     "@types/react-router-dom": "^4.3.4",
+    "@types/reselect": "^2.2.0",
     "cross-env": "^5.2.0",
     "css-loader": "^3.1.0",
     "file-loader": "^4.1.0",
@@ -49,7 +51,7 @@
     "@material-ui/icons": "^4.2.1",
     "classnames": "^2.2.6",
     "es6-promise": "^4.2.8",
-    "material-ui": "^0.20.2",
+    "lodash": "^4.17.15",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
@@ -57,7 +59,9 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-saga": "^1.0.5",
+    "reselect": "^4.0.0",
     "typeface-roboto": "0.0.75",
+    "typesafe-actions": "^4.4.2",
     "whatwg-fetch": "^3.0.0"
   }
 }

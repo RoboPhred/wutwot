@@ -1,3 +1,13 @@
-export interface AppState {}
+import { HomeCtrlState, defaultHomeCtrlState } from "@/services/homectrl/state";
 
-export const defaultAppState: Readonly<AppState> = Object.seal({});
+export interface AppState {
+  services: {
+    homectrl: HomeCtrlState;
+  };
+}
+
+export const defaultAppState: Readonly<AppState> = Object.seal({
+  services: {
+    homectrl: defaultHomeCtrlState
+  }
+});
