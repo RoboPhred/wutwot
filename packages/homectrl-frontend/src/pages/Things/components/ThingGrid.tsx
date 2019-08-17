@@ -1,31 +1,23 @@
 import * as React from "react";
 
-import {
-  createStyles,
-  withStyles,
-  WithStyles,
-  Theme
-} from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+
 import Grid from "@material-ui/core/Grid";
 
 import { useThings } from "@/services/homectrl/hooks/useThings";
 
 import ThingGridItem from "./ThingGridItem";
 
-export interface ThingGridProps {}
+const useStyles = makeStyles((theme: Theme) => ({
+  gridItem: {
+    width: "200px",
+    height: "200px",
+    margin: theme.spacing(1)
+  }
+}));
 
-const styles = (theme: Theme) =>
-  createStyles({
-    gridItem: {
-      width: "200px",
-      height: "200px",
-      margin: theme.spacing(1)
-    }
-  });
-
-type Props = ThingGridProps & WithStyles<typeof styles>;
-
-const ThingGrid: React.FC<Props> = ({ classes }) => {
+const ThingGrid: React.FC = () => {
+  const classes = useStyles();
   const things = useThings();
 
   return (
@@ -39,4 +31,4 @@ const ThingGrid: React.FC<Props> = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(ThingGrid);
+export default ThingGrid;

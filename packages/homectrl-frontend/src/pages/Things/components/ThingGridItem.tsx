@@ -1,15 +1,16 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 
-import { Thing } from "@/services/homectrl/types";
 import { useThing } from "@/services/homectrl/hooks/useThing";
 import { getPropertyIdByType } from "@/services/homectrl/utils";
+
 import BooleanPropertySwitch from "@/components/BooleanPropertySwitch";
 
 export interface ThingGridItemProps {
@@ -17,14 +18,15 @@ export interface ThingGridItemProps {
   thingId: string;
 }
 
-const styles = createStyles({
+const useStyles = makeStyles({
   root: {
     position: "relative"
   }
 });
 
-type Props = ThingGridItemProps & WithStyles<typeof styles>;
-const ThingGridItem: React.SFC<Props> = ({ className, thingId, classes }) => {
+type Props = ThingGridItemProps;
+const ThingGridItem: React.SFC<Props> = ({ className, thingId }) => {
+  const classes = useStyles();
   const thing = useThing(thingId);
   if (!thing) {
     return null;
@@ -45,4 +47,4 @@ const ThingGridItem: React.SFC<Props> = ({ className, thingId, classes }) => {
     </Card>
   );
 };
-export default withStyles(styles)(ThingGridItem);
+export default ThingGridItem;
