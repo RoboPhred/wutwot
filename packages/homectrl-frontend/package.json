@@ -61,7 +61,6 @@
     "redux-saga": "^1.0.5",
     "reselect": "^4.0.0",
     "typeface-roboto": "0.0.75",
-    "typesafe-actions": "^4.4.2",
     "whatwg-fetch": "^3.0.0"
   }
 }

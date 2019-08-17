@@ -1,3 +1,1 @@
-import refreshThingsSaga from "./refresh-things";
-
-export default refreshThingsSaga;
+export default function* homeCtrlSaga(): IterableIterator<any> {}

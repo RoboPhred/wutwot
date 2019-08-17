@@ -1,3 +1,10 @@
-import receiveThingsReducer from "./receive-things";
+import { AnyAction } from "redux";
 
-export default receiveThingsReducer;
+import { HomeCtrlState, defaultHomeCtrlState } from "../state";
+
+export default function homeCtrlReducer(
+  state: HomeCtrlState = defaultHomeCtrlState,
+  action: AnyAction
+): HomeCtrlState {
+  return state;
+}

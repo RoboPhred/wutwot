@@ -8,10 +8,13 @@ import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 
 import { Thing } from "@/services/homectrl/types";
+import { useThing } from "@/services/homectrl/hooks/useThing";
+import { getPropertyIdByType } from "@/services/homectrl/utils";
+import BooleanPropertySwitch from "@/components/BooleanPropertySwitch";
 
 export interface ThingGridItemProps {
   className?: string;
-  thing: Thing;
+  thingId: string;
 }
 
 const styles = createStyles({
@@ -21,12 +24,22 @@ const styles = createStyles({
 });
 
 type Props = ThingGridItemProps & WithStyles<typeof styles>;
-const ThingGridItem: React.SFC<Props> = ({ className, classes, thing }) => {
+const ThingGridItem: React.SFC<Props> = ({ className, thingId, classes }) => {
+  const thing = useThing(thingId);
+  if (!thing) {
+    return null;
+  }
+
+  const onOffProperty = getPropertyIdByType(thing, "OnOffProperty");
+
   return (
     <Card className={classnames(className, classes.root)}>
       <CardContent>
         <Typography variant="h5">{thing.title}</Typography>
         <Typography variant="body1">{thing.description}</Typography>
+        {onOffProperty && (
+          <BooleanPropertySwitch thingId={thingId} propertyId={onOffProperty} />
+        )}
       </CardContent>
       <CardActions />
     </Card>

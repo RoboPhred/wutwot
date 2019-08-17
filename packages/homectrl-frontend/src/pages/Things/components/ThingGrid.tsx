@@ -8,14 +8,11 @@ import {
 } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import { Thing } from "@/services/homectrl/types";
+import { useThings } from "@/services/homectrl/hooks/useThings";
 
-import ThingGridItem from "../ThingGridItem";
+import ThingGridItem from "./ThingGridItem";
 
-export interface ThingGridProps {
-  things: Thing[];
-  onRefreshThings(): void;
-}
+export interface ThingGridProps {}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,10 +25,8 @@ const styles = (theme: Theme) =>
 
 type Props = ThingGridProps & WithStyles<typeof styles>;
 
-const ThingGrid: React.FC<Props> = ({ things, onRefreshThings, classes }) => {
-  React.useEffect(() => {
-    onRefreshThings();
-  }, []);
+const ThingGrid: React.FC<Props> = ({ classes }) => {
+  const things = useThings();
 
   return (
     <Grid container spacing={8}>
