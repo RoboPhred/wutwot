@@ -132,6 +132,7 @@ export class ZWavePlugin implements MozIotPlugin {
       capabilityType: "property",
       title: "Switch", //value.label || "unnamed",
       description: zWaveValue.label,
+      semanticType: "OnOffProperty",
       type: "boolean",
       initialValue: Boolean(zWaveValue.value),
       values,
