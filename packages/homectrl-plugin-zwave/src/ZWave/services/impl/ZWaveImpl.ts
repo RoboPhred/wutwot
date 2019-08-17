@@ -1,4 +1,4 @@
-import { injectable, provides, inject } from "microinject";
+import { injectable, provides, inject, singleton } from "microinject";
 import { merge } from "lodash";
 
 import OZW, { NodeInfo, Value, ValueId } from "openzwave-shared";
@@ -10,6 +10,7 @@ import { ZWaveEventSink } from "../../components";
 import { ZWaveNode } from "../../types";
 
 @injectable()
+@singleton()
 @provides(ZWave)
 export class ZWaveImpl implements ZWave {
   private _zwave: OZW;

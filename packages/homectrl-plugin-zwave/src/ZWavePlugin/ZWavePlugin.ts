@@ -74,6 +74,9 @@ export class ZWavePlugin implements MozIotPlugin {
 
   @autobind()
   private _handleValueAdded({ value }: ZWaveValueAddedEvent) {
+    if (value.instance !== 0) {
+      return;
+    }
     switch (value.class_id) {
       case CommandClasses.SWITCH_MULTILEVEL:
         this._addMultiLevelSwitchValue(value);
