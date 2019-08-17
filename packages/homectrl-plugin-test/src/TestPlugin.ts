@@ -22,6 +22,10 @@ export class TestPlugin implements MozIotPlugin {
         capabilityType: "type",
         type: "TestThing"
       },
+      {
+        capabilityType: "type",
+        type: "OnOffSwitch"
+      },
       createTestAction("Test Action", "This is a Test Action"),
       createTestProperty("Test Property", "This is a Test Property"),
       createTestProperty("OnOff", "An On/Off property", {
