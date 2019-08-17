@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 
 import AppBar from "./AppBar";
 
@@ -21,7 +21,7 @@ const styles = createStyles({
   }
 });
 
-type Props = StyleProps<typeof styles>;
+type Props = WithStyles<typeof styles>;
 const App: React.SFC<Props> = ({ classes }) => (
   <div className={classes.root}>
     <AppBar />

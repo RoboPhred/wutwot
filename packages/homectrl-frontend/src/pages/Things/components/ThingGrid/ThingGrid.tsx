@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import { Thing } from "@/services/homectrl/types";
@@ -19,7 +19,7 @@ const styles = createStyles({
   }
 });
 
-type Props = ThingGridProps & StyleProps<typeof styles>;
+type Props = ThingGridProps & WithStyles<typeof styles>;
 
 const ThingGrid: React.FC<Props> = ({ things, onRefreshThings, classes }) => {
   React.useEffect(() => {

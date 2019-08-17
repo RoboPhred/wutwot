@@ -1,7 +1,7 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -20,7 +20,7 @@ const styles = createStyles({
   }
 });
 
-type Props = ThingGridItemProps & StyleProps<typeof styles>;
+type Props = ThingGridItemProps & WithStyles<typeof styles>;
 const ThingGridItem: React.SFC<Props> = ({ className, classes, thing }) => {
   return (
     <Card className={classnames(className, classes.root)}>
