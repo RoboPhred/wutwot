@@ -10,12 +10,10 @@ import {
   ZWaveEventSource,
   ZWaveNodeAddedEvent,
   ZWaveNodeRemovedEvent,
-  ZWaveValueAddedEvent
-} from "../ZWave";
-import {
+  ZWaveValueAddedEvent,
   ZWaveValueChangedEvent,
   ZWaveValueRemovedEvent
-} from "../ZWave/services";
+} from "../ZWave";
 
 @injectable()
 @singleton()
@@ -44,7 +42,7 @@ export class ZWavePlugin implements MozIotPlugin {
   @autobind()
   private _handleNodeAdded({ node }: ZWaveNodeAddedEvent) {
     const thing = this._plugin.addThing({
-      title: `${node.name} [${node.id}]`.trim(),
+      title: `${node.name || node.product} [${node.id}]`.trim(),
       description: `${node.product} (${node.manufacturer})`
     });
     for (const class_id of Object.keys(node.classes).map(Number)) {
@@ -77,10 +75,133 @@ export class ZWavePlugin implements MozIotPlugin {
   @autobind()
   private _handleValueAdded({ value }: ZWaveValueAddedEvent) {
     switch (value.class_id) {
+      case CommandClasses.SWITCH_MULTILEVEL:
+        this._addMultiLevelSwitchValue(value);
+        break;
       case CommandClasses.SWITCH_BINARY:
         this._addBinarySwitchValue(value);
         break;
     }
+  }
+
+  private _addMultiLevelSwitchValue(zWaveValue: ZWaveValue) {
+    const thing = this._thingsByNodeId.get(zWaveValue.node_id);
+    if (!thing) {
+      return;
+    }
+
+    this._plugin.addCapability(thing.id, {
+      capabilityType: "type",
+      type: "MultiLevelSwitch"
+    });
+
+    // this._zwave.enablePolling(value);
+    let isRemoved = false;
+    const levelValues = Observable.create((o: Observer<number>) => {
+      function handleChange({ value: changedValue }: ZWaveValueChangedEvent) {
+        if (!areValuesSame(zWaveValue, changedValue)) {
+          return;
+        }
+        o.next(Number(changedValue.value));
+      }
+      function handleRemove({
+        nodeId,
+        commandClass,
+        index
+      }: ZWaveValueRemovedEvent) {
+        if (
+          zWaveValue.node_id !== nodeId ||
+          zWaveValue.class_id !== commandClass ||
+          zWaveValue.index !== index
+        ) {
+          return;
+        }
+        unsub();
+      }
+      const unsub = () => {
+        o.complete();
+        this._zwaveEvents.removeListener("value.changed", handleChange);
+        this._zwaveEvents.removeListener("value.removed", handleRemove);
+        isRemoved = true;
+        // TODO: remove property and MultiLevelSwitch type
+      };
+      this._zwaveEvents.on("value.changed", handleChange);
+      this._zwaveEvents.on("value.removed", handleRemove);
+    });
+
+    const onOffValues = Observable.create((o: Observer<boolean>) => {
+      function handleChange({ value: changedValue }: ZWaveValueChangedEvent) {
+        if (!areValuesSame(zWaveValue, changedValue)) {
+          return;
+        }
+        o.next(changedValue.value > 0);
+      }
+      function handleRemove({
+        nodeId,
+        commandClass,
+        index
+      }: ZWaveValueRemovedEvent) {
+        if (
+          zWaveValue.node_id !== nodeId ||
+          zWaveValue.class_id !== commandClass ||
+          zWaveValue.index !== index
+        ) {
+          return;
+        }
+        unsub();
+      }
+      const unsub = () => {
+        o.complete();
+        this._zwaveEvents.removeListener("value.changed", handleChange);
+        this._zwaveEvents.removeListener("value.removed", handleRemove);
+        isRemoved = true;
+        // TODO: remove property and MultiLevelSwitch type
+      };
+      this._zwaveEvents.on("value.changed", handleChange);
+      this._zwaveEvents.on("value.removed", handleRemove);
+    });
+
+    this._plugin.addCapability(thing.id, {
+      capabilityType: "property",
+      title: "Level", //value.label || "unnamed",
+      description: zWaveValue.label,
+      semanticType: "LevelProperty",
+      type: "integer",
+      minimum: 0,
+      maximum: 255,
+      initialValue: Number(zWaveValue.value),
+      values: levelValues,
+      onValueChangeRequested: (
+        thingId: string,
+        propertyId: string,
+        value: number
+      ) => {
+        if (isRemoved) {
+          return;
+        }
+        this._zwave.setValue(zWaveValue, Number(value));
+      }
+    });
+
+    this._plugin.addCapability(thing.id, {
+      capabilityType: "property",
+      title: "Switch", //value.label || "unnamed",
+      description: zWaveValue.label,
+      semanticType: "OnOffProperty",
+      type: "boolean",
+      initialValue: zWaveValue.value > 0,
+      values: onOffValues,
+      onValueChangeRequested: (
+        thingId: string,
+        propertyId: string,
+        value: number
+      ) => {
+        if (isRemoved) {
+          return;
+        }
+        this._zwave.setValue(zWaveValue, value ? 255 : 0);
+      }
+    });
   }
 
   private _addBinarySwitchValue(zWaveValue: ZWaveValue) {
@@ -144,7 +265,7 @@ export class ZWavePlugin implements MozIotPlugin {
         if (isRemoved) {
           return;
         }
-        this._zwave.setValue(zWaveValue, value);
+        this._zwave.setValue(zWaveValue, Boolean(value));
       }
     });
   }
