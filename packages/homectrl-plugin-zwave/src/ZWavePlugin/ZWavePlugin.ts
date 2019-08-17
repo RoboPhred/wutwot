@@ -89,6 +89,11 @@ export class ZWavePlugin implements MozIotPlugin {
       return;
     }
 
+    this._plugin.addCapability(thing.id, {
+      capabilityType: "type",
+      type: "OnOffSwitch"
+    });
+
     // this._zwave.enablePolling(value);
     let isRemoved = false;
     const values = Observable.create((o: Observer<boolean>) => {
@@ -117,7 +122,7 @@ export class ZWavePlugin implements MozIotPlugin {
         this._zwaveEvents.removeListener("value.changed", handleChange);
         this._zwaveEvents.removeListener("value.removed", handleRemove);
         isRemoved = true;
-        // TODO: remove capability
+        // TODO: remove property and OnOffSwitch type
       };
       this._zwaveEvents.on("value.changed", handleChange);
       this._zwaveEvents.on("value.removed", handleRemove);
