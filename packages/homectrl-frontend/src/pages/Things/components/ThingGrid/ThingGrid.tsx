@@ -1,6 +1,11 @@
 import * as React from "react";
 
-import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import {
+  createStyles,
+  withStyles,
+  WithStyles,
+  Theme
+} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import { Thing } from "@/services/homectrl/types";
@@ -12,12 +17,14 @@ export interface ThingGridProps {
   onRefreshThings(): void;
 }
 
-const styles = createStyles({
-  gridItem: {
-    width: "200px",
-    height: "200px"
-  }
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    gridItem: {
+      width: "200px",
+      height: "200px",
+      margin: theme.spacing(1)
+    }
+  });
 
 type Props = ThingGridProps & WithStyles<typeof styles>;
 

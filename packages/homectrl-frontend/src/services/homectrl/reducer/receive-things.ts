@@ -19,7 +19,7 @@ const counterReducer = createReducer<HomeCtrlState, ReceiveThingsAction>(
   .handleAction(receiveThingsSuccess, (state, action) => ({
     ...state,
     isRefreshing: false,
-    thingsById: keyBy(action.payload)
+    thingsById: keyBy(action.payload, "id")
   }))
   .handleAction(receiveThingsError, (state, action) => ({
     ...state,
