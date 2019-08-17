@@ -80,7 +80,7 @@ export class PluginAdapterImpl {
     for (const cap of flatCaps) {
       switch (cap.capabilityType) {
         case "type":
-          this._thingTypesService.addType(thingId, cap.capabilityType);
+          this._thingTypesService.addType(thingId, cap.type);
           break;
         case "property":
           this._propertyService.addProperty(thingId, cap, this._plugin);
