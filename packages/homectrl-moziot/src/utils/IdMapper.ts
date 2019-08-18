@@ -3,7 +3,8 @@ export class IdMapper {
   private _nextRollingPostfix = 1;
 
   createId(name: string): string {
-    let id = cleanName(name);
+    name = cleanName(name);
+    let id = name;
     if (id == "") {
       throw new Error("Name is required.");
     }
@@ -11,6 +12,7 @@ export class IdMapper {
     while (this._ids.has(id)) {
       id = `${name}-${this._nextRollingPostfix++}`;
     }
+    this._ids.add(id);
     return id;
   }
 
