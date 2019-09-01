@@ -45,7 +45,6 @@ export class ZWaveImpl implements ZWave {
         }
       });
       console.log("available", nodeId);
-      this._zwaveEventSink.onNodeAdded(this._nodes[nodeId]);
     });
     this._zwave.on("node ready", (nodeId: number, nodeInfo: NodeInfo) => {
       merge(this._nodes, {
@@ -56,6 +55,7 @@ export class ZWaveImpl implements ZWave {
         }
       });
       console.log("ready", nodeId);
+      this._zwaveEventSink.onNodeAdded(this._nodes[nodeId]);
     });
     this._zwave.on(
       "value added",

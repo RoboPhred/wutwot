@@ -4,6 +4,7 @@ export enum CommandClasses {
   SWITCH_ALL = 39,
   SENSOR_BINARY = 0x30,
   SENSOR_MULTILEVEL = 0x31,
+  COLOR = 0x33,
   NOTIFICATION = 0x71,
   BATTERY = 0x80
 }

@@ -13,6 +13,7 @@ import { PropertyMonitor } from "../PropertyMonitor";
 
 import { BinarySwitchPropertyMonitorImpl } from "./BinarySwitchPropertyMonitorImpl";
 import { MultiLevelSwitchPropertyMonitorImpl } from "./MultiLevelSwitchPropertyMonitorImpl";
+import { ColorPropertyMonitorImpl } from "./ColorPropertyMonitorImpl";
 
 @injectable()
 @singleton()
@@ -28,32 +29,36 @@ export class PropertyMonitorFactoryImpl implements PropertyMonitorFactory {
     value: ZWaveValue,
     plugin: MozIotPluginContext
   ): PropertyMonitor | null {
-    if (
-      value.class_id === CommandClasses.SWITCH_BINARY &&
-      value.instance === 1 &&
-      value.index === 0
-    ) {
-      return new BinarySwitchPropertyMonitorImpl(
-        value,
-        thing,
-        this._zwave,
-        this._zwaveEvents,
-        plugin
-      );
-    } else if (
-      value.class_id === CommandClasses.SWITCH_MULTILEVEL &&
-      value.instance === 1 &&
-      value.index === 0
-    ) {
-      return new MultiLevelSwitchPropertyMonitorImpl(
-        value,
-        thing,
-        this._zwave,
-        this._zwaveEvents,
-        plugin
-      );
+    if (value.instance !== 1 || value.index !== 0) {
+      return null;
     }
 
+    switch (value.class_id) {
+      case CommandClasses.SWITCH_BINARY:
+        return new BinarySwitchPropertyMonitorImpl(
+          value,
+          thing,
+          this._zwave,
+          this._zwaveEvents,
+          plugin
+        );
+      case CommandClasses.SWITCH_MULTILEVEL:
+        return new MultiLevelSwitchPropertyMonitorImpl(
+          value,
+          thing,
+          this._zwave,
+          this._zwaveEvents,
+          plugin
+        );
+      case CommandClasses.COLOR:
+        return new ColorPropertyMonitorImpl(
+          value,
+          thing,
+          this._zwave,
+          this._zwaveEvents,
+          plugin
+        );
+    }
     return null;
   }
 }

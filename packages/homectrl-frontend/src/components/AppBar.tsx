@@ -8,6 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 
+export interface AppBarProps {
+  title: string;
+}
 const useStyles = makeStyles({
   grow: {
     flexGrow: 1
@@ -18,7 +21,7 @@ const useStyles = makeStyles({
   }
 });
 
-const HomectrlAppBar: React.FC = () => {
+const HomectrlAppBar: React.FC<AppBarProps> = ({ title }) => {
   const classes = useStyles();
   return (
     <AppBar position="static">
@@ -31,7 +34,7 @@ const HomectrlAppBar: React.FC = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" color="inherit" className={classes.grow}>
-          HomeCTRL
+          {title} - HomeCTRL
         </Typography>
       </Toolbar>
     </AppBar>
