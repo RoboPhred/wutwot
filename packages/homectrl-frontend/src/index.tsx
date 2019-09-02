@@ -1,8 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
 
-(window as any).__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-
 import "es6-promise/auto";
 import "typeface-roboto";
 import "whatwg-fetch";
