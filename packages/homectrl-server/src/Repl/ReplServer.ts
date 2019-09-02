@@ -33,6 +33,9 @@ export class ReplServer implements Entrypoint {
       context.zwave = this._zwave;
     };
     reset(this._replServer.context);
+    this._replServer.on("exit", () => {
+      process.exit();
+    });
     this._replServer.on("reset", reset);
   }
 }
