@@ -8,6 +8,7 @@ import { AdapterDiscoverer } from "../../components/AdapterDiscoverer";
 import { ZWave } from "../ZWave";
 import { ZWaveEventSink } from "../../components";
 import { ZWaveNode } from "../../types";
+import { ZWavePortConfig } from "../../config";
 
 @injectable()
 @singleton()
@@ -19,7 +20,9 @@ export class ZWaveImpl implements ZWave {
 
   constructor(
     @inject(AdapterDiscoverer) private _adapterDiscoverer: AdapterDiscoverer,
-    @inject(ZWaveEventSink) private _zwaveEventSink: ZWaveEventSink
+    @inject(ZWaveEventSink) private _zwaveEventSink: ZWaveEventSink,
+    @inject(ZWavePortConfig, { optional: true })
+    private _configuredPort: string | null
   ) {
     this._zwave = new OZW({
       Logging: false,
@@ -29,7 +32,11 @@ export class ZWaveImpl implements ZWave {
   }
 
   async start() {
-    const port = await this._adapterDiscoverer.getAdapterPort();
+    let port: string | null = this._configuredPort;
+    if (!port) {
+      port = await this._adapterDiscoverer.getAdapterPort();
+    }
+
     if (!port) {
       throw new Error("No adapter port could be found");
     }
