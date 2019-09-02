@@ -19,7 +19,8 @@
   },
   "keywords": [
     "mozilla-iot",
-    "iot"
+    "iot",
+    "zwave"
   ],
   "author": "William Matthews",
   "license": "MIT",
