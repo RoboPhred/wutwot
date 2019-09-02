@@ -5,7 +5,6 @@ WORKDIR /home/node/app
 COPY ./packages/homectrl-frontend ./
 
 RUN npm ci
-RUN npm run build
 
 USER node
 
