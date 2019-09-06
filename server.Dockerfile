@@ -17,7 +17,7 @@ RUN npm ci
 RUN npm run lerna bootstrap
 RUN npm run build
 
-RUN chown -r node:node /home/node/app
+RUN chown -R node:node /home/node/app
 
 USER node
 
