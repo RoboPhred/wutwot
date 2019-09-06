@@ -2,7 +2,7 @@ import { Container } from "microinject";
 
 import { MozIot, MozIotPlugin } from "homectrl-moziot";
 import { TestPlugin } from "homectrl-plugin-test";
-import zwaveModule from "homectrl-plugin-zwave";
+import zwaveModule, { ZWavePortConfig } from "homectrl-plugin-zwave";
 
 import appModule from "./module";
 
@@ -21,6 +21,12 @@ export class App {
 
     const mozIot = this._container.get(MozIot);
     mozIot.registerPlugin(new TestPlugin());
+
+    if (process.env.HOMECTRL_ZWAVE_PORT) {
+      this._container
+        .bind(ZWavePortConfig)
+        .toConstantValue(process.env.HOMECTRL_ZWAVE_PORT);
+    }
 
     const plugins = this._container.getAll(MozIotPlugin);
     plugins.forEach(plugin => mozIot.registerPlugin(plugin));

@@ -6,9 +6,10 @@ services:
       dockerfile: server.Dockerfile
     tty: true
     stdin_open: true
+    environment:
+      - HOMECTRL_ZWAVE_PORT="/dev/ttyUSB-ZStick-5G"
     devices:
       - "/dev/ttyUSB-ZStick-5G"
-    network_mode: "host"
     ports:
       - 8080:8080
   homectrl-frontend:
