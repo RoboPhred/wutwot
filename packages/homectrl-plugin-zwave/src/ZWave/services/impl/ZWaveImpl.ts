@@ -34,7 +34,10 @@ export class ZWaveImpl implements ZWave {
   async start() {
     let port: string | null = this._configuredPort;
     if (!port) {
+      console.log("Auto-determining zwave port");
       port = await this._adapterDiscoverer.getAdapterPort();
+    } else {
+      console.log("Using preconfigured zwave port");
     }
 
     if (!port) {

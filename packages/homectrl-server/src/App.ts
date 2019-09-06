@@ -19,21 +19,24 @@ export class App {
     this._container.bind(Port).toConstantValue(8080);
     this._container.bind(CorsOrigin).toConstantValue("*");
 
-    const mozIot = this._container.get(MozIot);
-    mozIot.registerPlugin(new TestPlugin());
-
     if (process.env.HOMECTRL_ZWAVE_PORT) {
+      console.log("Z-Wave port is configured");
       this._container
         .bind(ZWavePortConfig)
         .toConstantValue(process.env.HOMECTRL_ZWAVE_PORT);
+    } else {
+      console.log("No port is configured");
     }
+
+    const mozIot = this._container.get(MozIot);
+    mozIot.registerPlugin(new TestPlugin());
 
     const plugins = this._container.getAll(MozIotPlugin);
     plugins.forEach(plugin => mozIot.registerPlugin(plugin));
   }
 
   run() {
-    const repl = this._container.getAll(Entrypoint);
-    repl.forEach(x => x.start());
+    const entrypoints = this._container.getAll(Entrypoint);
+    entrypoints.forEach(x => x.start());
   }
 }
