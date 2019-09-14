@@ -1,16 +1,15 @@
-import { ContainerModule, composeModules } from "microinject";
+import { composeModules } from "microinject";
 
-import { MozIot } from "homectrl-moziot";
+import EndpointModule from "./services/Endpoint/module";
+import MozIotModule from "./services/MozIot/module";
+import ReplModule from "./services/Repl/module";
+import ZWaveModule from "./services/ZWave/module";
+import ZWavePluginModule from "./services/ZWavePlugin/module";
 
-import { Entrypoint } from "./contracts";
-
-import ReplModule from "./Repl/module";
-import EndpointModule from "./Endpoint/module";
-
-const GlobalsModule = new ContainerModule(bind => {
-  // TODO: use toSelf() with next microinject release.
-  const mozIot = new MozIot();
-  bind(MozIot).toConstantValue(mozIot);
-});
-
-export default composeModules(GlobalsModule, ReplModule, EndpointModule);
+export default composeModules(
+  EndpointModule,
+  MozIotModule,
+  ReplModule,
+  ZWaveModule,
+  ZWavePluginModule
+);

@@ -10,6 +10,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "../lib",
+    "incremental": true,
     "declaration": false,
     "sourceMap": true
   }
