@@ -5,7 +5,7 @@ import appModule from "./module";
 import { Entrypoint } from "./contracts";
 import { RootURL, Port, CorsOrigin } from "./config";
 
-import { ZWavePortConfig } from "./services/ZWave";
+import { ZWavePort } from "./services/ZWavePlugin";
 
 export class App {
   private readonly _container = new Container();
@@ -20,7 +20,7 @@ export class App {
     if (process.env.HOMECTRL_ZWAVE_PORT) {
       console.log("Z-Wave port is configured");
       this._container
-        .bind(ZWavePortConfig)
+        .bind(ZWavePort)
         .toConstantValue(process.env.HOMECTRL_ZWAVE_PORT);
     } else {
       console.log("No port is configured");

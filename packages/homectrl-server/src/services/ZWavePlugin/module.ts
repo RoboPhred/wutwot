@@ -1,12 +1,11 @@
 import { ContainerModule } from "microinject";
 
-import { NodeMonitorFactoryImpl } from "./components/impl/NodeMonitorFactoryImpl";
-import { PropertyMonitorFactoryImpl } from "./components/impl/PropertyMonitorFactoryImpl";
-
+import { AdapterLocatorImpl } from "./components/impl/AdapterLocatorImpl";
+import { ZWaveDriverImpl } from "./components/impl/ZWaveDriverImpl";
 import { ZWavePlugin } from "./ZWavePlugin";
 
 export default new ContainerModule(bind => {
-  bind(NodeMonitorFactoryImpl);
-  bind(PropertyMonitorFactoryImpl);
+  bind(AdapterLocatorImpl);
+  bind(ZWaveDriverImpl);
   bind(ZWavePlugin);
 });

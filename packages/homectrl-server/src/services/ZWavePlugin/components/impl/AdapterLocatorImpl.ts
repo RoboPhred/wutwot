@@ -1,16 +1,25 @@
 import { join } from "path";
 import serialport, { PortInfo } from "serialport";
-import { injectable, provides } from "microinject";
+import { injectable, provides, inject } from "microinject";
 
-import { AdapterDiscoverer } from "../AdapterDiscoverer";
+import { ZWavePort } from "../../config";
+
+import { AdapterLocator } from "../AdapterLocator";
 
 // TODO: Make configurable
 const adapters = require(join(process.cwd(), "config/zwave-adapters.json"));
 
 @injectable()
-@provides(AdapterDiscoverer)
-export class AdapterDiscovererImpl {
+@provides(AdapterLocator)
+export class AdapterLocatorImpl {
+  constructor(
+    @inject(ZWavePort, { optional: true }) private _port: string | undefined
+  ) {}
+
   async getAdapterPort(): Promise<string | null> {
+    if (this._port) {
+      return this._port;
+    }
     const serialPorts = await serialport.list();
     return pickUsbSerialPort(serialPorts);
   }

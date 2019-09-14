@@ -8,6 +8,8 @@
     "experimentalDecorators": true,
     "stripInternal": true,
     "strict": true,
+    // zwave-js is not strict compliant
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "../lib",
     "incremental": true,

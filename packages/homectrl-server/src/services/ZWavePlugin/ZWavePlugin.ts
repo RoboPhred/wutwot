@@ -1,11 +1,8 @@
 import { injectable, provides, singleton, inject } from "microinject";
 
-import { ZWave, ZWaveNodeAddedEvent, ZWaveNodeRemovedEvent } from "../ZWave";
-
 import { MozIotPlugin, MozIotPluginContext } from "../MozIot";
-
-import { NodeMonitorFactory } from "./components/NodeMonitorFactory";
-import { NodeMonitor } from "./components/NodeMonitor";
+import { AdapterLocator } from "./components/AdapterLocator";
+import { ZWaveDriver } from "./components/ZWaveDriver";
 
 @injectable()
 @singleton()
@@ -14,31 +11,33 @@ export class ZWavePlugin implements MozIotPlugin {
   readonly id: string = "Z-Wave";
 
   private _plugin!: MozIotPluginContext;
-  private _monitorsByNodeId = new Map<number, NodeMonitor>();
 
   constructor(
-    @inject(ZWave) private _zwave: ZWave,
-    @inject(NodeMonitorFactory) private _nodeMonitorFactory: NodeMonitorFactory
-  ) {
-    _zwave
-      .on("node.added", this._handleNodeAdded.bind(this))
-      .on("node.removed", this._handleNodeRemoved.bind(this));
-  }
+    @inject(AdapterLocator) private _adapterLocator: AdapterLocator,
+    @inject(ZWaveDriver) private _driver: ZWaveDriver
+  ) {}
 
   onRegisterPlugin(plugin: MozIotPluginContext): void {
     this._plugin = plugin;
-    this._zwave.start();
+
+    this._start();
   }
 
-  private _handleNodeAdded({ node }: ZWaveNodeAddedEvent) {
-    const monitor = this._nodeMonitorFactory.createNodeMonitor(
-      node,
-      this._plugin
-    );
-    this._monitorsByNodeId.set(node.id, monitor);
-  }
+  private async _start() {
+    const port = await this._adapterLocator.getAdapterPort();
+    if (!port) {
+      console.log("No z-wave port detected.");
+      return;
+    }
 
-  private _handleNodeRemoved({ nodeId }: ZWaveNodeRemovedEvent) {
-    // TODO: Destroy monitor
+    await this._driver.connect(port);
+
+    for (const node of this._driver.controller.nodes.values()) {
+      console.log("Found node", node.id);
+      this._plugin.addThing({
+        title: String(node.id),
+        description: "A Node"
+      });
+    }
   }
 }

@@ -1,9 +1,9 @@
 import { Identifier } from "microinject";
 import createSymbol from "../create-symbol";
 
-export const AdapterDiscoverer: Identifier<AdapterDiscoverer> = createSymbol(
-  "AdapterDiscoverer"
+export const AdapterLocator: Identifier<AdapterLocator> = createSymbol(
+  "AdapterLocator"
 );
-export interface AdapterDiscoverer {
+export interface AdapterLocator {
   getAdapterPort(): Promise<string | null>;
 }
