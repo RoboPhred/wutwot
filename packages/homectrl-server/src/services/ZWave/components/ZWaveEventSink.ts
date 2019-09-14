@@ -1,6 +1,6 @@
 import { Identifier } from "microinject";
 
-import createSymbol from "../../../create-symbol";
+import createSymbol from "../create-symbol";
 
 import { ZWaveNode, ZWaveValue } from "../types/ZWaveNode";
 
