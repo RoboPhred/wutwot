@@ -3,6 +3,7 @@ import { injectable, provides, singleton, inject } from "microinject";
 import { MozIotPlugin, MozIotPluginContext } from "../MozIot";
 import { AdapterLocator } from "./components/AdapterLocator";
 import { ZWaveDriver } from "./components/ZWaveDriver";
+import { NodeMonitorFactory } from "./components/NodeMonitorFactory";
 
 @injectable()
 @singleton()
@@ -14,7 +15,8 @@ export class ZWavePlugin implements MozIotPlugin {
 
   constructor(
     @inject(AdapterLocator) private _adapterLocator: AdapterLocator,
-    @inject(ZWaveDriver) private _driver: ZWaveDriver
+    @inject(ZWaveDriver) private _driver: ZWaveDriver,
+    @inject(NodeMonitorFactory) private _nodeMonitorFactory: NodeMonitorFactory
   ) {}
 
   onRegisterPlugin(plugin: MozIotPluginContext): void {
@@ -33,11 +35,7 @@ export class ZWavePlugin implements MozIotPlugin {
     await this._driver.connect(port);
 
     for (const node of this._driver.controller.nodes.values()) {
-      console.log("Found node", node.id);
-      this._plugin.addThing({
-        title: String(node.id),
-        description: "A Node"
-      });
+      this._nodeMonitorFactory.createNodeMonitor(node, this._plugin);
     }
   }
 }
