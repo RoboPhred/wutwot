@@ -11,6 +11,7 @@ import { MozIotPluginContext } from "../../../MozIot";
 
 export class NodeMonitorImpl implements NodeMonitor {
   private _multiLevelSubject: Subject<number> | null = null;
+  private _binarySwitchSubject: Subject<boolean> | null = null;
 
   constructor(private _node: ZWaveNode, private _plugin: MozIotPluginContext) {
     this._node.once("interview completed", this._onNodeInterviewed.bind(this));
@@ -34,6 +35,8 @@ export class NodeMonitorImpl implements NodeMonitor {
 
     if (this._node.supportsCC(0x26 /*CommandClasses["Multilevel Switch"]*/)) {
       this._setupMultiLevelSwitch(thing.id);
+    } else if (this._node.supportsCC(0x25)) {
+      this._setupBinarySwitch(thing.id);
     }
 
     this._node.on("value updated", this._onValueUpdated.bind(this));
@@ -49,7 +52,36 @@ export class NodeMonitorImpl implements NodeMonitor {
     });
   }
 
-  private _setupMultiLevelSwitch(thingId: string) {
+  private async _setupBinarySwitch(thingId: string) {
+    this._plugin.addCapability(thingId, {
+      capabilityType: "type",
+      type: "OnOffSwitch"
+    });
+
+    const valueId: ValueID = {
+      commandClass: 0x25,
+      endpoint: 0,
+      propertyName: "targetValue"
+    };
+
+    this._binarySwitchSubject = new Subject<boolean>();
+    const values = await this._node.commandClasses["Binary Switch"].get();
+    this._plugin.addCapability(thingId, {
+      capabilityType: "property",
+      title: "Switch",
+      description: /*metadata.description || */ "Switch",
+      semanticType: "OnOffProperty",
+      type: "boolean",
+      initialValue: values.currentValue,
+      values: this._binarySwitchSubject,
+      onValueChangeRequested: (thingId, propertyId, value) => {
+        // this._node.setValue(valueId, value);
+        this._node.commandClasses["Binary Switch"].set(value);
+      }
+    });
+  }
+
+  private async _setupMultiLevelSwitch(thingId: string) {
     this._plugin.addCapability(
       thingId,
       {
@@ -64,24 +96,27 @@ export class NodeMonitorImpl implements NodeMonitor {
 
     this._multiLevelSubject = new Subject<number>();
     const valueId: ValueID = {
-      commandClass: 38,
+      commandClass: 0x26,
       endpoint: 0,
       propertyName: "targetValue"
     };
-    const value = this._node.getValue(valueId);
-    const metadata = this._node.getValueMetadata(valueId);
+    // Some switches are not fetching the value on init.
+    // const value = this._node.getValue(valueId);
+    // const metadata = this._node.getValueMetadata(valueId);
+    const values = await this._node.commandClasses["Multilevel Switch"].get();
     this._plugin.addCapability(thingId, {
       capabilityType: "property",
       title: "Level",
-      description: metadata.description || "Level",
+      description: /*metadata.description || */ "Level",
       semanticType: "LevelProperty",
       type: "integer",
       minimum: 0, // TODO: From metadata
       maximum: 255, // TODO: From metadata
-      initialValue: value,
+      initialValue: values.currentValue,
       values: this._multiLevelSubject,
       onValueChangeRequested: (thingId, propertyId, value) => {
-        this._node.setValue(valueId, value);
+        // this._node.setValue(valueId, value);
+        this._node.commandClasses["Multilevel Switch"].set(value);
       }
     });
   }
@@ -96,8 +131,17 @@ export class NodeMonitorImpl implements NodeMonitor {
       args.newValue
     );
 
-    if (args.commandClass === 38 && args.propertyName === "targetValue") {
+    // These should be "targetValue", but targetValue is not being sent on change.
+    // currentValue is wrong, as it will reflect the absolute current value when a change
+    //  is requested, meaning when turning off, a dimmer will send a high value as it is transitioning
+    //  from on to off.
+    if (args.commandClass === 0x26 && args.propertyName === "currentValue") {
       this._multiLevelSubject!.next(args.newValue as number);
+    } else if (
+      args.commandClass === 0x25 &&
+      args.propertyName === "currentValue"
+    ) {
+      this._binarySwitchSubject!.next(args.newValue as boolean);
     }
   }
 }
