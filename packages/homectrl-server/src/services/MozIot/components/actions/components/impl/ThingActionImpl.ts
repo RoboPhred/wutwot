@@ -72,9 +72,11 @@ export class ThingActionImpl implements ThingAction {
     const request = this._actionRequestFactory.createActionRequest(
       this._thingId,
       this._id,
-      input,
-      new Date().toISOString(),
-      status
+      {
+        input,
+        timeRequested: new Date().toISOString(),
+        status
+      }
     );
 
     this._actionRepository.addRequest(request);

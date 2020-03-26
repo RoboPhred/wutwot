@@ -1,1 +1,1 @@
-export * from "./ThingTypesService";
+export * from "./ThingTypeService";

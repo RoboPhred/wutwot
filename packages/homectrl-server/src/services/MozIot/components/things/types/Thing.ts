@@ -24,9 +24,9 @@ export interface Thing {
   readonly title: string;
 
   /**
-   * An array of types describing the thing
+   * An array of semantic types describing the thing
    */
-  readonly types: ReadonlyArray<string>;
+  readonly semanticTypes: ReadonlyArray<string>;
 
   /**
    * The description of the thing.

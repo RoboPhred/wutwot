@@ -1,15 +1,19 @@
 import { ZWaveNode } from "zwave-js";
+import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
+
 import {
   ZWaveNodeValueUpdatedArgs,
   ZWaveNodeValueAddedArgs
 } from "zwave-js/build/lib/node/Node";
-import { ValueID } from "zwave-js/build/lib/node/ValueDB";
 import { Subject } from "rxjs";
 
+import { MozIotPluginContext, OwnedPluginThing } from "../../../MozIot";
+
 import { NodeMonitor } from "../NodeMonitor";
-import { MozIotPluginContext } from "../../../MozIot";
 
 export class NodeMonitorImpl implements NodeMonitor {
+  private _pluginThing?: OwnedPluginThing;
+
   private _multiLevelSubject: Subject<number> | null = null;
   private _binarySwitchSubject: Subject<boolean> | null = null;
 
@@ -20,23 +24,21 @@ export class NodeMonitorImpl implements NodeMonitor {
   private async _onNodeInterviewed() {
     let name = `${this._node.productType}`;
 
-    if (
-      this._node.supportsCC(0x77 /*CommandClasses["Node Naming and Location"]*/)
-    ) {
+    if (this._node.supportsCC(CommandClasses["Node Naming and Location"])) {
       name = await this._node.commandClasses[
         "Node Naming and Location"
       ].getName();
     }
 
-    const thing = this._plugin.addThing({
+    this._pluginThing = this._plugin.addThing({
       title: name,
       description: `${this._node.productType}`
     });
 
-    if (this._node.supportsCC(0x26 /*CommandClasses["Multilevel Switch"]*/)) {
-      this._setupMultiLevelSwitch(thing.id);
+    if (this._node.supportsCC(CommandClasses["Multilevel Switch"])) {
+      this._setupMultiLevelSwitch();
     } else if (this._node.supportsCC(0x25)) {
-      this._setupBinarySwitch(thing.id);
+      this._setupBinarySwitch();
     }
 
     this._node.on("value updated", this._onValueUpdated.bind(this));
@@ -52,27 +54,20 @@ export class NodeMonitorImpl implements NodeMonitor {
     });
   }
 
-  private async _setupBinarySwitch(thingId: string) {
-    this._plugin.addCapability(thingId, {
-      capabilityType: "type",
-      type: "OnOffSwitch"
-    });
-
-    const valueId: ValueID = {
-      commandClass: 0x25,
-      endpoint: 0,
-      propertyName: "targetValue"
-    };
+  private async _setupBinarySwitch() {
+    this._pluginThing!.addType("OnOffSwitch");
 
     this._binarySwitchSubject = new Subject<boolean>();
-    const values = await this._node.commandClasses["Binary Switch"].get();
-    this._plugin.addCapability(thingId, {
-      capabilityType: "property",
+    const { currentValue } = await this._node.commandClasses[
+      "Binary Switch"
+    ].get();
+
+    this._pluginThing!.addProperty({
       title: "Switch",
       description: /*metadata.description || */ "Switch",
       semanticType: "OnOffProperty",
       type: "boolean",
-      initialValue: values.currentValue,
+      initialValue: currentValue,
       values: this._binarySwitchSubject,
       onValueChangeRequested: (thingId, propertyId, value) => {
         // this._node.setValue(valueId, value);
@@ -81,38 +76,28 @@ export class NodeMonitorImpl implements NodeMonitor {
     });
   }
 
-  private async _setupMultiLevelSwitch(thingId: string) {
-    this._plugin.addCapability(
-      thingId,
-      {
-        capabilityType: "type",
-        type: "OnOffSwitch"
-      },
-      {
-        capabilityType: "type",
-        type: "MultiLevelSwitch"
-      }
-    );
+  private async _setupMultiLevelSwitch() {
+    // TODO: Enable this and provide a Switch property
+    // this._pluginThing1.addType("OnOffSwitch");
+    this._pluginThing!.addType("MultiLevelSwitch");
 
     this._multiLevelSubject = new Subject<number>();
-    const valueId: ValueID = {
-      commandClass: 0x26,
-      endpoint: 0,
-      propertyName: "targetValue"
-    };
+
     // Some switches are not fetching the value on init.
     // const value = this._node.getValue(valueId);
     // const metadata = this._node.getValueMetadata(valueId);
-    const values = await this._node.commandClasses["Multilevel Switch"].get();
-    this._plugin.addCapability(thingId, {
-      capabilityType: "property",
+    const { currentValue } = await this._node.commandClasses[
+      "Multilevel Switch"
+    ].get();
+
+    this._pluginThing!.addProperty({
       title: "Level",
       description: /*metadata.description || */ "Level",
       semanticType: "LevelProperty",
       type: "integer",
       minimum: 0, // TODO: From metadata
       maximum: 255, // TODO: From metadata
-      initialValue: values.currentValue,
+      initialValue: currentValue,
       values: this._multiLevelSubject,
       onValueChangeRequested: (thingId, propertyId, value) => {
         // this._node.setValue(valueId, value);

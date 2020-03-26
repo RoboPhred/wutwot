@@ -1,127 +1,61 @@
-import { Observable } from "rxjs";
+import { ThingService, ThingDef } from "../../../things";
 
-import { MaybeArray } from "../../../../types";
-import { ThingService, Thing, ThingDef } from "../../../things";
-import { ActionService } from "../../../actions";
+import { MozIotPlugin, MozIotPluginContext } from "../../contracts";
+import { PluginThing, OwnedPluginThing } from "../../contracts/PluginThing";
 
-import {
-  ActionRequestService,
-  ThingActionRequestStatus,
-  ThingActionRequest
-} from "../../../action-requests";
-import { ThingTypesService } from "../../../thing-types";
-import { PropertyService } from "../../../properties";
-
-import {
-  MozIotPlugin,
-  MozIotPluginContext,
-  ThingCapabilityDef
-} from "../../contracts";
+import { PluginThingFactory } from "../PluginThingFactory";
 
 export class PluginAdapterImpl {
   constructor(
     private _plugin: MozIotPlugin,
     private _thingService: ThingService,
-    private _thingTypesService: ThingTypesService,
-    private _actionService: ActionService,
-    private _actionRequestService: ActionRequestService,
-    private _propertyService: PropertyService
+    private _pluginThingFactory: PluginThingFactory
   ) {
     const pluginContext: MozIotPluginContext = {
       addThing: this._addThing.bind(this),
-      removeThing: this._removeThing.bind(this),
+      getThing: this._getThing.bind(this),
       getThings: this._getThings.bind(this),
-      getOwnThings: this._getOwnThings.bind(this),
-      addCapability: this._addCapability.bind(this),
-      addActionRequest: this._addActionRequest.bind(this)
+      getOwnThings: this._getOwnThings.bind(this)
     };
 
     _plugin.onRegisterPlugin(pluginContext);
   }
 
-  private _addThing(
-    def: ThingDef,
-    ...capabilities: MaybeArray<ThingCapabilityDef>[]
-  ): Thing {
+  get plugin() {
+    return this._plugin;
+  }
+
+  private _addThing(def: ThingDef): OwnedPluginThing {
     const thing = this._thingService.addThing(def, this._plugin);
-    this._addCapability(thing.id, ...capabilities);
-    return thing;
+    const pluginThing = this._pluginThingFactory.getPluginThing(thing, this);
+    return pluginThing as OwnedPluginThing;
   }
 
-  private _removeThing(thingId: string): void {
-    const thing = this._thingService.getThing(thingId);
+  private _getThing(id: string): PluginThing | null {
+    const thing = this._thingService.getThing(id);
     if (!thing) {
-      throw new Error("No thing exists by the provided thingId.");
+      return null;
     }
-
-    if (thing.ownerPlugin !== this._plugin) {
-      throw new Error("The plugin does not own the specified thing.");
-    }
-
-    this._thingService.removeThing(thingId);
+    const pluginThing = this._pluginThingFactory.getPluginThing(thing, this);
+    return pluginThing;
   }
 
-  private _getThings(): Thing[] {
-    return this._thingService.getThings();
-  }
-
-  private _getOwnThings(): Thing[] {
+  private _getThings(): PluginThing[] {
     return this._thingService
       .getThings()
-      .filter(x => x.ownerPlugin === this._plugin);
+      .map(thing => this._pluginThingFactory.getPluginThing(thing, this));
   }
 
-  private _addCapability(
-    thingId: string,
-    ...capabilities: MaybeArray<ThingCapabilityDef>[]
-  ): void {
-    const flatCaps = ([] as ThingCapabilityDef[]).concat(...capabilities);
-
-    for (const cap of flatCaps) {
-      switch (cap.capabilityType) {
-        case "type":
-          this._thingTypesService.addType(thingId, cap.type);
-          break;
-        case "property":
-          this._propertyService.addProperty(thingId, cap, this._plugin);
-          break;
-        case "action":
-          this._actionService.addAction(thingId, cap, this._plugin);
-          break;
-        default:
-          throwUnknownCapability(cap);
-      }
-    }
+  private _getOwnThings(): OwnedPluginThing[] {
+    return this._thingService
+      .getThings()
+      .filter(x => x.ownerPlugin === this._plugin)
+      .map(
+        thing =>
+          this._pluginThingFactory.getPluginThing(
+            thing,
+            this
+          ) as OwnedPluginThing
+      );
   }
-
-  private _addActionRequest(
-    thingId: string,
-    actionId: string,
-    input: object,
-    timeRequested: string,
-    status: Observable<ThingActionRequestStatus>
-  ): ThingActionRequest {
-    const action = this._actionService.getAction(thingId, actionId);
-    if (!action) {
-      throw new Error("No action exists on the given thing with the given id.");
-    }
-
-    if (action.ownerPlugin !== this._plugin) {
-      throw new Error("The plugin does not own the requested action.");
-    }
-
-    const request = this._actionRequestService.addRequest(
-      thingId,
-      actionId,
-      input,
-      timeRequested,
-      status
-    );
-    return request;
-  }
-}
-
-function throwUnknownCapability(def: never): never {
-  const type = (def as ThingCapabilityDef).capabilityType;
-  throw new Error(`Unknown capability type "${type}".`);
 }

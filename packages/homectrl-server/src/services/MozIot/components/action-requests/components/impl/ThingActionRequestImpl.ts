@@ -1,6 +1,8 @@
-import { Observable } from "rxjs";
-
-import { ThingActionRequest, ThingActionRequestStatus } from "../../types";
+import {
+  ThingActionRequest,
+  ThingActionRequestStatus,
+  ThingActionRequestDef
+} from "../../types";
 
 export class ThingActionRequestImpl implements ThingActionRequest {
   private _lastStatus: ThingActionRequestStatus;
@@ -10,12 +12,12 @@ export class ThingActionRequestImpl implements ThingActionRequest {
     private _id: string,
     private _thingId: string,
     private _actionId: string,
-    private _input: any,
-    private _timeRequested: string,
-    status: Observable<ThingActionRequestStatus>
+    private _def: ThingActionRequestDef
   ) {
+    this._def = { ..._def };
+
     this._lastStatus = ThingActionRequestStatus.Pending;
-    status.subscribe({
+    _def.status.subscribe({
       next: status => {
         if (ThingActionRequestStatus.canTransition(this._lastStatus, status)) {
           this._lastStatus = status;
@@ -51,11 +53,11 @@ export class ThingActionRequestImpl implements ThingActionRequest {
   }
 
   get input(): any {
-    return this._input;
+    return this._def.input;
   }
 
   get timeRequested(): string {
-    return this._timeRequested;
+    return this._def.timeRequested;
   }
 
   get timeCompleted(): string | null {

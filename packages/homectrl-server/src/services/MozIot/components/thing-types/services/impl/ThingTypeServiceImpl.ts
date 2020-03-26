@@ -1,10 +1,10 @@
 import { injectable, singleton, provides } from "microinject";
-import { ThingTypesService } from "../ThingTypesService";
+import { ThingTypeService } from "../ThingTypeService";
 
 @injectable()
 @singleton()
-@provides(ThingTypesService)
-export class ThingTypesServiceImpl implements ThingTypesService {
+@provides(ThingTypeService)
+export class ThingTypeServiceImpl implements ThingTypeService {
   private _capabilities = new Map<string, Set<string>>();
 
   addType(thingId: string, type: string): void {

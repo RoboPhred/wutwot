@@ -5,7 +5,7 @@ import { ActionService } from "../../../actions";
 
 import { ThingDef, Thing, validateThingDefOrThrow } from "../../types";
 
-import { ThingTypesService } from "../../../thing-types";
+import { ThingTypeService } from "../../../thing-types";
 import { PropertyService } from "../../../properties";
 
 import { ThingFactory } from "../ThingFactory";
@@ -19,7 +19,7 @@ export class ThingFactoryImpl implements ThingFactory {
   private _idMapper = new IdMapper();
 
   constructor(
-    @inject(ThingTypesService) private _thingTypesService: ThingTypesService,
+    @inject(ThingTypeService) private _thingTypeService: ThingTypeService,
     @inject(ActionService) private _actionService: ActionService,
     @inject(PropertyService) private _propertyService: PropertyService
   ) {}
@@ -31,7 +31,7 @@ export class ThingFactoryImpl implements ThingFactory {
       def,
       id,
       owner,
-      this._thingTypesService,
+      this._thingTypeService,
       this._actionService,
       this._propertyService
     );

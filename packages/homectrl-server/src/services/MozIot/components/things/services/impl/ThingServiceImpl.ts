@@ -1,6 +1,6 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
-import { Thing } from "../../types";
+import { Thing, ThingDef } from "../../types";
 import { ThingFactory, ThingRepository } from "../../components";
 
 import { ThingService } from "../ThingService";
@@ -14,7 +14,7 @@ export class ThingServiceImpl implements ThingService {
     @inject(ThingRepository) private _repository: ThingRepository
   ) {}
 
-  addThing(def: Thing, owner: object): Thing {
+  addThing(def: ThingDef, owner: object): Thing {
     const thing = this._factory.createThing(def, owner);
     this._repository.addThing(thing);
     return thing;

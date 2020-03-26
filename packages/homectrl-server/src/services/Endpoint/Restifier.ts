@@ -20,7 +20,7 @@ export class Restifier {
   public thingToRest(thing: Thing, isPrimary: boolean = true): object {
     return {
       "@context": WOT_CONTEXT,
-      "@type": thing.types,
+      "@type": thing.semanticTypes,
       id: joinURL(this._rootURL, "things", thing.id),
       title: thing.title,
       description: thing.description,

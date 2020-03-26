@@ -1,6 +1,6 @@
 import { ReadonlyRecord } from "../../../../types";
 
-import { ThingTypesService } from "../../../thing-types";
+import { ThingTypeService } from "../../../thing-types";
 
 import { ActionService, ThingAction } from "../../../actions";
 import { ThingProperty, PropertyService } from "../../../properties";
@@ -14,7 +14,7 @@ export class ThingImpl implements Thing {
     private _def: ThingDef,
     private _id: string,
     private _owner: object,
-    private _typesService: ThingTypesService,
+    private _typeService: ThingTypeService,
     private _actionService: ActionService,
     private _propertyService: PropertyService
   ) {
@@ -36,8 +36,8 @@ export class ThingImpl implements Thing {
     return this._def.title;
   }
 
-  get types(): ReadonlyArray<string> {
-    return this._typesService.getTypes(this._id);
+  get semanticTypes(): ReadonlyArray<string> {
+    return this._typeService.getTypes(this._id);
   }
 
   get description(): string | null {

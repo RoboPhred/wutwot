@@ -1,7 +1,7 @@
 import { ContainerModule } from "microinject";
 
-import { ThingTypesServiceImpl } from "./services/impl/ThingTypesServiceImpl";
+import { ThingTypeServiceImpl } from "./services/impl/ThingTypeServiceImpl";
 
 export default new ContainerModule(bind => {
-  bind(ThingTypesServiceImpl);
+  bind(ThingTypeServiceImpl);
 });
