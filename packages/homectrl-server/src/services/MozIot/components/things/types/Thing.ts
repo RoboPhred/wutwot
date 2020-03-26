@@ -31,7 +31,7 @@ export interface Thing {
   /**
    * The description of the thing.
    */
-  readonly description: string;
+  readonly description: string | null;
 
   /**
    * Additional metadata describing the thing.

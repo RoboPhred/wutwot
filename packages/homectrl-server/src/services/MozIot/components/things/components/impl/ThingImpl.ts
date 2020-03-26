@@ -40,8 +40,8 @@ export class ThingImpl implements Thing {
     return this._typesService.getTypes(this._id);
   }
 
-  get description(): string {
-    return this._def.description;
+  get description(): string | null {
+    return this._def.description || null;
   }
 
   get metadata(): Record<string, any> {
