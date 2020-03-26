@@ -58,10 +58,10 @@ export class ThingImpl implements Thing {
   }
 
   get properties(): ReadonlyRecord<string, ThingProperty> {
-    const things: Record<string, ThingProperty> = {};
-    this._propertyService.getForThing(this._id).forEach(thing => {
-      things[thing.id] = thing;
+    const properties: Record<string, ThingProperty> = {};
+    this._propertyService.getForThing(this._id).forEach(property => {
+      properties[property.id] = property;
     });
-    return Object.seal(things);
+    return Object.seal(properties);
   }
 }
