@@ -41,6 +41,10 @@ export class PropertyRepositoryImpl implements PropertyRepository {
     }
   }
 
+  removeAllThingProperties(thingId: string): void {
+    this._propertiesByThingId.delete(thingId);
+  }
+
   get(thingId: string, propertyId: string): ThingProperty | undefined {
     const properties = this._propertiesByThingId.get(thingId) || [];
     return properties.find(x => x.id === propertyId);

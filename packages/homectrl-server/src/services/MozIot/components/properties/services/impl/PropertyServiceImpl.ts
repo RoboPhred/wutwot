@@ -1,5 +1,7 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
+import { ThingEventSource, ThingRemovedEventArgs } from "../../../things";
+
 import { ThingProperty, ThingPropertyDef } from "../../types";
 
 import { PropertyFactory } from "../../components/PropertyFactory";
@@ -13,8 +15,11 @@ import { PropertyService } from "../PropertyService";
 export class PropertyServiceImpl implements PropertyService {
   constructor(
     @inject(PropertyFactory) private _propertyFactory: PropertyFactory,
-    @inject(PropertyRepository) private _propertyRepository: PropertyRepository
-  ) {}
+    @inject(PropertyRepository) private _propertyRepository: PropertyRepository,
+    @inject(ThingEventSource) thingEventSource: ThingEventSource
+  ) {
+    thingEventSource.on("thing.remove", this._onThingRemoved.bind(this));
+  }
 
   getProperty(thingId: string, propertyId: string): ThingProperty | undefined {
     return this._propertyRepository.get(thingId, propertyId);
@@ -37,5 +42,9 @@ export class PropertyServiceImpl implements PropertyService {
     this._propertyRepository.addProperty(thingId, property);
 
     return property;
+  }
+
+  private _onThingRemoved(e: ThingRemovedEventArgs) {
+    this._propertyRepository.removeAllThingProperties(e.thingId);
   }
 }

@@ -54,6 +54,19 @@ export class ActionRepositoryImpl extends EventEmitter
     }
   }
 
+  removeAllThingActions(thingId: string): void {
+    const actions = this._actionsByThingId.get(thingId) || [];
+
+    const removeEvents: ThingActionRemovedEventArgs[] = actions.map(action => ({
+      thingId,
+      actionId: action.id
+    }));
+
+    this._actionsByThingId.delete(thingId);
+
+    removeEvents.forEach(e => this.emit("action.remove", e));
+  }
+
   get(thingId: string, actionId: string): ThingAction | undefined {
     const actions = this._actionsByThingId.get(thingId) || [];
     return actions.find(x => x.id === actionId);

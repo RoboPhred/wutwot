@@ -13,4 +13,5 @@ export const PropertyRepository: Identifier<PropertyRepository> = createSymbol(
 export interface PropertyRepository extends PropertyRegistry {
   addProperty(thingId: string, property: ThingProperty): void;
   removeProperty(thingId: string, propertyId: string): void;
+  removeAllThingProperties(thingId: string): void;
 }
