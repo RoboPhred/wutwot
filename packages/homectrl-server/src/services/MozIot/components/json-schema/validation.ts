@@ -6,13 +6,21 @@ import { DeepImmutableObject } from "../../types";
 import { SchemaValidationError } from "./errors";
 
 const ajv = Ajv();
+const validatorMap = new WeakMap<
+  DeepImmutableObject<JSONSchema6>,
+  Ajv.ValidateFunction
+>();
 
 export function validateOrThrow(
   obj: any,
   schema: DeepImmutableObject<JSONSchema6>
 ) {
-  // TODO: performance issue: recompiling schema each request.
-  const validator = ajv.compile(schema);
+  let validator = validatorMap.get(schema);
+  if (!validator) {
+    validator = ajv.compile(schema);
+    validatorMap.set(schema, validator);
+  }
+
   if (!validator(obj)) {
     let errorMessage = "Schema validation error: ";
     if (
