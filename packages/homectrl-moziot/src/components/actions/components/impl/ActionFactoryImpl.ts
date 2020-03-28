@@ -5,7 +5,11 @@ import { IdMapper } from "../../../../utils";
 import { ActionRequestFactory } from "../../../action-requests/components/ActionRequestFactory";
 import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
 
-import { ThingActionDef, ThingAction } from "../../types";
+import {
+  ThingActionDef,
+  ThingAction,
+  validateActionDefOrThrow
+} from "../../types";
 
 import { ActionFactory } from "../ActionFactory";
 
@@ -25,19 +29,21 @@ export class ActionFactoryImpl implements ActionFactory {
   ) {}
 
   createAction(
-    action: ThingActionDef,
+    actionDef: ThingActionDef,
     thingId: string,
     owner: object
   ): ThingAction {
+    validateActionDefOrThrow(actionDef);
+
     let idMapper = this._thingActionIdMappers.get(thingId);
     if (idMapper == null) {
       idMapper = new IdMapper();
       this._thingActionIdMappers.set(thingId, idMapper);
     }
-    const id = idMapper.createId(action.title);
+    const id = idMapper.createId(actionDef.title);
 
     return new ThingActionImpl(
-      action,
+      actionDef,
       id,
       thingId,
       owner,
