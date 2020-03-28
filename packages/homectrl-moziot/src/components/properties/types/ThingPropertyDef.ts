@@ -1,6 +1,9 @@
 import { Observable } from "rxjs";
+import { JSONSchema6 } from "json-schema";
 
-import { ThingPropertyType } from "./ThingProperty";
+import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
+
+import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
 
 export interface ThingPropertyDef {
   title: string;
@@ -21,4 +24,25 @@ export interface ThingPropertyDef {
   onValueChangeRequested(thingId: string, propertyId: string, value: any): void;
 }
 
-// TODO: Validator.  Validate in factory.
+export const propertyDefSchema: JSONSchema6 = Object.seal({
+  type: "object",
+  properties: {
+    title: { type: "string", minLength: 1 },
+    semanticType: { type: "string", minLength: 1 },
+    description: { type: "string" },
+    type: { enum: ThingPropertyTypes },
+    unit: { type: "string", minLength: 1 },
+    enum: { type: "array", items: { type: "string", minLength: 1 } },
+    minimum: { type: "number" },
+    maximum: { type: "number" },
+    multipleOf: { type: "number" },
+    readOnly: { type: "boolean" },
+    initialValue: { type: ThingPropertyTypes }
+  },
+  required: ["title", "description", "type", "initialValue"]
+});
+
+export const validatePropertyDef = makeValidator(propertyDefSchema);
+export const validatePropertyDefOrThrow = makeValidateOrThrow(
+  validatePropertyDef
+);

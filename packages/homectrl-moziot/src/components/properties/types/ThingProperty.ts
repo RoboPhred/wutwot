@@ -7,6 +7,16 @@ export type ThingPropertyType =
   | "string"
   | "boolean";
 
+export const ThingPropertyTypes: ThingPropertyType[] = [
+  "null",
+  "object",
+  "array",
+  "number",
+  "integer",
+  "string",
+  "boolean"
+];
+
 export interface ThingProperty {
   readonly ownerPlugin: object;
 

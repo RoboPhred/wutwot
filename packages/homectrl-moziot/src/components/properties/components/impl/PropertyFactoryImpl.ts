@@ -2,7 +2,11 @@ import { injectable, singleton, provides } from "microinject";
 
 import { IdMapper } from "../../../../utils";
 
-import { ThingPropertyDef, ThingProperty } from "../../types";
+import {
+  ThingPropertyDef,
+  ThingProperty,
+  validatePropertyDefOrThrow
+} from "../../types";
 
 import { PropertyFactory } from "../PropertyFactory";
 import { ThingPropertyImpl } from "./ThingPropertyImpl";
@@ -18,6 +22,8 @@ export class PropertyFactoryImpl implements PropertyFactory {
     thingId: string,
     owner: object
   ): ThingProperty {
+    validatePropertyDefOrThrow(propertyDef);
+
     let idMapper = this._thingPropertyIdMappers.get(thingId);
     if (idMapper == null) {
       idMapper = new IdMapper();
