@@ -4,7 +4,7 @@
       "path": "packages\\homectrl-server"
     },
     {
-      "path": "packages\\homectrl-plugin-test"
+      "path": "packages\\homectrl-plugin-zwave"
     },
     {
       "path": "packages\\homectrl-moziot"

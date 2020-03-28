@@ -12,7 +12,10 @@
       "outFiles": ["${workspaceFolder}/packages/homectrl-server/lib/**/*.js"],
       "cwd": "${workspaceFolder}/packages/homectrl-server",
       "sourceMaps": true,
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "env": {
+        "HOMECTRL_ZWAVE_PORT": "COM3"
+      }
     }
   ]
 }

@@ -1,25 +1,13 @@
-import { composeModules, ContainerModule } from "microinject";
+import { ContainerModule } from "microinject";
+import { MozIot } from "homectrl-moziot";
 
-import actionRequestModule from "./components/action-requests/module";
-import actionModule from "./components/actions/module";
-import pluginModule from "./components/plugin-management/module";
-import propertiesModule from "./components/properties/module";
-import thingTypesModule from "./components/thing-types/module";
-import thingModule from "./components/things/module";
+import { MozIotPlugin } from "./identifiers";
 
-import { MozIot } from "./MozIot";
-
-const rootModule = new ContainerModule(bind => {
-  bind(MozIot).toSelf();
+export default new ContainerModule(bind => {
+  bind(MozIot)
+    .toDynamicValue(context => {
+      const plugins = context.getAll(MozIotPlugin);
+      return new MozIot(plugins);
+    })
+    .inSingletonScope();
 });
-
-const mozIotModule = composeModules(
-  rootModule,
-  actionRequestModule,
-  actionModule,
-  pluginModule,
-  propertiesModule,
-  thingTypesModule,
-  thingModule
-);
-export default mozIotModule;

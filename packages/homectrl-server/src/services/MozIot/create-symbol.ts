@@ -1,6 +1,5 @@
 import createParentSymbol from "../../create-symbol";
 
-function createSymbol(...name: (string | string[])[]): symbol {
-  return createParentSymbol("MozIot", ...name);
+export function createSymbol(...name: string[]) {
+  return createParentSymbol("moziot", ...name);
 }
-export default createSymbol;

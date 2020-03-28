@@ -5,10 +5,9 @@
     "postinstall": "lerna bootstrap",
     "clean": "lerna run --parallel clean",
     "build:moziot": "lerna run --scope homectrl-moziot build",
-    "build:plugin-test": "lerna run --scope homectrl-plugin-test build",
     "build:plugin-zwave": "lerna run --scope homectrl-plugin-zwave build",
     "build:server": "lerna run --scope homectrl-server build",
-    "build": "npm run build:moziot && npm run build:plugin-test && npm run build:plugin-zwave && npm run build:server",
+    "build": "npm run build:moziot && npm run build:plugin-zwave && npm run build:server",
     "start": "lerna run --scope homectrl-server --stream start",
     "watch": "lerna run watch --stream",
     "lerna": "lerna"
@@ -29,6 +28,6 @@
   },
   "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
   "devDependencies": {
-    "lerna": "^3.4.1"
+    "lerna": "^3.20.2"
   }
 }

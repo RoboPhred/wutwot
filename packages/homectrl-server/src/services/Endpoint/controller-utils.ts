@@ -1,14 +1,13 @@
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { has } from "lodash";
-
 import {
   Thing,
   MozIot,
   ThingAction,
   ThingActionRequest,
   ThingProperty
-} from "../../services/MozIot";
+} from "homectrl-moziot";
 
 export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
   const thing = mozIot.things.find(x => x.id === thingId);

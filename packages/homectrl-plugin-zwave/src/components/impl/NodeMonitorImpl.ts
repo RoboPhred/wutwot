@@ -1,13 +1,11 @@
 import { ZWaveNode } from "zwave-js";
 import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
-
 import {
   ZWaveNodeValueUpdatedArgs,
   ZWaveNodeValueAddedArgs
 } from "zwave-js/build/lib/node/Node";
+import { MozIotPluginContext, OwnedPluginThing } from "homectrl-moziot";
 import { Subject } from "rxjs";
-
-import { MozIotPluginContext, OwnedPluginThing } from "../../../MozIot";
 
 import { NodeMonitor } from "../NodeMonitor";
 

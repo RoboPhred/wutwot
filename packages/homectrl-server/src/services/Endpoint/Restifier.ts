@@ -1,15 +1,15 @@
 import { injectable, inject } from "microinject";
-
-import { URL } from "url";
-import { mapValues } from "lodash";
-
-import { RootURL } from "../../config";
 import {
   Thing,
   ThingAction,
   ThingProperty,
   ThingActionRequest
-} from "../MozIot";
+} from "homectrl-moziot";
+
+import { URL } from "url";
+import { mapValues } from "lodash";
+
+import { RootURL } from "../../config";
 
 const WOT_CONTEXT = "https://iot.mozilla.org/schemas/";
 

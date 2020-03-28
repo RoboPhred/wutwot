@@ -1,0 +1,32 @@
+{
+  "name": "homectrl-plugin-zwave",
+  "version": "1.0.0",
+  "description": "Provides z-wave Things to the MozIOT thing manager.",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc -p src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/homectrl-server.git"
+  },
+  "keywords": [
+    "Mozilla",
+    "IOT",
+    "ZWave"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/serialport": "^7.0.5",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "homectrl-moziot": "^1.0.0",
+    "microinject": "^0.7.1",
+    "serialport": "^7.1.5",
+    "zwave-js": "^2.15.7"
+  }
+}

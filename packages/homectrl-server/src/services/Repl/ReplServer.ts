@@ -3,9 +3,8 @@ import repl from "repl";
 import { injectable, inject } from "microinject";
 
 import { Entrypoint } from "../../contracts";
-
-import { MozIot } from "../MozIot";
-import { ZWaveDriver } from "../ZWavePlugin/components/ZWaveDriver";
+import { MozIot } from "homectrl-moziot";
+import { ZWavePlugin } from "homectrl-plugin-zwave";
 
 @injectable(Entrypoint)
 export class ReplServer implements Entrypoint {
@@ -13,7 +12,7 @@ export class ReplServer implements Entrypoint {
 
   constructor(
     @inject(MozIot) private _moziot: MozIot,
-    @inject(ZWaveDriver) private _zwave: ZWaveDriver
+    @inject(ZWavePlugin) private _zwave: ZWavePlugin
   ) {}
 
   start() {

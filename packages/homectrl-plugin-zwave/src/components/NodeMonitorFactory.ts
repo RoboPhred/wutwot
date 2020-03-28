@@ -1,7 +1,6 @@
 import { ZWaveNode } from "zwave-js";
 import { Identifier } from "microinject";
-
-import { MozIotPluginContext } from "../../MozIot";
+import { MozIotPluginContext } from "homectrl-moziot";
 
 import createSymbol from "../create-symbol";
 import { NodeMonitor } from "./NodeMonitor";

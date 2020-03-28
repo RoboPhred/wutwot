@@ -2,8 +2,7 @@ import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { has } from "lodash";
-
-import { MozIot, SchemaValidationError } from "../../../../MozIot";
+import { MozIot, SchemaValidationError } from "homectrl-moziot";
 
 import { controller, get, put, param, body } from "../../../infrastructure";
 import { getThingOrThrow, getPropertyOrThrow } from "../../../controller-utils";

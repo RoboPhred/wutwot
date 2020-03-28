@@ -2,8 +2,7 @@ import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { mapValues } from "lodash";
-
-import { MozIot } from "../../../../MozIot";
+import { MozIot } from "homectrl-moziot";
 
 import { Restifier } from "../../../Restifier";
 import {

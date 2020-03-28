@@ -1,7 +1,6 @@
 import { injectable, inject } from "microinject";
 import { mapValues } from "lodash";
-
-import { MozIot } from "../../../../MozIot";
+import { MozIot } from "homectrl-moziot";
 
 import { Restifier } from "../../../Restifier";
 import { controller, get, param } from "../../../infrastructure";

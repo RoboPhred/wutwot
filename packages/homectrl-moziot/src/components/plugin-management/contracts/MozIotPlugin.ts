@@ -1,16 +1,7 @@
-import { Identifier } from "microinject";
-
-import createSymbol from "../../../create-symbol";
-
 import { ThingDef } from "../../things";
-import { ThingActionDef } from "../../actions";
-import { ThingPropertyDef } from "../../properties";
 
 import { PluginThing, OwnedPluginThing } from "./PluginThing";
 
-export const MozIotPlugin: Identifier<MozIotPlugin> = createSymbol(
-  "MozIotPlugin"
-);
 export interface MozIotPlugin {
   readonly id: string;
 

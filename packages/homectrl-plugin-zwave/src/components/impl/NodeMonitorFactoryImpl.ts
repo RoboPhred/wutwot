@@ -1,9 +1,9 @@
 import { injectable, provides } from "microinject";
+import { ZWaveNode } from "zwave-js";
+import { MozIotPluginContext } from "homectrl-moziot";
 
 import { NodeMonitorFactory } from "../NodeMonitorFactory";
-import { ZWaveNode } from "zwave-js";
 import { NodeMonitorImpl } from "./NodeMonitorImpl";
-import { MozIotPluginContext } from "../../../MozIot";
 import { NodeMonitor } from "../NodeMonitor";
 
 @injectable()

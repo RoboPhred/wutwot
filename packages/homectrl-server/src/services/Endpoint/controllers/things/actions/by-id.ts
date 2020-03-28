@@ -1,8 +1,7 @@
 import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
-
-import { MozIot, SchemaValidationError } from "../../../../MozIot";
+import { MozIot, SchemaValidationError } from "homectrl-moziot";
 
 import { Restifier } from "../../../Restifier";
 import {

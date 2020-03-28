@@ -1,6 +1,5 @@
 import { inject, injectable } from "microinject";
-
-import { MozIot } from "../../../../MozIot";
+import { MozIot } from "homectrl-moziot";
 
 import { controller, get, param } from "../../../infrastructure";
 import {
