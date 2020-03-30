@@ -4,7 +4,7 @@ import {
   ZWaveNodeValueUpdatedArgs,
   ZWaveNodeValueAddedArgs
 } from "zwave-js/build/lib/node/Node";
-import { MozIotPluginContext, OwnedPluginThing } from "homectrl-moziot";
+import { PluginThingManager, OwnedPluginThing } from "homectrl-moziot";
 import { Subject } from "rxjs";
 
 import { NodeMonitor } from "../NodeMonitor";
@@ -15,7 +15,10 @@ export class NodeMonitorImpl implements NodeMonitor {
   private _multiLevelSubject: Subject<number> | null = null;
   private _binarySwitchSubject: Subject<boolean> | null = null;
 
-  constructor(private _node: ZWaveNode, private _plugin: MozIotPluginContext) {
+  constructor(
+    private _node: ZWaveNode,
+    private _thingManager: PluginThingManager
+  ) {
     this._node.once("interview completed", this._onNodeInterviewed.bind(this));
   }
 
@@ -28,7 +31,7 @@ export class NodeMonitorImpl implements NodeMonitor {
       ].getName();
     }
 
-    this._pluginThing = this._plugin.addThing({
+    this._pluginThing = this._thingManager.addThing({
       title: name,
       description: `${this._node.productType}`
     });

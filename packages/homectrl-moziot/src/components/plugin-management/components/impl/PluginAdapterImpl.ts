@@ -1,32 +1,70 @@
+import { Container } from "microinject";
+
 import { ThingService, ThingDef } from "../../../things";
 
 import {
   MozIotPlugin,
-  MozIotPluginContext,
   OwnedPluginThing,
-  PluginThing
+  PluginThing,
+  PluginAdapter
 } from "../../types";
+import { PluginThingManager } from "../../services";
 
 import { PluginThingFactory } from "../PluginThingFactory";
 
-export class PluginAdapterImpl {
+export class PluginAdapterImpl implements PluginAdapter {
+  private _initialized = false;
+  private _privateContainer: Container;
+
   constructor(
     private _plugin: MozIotPlugin,
+    publicContainer: Container,
     private _thingService: ThingService,
     private _pluginThingFactory: PluginThingFactory
   ) {
-    const pluginContext: MozIotPluginContext = {
+    this._privateContainer = new Container();
+    this._privateContainer.parent = publicContainer;
+
+    const pluginThingManager: PluginThingManager = {
       addThing: this._addThing.bind(this),
       getThing: this._getThing.bind(this),
       getThings: this._getThings.bind(this),
       getOwnThings: this._getOwnThings.bind(this)
     };
+    this._privateContainer
+      .bind(PluginThingManager)
+      .toConstantValue(pluginThingManager);
 
-    _plugin.onRegisterPlugin(pluginContext);
+    if (_plugin.onRegisterPublicServices) {
+      const registryModule = _plugin.onRegisterPublicServices(
+        publicContainer.bind.bind(publicContainer)
+      );
+      if (registryModule) {
+        publicContainer.load(registryModule);
+      }
+    }
+
+    if (_plugin.onRegisterPrivateServices) {
+      const registryModule = _plugin.onRegisterPrivateServices(
+        this._privateContainer.bind.bind(this._privateContainer)
+      );
+      if (registryModule) {
+        this._privateContainer.load(registryModule);
+      }
+    }
   }
 
   get plugin() {
     return this._plugin;
+  }
+
+  initialize() {
+    if (this._initialized) {
+      return;
+    }
+    this._initialized = true;
+
+    this._plugin.onPluginInitialize(this._privateContainer);
   }
 
   private _addThing(def: ThingDef): OwnedPluginThing {

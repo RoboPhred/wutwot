@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "homectrl-moziot": "^1.0.0",
-    "microinject": "^0.7.1",
+    "microinject": "^0.8.0",
     "serialport": "^7.1.5",
     "zwave-js": "^2.15.7"
   }

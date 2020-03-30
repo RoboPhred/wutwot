@@ -1,8 +1,15 @@
+import { Identifier } from "microinject";
+
+import createSymbol from "../../../create-symbol";
+
 import { ThingDef } from "../../things";
 
-import { OwnedPluginThing, PluginThing } from "./PluginThing";
+import { OwnedPluginThing, PluginThing } from "../types/PluginThing";
 
-export interface MozIotPluginContext {
+export const PluginThingManager: Identifier<PluginThingManager> = createSymbol(
+  "PluginThingManager"
+);
+export interface PluginThingManager {
   /**
    * Adds a new thing owned by this plugin.
    *

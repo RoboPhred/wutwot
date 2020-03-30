@@ -1,14 +1,12 @@
-import { Container } from "microinject";
+import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
 import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
+import { MozIotPlugin } from "homectrl-moziot";
 
-import { MozIotPlugin, MozIotPluginContext } from "homectrl-moziot";
+import { ZWaveProvider } from "./components/ZWaveProvider";
+import { ZWaveThingAdapter } from "./components/ZWaveThingAdapter";
 
-import { AdapterLocator } from "./components/AdapterLocator";
-import { ZWaveDriver } from "./components/ZWaveDriver";
-import { NodeMonitorFactory } from "./components/NodeMonitorFactory";
-
-import containerModule from "./module";
 import { ZWavePort } from "./config";
+import containerModule from "./module";
 
 export interface ZWavePluginOptions {
   port?: string;
@@ -16,53 +14,46 @@ export interface ZWavePluginOptions {
 export class ZWavePlugin implements MozIotPlugin {
   readonly id: string = "Z-Wave";
 
-  private _container: Container = new Container();
-  private _adapterLocator: AdapterLocator;
-  private _driver: ZWaveDriver;
-  private _nodeMonitorFactory: NodeMonitorFactory;
+  private _port: string | null = null;
 
-  private _plugin!: MozIotPluginContext;
+  private _controller: ZWaveController | null = null;
+  private _controllerError: Error | null = null;
 
   constructor(opts: ZWavePluginOptions = {}) {
-    this._container.load(containerModule);
-
-    try {
-      (this._container as any)._finalizeBinders();
-    } catch (e) {
-      debugger;
-      console.error(e);
-    }
-
     if (opts.port) {
-      this._container.bind(ZWavePort).toConstantValue(opts.port);
+      this._port = opts.port;
     }
-
-    this._adapterLocator = this._container.get(AdapterLocator);
-    this._driver = this._container.get(ZWaveDriver);
-    this._nodeMonitorFactory = this._container.get(NodeMonitorFactory);
   }
 
-  get controller(): ZWaveController {
-    return this._driver.controller;
-  }
-
-  onRegisterPlugin(plugin: MozIotPluginContext): void {
-    this._plugin = plugin;
-
-    this._start();
-  }
-
-  private async _start() {
-    const port = await this._adapterLocator.getAdapterPort();
-    if (!port) {
-      console.log("No z-wave port detected.");
-      return;
+  get controller(): ZWaveController | null {
+    if (this._controllerError) {
+      throw this._controllerError;
     }
 
-    await this._driver.connect(port);
-
-    for (const node of this._driver.controller.nodes.values()) {
-      this._nodeMonitorFactory.createNodeMonitor(node, this._plugin);
+    if (!this._controller) {
+      return null;
     }
+    return this._controller;
+  }
+
+  onRegisterPrivateServices(bind: BindFunction): RegistryModule {
+    bind(ZWavePort).toConstantValue(this._port);
+    return containerModule;
+  }
+
+  onPluginInitialize(serviceLocator: ServiceLocator): void {
+    serviceLocator
+      .get(ZWaveProvider)
+      .getController()
+      .then(controller => {
+        this._controller = controller;
+      })
+      .catch(e => {
+        this._controllerError = e;
+      });
+
+    // Instantiate the thing adapter.
+    //  It will automatically start syncing things.
+    serviceLocator.get(ZWaveThingAdapter);
   }
 }
