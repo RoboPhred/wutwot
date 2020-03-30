@@ -3,10 +3,9 @@ import { injectable, provides, inject, singleton } from "microinject";
 import { ThingService } from "../../../things";
 import { ThingTypeService } from "../../../thing-types";
 
-import { MozIotPlugin } from "../../types";
+import { MozIotPlugin, PluginAdapter } from "../../types";
 
 import { PluginAdapterFactory } from "../PluginAdapterFactory";
-import { PluginAdapter } from "../PluginAdapter";
 import { PluginThingFactory } from "../PluginThingFactory";
 
 import { PluginAdapterImpl } from "./PluginAdapterImpl";

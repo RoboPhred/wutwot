@@ -3,9 +3,11 @@ import { Identifier } from "microinject";
 import createSymbol from "../../../create-symbol";
 
 import { ThingAction } from "../../actions";
-import { PluginThingAction, OwnedPluginThingAction } from "../types";
-
-import { PluginAdapter } from "./PluginAdapter";
+import {
+  PluginThingAction,
+  OwnedPluginThingAction,
+  PluginAdapter
+} from "../types";
 
 export const PluginThingActionFactory: Identifier<PluginThingActionFactory> = createSymbol(
   "PluginThingActionFactory"

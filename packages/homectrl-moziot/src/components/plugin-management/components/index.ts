@@ -1,2 +1,3 @@
-export * from "./PluginAdapter";
 export * from "./PluginAdapterFactory";
+export * from "./PluginThingActionFactory";
+export * from "./PluginThingFactory";

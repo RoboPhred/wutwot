@@ -5,10 +5,9 @@ import { ThingTypeService } from "../../../thing-types";
 import { ActionService } from "../../../actions";
 import { PropertyService } from "../../../properties";
 
-import { PluginThing, OwnedPluginThing } from "../../types";
+import { PluginThing, OwnedPluginThing, PluginAdapter } from "../../types";
 
 import { PluginThingFactory } from "../PluginThingFactory";
-import { PluginAdapter } from "../PluginAdapter";
 import { PluginThingActionFactory } from "../PluginThingActionFactory";
 
 import { PluginThingImpl } from "./PluginThingImpl";

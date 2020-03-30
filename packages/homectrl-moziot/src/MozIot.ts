@@ -3,8 +3,7 @@ import { Container } from "microinject";
 import containerModule from "./module";
 
 import { Thing, ThingService } from "./components/things";
-import { PluginManager } from "./components/plugin-management/components/PluginManager";
-import { MozIotPlugin } from "./components/plugin-management";
+import { PluginManager, MozIotPlugin } from "./components/plugin-management";
 
 export class MozIot {
   private _container: Container = new Container();

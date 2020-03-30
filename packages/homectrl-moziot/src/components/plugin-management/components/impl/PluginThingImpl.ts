@@ -14,10 +14,10 @@ import {
 import {
   OwnedPluginThing,
   PluginThingAction,
-  OwnedPluginThingAction
+  OwnedPluginThingAction,
+  PluginAdapter
 } from "../../types";
 
-import { PluginAdapter } from "../PluginAdapter";
 import { PluginThingActionFactory } from "../PluginThingActionFactory";
 
 export class PluginThingImpl implements OwnedPluginThing {

@@ -3,7 +3,11 @@ import { injectable, singleton, provides, inject } from "microinject";
 import { ThingAction } from "../../../actions";
 import { ActionRequestService } from "../../../action-requests";
 
-import { PluginThingAction, OwnedPluginThingAction } from "../../types";
+import {
+  PluginThingAction,
+  OwnedPluginThingAction,
+  PluginAdapter
+} from "../../types";
 
 import { PluginThingActionFactory } from "../PluginThingActionFactory";
 
@@ -20,7 +24,7 @@ export class PluginThingActionFactoryImpl implements PluginThingActionFactory {
 
   getThingAction(
     action: ThingAction,
-    pluginAdapter: import("..").PluginAdapter
+    pluginAdapter: PluginAdapter
   ): PluginThingAction | OwnedPluginThingAction {
     return new PluginThingActionImpl(
       action,

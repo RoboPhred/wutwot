@@ -2,9 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { MozIotPlugin } from "../types";
-
-import { PluginAdapter } from "./PluginAdapter";
+import { MozIotPlugin, PluginAdapter } from "../types";
 
 export const PluginAdapterFactory: Identifier<PluginAdapterFactory> = createSymbol(
   "PluginAdapterFactory"

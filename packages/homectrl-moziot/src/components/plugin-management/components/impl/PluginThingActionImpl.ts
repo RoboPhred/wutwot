@@ -9,9 +9,7 @@ import {
   ActionRequestService
 } from "../../../action-requests";
 
-import { OwnedPluginThingAction } from "../../types";
-
-import { PluginAdapter } from "../PluginAdapter";
+import { OwnedPluginThingAction, PluginAdapter } from "../../types";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(

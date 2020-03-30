@@ -4,9 +4,7 @@ import createSymbol from "../../../create-symbol";
 
 import { Thing } from "../../things";
 
-import { PluginThing, OwnedPluginThing } from "../types";
-
-import { PluginAdapter } from "./PluginAdapter";
+import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
 
 export const PluginThingFactory: Identifier<PluginThingFactory> = createSymbol(
   "PluginThingFactory"
