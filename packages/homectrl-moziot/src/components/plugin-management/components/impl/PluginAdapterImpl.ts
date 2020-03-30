@@ -1,7 +1,11 @@
 import { ThingService, ThingDef } from "../../../things";
 
-import { MozIotPlugin, MozIotPluginContext } from "../../contracts";
-import { PluginThing, OwnedPluginThing } from "../../contracts/PluginThing";
+import {
+  MozIotPlugin,
+  MozIotPluginContext,
+  OwnedPluginThing,
+  PluginThing
+} from "../../types";
 
 import { PluginThingFactory } from "../PluginThingFactory";
 

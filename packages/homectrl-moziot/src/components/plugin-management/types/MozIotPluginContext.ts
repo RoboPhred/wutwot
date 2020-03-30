@@ -1,12 +1,6 @@
 import { ThingDef } from "../../things";
 
-import { PluginThing, OwnedPluginThing } from "./PluginThing";
-
-export interface MozIotPlugin {
-  readonly id: string;
-
-  onRegisterPlugin(plugin: MozIotPluginContext): void;
-}
+import { OwnedPluginThing, PluginThing } from "./PluginThing";
 
 export interface MozIotPluginContext {
   /**

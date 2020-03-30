@@ -9,7 +9,7 @@ import {
   ActionRequestService
 } from "../../../action-requests";
 
-import { OwnedPluginThingAction } from "../../contracts";
+import { OwnedPluginThingAction } from "../../types";
 
 import { PluginAdapter } from "../PluginAdapter";
 

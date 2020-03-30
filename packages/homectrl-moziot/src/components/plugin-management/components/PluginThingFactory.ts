@@ -4,7 +4,7 @@ import createSymbol from "../../../create-symbol";
 
 import { Thing } from "../../things";
 
-import { PluginThing, OwnedPluginThing } from "../contracts/PluginThing";
+import { PluginThing, OwnedPluginThing } from "../types";
 
 import { PluginAdapter } from "./PluginAdapter";
 

@@ -11,11 +11,11 @@ import {
   PropertyService
 } from "../../../properties";
 
-import { OwnedPluginThing } from "../../contracts/PluginThing";
 import {
+  OwnedPluginThing,
   PluginThingAction,
   OwnedPluginThingAction
-} from "../../contracts/PluginAction";
+} from "../../types";
 
 import { PluginAdapter } from "../PluginAdapter";
 import { PluginThingActionFactory } from "../PluginThingActionFactory";

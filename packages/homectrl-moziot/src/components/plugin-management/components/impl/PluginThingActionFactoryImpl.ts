@@ -3,7 +3,7 @@ import { injectable, singleton, provides, inject } from "microinject";
 import { ThingAction } from "../../../actions";
 import { ActionRequestService } from "../../../action-requests";
 
-import { PluginThingAction, OwnedPluginThingAction } from "../../contracts";
+import { PluginThingAction, OwnedPluginThingAction } from "../../types";
 
 import { PluginThingActionFactory } from "../PluginThingActionFactory";
 

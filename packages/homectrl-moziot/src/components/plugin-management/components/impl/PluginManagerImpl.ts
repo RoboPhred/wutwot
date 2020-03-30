@@ -1,6 +1,6 @@
 import { inject, injectable, singleton, provides } from "microinject";
 
-import { MozIotPlugin } from "../../contracts";
+import { MozIotPlugin } from "../../types";
 
 import { PluginAdapter } from "../PluginAdapter";
 import { PluginAdapterFactory } from "../PluginAdapterFactory";
