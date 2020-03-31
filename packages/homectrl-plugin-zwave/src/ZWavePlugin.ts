@@ -3,7 +3,7 @@ import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
 import { MozIotPlugin } from "homectrl-moziot";
 
 import { ZWaveProvider } from "./components/ZWaveProvider";
-import { ZWaveThingAdapter } from "./components/ZWaveThingAdapter";
+import { ZThingManager } from "./components/ZThingManager";
 
 import { ZWavePort } from "./config";
 import containerModule from "./module";
@@ -52,8 +52,8 @@ export class ZWavePlugin implements MozIotPlugin {
         this._controllerError = e;
       });
 
-    // Instantiate the thing adapter.
+    // Instantiate the thing manager.
     //  It will automatically start syncing things.
-    serviceLocator.get(ZWaveThingAdapter);
+    serviceLocator.get(ZThingManager);
   }
 }

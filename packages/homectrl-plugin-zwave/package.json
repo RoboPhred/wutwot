@@ -19,11 +19,13 @@
   "author": "William Matthews",
   "license": "MIT",
   "devDependencies": {
+    "@types/core-decorators": "^0.20.0",
     "@types/serialport": "^7.0.5",
     "rimraf": "^3.0.2",
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "core-decorators": "^0.20.0",
     "homectrl-moziot": "^1.0.0",
     "microinject": "^0.8.0",
     "serialport": "^7.1.5",
