@@ -2,6 +2,7 @@ import { ReadonlyRecord } from "../../../types";
 
 import { ThingAction } from "../../actions";
 import { ThingProperty } from "../../properties";
+import { ThingEvent } from "../../thing-events";
 
 /**
  * Describes a thing in the system.
@@ -9,7 +10,6 @@ import { ThingProperty } from "../../properties";
 export interface Thing {
   /**
    * The ID of this thing.
-   * Auto-generated from name, and changes with it.
    */
   readonly id: string;
 
@@ -44,7 +44,12 @@ export interface Thing {
   readonly actions: ReadonlyRecord<string, ThingAction>;
 
   /**
-   * Properties of this thing.
+   * The properties this thing supports.
    */
   readonly properties: ReadonlyRecord<string, ThingProperty>;
+
+  /**
+   * The events this thing supports.
+   */
+  readonly events: ReadonlyRecord<string, ThingEvent>;
 }

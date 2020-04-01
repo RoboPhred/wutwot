@@ -1,9 +1,9 @@
 import { ReadonlyRecord } from "../../../../types";
 
 import { ThingTypeService } from "../../../thing-types";
-
 import { ActionService, ThingAction } from "../../../actions";
-import { ThingProperty, PropertyService } from "../../../properties";
+import { PropertyService, ThingProperty } from "../../../properties";
+import { EventService, ThingEvent } from "../../../thing-events";
 
 import { Thing, ThingDef } from "../../types";
 
@@ -16,7 +16,8 @@ export class ThingImpl implements Thing {
     private _owner: object,
     private _typeService: ThingTypeService,
     private _actionService: ActionService,
-    private _propertyService: PropertyService
+    private _propertyService: PropertyService,
+    private _eventService: EventService
   ) {
     this._def = {
       ..._def
@@ -63,5 +64,13 @@ export class ThingImpl implements Thing {
       properties[property.id] = property;
     });
     return Object.seal(properties);
+  }
+
+  get events(): ReadonlyRecord<string, ThingEvent> {
+    const events: Record<string, ThingEvent> = {};
+    this._eventService.getForThing(this._id).forEach(event => {
+      events[event.id] = event;
+    });
+    return Object.seal(events);
   }
 }

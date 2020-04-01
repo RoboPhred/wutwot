@@ -10,6 +10,7 @@ import {
   ThingPropertyDef,
   PropertyService
 } from "../../../properties";
+import { ThingEvent } from "../../../thing-events";
 
 import {
   OwnedPluginThing,
@@ -64,6 +65,10 @@ export class PluginThingImpl implements OwnedPluginThing {
 
   get properties(): ReadonlyRecord<string, ThingProperty> {
     return this._thing.properties;
+  }
+
+  get events(): ReadonlyRecord<string, ThingEvent> {
+    return this._thing.events;
   }
 
   addType(type: string): OwnedPluginThing {
