@@ -1,6 +1,7 @@
 import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
+
 import { ThingDef, Thing } from "../types";
 
 export const ThingService: Identifier<ThingService> = createSymbol(
