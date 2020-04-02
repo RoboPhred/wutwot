@@ -1,7 +1,7 @@
 import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
-import { mapValues } from "lodash";
+import { mapValues, values, flatMap } from "lodash";
 import { MozIot } from "homectrl-moziot";
 
 import { Restifier } from "../../../Restifier";
@@ -24,14 +24,17 @@ export class ThingActionsRoot {
   ) {}
 
   @get()
-  public getActions(@param("thingId") thingId: string) {
+  getActionRequests(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
-    return mapValues(thing.actions, x => this._restifier.actionToRest(x));
+
+    const requests = flatMap(values(thing.actions), action => action.requests);
+    // TODO: Sort requests.  Newer / pending actions should be before completed / older
+    return requests;
   }
 
   @post()
   @status(HttpStatusCodes.CREATED)
-  public postAction(@param("thingId") thingId: string, @body() body: any) {
+  postAction(@param("thingId") thingId: string, @body() body: any) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     const bodyKeys = Object.keys(body);
     if (bodyKeys.length != 1) {

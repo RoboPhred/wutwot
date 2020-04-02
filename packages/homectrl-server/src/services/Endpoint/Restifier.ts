@@ -10,14 +10,20 @@ import { URL } from "url";
 import { mapValues } from "lodash";
 
 import { RootURL } from "../../config";
+import {
+  ThingEvent,
+  ThingEventRecord
+} from "homectrl-moziot/lib/components/thing-events";
 
+// TODO: Should be configurable.  There's not much in here and we will need
+//  custom semantic types for management.
 const WOT_CONTEXT = "https://iot.mozilla.org/schemas/";
 
 @injectable()
 export class Restifier {
   constructor(@inject(RootURL) private _rootURL: string) {}
 
-  public thingToRest(thing: Thing, isPrimary: boolean = true): object {
+  thingToRest(thing: Thing, isPrimary: boolean = true): object {
     return {
       "@context": WOT_CONTEXT,
       "@type": thing.semanticTypes,
@@ -26,7 +32,7 @@ export class Restifier {
       description: thing.description,
       actions: mapValues(thing.actions, x => this.actionToRest(x)),
       properties: mapValues(thing.properties, x => this.propertyToRest(x)),
-      // TODO: events
+      events: mapValues(thing.events, x => this.eventToRest(x)),
       links: buildArray(
         !isPrimary && createLink("href", `/things/${thing.id}`),
         isPrimary && [
@@ -38,7 +44,7 @@ export class Restifier {
     };
   }
 
-  public actionToRest(action: ThingAction): object {
+  actionToRest(action: ThingAction): object {
     return {
       "@type": action.semanticType,
       title: action.title,
@@ -50,7 +56,20 @@ export class Restifier {
     };
   }
 
-  public propertyToRest(property: ThingProperty): object {
+  actionRequestToRest(
+    request: ThingActionRequest,
+    isPrimary: boolean = true
+  ): object {
+    return {
+      input: request.input,
+      href: `/things/${request.thingId}/actions/${request.actionId}/${request.id}`,
+      timeRequested: isPrimary ? request.timeRequested : undefined,
+      timeCompleted: isPrimary ? request.timeCompleted || undefined : undefined,
+      status: request.status
+    };
+  }
+
+  propertyToRest(property: ThingProperty): object {
     return {
       title: property.title,
       description: property.description,
@@ -61,6 +80,7 @@ export class Restifier {
       maximum: property.maximum,
       multipleOf: property.multipleOf,
       enum: property.enum,
+      // TODO: "properties" for object type.
       readOnly: property.readOnly,
       links: [
         createLink(
@@ -71,16 +91,24 @@ export class Restifier {
     };
   }
 
-  public actionRequestToRest(
-    request: ThingActionRequest,
-    isPrimary: boolean = true
-  ): object {
+  eventToRest(event: ThingEvent): object {
     return {
-      input: request.input,
-      href: `/things/${request.thingId}/actions/${request.actionId}/${request.id}`,
-      timeRequested: isPrimary ? request.timeRequested : undefined,
-      timeCompleted: isPrimary ? request.timeCompleted || undefined : undefined,
-      status: request.status
+      title: event.title,
+      "@type": event.semanticType,
+      type: event.type,
+      unit: event.unit,
+      minimum: event.minimum,
+      maximum: event.maximum,
+      description: event.description,
+      // TODO: "properties" for object type.
+      links: [createLink("href", `/things/${event.thingId}/events/${event.id}`)]
+    };
+  }
+
+  eventRecordToRest(record: ThingEventRecord): object {
+    return {
+      data: record.data,
+      timestamp: record.timestamp
     };
   }
 }

@@ -23,7 +23,7 @@ export class ThingActionById {
   ) {}
 
   @get()
-  public getActions(
+  getActions(
     @param("thingId") thingId: string,
     @param("actionId") actionId: string
   ) {
@@ -36,7 +36,7 @@ export class ThingActionById {
 
   @post()
   @status(HttpStatusCodes.CREATED)
-  public postAction(
+  postAction(
     @param("thingId") thingId: string,
     @param("actionId") actionId: string,
     @body() body: any

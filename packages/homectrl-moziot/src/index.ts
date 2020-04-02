@@ -5,6 +5,7 @@ export * from "./components/things";
 export * from "./components/actions";
 export * from "./components/action-requests";
 export * from "./components/properties";
+export * from "./components/thing-events";
 
 export * from "./contracts";
 

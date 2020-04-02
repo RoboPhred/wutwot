@@ -13,7 +13,7 @@ export class PropertiesById {
   constructor(@inject(MozIot) private _mozIot: MozIot) {}
 
   @get()
-  public getProperties(
+  getProperties(
     @param("thingId") thingId: string,
     @param("propertyId") propertyId: string
   ) {
@@ -25,7 +25,7 @@ export class PropertiesById {
   }
 
   @put()
-  public putPropertyValue(
+  putPropertyValue(
     @param("thingId") thingId: string,
     @param("propertyId") propertyId: string,
     @body() body: any

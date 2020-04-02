@@ -15,7 +15,7 @@ export class PropertiesRoot {
   ) {}
 
   @get()
-  public getProperties(@param("thingId") thingId: string) {
+  getProperties(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     return mapValues(thing.properties, x => x.value);
   }

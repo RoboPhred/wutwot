@@ -48,6 +48,11 @@ and our management-as-thing strategy means we do not need to add additional mana
 Event sinks for concerns will not be a problem, as the Thing can take a dependency on the sink and
 call the appropriate functions.
 
+Risk is that it will be harder to keep internals private, as the Thing / Action / Event / Property objects
+are public and a plugin might discover and misuse the internal functions that expose the repos from them.
+Possible workaround is to use alternate objects in the repos (ThingAdapter?) that expose a Thing object which
+is passed on as public.
+
 #### Persistent IDs
 
 Store chosen IDs for all concerns in a map file and re-use them on reboot.

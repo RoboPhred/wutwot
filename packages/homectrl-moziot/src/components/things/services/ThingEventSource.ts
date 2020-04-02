@@ -9,7 +9,14 @@ export const ThingEventSource: Identifier<ThingEventSource> = createSymbol(
 );
 export interface ThingEventSource {
   on(event: "thing.add", handler: (e: ThingAddedEventArgs) => void): this;
+  once(event: "thing.add", handler: (e: ThingAddedEventArgs) => void): this;
+
   on(event: "thing.remove", handler: (e: ThingRemovedEventArgs) => void): this;
+  once(
+    event: "thing.remove",
+    handler: (e: ThingRemovedEventArgs) => void
+  ): this;
+
   removeListener(event: string, handler: Function): this;
 }
 

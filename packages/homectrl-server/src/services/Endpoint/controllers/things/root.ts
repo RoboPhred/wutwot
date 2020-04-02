@@ -13,7 +13,7 @@ export class ThingsRoot {
   ) {}
 
   @get()
-  public getThings() {
+  getThings() {
     const body = this._mozIot.things.map(thing =>
       this._restifier.thingToRest(thing, false)
     );

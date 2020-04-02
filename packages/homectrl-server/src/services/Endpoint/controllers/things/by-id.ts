@@ -14,7 +14,7 @@ export class ThingById {
   ) {}
 
   @get()
-  public getThingById(@param("thingId") thingId: string) {
+  getThingById(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     return this._restifier.thingToRest(thing);
   }

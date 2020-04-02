@@ -6,7 +6,8 @@ import {
   MozIot,
   ThingAction,
   ThingActionRequest,
-  ThingProperty
+  ThingProperty,
+  ThingEvent
 } from "homectrl-moziot";
 
 export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
@@ -60,4 +61,18 @@ export function getPropertyOrThrow(
     );
   }
   return thing.properties[propertyId];
+}
+
+export function getEventOrThrow(
+  thing: Thing,
+  eventId: string,
+  errorCode: number = HttpStatusCodes.NOT_FOUND
+): ThingEvent {
+  if (!has(thing.events, eventId)) {
+    throw createError(
+      errorCode,
+      "A ThingEvent on the given Thing with the specified ID was not found."
+    );
+  }
+  return thing.events[eventId];
 }

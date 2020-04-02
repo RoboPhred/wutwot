@@ -18,7 +18,7 @@ export class ThingActionRequest {
   ) {}
 
   @get()
-  public getRequest(
+  getRequest(
     @param("thingId") thingId: string,
     @param("actionId") actionId: string,
     @param("requestId") requestId: string
