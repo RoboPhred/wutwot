@@ -1,9 +1,14 @@
+import { provides, singleton, injectable } from "microinject";
+
 import { EventFactory } from "../EventFactory";
 
 import { ThingEventDef, ThingEvent } from "../../types";
 import { ThingEventImpl } from "./ThingEventImpl";
 import { IdMapper } from "../../../../utils";
 
+@injectable()
+@provides(EventFactory)
+@singleton()
 export class EventFactoryImpl implements EventFactory {
   private _thingPropertyIdMappers = new Map<string, IdMapper>();
 
@@ -12,6 +17,8 @@ export class EventFactoryImpl implements EventFactory {
     thingId: string,
     owner: object
   ): ThingEvent {
+    // TODO: validate eventDef
+
     let idMapper = this._thingPropertyIdMappers.get(thingId);
     if (idMapper == null) {
       idMapper = new IdMapper();

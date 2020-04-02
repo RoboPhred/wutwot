@@ -4,6 +4,7 @@ import { Thing, ThingService } from "../../../things";
 import { ThingTypeService } from "../../../thing-types";
 import { ActionService } from "../../../actions";
 import { PropertyService } from "../../../properties";
+import { EventService } from "../../../thing-events";
 
 import { PluginThing, OwnedPluginThing, PluginAdapter } from "../../types";
 
@@ -25,6 +26,8 @@ export class PluginThingFactoryImpl implements PluginThingFactory {
     private _actionService: ActionService,
     @inject(PropertyService)
     private _propertyService: PropertyService,
+    @inject(EventService)
+    private _eventService: EventService,
     @inject(PluginThingActionFactory)
     private _pluginThingActionFactory: PluginThingActionFactory
   ) {}
@@ -40,6 +43,7 @@ export class PluginThingFactoryImpl implements PluginThingFactory {
       this._thingTypeService,
       this._actionService,
       this._propertyService,
+      this._eventService,
       this._pluginThingActionFactory
     );
   }

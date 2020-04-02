@@ -10,7 +10,7 @@ import {
   ThingPropertyDef,
   PropertyService
 } from "../../../properties";
-import { ThingEvent } from "../../../thing-events";
+import { ThingEvent, EventService, ThingEventDef } from "../../../thing-events";
 
 import {
   OwnedPluginThing,
@@ -29,6 +29,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     private _thingTypeService: ThingTypeService,
     private _actionService: ActionService,
     private _propertyService: PropertyService,
+    private _eventService: EventService,
     private _pluginThingActionFactory: PluginThingActionFactory
   ) {}
 
@@ -111,6 +112,15 @@ export class PluginThingImpl implements OwnedPluginThing {
       this._pluginAdapter.plugin
     );
     return property;
+  }
+
+  addEvent(def: ThingEventDef): ThingEvent {
+    const event = this._eventService.addEvent(
+      this._thing.id,
+      def,
+      this._pluginAdapter.plugin
+    );
+    return event;
   }
 
   toThing(): Thing {

@@ -5,13 +5,13 @@ import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
 import { ValueMetadataNumeric } from "zwave-js/build/lib/values/Metadata";
 import { PluginThing } from "homectrl-moziot";
 import { Subject } from "rxjs";
-
-import { ZThingMonitor } from "../../../types";
-import { ZThingMonitorFactory } from "../../../contracts";
 import {
   TranslatedValueID,
   ZWaveNodeValueUpdatedArgs
-} from "zwave-js/build/lib/node/Node";
+} from "zwave-js/build/lib/node/Types";
+
+import { ZThingMonitor } from "../../../types";
+import { ZThingMonitorFactory } from "../../../contracts";
 
 @injectable()
 @provides(ZThingMonitorFactory)

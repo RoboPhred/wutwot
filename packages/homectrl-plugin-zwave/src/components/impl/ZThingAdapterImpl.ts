@@ -54,6 +54,17 @@ export class ZThingAdapterImpl implements ZThingAdapter {
       description = this._node.deviceClass?.generic.name;
     }
 
+    this._node.on("notification", (node, label, params) => {
+      console.log(
+        `Node ${node.id} notification ${label} ${JSON.stringify(params)}`
+      );
+    });
+    this._node.on("value updated", (node, e) => {
+      console.log(
+        `Node ${node.id} value updated ${JSON.stringify(e, null, 2)}`
+      );
+    });
+
     this._pluginThing = this._thingManager.addThing({
       title,
       description,
