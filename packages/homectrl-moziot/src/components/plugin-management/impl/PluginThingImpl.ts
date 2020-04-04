@@ -4,7 +4,7 @@ import { ReadonlyRecord } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
 
 import { Thing, ThingsManager, InternalThing } from "../../things";
-import { ThingActionDef, ActionService } from "../../actions";
+import { ThingActionDef } from "../../actions";
 import { ThingProperty, ThingPropertyDef } from "../../properties";
 import { ThingEvent, ThingEventDef } from "../../thing-events";
 
@@ -22,7 +22,6 @@ export class PluginThingImpl implements OwnedPluginThing {
     private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
     private _thingManager: ThingsManager,
-    private _actionService: ActionService,
     private _pluginThingActionFactory: PluginThingActionFactory
   ) {}
 
@@ -84,11 +83,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   }
 
   addAction(def: ThingActionDef): OwnedPluginThingAction {
-    const action = this._actionService.addAction(
-      this._thing.id,
-      def,
-      this._pluginAdapter.plugin
-    );
+    const action = this._thing.addAction(def, this._pluginAdapter.plugin);
     const thingAction = this._pluginThingActionFactory.getThingAction(
       action,
       this._pluginAdapter

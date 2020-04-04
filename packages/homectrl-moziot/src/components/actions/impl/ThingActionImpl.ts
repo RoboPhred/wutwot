@@ -1,17 +1,17 @@
 import { JSONSchema6 } from "json-schema";
 
-import { DeepImmutableObject } from "../../../../types";
-import { makeReadOnly } from "../../../../utils/readonly";
+import { DeepImmutableObject } from "../../../types";
+import { makeReadOnly } from "../../../utils/readonly";
 
-import { ThingAction, ThingActionDef } from "../../types";
-import { validateOrThrow } from "../../../json-schema";
+import { ThingAction, ThingActionDef } from "../types";
+import { validateOrThrow } from "../../json-schema";
 
-import { ThingActionRequest } from "../../../action-requests";
+import { ThingActionRequest } from "../../action-requests";
 
 // TODO: Components should not be used outside their service scope.
 //  We need to access this functionality from an action-request service.
-import { ActionRequestFactory } from "../../../action-requests/components/ActionRequestFactory";
-import { ActionRequestRepository } from "../../../action-requests/components/ActionRequestRepository";
+import { ActionRequestFactory } from "../../action-requests/components/ActionRequestFactory";
+import { ActionRequestRepository } from "../../action-requests/components/ActionRequestRepository";
 
 export class ThingActionImpl implements ThingAction {
   private _def: ThingActionDef;

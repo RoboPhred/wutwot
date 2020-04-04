@@ -10,7 +10,11 @@ import { makeReadOnly } from "../../../utils/readonly";
 import { createWhitelistProxy } from "../../../utils/proxies";
 import { ReadonlyRecord } from "../../../types";
 
-import { ActionService, ThingAction } from "../../actions";
+import {
+  LocalActionsManager,
+  ThingAction,
+  ThingActionDef
+} from "../../actions";
 import {
   LocalPropertiesManager,
   ThingProperty,
@@ -44,8 +48,8 @@ export class InternalThingImpl implements InternalThing {
     private _owner: object,
     @inject(LocalSemanticTypesManager)
     private _typesManager: LocalSemanticTypesManager,
-    @inject(ActionService)
-    private _actionService: ActionService,
+    @inject(LocalActionsManager)
+    private _actionsManager: LocalActionsManager,
     @inject(LocalPropertiesManager)
     private _propertiesManager: LocalPropertiesManager,
     @inject(LocalEventsManager)
@@ -89,7 +93,8 @@ export class InternalThingImpl implements InternalThing {
 
   get actions(): ReadonlyRecord<string, ThingAction> {
     const actions: Record<string, ThingAction> = {};
-    this._actionService.getForThing(this._id).forEach(action => {
+    // TODO: Get a read-only map proxy from propertyManager
+    this._actionsManager.getAllActions().forEach(action => {
       actions[action.id] = action;
     });
 
@@ -120,6 +125,10 @@ export class InternalThingImpl implements InternalThing {
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {
     return this._propertiesManager.addProperty(def, owner);
+  }
+
+  addAction(def: ThingActionDef, owner: object): ThingAction {
+    return this._actionsManager.addAction(def, owner);
   }
 
   addEvent(def: ThingEventDef, owner: object): ThingEvent {

@@ -5,6 +5,7 @@ import createSymbol from "../../../create-symbol";
 import { Thing } from "../types";
 import { ThingPropertyDef, ThingProperty } from "../../properties";
 import { ThingEventDef, ThingEvent } from "../../thing-events";
+import { ThingActionDef, ThingAction } from "../../actions";
 
 /**
  * @internalz
@@ -23,5 +24,6 @@ export interface InternalThing extends Thing {
 
   addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;
+  addAction(def: ThingActionDef, owner: object): ThingAction;
   addEvent(def: ThingEventDef, owner: object): ThingEvent;
 }

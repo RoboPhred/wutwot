@@ -4,22 +4,29 @@ import createSymbol from "../../../create-symbol";
 
 import { ThingAction } from "../types";
 
-export const ActionRegistry: Identifier<ActionRegistry> = createSymbol(
-  "ActionRegistry"
+export const ActionEventSource: Identifier<ActionEventSource> = createSymbol(
+  "ActionEventSource"
 );
-export interface ActionRegistry {
-  get(thingId: string, actionId: string): ThingAction | undefined;
-
-  getForThing(thingId: string): ThingAction[];
-
+export interface ActionEventSource {
   on(
     event: "action.add",
     handler: (e: ThingActionAddedEventArgs) => void
   ): this;
+  once(
+    event: "action.add",
+    handler: (e: ThingActionAddedEventArgs) => void
+  ): this;
+
   on(
     event: "action.remove",
     handler: (e: ThingActionRemovedEventArgs) => void
   ): this;
+  once(
+    event: "action.remove",
+    handler: (e: ThingActionRemovedEventArgs) => void
+  ): this;
+
+  removeListener(event: string, handler: Function): this;
 }
 
 export interface ThingActionAddedEventArgs {

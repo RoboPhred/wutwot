@@ -1,1 +1,2 @@
-export * from "./ActionService";
+export * from "./ActionEventSource";
+export * from "./LocalActionsManager";
