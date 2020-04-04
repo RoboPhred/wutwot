@@ -1,5 +1,5 @@
 import { injectable, provides, singleton, inject } from "microinject";
-import { PluginThingManager } from "homectrl-moziot";
+import { PluginThingsManager } from "homectrl-moziot";
 import { ZWaveNode } from "zwave-js";
 
 import { ZThingMonitorFactory } from "../../contracts";
@@ -14,7 +14,7 @@ import { ZThingAdapterImpl } from "./ZThingAdapterImpl";
 @singleton()
 export class ZThingAdapterFactoryImpl implements ZThingAdapterFactory {
   constructor(
-    @inject(PluginThingManager) private _pluginThingManager: PluginThingManager,
+    @inject(PluginThingsManager) private _thingsManager: PluginThingsManager,
     @inject(ZThingMonitorFactory, { all: true })
     private _monitorFactories: ZThingMonitorFactory[]
   ) {}
@@ -22,7 +22,7 @@ export class ZThingAdapterFactoryImpl implements ZThingAdapterFactory {
   createAdapter(node: ZWaveNode): ZThingAdapter {
     return new ZThingAdapterImpl(
       node,
-      this._pluginThingManager,
+      this._thingsManager,
       this._monitorFactories
     );
   }

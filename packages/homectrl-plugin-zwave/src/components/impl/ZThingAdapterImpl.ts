@@ -1,6 +1,6 @@
 import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
 import { ZWaveNode } from "zwave-js";
-import { OwnedPluginThing, PluginThingManager } from "homectrl-moziot";
+import { OwnedPluginThing, PluginThingsManager } from "homectrl-moziot";
 import { autobind } from "core-decorators";
 
 import { ZThingMonitorFactory } from "../../contracts/ZThingMonitorFactory";
@@ -17,7 +17,7 @@ export class ZThingAdapterImpl implements ZThingAdapter {
 
   constructor(
     private _node: ZWaveNode,
-    private _thingManager: PluginThingManager,
+    private _thingsManager: PluginThingsManager,
     private _monitorFactories: ZThingMonitorFactory[]
   ) {
     this._node.once("interview completed", this._onNodeInterviewed);
@@ -65,7 +65,7 @@ export class ZThingAdapterImpl implements ZThingAdapter {
       );
     });
 
-    this._pluginThing = this._thingManager.addThing({
+    this._pluginThing = this._thingsManager.addThing({
       title,
       description,
       metadata: {
