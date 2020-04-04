@@ -1,6 +1,7 @@
 import { mapValues } from "lodash";
 
 import { ReadonlyRecord } from "../../../types";
+import { makeReadOnly } from "../../../utils/readonly";
 
 import { Thing, ThingManager, InternalThing } from "../../things";
 import { ThingTypeService } from "../../thing-types";
@@ -56,7 +57,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     const actions = mapValues(this._thing.actions, action =>
       this._pluginThingActionFactory.getThingAction(action, this._pluginAdapter)
     );
-    return Object.freeze(actions);
+    return makeReadOnly(actions);
   }
 
   get properties(): ReadonlyRecord<string, ThingProperty> {

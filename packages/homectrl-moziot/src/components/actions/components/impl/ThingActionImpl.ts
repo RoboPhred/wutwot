@@ -1,6 +1,7 @@
 import { JSONSchema6 } from "json-schema";
 
 import { DeepImmutableObject } from "../../../../types";
+import { makeReadOnly } from "../../../../utils/readonly";
 
 import { ThingAction, ThingActionDef } from "../../types";
 import { validateOrThrow } from "../../../json-schema";
@@ -55,7 +56,7 @@ export class ThingActionImpl implements ThingAction {
   }
 
   get requests(): ReadonlyArray<ThingActionRequest> {
-    return Object.seal(
+    return makeReadOnly(
       this._actionRepository.getForThingAction(this._thingId, this._id)
     );
   }

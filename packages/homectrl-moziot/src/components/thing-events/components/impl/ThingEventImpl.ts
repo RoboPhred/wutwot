@@ -1,3 +1,5 @@
+import { makeReadOnly, makeReadOnlyDeep } from "../../../../utils/readonly";
+
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../../types";
 
 export class ThingEventImpl implements ThingEvent {
@@ -60,14 +62,14 @@ export class ThingEventImpl implements ThingEvent {
   }
 
   get records(): readonly ThingEventRecord[] {
-    return Object.seal([...this._records]);
+    return makeReadOnly([...this._records]);
   }
 
   private _onEventRaised(data: any) {
     // Don't need to sort, as we know this is going to be newer
     //  than anything in the array.
     this._records.push({
-      data,
+      data: makeReadOnlyDeep(data),
       timestamp: new Date().toISOString()
     });
   }

@@ -6,6 +6,7 @@ import {
   provides
 } from "microinject";
 
+import { makeReadOnly } from "../../../utils/readonly";
 import { createWhitelistProxy } from "../../../utils/proxies";
 import { ReadonlyRecord } from "../../../types";
 
@@ -87,7 +88,7 @@ export class InternalThingImpl implements InternalThing {
       actions[action.id] = action;
     });
 
-    return Object.seal(actions);
+    return makeReadOnly(actions);
   }
 
   get properties(): ReadonlyRecord<string, ThingProperty> {
@@ -96,7 +97,7 @@ export class InternalThingImpl implements InternalThing {
     this._propertyManager.getAllProperties().forEach(property => {
       properties[property.id] = property;
     });
-    return Object.seal(properties);
+    return makeReadOnly(properties);
   }
 
   get events(): ReadonlyRecord<string, ThingEvent> {
@@ -104,7 +105,7 @@ export class InternalThingImpl implements InternalThing {
     this._eventService.getForThing(this._id).forEach(event => {
       events[event.id] = event;
     });
-    return Object.seal(events);
+    return makeReadOnly(events);
   }
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {

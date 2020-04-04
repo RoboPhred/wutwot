@@ -1,7 +1,8 @@
 import { JSONSchema6 } from "json-schema";
 import { Observable } from "rxjs";
 
-import { DeepImmutableObject } from "../../../types";
+import { makeReadOnlyDeep } from "../../../utils/readonly";
+import { DeepImmutableObject, DeepImmutable } from "../../../types";
 
 import { ThingActionRequestStatus } from "../../action-requests";
 import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
@@ -18,7 +19,7 @@ export interface ThingActionDef {
   ): Observable<ThingActionRequestStatus>;
 }
 
-export const actionDefSchema: JSONSchema6 = Object.seal({
+export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
     title: { type: "string", minLength: 1 },

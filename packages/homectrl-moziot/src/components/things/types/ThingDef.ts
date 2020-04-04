@@ -1,7 +1,8 @@
 import { JSONSchema6 } from "json-schema";
 
-import { ReadonlyRecord } from "../../../types";
 import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
+import { makeReadOnlyDeep } from "../../../utils/readonly";
+import { ReadonlyRecord } from "../../../types";
 
 /**
  * Describes the minimum set of unique properties required to create a thing.
@@ -14,7 +15,7 @@ export interface ThingDef {
   readonly description?: string;
   readonly metadata?: ReadonlyRecord<string, any>;
 }
-export const thingDefSchema: JSONSchema6 = Object.seal({
+export const thingDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
     title: { type: "string", minLength: 1 },

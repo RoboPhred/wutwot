@@ -2,6 +2,7 @@ import { Observable } from "rxjs";
 import { JSONSchema6 } from "json-schema";
 
 import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
+import { makeReadOnlyDeep } from "../../../utils/readonly";
 
 import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
 
@@ -24,7 +25,7 @@ export interface ThingPropertyDef {
   onValueChangeRequested(thingId: string, propertyId: string, value: any): void;
 }
 
-export const propertyDefSchema: JSONSchema6 = Object.seal({
+export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
     title: { type: "string", minLength: 1 },
