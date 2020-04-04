@@ -1,3 +1,7 @@
+import { inspect } from "util";
+
+import { makeInspectJson } from "../../../utils/inspect";
+
 import {
   ThingActionRequest,
   ThingActionRequestStatus,
@@ -39,6 +43,8 @@ export class ThingActionRequestImpl implements ThingActionRequest {
       }
     });
   }
+
+  [inspect.custom] = makeInspectJson("ThingActionRequest");
 
   get id(): string {
     return this._id;

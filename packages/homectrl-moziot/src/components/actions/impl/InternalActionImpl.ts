@@ -1,8 +1,10 @@
 import { injectable, inScope, injectParam, inject } from "microinject";
 import { JSONSchema6 } from "json-schema";
+import { inspect } from "util";
 
 import { DeepImmutableObject } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
+import { makeInspectJson } from "../../../utils/inspect";
 import { createWhitelistProxy } from "../../../utils/proxies";
 
 import { ThingAction, ThingActionDef, ThingActionKeys } from "../types";
@@ -43,6 +45,8 @@ export class InternalActionImpl implements InternalAction {
 
     this._publicProxy = createWhitelistProxy(this, ThingActionKeys);
   }
+
+  [inspect.custom] = makeInspectJson("ThingAction");
 
   get publicProxy(): ThingAction {
     return this._publicProxy;

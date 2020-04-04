@@ -1,4 +1,7 @@
+import { inspect } from "util";
+
 import { makeReadOnly, makeReadOnlyDeep } from "../../../utils/readonly";
+import { makeInspectJson } from "../../../utils/inspect";
 
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
 
@@ -16,6 +19,8 @@ export class ThingEventImpl implements ThingEvent {
   ) {
     _def.eventSource.subscribe(this._onEventRaised.bind(this));
   }
+
+  [inspect.custom] = makeInspectJson("ThingEvent");
 
   get id(): string {
     return this._id;

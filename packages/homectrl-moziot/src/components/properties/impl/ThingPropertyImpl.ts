@@ -1,4 +1,7 @@
 import { JSONSchema6 } from "json-schema";
+import { inspect } from "util";
+
+import { makeInspectJson } from "../../../utils/inspect";
 
 import { validateOrThrow } from "../../json-schema";
 
@@ -19,6 +22,8 @@ export class ThingPropertyImpl implements ThingProperty {
       next: (value: any) => (this._lastValue = value)
     });
   }
+
+  [inspect.custom] = makeInspectJson("ThingProperty");
 
   get ownerPlugin(): object {
     return this._owner;

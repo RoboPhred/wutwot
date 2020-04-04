@@ -6,9 +6,10 @@ import {
   provides
 } from "microinject";
 import { mapValues } from "lodash";
-import { inspect, InspectOptionsStylized } from "util";
+import { inspect } from "util";
 
 import { makeReadOnly } from "../../../utils/readonly";
+import { makeInspectJson } from "../../../utils/inspect";
 import { ReadonlyRecord } from "../../../types";
 
 import {
@@ -160,22 +161,7 @@ function createPublicThingApi(thing: InternalThing) {
       return "Thing";
     }
 
-    [inspect.custom](depth: number, options: InspectOptionsStylized) {
-      if (depth < 0) {
-        return options.stylize("[Thing]", "special");
-      }
-
-      const newOptions = Object.assign({}, options, {
-        depth: options.depth == null ? null : options.depth - 1
-      });
-
-      const padding = " ".repeat(2);
-      const inner = inspect(this.toJSON(), newOptions).replace(
-        /\n/g,
-        `\n${padding}`
-      );
-      return `Thing ${inner}`;
-    }
+    [inspect.custom] = makeInspectJson("Thing");
 
     get id(): string {
       return thing.id;
