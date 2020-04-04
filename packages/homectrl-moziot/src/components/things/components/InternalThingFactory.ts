@@ -1,12 +1,12 @@
 import { Identifier } from "microinject";
 
-import { ThingDef, Thing } from "../types";
+import { Thing, ThingDef } from "../types";
 
 import createSymbol from "../../../create-symbol";
 
-export const ThingFactory: Identifier<ThingFactory> = createSymbol(
+export const InternalThingFactory: Identifier<InternalThingFactory> = createSymbol(
   "ThingFactory"
 );
-export interface ThingFactory {
+export interface InternalThingFactory {
   createThing(def: ThingDef, owner: object): Thing;
 }

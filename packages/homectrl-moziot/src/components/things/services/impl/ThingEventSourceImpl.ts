@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
 import { injectable, singleton, provides } from "microinject";
 
+import { ThingEventSink } from "../../components";
 import { Thing } from "../../types";
-import { ThingEventSink } from "../../components/ThingEventSink";
 
 import {
   ThingEventSource,

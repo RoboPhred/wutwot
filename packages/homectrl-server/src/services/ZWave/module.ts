@@ -8,7 +8,7 @@ import { MozIotPlugin } from "../MozIot";
 export default new ContainerModule(bind => {
   bind(MozIotPlugin)
     .provides(ZWavePlugin)
-    .toDynamicValue(context => {
+    .toFactory(context => {
       let zwavePort: string | undefined;
       if (context.has(ZWavePort)) {
         zwavePort = context.get(ZWavePort);

@@ -1,7 +1,7 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
 import { Thing, ThingDef } from "../../types";
-import { ThingFactory, ThingRepository } from "../../components";
+import { InternalThingFactory, ThingRepository } from "../../components";
 
 import { ThingService } from "../ThingService";
 
@@ -10,7 +10,7 @@ import { ThingService } from "../ThingService";
 @provides(ThingService)
 export class ThingServiceImpl implements ThingService {
   constructor(
-    @inject(ThingFactory) private _factory: ThingFactory,
+    @inject(InternalThingFactory) private _factory: InternalThingFactory,
     @inject(ThingRepository) private _repository: ThingRepository
   ) {}
 

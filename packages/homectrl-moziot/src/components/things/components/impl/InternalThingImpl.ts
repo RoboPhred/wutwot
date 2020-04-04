@@ -1,3 +1,11 @@
+import {
+  injectable,
+  asScope,
+  inject,
+  injectParam,
+  provides
+} from "microinject";
+
 import { ReadonlyRecord } from "../../../../types";
 
 import { ThingTypeService } from "../../../thing-types";
@@ -5,18 +13,30 @@ import { ActionService, ThingAction } from "../../../actions";
 import { PropertyService, ThingProperty } from "../../../properties";
 import { EventService, ThingEvent } from "../../../thing-events";
 
-import { Thing, ThingDef } from "../../types";
+import { ThingDef } from "../../types";
+import { ThingScope } from "../../scopes";
+import { InternalThing, InternalThingCreationParams } from "../../services";
 
-export class ThingImpl implements Thing {
+@injectable()
+@provides(InternalThing)
+@asScope(ThingScope)
+export class InternalThingImpl implements InternalThing {
   private readonly _metadata: Record<string, any>;
 
   constructor(
+    @injectParam(InternalThingCreationParams.ThingDef)
     private _def: ThingDef,
+    @injectParam(InternalThingCreationParams.ThingId)
     private _id: string,
+    @injectParam(InternalThingCreationParams.Owner)
     private _owner: object,
+    @inject(ThingTypeService)
     private _typeService: ThingTypeService,
+    @inject(ActionService)
     private _actionService: ActionService,
+    @inject(PropertyService)
     private _propertyService: PropertyService,
+    @inject(EventService)
     private _eventService: EventService
   ) {
     this._def = {
