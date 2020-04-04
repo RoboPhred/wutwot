@@ -2,21 +2,21 @@ import { Container } from "microinject";
 
 import containerModule from "./module";
 
-import { Thing, ThingService } from "./components/things";
+import { Thing, ThingManager } from "./components/things";
 import { PluginManager, MozIotPlugin } from "./components/plugin-management";
 import { Initializable } from "./contracts";
 
 export class MozIot {
   private _container: Container = new Container();
   private _pluginManager: PluginManager;
-  private _thingService: ThingService;
+  private _thingManager: ThingManager;
 
   constructor(plugins: MozIotPlugin[]) {
     this._container.bind(Container).toConstantValue(this._container);
     this._container.load(containerModule);
 
     this._pluginManager = this._container.get(PluginManager);
-    this._thingService = this._container.get(ThingService);
+    this._thingManager = this._container.get(ThingManager);
 
     for (const plugin of plugins) {
       this._pluginManager.registerPlugin(plugin);
@@ -27,7 +27,8 @@ export class MozIot {
       .forEach(initializable => initializable.initialize());
   }
 
+  // TODO: Should be live instance Record<thingId, Thing>
   get things(): ReadonlyArray<Thing> {
-    return this._thingService.getThings();
+    return this._thingManager.getThings().map(thing => thing.publicProxy);
   }
 }

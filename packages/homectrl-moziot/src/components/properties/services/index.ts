@@ -1,2 +1,2 @@
+export * from "./LocalPropertyManager";
 export * from "./PropertyEventSource";
-export * from "./PropertyService";

@@ -1,11 +1,11 @@
 import { inject, injectable, singleton, provides } from "microinject";
 
-import { Initializable } from "../../../../contracts";
+import { Initializable } from "../../../contracts";
 
-import { MozIotPlugin, PluginAdapter } from "../../types";
-import { PluginAdapterFactory } from "../../components";
+import { MozIotPlugin, PluginAdapter } from "../types";
+import { PluginAdapterFactory } from "../components";
 
-import { PluginManager } from "../PluginManager";
+import { PluginManager } from "../services/PluginManager";
 
 @injectable()
 @singleton()

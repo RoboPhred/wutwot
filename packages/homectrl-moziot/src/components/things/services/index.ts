@@ -1,3 +1,3 @@
 export * from "./InternalThing";
-export * from "./ThingService";
+export * from "./ThingManager";
 export * from "./ThingEventSource";

@@ -3,11 +3,12 @@ import { Identifier } from "microinject";
 import createSymbol from "../../../create-symbol";
 
 import { Thing } from "../types";
+import { ThingPropertyDef, ThingProperty } from "../../properties";
 
 /**
  * @internalz
  */
-export namespace InternalThingCreationParams {
+export namespace InternalThingParams {
   export const ThingDef = "thingDef";
   export const ThingId = "thingId";
   export const Owner = "owner";
@@ -16,4 +17,8 @@ export namespace InternalThingCreationParams {
 export const InternalThing: Identifier<InternalThing> = createSymbol(
   "InternalThing"
 );
-export interface InternalThing extends Thing {}
+export interface InternalThing extends Thing {
+  readonly publicProxy: Thing;
+
+  addProperty(def: ThingPropertyDef, owner: object): ThingProperty;
+}

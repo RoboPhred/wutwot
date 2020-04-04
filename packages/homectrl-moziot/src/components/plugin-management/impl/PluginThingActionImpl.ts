@@ -1,15 +1,15 @@
 import { JSONSchema6 } from "json-schema";
 
-import { DeepImmutableObject } from "../../../../types";
+import { DeepImmutableObject } from "../../../types";
 
-import { ThingAction } from "../../../actions";
+import { ThingAction } from "../../actions";
 import {
   ThingActionRequest,
   ThingActionRequestDef,
   ActionRequestService
-} from "../../../action-requests";
+} from "../../action-requests";
 
-import { OwnedPluginThingAction, PluginAdapter } from "../../types";
+import { OwnedPluginThingAction, PluginAdapter } from "../types";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(

@@ -1,15 +1,15 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
-import { ThingAction } from "../../../actions";
-import { ActionRequestService } from "../../../action-requests";
+import { ThingAction } from "../../actions";
+import { ActionRequestService } from "../../action-requests";
 
 import {
   PluginThingAction,
   OwnedPluginThingAction,
   PluginAdapter
-} from "../../types";
+} from "../types";
 
-import { PluginThingActionFactory } from "../PluginThingActionFactory";
+import { PluginThingActionFactory } from "../components/PluginThingActionFactory";
 
 import { PluginThingActionImpl } from "./PluginThingActionImpl";
 

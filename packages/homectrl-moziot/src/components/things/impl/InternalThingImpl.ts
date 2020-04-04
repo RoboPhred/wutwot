@@ -6,43 +6,55 @@ import {
   provides
 } from "microinject";
 
-import { ReadonlyRecord } from "../../../../types";
+import { createWhitelistProxy } from "../../../utils/proxies";
+import { ReadonlyRecord } from "../../../types";
 
-import { ThingTypeService } from "../../../thing-types";
-import { ActionService, ThingAction } from "../../../actions";
-import { PropertyService, ThingProperty } from "../../../properties";
-import { EventService, ThingEvent } from "../../../thing-events";
+import { ThingTypeService } from "../../thing-types";
+import { ActionService, ThingAction } from "../../actions";
+import {
+  LocalPropertyManager,
+  ThingProperty,
+  ThingPropertyDef
+} from "../../properties";
+import { EventService, ThingEvent } from "../../thing-events";
 
-import { ThingDef } from "../../types";
-import { ThingScope } from "../../scopes";
-import { InternalThing, InternalThingCreationParams } from "../../services";
+import { ThingDef, ThingKeys, Thing } from "../types";
+import { ThingScope } from "../scopes";
+import { InternalThing, InternalThingParams } from "../services";
 
 @injectable()
 @provides(InternalThing)
 @asScope(ThingScope)
 export class InternalThingImpl implements InternalThing {
+  private readonly _publicProxy: Thing;
+
   private readonly _metadata: Record<string, any>;
 
   constructor(
-    @injectParam(InternalThingCreationParams.ThingDef)
+    @injectParam(InternalThingParams.ThingDef)
     private _def: ThingDef,
-    @injectParam(InternalThingCreationParams.ThingId)
+    @injectParam(InternalThingParams.ThingId)
     private _id: string,
-    @injectParam(InternalThingCreationParams.Owner)
+    @injectParam(InternalThingParams.Owner)
     private _owner: object,
     @inject(ThingTypeService)
     private _typeService: ThingTypeService,
     @inject(ActionService)
     private _actionService: ActionService,
-    @inject(PropertyService)
-    private _propertyService: PropertyService,
+    @inject(LocalPropertyManager)
+    private _propertyManager: LocalPropertyManager,
     @inject(EventService)
     private _eventService: EventService
   ) {
+    this._publicProxy = createWhitelistProxy(this, ThingKeys);
     this._def = {
       ..._def
     };
     this._metadata = { ..._def.metadata };
+  }
+
+  get publicProxy(): Thing {
+    return this._publicProxy;
   }
 
   get id(): string {
@@ -80,7 +92,8 @@ export class InternalThingImpl implements InternalThing {
 
   get properties(): ReadonlyRecord<string, ThingProperty> {
     const properties: Record<string, ThingProperty> = {};
-    this._propertyService.getForThing(this._id).forEach(property => {
+    // TODO: Get a read-only map proxy from propertyManager
+    this._propertyManager.getAllProperties().forEach(property => {
       properties[property.id] = property;
     });
     return Object.seal(properties);
@@ -92,5 +105,9 @@ export class InternalThingImpl implements InternalThing {
       events[event.id] = event;
     });
     return Object.seal(events);
+  }
+
+  addProperty(def: ThingPropertyDef, owner: object): ThingProperty {
+    return this._propertyManager.createProperty(def, owner);
   }
 }

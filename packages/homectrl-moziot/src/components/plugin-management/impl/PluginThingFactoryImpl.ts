@@ -1,15 +1,14 @@
 import { injectable, provides, singleton, inject } from "microinject";
 
-import { Thing, ThingService } from "../../../things";
-import { ThingTypeService } from "../../../thing-types";
-import { ActionService } from "../../../actions";
-import { PropertyService } from "../../../properties";
-import { EventService } from "../../../thing-events";
+import { ThingManager, InternalThing } from "../../things";
+import { ThingTypeService } from "../../thing-types";
+import { ActionService } from "../../actions";
+import { EventService } from "../../thing-events";
 
-import { PluginThing, OwnedPluginThing, PluginAdapter } from "../../types";
+import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
 
-import { PluginThingFactory } from "../PluginThingFactory";
-import { PluginThingActionFactory } from "../PluginThingActionFactory";
+import { PluginThingFactory } from "../components/PluginThingFactory";
+import { PluginThingActionFactory } from "../components/PluginThingActionFactory";
 
 import { PluginThingImpl } from "./PluginThingImpl";
 
@@ -18,14 +17,12 @@ import { PluginThingImpl } from "./PluginThingImpl";
 @provides(PluginThingFactory)
 export class PluginThingFactoryImpl implements PluginThingFactory {
   constructor(
-    @inject(ThingService)
-    private _thingService: ThingService,
+    @inject(ThingManager)
+    private _thingManager: ThingManager,
     @inject(ThingTypeService)
     private _thingTypeService: ThingTypeService,
     @inject(ActionService)
     private _actionService: ActionService,
-    @inject(PropertyService)
-    private _propertyService: PropertyService,
     @inject(EventService)
     private _eventService: EventService,
     @inject(PluginThingActionFactory)
@@ -33,16 +30,15 @@ export class PluginThingFactoryImpl implements PluginThingFactory {
   ) {}
 
   getPluginThing(
-    thing: Thing,
+    thing: InternalThing,
     pluginAdapter: PluginAdapter
   ): PluginThing | OwnedPluginThing {
     return new PluginThingImpl(
       thing,
       pluginAdapter,
-      this._thingService,
+      this._thingManager,
       this._thingTypeService,
       this._actionService,
-      this._propertyService,
       this._eventService,
       this._pluginThingActionFactory
     );

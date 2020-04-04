@@ -1,34 +1,29 @@
 import { mapValues } from "lodash";
 
-import { ReadonlyRecord } from "../../../../types";
+import { ReadonlyRecord } from "../../../types";
 
-import { Thing, ThingService } from "../../../things";
-import { ThingTypeService } from "../../../thing-types";
-import { ThingActionDef, ActionService } from "../../../actions";
-import {
-  ThingProperty,
-  ThingPropertyDef,
-  PropertyService
-} from "../../../properties";
-import { ThingEvent, EventService, ThingEventDef } from "../../../thing-events";
+import { Thing, ThingManager, InternalThing } from "../../things";
+import { ThingTypeService } from "../../thing-types";
+import { ThingActionDef, ActionService } from "../../actions";
+import { ThingProperty, ThingPropertyDef } from "../../properties";
+import { ThingEvent, EventService, ThingEventDef } from "../../thing-events";
 
 import {
   OwnedPluginThing,
   PluginThingAction,
   OwnedPluginThingAction,
   PluginAdapter
-} from "../../types";
+} from "../types";
 
-import { PluginThingActionFactory } from "../PluginThingActionFactory";
+import { PluginThingActionFactory } from "../components/PluginThingActionFactory";
 
 export class PluginThingImpl implements OwnedPluginThing {
   constructor(
-    private _thing: Thing,
+    private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
-    private _thingService: ThingService,
+    private _thingManager: ThingManager,
     private _thingTypeService: ThingTypeService,
     private _actionService: ActionService,
-    private _propertyService: PropertyService,
     private _eventService: EventService,
     private _pluginThingActionFactory: PluginThingActionFactory
   ) {}
@@ -85,7 +80,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     }
     // TODO: Remove all properties, actions, types, action-requests.
     //  Should be done in response to removal events from thingService
-    this._thingService.removeThing(this._thing.id);
+    this._thingManager.removeThing(this._thing.id);
   }
 
   isOwned(): this is OwnedPluginThing {
@@ -106,12 +101,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   }
 
   addProperty(def: ThingPropertyDef): ThingProperty {
-    const property = this._propertyService.addProperty(
-      this._thing.id,
-      def,
-      this._pluginAdapter.plugin
-    );
-    return property;
+    return this._thing.addProperty(def, this._pluginAdapter.plugin);
   }
 
   addEvent(def: ThingEventDef): ThingEvent {

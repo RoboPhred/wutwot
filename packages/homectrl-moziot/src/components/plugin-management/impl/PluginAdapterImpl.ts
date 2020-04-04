@@ -1,16 +1,16 @@
 import { Container } from "microinject";
 
-import { ThingService, ThingDef } from "../../../things";
+import { ThingManager, ThingDef } from "../../things";
 
 import {
   MozIotPlugin,
   OwnedPluginThing,
   PluginThing,
   PluginAdapter
-} from "../../types";
-import { PluginThingManager } from "../../services";
+} from "../types";
+import { PluginThingManager } from "../services";
 
-import { PluginThingFactory } from "../PluginThingFactory";
+import { PluginThingFactory } from "../components/PluginThingFactory";
 
 export class PluginAdapterImpl implements PluginAdapter {
   private _initialized = false;
@@ -19,7 +19,7 @@ export class PluginAdapterImpl implements PluginAdapter {
   constructor(
     private _plugin: MozIotPlugin,
     publicContainer: Container,
-    private _thingService: ThingService,
+    private _thingManager: ThingManager,
     private _pluginThingFactory: PluginThingFactory
   ) {
     this._privateContainer = new Container();
@@ -68,13 +68,13 @@ export class PluginAdapterImpl implements PluginAdapter {
   }
 
   private _addThing(def: ThingDef): OwnedPluginThing {
-    const thing = this._thingService.addThing(def, this._plugin);
+    const thing = this._thingManager.addThing(def, this._plugin);
     const pluginThing = this._pluginThingFactory.getPluginThing(thing, this);
     return pluginThing as OwnedPluginThing;
   }
 
   private _getThing(id: string): PluginThing | null {
-    const thing = this._thingService.getThing(id);
+    const thing = this._thingManager.getThing(id);
     if (!thing) {
       return null;
     }
@@ -83,13 +83,13 @@ export class PluginAdapterImpl implements PluginAdapter {
   }
 
   private _getThings(): PluginThing[] {
-    return this._thingService
+    return this._thingManager
       .getThings()
       .map(thing => this._pluginThingFactory.getPluginThing(thing, this));
   }
 
   private _getOwnThings(): OwnedPluginThing[] {
-    return this._thingService
+    return this._thingManager
       .getThings()
       .filter(x => x.ownerPlugin === this._plugin)
       .map(

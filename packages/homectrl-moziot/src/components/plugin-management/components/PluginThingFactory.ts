@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { Thing } from "../../things";
+import { InternalThing } from "../../things";
 
 import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
 
@@ -11,7 +11,7 @@ export const PluginThingFactory: Identifier<PluginThingFactory> = createSymbol(
 );
 export interface PluginThingFactory {
   getPluginThing(
-    thing: Thing,
+    thing: InternalThing,
     pluginAdapter: PluginAdapter
   ): PluginThing | OwnedPluginThing;
 }

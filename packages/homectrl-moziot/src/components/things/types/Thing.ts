@@ -53,3 +53,14 @@ export interface Thing {
    */
   readonly events: ReadonlyRecord<string, ThingEvent>;
 }
+export const ThingKeys: (keyof Thing)[] = [
+  "id",
+  "ownerPlugin",
+  "title",
+  "semanticTypes",
+  "description",
+  "metadata",
+  "actions",
+  "properties",
+  "events"
+];

@@ -1,12 +1,8 @@
 import { JSONSchema6 } from "json-schema";
 
-import { validateOrThrow } from "../../../json-schema";
+import { validateOrThrow } from "../../json-schema";
 
-import {
-  ThingProperty,
-  ThingPropertyDef,
-  ThingPropertyType
-} from "../../types";
+import { ThingProperty, ThingPropertyDef, ThingPropertyType } from "../types";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;

@@ -6,12 +6,12 @@ import {
   Container
 } from "microinject";
 
-import { ThingService } from "../../../things";
+import { ThingManager } from "../../things";
 
-import { MozIotPlugin, PluginAdapter } from "../../types";
+import { MozIotPlugin, PluginAdapter } from "../types";
 
-import { PluginAdapterFactory } from "../PluginAdapterFactory";
-import { PluginThingFactory } from "../PluginThingFactory";
+import { PluginAdapterFactory } from "../components/PluginAdapterFactory";
+import { PluginThingFactory } from "../components/PluginThingFactory";
 
 import { PluginAdapterImpl } from "./PluginAdapterImpl";
 
@@ -21,7 +21,7 @@ import { PluginAdapterImpl } from "./PluginAdapterImpl";
 export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
   constructor(
     @inject(Container) private _container: Container,
-    @inject(ThingService) private _thingService: ThingService,
+    @inject(ThingManager) private _thingManager: ThingManager,
     @inject(PluginThingFactory) private _pluginThingFactory: PluginThingFactory
   ) {}
 
@@ -29,7 +29,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
     return new PluginAdapterImpl(
       plugin,
       this._container,
-      this._thingService,
+      this._thingManager,
       this._pluginThingFactory
     );
   }
