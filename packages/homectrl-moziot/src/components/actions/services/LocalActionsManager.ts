@@ -2,14 +2,16 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { ThingAction, ThingActionDef } from "../types";
+import { ThingActionDef } from "../types";
+
+import { InternalAction } from "./InternalAction";
 
 export const LocalActionsManager: Identifier<LocalActionsManager> = createSymbol(
   "ActionService"
 );
 export interface LocalActionsManager {
-  getAction(actionId: string): ThingAction | undefined;
-  getAllActions(): ThingAction[];
+  getAction(actionId: string): InternalAction | undefined;
+  getAllActions(): InternalAction[];
 
-  addAction(action: ThingActionDef, owner: object): ThingAction;
+  addAction(action: ThingActionDef, owner: object): InternalAction;
 }

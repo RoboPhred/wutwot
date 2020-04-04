@@ -1,30 +1,54 @@
+import { injectable, inScope, injectParam } from "microinject";
 import { JSONSchema6 } from "json-schema";
 
 import { DeepImmutableObject } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
+import { createWhitelistProxy } from "../../../utils/proxies";
 
-import { ThingAction, ThingActionDef } from "../types";
+import { ThingAction, ThingActionDef, ThingActionKeys } from "../types";
 import { validateOrThrow } from "../../json-schema";
 
-import { ThingActionRequest } from "../../action-requests";
+import {
+  ThingActionRequest,
+  ThingActionRequestDef
+} from "../../action-requests";
 
 // TODO: Components should not be used outside their service scope.
 //  We need to access this functionality from an action-request service.
 import { ActionRequestFactory } from "../../action-requests/components/ActionRequestFactory";
 import { ActionRequestRepository } from "../../action-requests/components/ActionRequestRepository";
+import { ThingScope } from "../../things";
 
-export class ThingActionImpl implements ThingAction {
+import { InternalActionParams, InternalAction } from "../services";
+import { asActionScope } from "../scopes";
+
+@injectable()
+@inScope(ThingScope)
+@asActionScope()
+export class InternalActionImpl implements InternalAction {
+  private _publicProxy: ThingAction;
+
   private _def: ThingActionDef;
 
   constructor(
+    @injectParam(InternalActionParams.ActionDef)
     def: ThingActionDef,
+    @injectParam(InternalActionParams.ActionId)
     private _id: string,
+    @injectParam(InternalActionParams.ThingId)
     private _thingId: string,
+    @injectParam(InternalActionParams.Owner)
     private _owner: object,
     private _actionRequestFactory: ActionRequestFactory,
     private _actionRepository: ActionRequestRepository
   ) {
     this._def = { ...def };
+
+    this._publicProxy = createWhitelistProxy(this, ThingActionKeys);
+  }
+
+  get publicProxy(): ThingAction {
+    return this._publicProxy;
   }
 
   get id(): string {
@@ -78,6 +102,17 @@ export class ThingActionImpl implements ThingAction {
         timeRequested: new Date().toISOString(),
         status
       }
+    );
+
+    this._actionRepository.addRequest(request);
+    return request;
+  }
+
+  addRequest(requestDef: ThingActionRequestDef): ThingActionRequest {
+    const request = this._actionRequestFactory.createActionRequest(
+      this._thingId,
+      this._id,
+      requestDef
     );
 
     this._actionRepository.addRequest(request);

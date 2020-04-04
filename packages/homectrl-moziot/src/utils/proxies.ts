@@ -1,5 +1,3 @@
-import { makeReadOnly } from "./readonly";
-
 /**
  * Creates a proxy on an object exposing whitelisted properties.
  * @param obj The object to proxy.
@@ -12,7 +10,7 @@ import { makeReadOnly } from "./readonly";
  */
 export function createWhitelistProxy<T extends object, K extends keyof T>(
   obj: T,
-  whitelist: K[],
+  whitelist: readonly K[],
   enumerable = true
 ): Pick<T, K> {
   // Produce a dummy target containing the keys we want.
@@ -48,15 +46,14 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
       return false;
     },
     has(target, p) {
-      return whitelist.includes(p as any);
+      return isWhitelistedKey(p, whitelist);
     },
     get(target, p) {
-      if (!whitelist.includes(p as any)) {
+      if (!isWhitelistedKey(p, whitelist)) {
         return undefined;
       }
       // Fetch the value from the obj.
-      //  target is just a property mock without values.
-      return (obj as any)[p];
+      return obj[p];
     },
     set(target, p, value) {
       throw new TypeError(
@@ -71,4 +68,11 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
   };
 
   return new Proxy(target, handler);
+}
+
+function isWhitelistedKey<K extends string | number | symbol>(
+  key: string | number | symbol,
+  whitelist: readonly K[]
+): key is K {
+  return whitelist.includes(key as any);
 }

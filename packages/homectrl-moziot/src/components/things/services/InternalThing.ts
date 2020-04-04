@@ -5,15 +5,16 @@ import createSymbol from "../../../create-symbol";
 import { Thing } from "../types";
 import { ThingPropertyDef, ThingProperty } from "../../properties";
 import { ThingEventDef, ThingEvent } from "../../thing-events";
-import { ThingActionDef, ThingAction } from "../../actions";
+import { ThingActionDef, ThingAction, InternalAction } from "../../actions";
+import { ReadonlyRecord } from "../../../types";
 
 /**
- * @internalz
+ * @internal
  */
 export namespace InternalThingParams {
   export const ThingDef = "thingDef";
   export const ThingId = "thingId";
-  export const Owner = "owner";
+  export const Owner = "thingOwner";
 }
 
 export const InternalThing: Identifier<InternalThing> = createSymbol(
@@ -21,6 +22,8 @@ export const InternalThing: Identifier<InternalThing> = createSymbol(
 );
 export interface InternalThing extends Thing {
   readonly publicProxy: Thing;
+
+  readonly actions: ReadonlyRecord<string, InternalAction>;
 
   addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;

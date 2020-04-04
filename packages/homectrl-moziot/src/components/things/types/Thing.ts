@@ -1,4 +1,5 @@
 import { ReadonlyRecord } from "../../../types";
+import { makeReadOnly } from "../../../utils/readonly";
 
 import { ThingAction } from "../../actions";
 import { ThingProperty } from "../../properties";
@@ -53,7 +54,7 @@ export interface Thing {
    */
   readonly events: ReadonlyRecord<string, ThingEvent>;
 }
-export const ThingKeys: (keyof Thing)[] = [
+export const ThingKeys = makeReadOnly<(keyof Thing)[]>([
   "id",
   "ownerPlugin",
   "title",
@@ -63,4 +64,4 @@ export const ThingKeys: (keyof Thing)[] = [
   "actions",
   "properties",
   "events"
-];
+]);

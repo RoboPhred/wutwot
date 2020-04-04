@@ -1,24 +1,28 @@
 import { injectable, provides, injectParam, inject } from "microinject";
 
-import { InternalThingParams, inThingScope } from "../../things";
-
-import { ThingActionDef, ThingAction } from "../types";
-
-import { LocalActionsManager } from "../services/LocalActionsManager";
-import { ActionEventSink } from "../components/ActionEventSink";
 import { IdMapper } from "../../../utils";
-import { ThingActionImpl } from "./ThingActionImpl";
+import { InternalThingParams, inThingScope } from "../../things";
 import {
   ActionRequestFactory,
   ActionRequestRepository
 } from "../../action-requests/components";
 
+import { ThingActionDef } from "../types";
+
+import { LocalActionsManager } from "../services/LocalActionsManager";
+
+import { ActionEventSink } from "../components";
+
+import { InternalAction } from "../services";
+
+import { InternalActionImpl } from "./InternalActionImpl";
+
 @injectable()
 @inThingScope()
 @provides(LocalActionsManager)
-export class ActionServiceImpl implements LocalActionsManager {
+export class LocalActionsManagerImpl implements LocalActionsManager {
   private _idMapper = new IdMapper();
-  private _actionsById = new Map<string, ThingAction>();
+  private _actionsById = new Map<string, InternalAction>();
 
   constructor(
     @injectParam(InternalThingParams.ThingId)
@@ -31,17 +35,17 @@ export class ActionServiceImpl implements LocalActionsManager {
     private _requestRepository: ActionRequestRepository
   ) {}
 
-  getAction(actionId: string): ThingAction | undefined {
+  getAction(actionId: string): InternalAction | undefined {
     return this._actionsById.get(actionId);
   }
 
-  getAllActions(): ThingAction[] {
+  getAllActions(): InternalAction[] {
     return Array.from(this._actionsById.values());
   }
 
-  addAction(def: ThingActionDef, owner: object): ThingAction {
+  addAction(def: ThingActionDef, owner: object): InternalAction {
     const id = this._idMapper.createId(def.title);
-    const action = new ThingActionImpl(
+    const action = new InternalActionImpl(
       def,
       id,
       this._thingId,

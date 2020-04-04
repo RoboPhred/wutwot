@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { injectable, singleton, provides } from "microinject";
 
-import { ActionEventSink } from "../components/ActionEventSink";
+import { ActionEventSink } from "../components";
 import {
   ActionEventSource,
   ThingActionAddedEventArgs,

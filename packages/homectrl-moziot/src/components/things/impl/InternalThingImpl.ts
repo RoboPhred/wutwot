@@ -7,13 +7,13 @@ import {
 } from "microinject";
 
 import { makeReadOnly } from "../../../utils/readonly";
-import { createWhitelistProxy } from "../../../utils/proxies";
 import { ReadonlyRecord } from "../../../types";
 
 import {
   LocalActionsManager,
   ThingAction,
-  ThingActionDef
+  ThingActionDef,
+  InternalAction
 } from "../../actions";
 import {
   LocalPropertiesManager,
@@ -27,9 +27,10 @@ import {
   ThingEventDef
 } from "../../thing-events";
 
-import { ThingDef, ThingKeys, Thing } from "../types";
+import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
 import { InternalThing, InternalThingParams } from "../services";
+import { mapValues } from "lodash";
 
 @injectable()
 @provides(InternalThing)
@@ -55,11 +56,12 @@ export class InternalThingImpl implements InternalThing {
     @inject(LocalEventsManager)
     private _eventsManager: LocalEventsManager
   ) {
-    this._publicProxy = createWhitelistProxy(this, ThingKeys);
     this._def = {
       ..._def
     };
     this._metadata = { ..._def.metadata };
+
+    this._publicProxy = createPublicThingApi(this);
   }
 
   get publicProxy(): Thing {
@@ -91,8 +93,8 @@ export class InternalThingImpl implements InternalThing {
     return this._metadata;
   }
 
-  get actions(): ReadonlyRecord<string, ThingAction> {
-    const actions: Record<string, ThingAction> = {};
+  get actions(): ReadonlyRecord<string, InternalAction> {
+    const actions: Record<string, InternalAction> = {};
     // TODO: Get a read-only map proxy from propertyManager
     this._actionsManager.getAllActions().forEach(action => {
       actions[action.id] = action;
@@ -134,4 +136,48 @@ export class InternalThingImpl implements InternalThing {
   addEvent(def: ThingEventDef, owner: object): ThingEvent {
     return this._eventsManager.addEvent(def, owner);
   }
+}
+
+// Move this somewhere.  Make a factory for it?
+function createPublicThingApi(thing: InternalThing) {
+  class PublicThing implements Thing {
+    get id(): string {
+      return thing.id;
+    }
+
+    get ownerPlugin(): object {
+      return thing.ownerPlugin;
+    }
+
+    get title(): string {
+      return thing.title;
+    }
+
+    get semanticTypes(): readonly string[] {
+      return thing.semanticTypes;
+    }
+
+    get description(): string | null {
+      return thing.description;
+    }
+
+    get metadata(): Record<string, any> {
+      return thing.metadata;
+    }
+
+    get actions(): Readonly<Record<string, ThingAction>> {
+      // TODO: Preserve live instance view.
+      return mapValues(thing.actions, action => action.publicProxy);
+    }
+
+    get properties(): Readonly<Record<string, ThingProperty>> {
+      return thing.properties;
+    }
+
+    get events(): Readonly<Record<string, ThingEvent>> {
+      return thing.events;
+    }
+  }
+
+  return new PublicThing();
 }

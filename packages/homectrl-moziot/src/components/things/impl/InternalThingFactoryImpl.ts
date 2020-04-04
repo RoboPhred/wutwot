@@ -5,14 +5,14 @@ import { IdMapper } from "../../../utils";
 import { ThingDef, validateThingDefOrThrow } from "../types";
 import { InternalThing, InternalThingParams } from "../services";
 
-import { InternalThingFactory } from "../components/InternalThingFactory";
+import { InternalThingFactory } from "../components";
 
 // TODO: Keep this as a class based factory.
 //  Needs to be able to request injection of service locator / context
 export function internalThingFactoryImpl(
   context: Context
 ): InternalThingFactory {
-  class ThingFactoryImpl implements InternalThingFactory {
+  class InternalThingFactoryImpl implements InternalThingFactory {
     private _idMapper = new IdMapper();
 
     createThing(def: ThingDef, owner: object): InternalThing {
@@ -25,5 +25,5 @@ export function internalThingFactoryImpl(
       });
     }
   }
-  return new ThingFactoryImpl();
+  return new InternalThingFactoryImpl();
 }

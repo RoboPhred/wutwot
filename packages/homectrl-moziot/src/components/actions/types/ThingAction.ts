@@ -1,5 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 
+import { makeReadOnly } from "../../../utils/readonly";
 import { DeepImmutableObject } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
@@ -16,3 +17,15 @@ export interface ThingAction {
   readonly requests: ReadonlyArray<ThingActionRequest>;
   request(input: any): ThingActionRequest;
 }
+
+export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
+  "id",
+  "thingId",
+  "ownerPlugin",
+  "title",
+  "semanticType",
+  "description",
+  "input",
+  "requests",
+  "request"
+]);
