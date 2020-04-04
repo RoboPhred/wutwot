@@ -25,8 +25,10 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
   //    the proxy must return an identical descriptor.
   //  - If the target has a non-writable non-configurable prop,
   //    the proxy must always return the target's property value
-  // All these rules combine to make me sad, and also to
-  //  prevent us making a true read-only view into non-readonly data.
+  // All these rules combine to prevent us making an object that
+  //  describes itself as read-only yet provides mutable data.
+  //  This is probably because the javascript engine performs
+  //  extra optimizations around readonly data.
   const target = {} as any;
   for (const key of whitelist) {
     Object.defineProperty(target, key, {

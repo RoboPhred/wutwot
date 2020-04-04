@@ -4,7 +4,6 @@ import { ReadonlyRecord } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
 
 import { Thing, ThingManager, InternalThing } from "../../things";
-import { ThingTypeService } from "../../thing-types";
 import { ThingActionDef, ActionService } from "../../actions";
 import { ThingProperty, ThingPropertyDef } from "../../properties";
 import { ThingEvent, EventService, ThingEventDef } from "../../thing-events";
@@ -23,7 +22,6 @@ export class PluginThingImpl implements OwnedPluginThing {
     private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
     private _thingManager: ThingManager,
-    private _thingTypeService: ThingTypeService,
     private _actionService: ActionService,
     private _eventService: EventService,
     private _pluginThingActionFactory: PluginThingActionFactory
@@ -69,7 +67,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   }
 
   addType(type: string): OwnedPluginThing {
-    this._thingTypeService.addType(this._thing.id, type);
+    this._thing.addSemanticType(type);
     return this;
   }
 

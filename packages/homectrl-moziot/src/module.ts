@@ -5,7 +5,7 @@ import actionModule from "./components/actions/module";
 import pluginModule from "./components/plugin-management/module";
 import propertiesModule from "./components/properties/module";
 import thingEventsModule from "./components/thing-events/module";
-import thingTypesModule from "./components/thing-types/module";
+import thingTypesModule from "./components/semantic-types/module";
 import thingModule from "./components/things/module";
 
 import { MozIot } from "./MozIot";

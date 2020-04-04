@@ -1,7 +1,6 @@
 import { injectable, provides, singleton, inject } from "microinject";
 
 import { ThingManager, InternalThing } from "../../things";
-import { ThingTypeService } from "../../thing-types";
 import { ActionService } from "../../actions";
 import { EventService } from "../../thing-events";
 
@@ -19,8 +18,6 @@ export class PluginThingFactoryImpl implements PluginThingFactory {
   constructor(
     @inject(ThingManager)
     private _thingManager: ThingManager,
-    @inject(ThingTypeService)
-    private _thingTypeService: ThingTypeService,
     @inject(ActionService)
     private _actionService: ActionService,
     @inject(EventService)
@@ -37,7 +34,6 @@ export class PluginThingFactoryImpl implements PluginThingFactory {
       thing,
       pluginAdapter,
       this._thingManager,
-      this._thingTypeService,
       this._actionService,
       this._eventService,
       this._pluginThingActionFactory

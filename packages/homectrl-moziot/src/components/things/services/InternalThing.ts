@@ -20,5 +20,6 @@ export const InternalThing: Identifier<InternalThing> = createSymbol(
 export interface InternalThing extends Thing {
   readonly publicProxy: Thing;
 
+  addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;
 }

@@ -10,13 +10,13 @@ import { makeReadOnly } from "../../../utils/readonly";
 import { createWhitelistProxy } from "../../../utils/proxies";
 import { ReadonlyRecord } from "../../../types";
 
-import { ThingTypeService } from "../../thing-types";
 import { ActionService, ThingAction } from "../../actions";
 import {
   LocalPropertyManager,
   ThingProperty,
   ThingPropertyDef
 } from "../../properties";
+import { LocalSemanticTypeManager } from "../../semantic-types";
 import { EventService, ThingEvent } from "../../thing-events";
 
 import { ThingDef, ThingKeys, Thing } from "../types";
@@ -38,8 +38,8 @@ export class InternalThingImpl implements InternalThing {
     private _id: string,
     @injectParam(InternalThingParams.Owner)
     private _owner: object,
-    @inject(ThingTypeService)
-    private _typeService: ThingTypeService,
+    @inject(LocalSemanticTypeManager)
+    private _typeManager: LocalSemanticTypeManager,
     @inject(ActionService)
     private _actionService: ActionService,
     @inject(LocalPropertyManager)
@@ -71,7 +71,8 @@ export class InternalThingImpl implements InternalThing {
   }
 
   get semanticTypes(): ReadonlyArray<string> {
-    return this._typeService.getTypes(this._id);
+    // TODO: Get read only view of live data.
+    return makeReadOnly(this._typeManager.getTypes());
   }
 
   get description(): string | null {
@@ -106,6 +107,10 @@ export class InternalThingImpl implements InternalThing {
       events[event.id] = event;
     });
     return makeReadOnly(events);
+  }
+
+  addSemanticType(type: string): void {
+    this._typeManager.addType(type);
   }
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {
