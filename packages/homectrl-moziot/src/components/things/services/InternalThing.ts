@@ -4,6 +4,7 @@ import createSymbol from "../../../create-symbol";
 
 import { Thing } from "../types";
 import { ThingPropertyDef, ThingProperty } from "../../properties";
+import { ThingEventDef, ThingEvent } from "../../thing-events";
 
 /**
  * @internalz
@@ -22,4 +23,5 @@ export interface InternalThing extends Thing {
 
   addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;
+  addEvent(def: ThingEventDef, owner: object): ThingEvent;
 }

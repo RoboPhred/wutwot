@@ -1,6 +1,6 @@
-import { makeReadOnly, makeReadOnlyDeep } from "../../../../utils/readonly";
+import { makeReadOnly, makeReadOnlyDeep } from "../../../utils/readonly";
 
-import { ThingEventDef, ThingEvent, ThingEventRecord } from "../../types";
+import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
 
 export class ThingEventImpl implements ThingEvent {
   /**

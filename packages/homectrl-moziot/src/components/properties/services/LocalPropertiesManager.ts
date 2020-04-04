@@ -11,5 +11,5 @@ export interface LocalPropertiesManager {
   getProperty(propertyId: string): ThingProperty | undefined;
   getAllProperties(): ThingProperty[];
 
-  createProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty;
+  addProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty;
 }

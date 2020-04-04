@@ -1,14 +1,14 @@
 import { EventEmitter } from "events";
 import { injectable, singleton, provides } from "microinject";
 
-import { EventEventSink } from "../../components/EventEventSink";
+import { EventEventSink } from "../components/EventEventSink";
 import {
   EventEventSource,
   ThingEventAddedEventArgs,
   ThingEventRemovedEventArgs
-} from "../../services";
+} from "../services";
 
-import { ThingEvent } from "../../types";
+import { ThingEvent } from "../types";
 
 @injectable()
 @singleton()

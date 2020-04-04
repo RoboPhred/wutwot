@@ -17,7 +17,11 @@ import {
   ThingPropertyDef
 } from "../../properties";
 import { LocalSemanticTypesManager } from "../../semantic-types";
-import { EventService, ThingEvent } from "../../thing-events";
+import {
+  LocalEventsManager,
+  ThingEvent,
+  ThingEventDef
+} from "../../thing-events";
 
 import { ThingDef, ThingKeys, Thing } from "../types";
 import { ThingScope } from "../scopes";
@@ -44,8 +48,8 @@ export class InternalThingImpl implements InternalThing {
     private _actionService: ActionService,
     @inject(LocalPropertiesManager)
     private _propertiesManager: LocalPropertiesManager,
-    @inject(EventService)
-    private _eventService: EventService
+    @inject(LocalEventsManager)
+    private _eventsManager: LocalEventsManager
   ) {
     this._publicProxy = createWhitelistProxy(this, ThingKeys);
     this._def = {
@@ -103,7 +107,8 @@ export class InternalThingImpl implements InternalThing {
 
   get events(): ReadonlyRecord<string, ThingEvent> {
     const events: Record<string, ThingEvent> = {};
-    this._eventService.getForThing(this._id).forEach(event => {
+    // TODO: Get a read-only map proxy from propertyManager
+    this._eventsManager.getAllEvents().forEach(event => {
       events[event.id] = event;
     });
     return makeReadOnly(events);
@@ -114,6 +119,10 @@ export class InternalThingImpl implements InternalThing {
   }
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {
-    return this._propertiesManager.createProperty(def, owner);
+    return this._propertiesManager.addProperty(def, owner);
+  }
+
+  addEvent(def: ThingEventDef, owner: object): ThingEvent {
+    return this._eventsManager.addEvent(def, owner);
   }
 }

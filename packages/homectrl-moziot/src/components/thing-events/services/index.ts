@@ -1,2 +1,2 @@
 export * from "./EventEventSource";
-export * from "./EventService";
+export * from "./LocalEventsManager";

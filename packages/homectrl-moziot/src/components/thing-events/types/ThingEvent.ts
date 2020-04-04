@@ -17,3 +17,22 @@ export interface ThingEvent {
 
   readonly records: readonly ThingEventRecord[];
 }
+
+export type ThingEventType =
+  | "null"
+  | "object"
+  | "array"
+  | "number"
+  | "integer"
+  | "string"
+  | "boolean";
+
+export const ThingEventTypes: ThingEventType[] = [
+  "null",
+  "object",
+  "array",
+  "number",
+  "integer",
+  "string",
+  "boolean"
+];

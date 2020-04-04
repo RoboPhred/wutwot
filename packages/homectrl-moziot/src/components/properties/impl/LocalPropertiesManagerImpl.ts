@@ -36,7 +36,7 @@ export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
     return Array.from(this._properties.values());
   }
 
-  createProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty {
+  addProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty {
     validatePropertyDefOrThrow(propertyDef);
 
     const propertyId = this._idMapper.createId(propertyDef.title);

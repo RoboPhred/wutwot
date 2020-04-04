@@ -6,7 +6,7 @@ import { makeReadOnly } from "../../../utils/readonly";
 import { Thing, ThingsManager, InternalThing } from "../../things";
 import { ThingActionDef, ActionService } from "../../actions";
 import { ThingProperty, ThingPropertyDef } from "../../properties";
-import { ThingEvent, EventService, ThingEventDef } from "../../thing-events";
+import { ThingEvent, ThingEventDef } from "../../thing-events";
 
 import {
   OwnedPluginThing,
@@ -23,7 +23,6 @@ export class PluginThingImpl implements OwnedPluginThing {
     private _pluginAdapter: PluginAdapter,
     private _thingManager: ThingsManager,
     private _actionService: ActionService,
-    private _eventService: EventService,
     private _pluginThingActionFactory: PluginThingActionFactory
   ) {}
 
@@ -77,8 +76,6 @@ export class PluginThingImpl implements OwnedPluginThing {
         "The requesting plugin does not own this Thing.  Things can only be deleted by their owner plugins."
       );
     }
-    // TODO: Remove all properties, actions, types, action-requests.
-    //  Should be done in response to removal events from thingService
     this._thingManager.removeThing(this._thing.id);
   }
 
@@ -104,11 +101,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   }
 
   addEvent(def: ThingEventDef): ThingEvent {
-    const event = this._eventService.addEvent(
-      this._thing.id,
-      def,
-      this._pluginAdapter.plugin
-    );
+    const event = this._thing.addEvent(def, this._pluginAdapter.plugin);
     return event;
   }
 
