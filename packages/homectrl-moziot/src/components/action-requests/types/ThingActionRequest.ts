@@ -1,3 +1,5 @@
+import { ToJSON } from "../../../types";
+
 import { ThingActionRequestStatus } from "./ThingActionRequestStatus";
 
 export interface ThingActionRequest {
@@ -11,4 +13,6 @@ export interface ThingActionRequest {
   readonly timeRequested: string;
   readonly timeCompleted: string | null;
   readonly status: ThingActionRequestStatus;
+
+  toJSON(): ToJSON<ThingActionRequest>;
 }

@@ -65,12 +65,31 @@ export class ThingEventImpl implements ThingEvent {
     return makeReadOnly([...this._records]);
   }
 
+  toJSON() {
+    return {
+      id: this.id,
+      thingId: this.thingId,
+      ownerPlugin: this.ownerPlugin,
+      title: this.title,
+      semanticType: this.semanticType,
+      description: this.description,
+      type: this.type,
+      unit: this.unit,
+      minimum: this.minimum,
+      maximum: this.maximum,
+      multipleOf: this.multipleOf,
+      records: this.records
+    };
+  }
+
   private _onEventRaised(data: any) {
     // Don't need to sort, as we know this is going to be newer
     //  than anything in the array.
-    this._records.push({
-      data: makeReadOnlyDeep(data),
-      timestamp: new Date().toISOString()
-    });
+    this._records.push(
+      makeReadOnlyDeep({
+        data,
+        timestamp: new Date().toISOString()
+      })
+    );
   }
 }

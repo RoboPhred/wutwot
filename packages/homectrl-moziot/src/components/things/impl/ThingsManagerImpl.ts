@@ -8,7 +8,7 @@ import { ThingsManager, InternalThing } from "../services";
 @injectable()
 @singleton()
 @provides(ThingsManager)
-export class ThingManagerImpl implements ThingsManager {
+export class ThingsManagerImpl implements ThingsManager {
   private _thingsById = new Map<string, InternalThing>();
 
   constructor(

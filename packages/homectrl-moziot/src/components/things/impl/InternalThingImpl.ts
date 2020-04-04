@@ -6,6 +6,7 @@ import {
   provides
 } from "microinject";
 import { mapValues } from "lodash";
+import { inspect, InspectOptionsStylized } from "util";
 
 import { makeReadOnly } from "../../../utils/readonly";
 import { ReadonlyRecord } from "../../../types";
@@ -136,11 +137,46 @@ export class InternalThingImpl implements InternalThing {
   addEvent(def: ThingEventDef, owner: object): ThingEvent {
     return this._eventsManager.addEvent(def, owner);
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      ownerPlugin: this.ownerPlugin,
+      title: this.title,
+      semanticTypes: this.semanticTypes,
+      description: this.description,
+      metadata: this.metadata,
+      actions: mapValues(this.actions, action => action.toJSON()),
+      properties: mapValues(this.properties, property => property.toJSON()),
+      events: mapValues(this.events, event => event.toJSON())
+    };
+  }
 }
 
 // Move this somewhere.  Make a factory for it?
 function createPublicThingApi(thing: InternalThing) {
   class PublicThing implements Thing {
+    get [Symbol.toStringTag]() {
+      return "Thing";
+    }
+
+    [inspect.custom](depth: number, options: InspectOptionsStylized) {
+      if (depth < 0) {
+        return options.stylize("[Thing]", "special");
+      }
+
+      const newOptions = Object.assign({}, options, {
+        depth: options.depth == null ? null : options.depth - 1
+      });
+
+      const padding = " ".repeat(2);
+      const inner = inspect(this.toJSON(), newOptions).replace(
+        /\n/g,
+        `\n${padding}`
+      );
+      return `Thing ${inner}`;
+    }
+
     get id(): string {
       return thing.id;
     }
@@ -176,6 +212,10 @@ function createPublicThingApi(thing: InternalThing) {
 
     get events(): Readonly<Record<string, ThingEvent>> {
       return thing.events;
+    }
+
+    toJSON() {
+      return thing.toJSON();
     }
   }
 

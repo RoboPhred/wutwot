@@ -1,4 +1,4 @@
-import { ReadonlyRecord } from "../../../types";
+import { ReadonlyRecord, ToJSON } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
 
 import { ThingAction } from "../../actions";
@@ -53,6 +53,8 @@ export interface Thing {
    * The events this thing supports.
    */
   readonly events: ReadonlyRecord<string, ThingEvent>;
+
+  toJSON(): ToJSON<Thing>;
 }
 export const ThingKeys = makeReadOnly<(keyof Thing)[]>([
   "id",
@@ -63,5 +65,6 @@ export const ThingKeys = makeReadOnly<(keyof Thing)[]>([
   "metadata",
   "actions",
   "properties",
-  "events"
+  "events",
+  "toJSON"
 ]);

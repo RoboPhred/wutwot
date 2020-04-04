@@ -1,4 +1,5 @@
 import { ThingEventRecord } from "./ThingEventRecord";
+import { ToJSON } from "../../../types";
 
 export interface ThingEvent {
   readonly id: string;
@@ -16,6 +17,8 @@ export interface ThingEvent {
   readonly multipleOf: number | undefined;
 
   readonly records: readonly ThingEventRecord[];
+
+  toJSON(): ToJSON<ThingEvent>;
 }
 
 export type ThingEventType =

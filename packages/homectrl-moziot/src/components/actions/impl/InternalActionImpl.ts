@@ -99,4 +99,17 @@ export class InternalActionImpl implements InternalAction {
   addRequest(requestDef: ThingActionRequestDef): ThingActionRequest {
     return this._requestsManager.addRequest(requestDef);
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      thingId: this.thingId,
+      ownerPlugin: this.ownerPlugin,
+      title: this.title,
+      semanticType: this.semanticType,
+      description: this.description,
+      input: this.input,
+      requests: this.requests.map(x => x.toJSON())
+    };
+  }
 }

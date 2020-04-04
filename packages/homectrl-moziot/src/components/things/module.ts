@@ -5,7 +5,7 @@ import { InternalThingFactory } from "./components";
 import { internalThingFactoryImpl } from "./impl/InternalThingFactoryImpl";
 import { InternalThingImpl } from "./impl/InternalThingImpl";
 import { ThingEventSourceImpl } from "./impl/ThingEventSourceImpl";
-import { ThingManagerImpl } from "./impl/ThingManagerImpl";
+import { ThingsManagerImpl } from "./impl/ThingsManagerImpl";
 
 export default new ContainerModule(bind => {
   bind(InternalThingFactory)
@@ -13,5 +13,5 @@ export default new ContainerModule(bind => {
     .inSingletonScope();
   bind(InternalThingImpl);
   bind(ThingEventSourceImpl);
-  bind(ThingManagerImpl);
+  bind(ThingsManagerImpl);
 });

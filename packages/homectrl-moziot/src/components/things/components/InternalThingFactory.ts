@@ -6,7 +6,7 @@ import { ThingDef } from "../types";
 import { InternalThing } from "../services";
 
 export const InternalThingFactory: Identifier<InternalThingFactory> = createSymbol(
-  "ThingFactory"
+  "InternalThingFactory"
 );
 export interface InternalThingFactory {
   createThing(def: ThingDef, owner: object): InternalThing;

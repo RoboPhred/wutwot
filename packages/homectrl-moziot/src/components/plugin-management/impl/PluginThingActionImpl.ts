@@ -68,4 +68,8 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
   toAction(): ThingAction {
     return this._action;
   }
+
+  toJSON() {
+    return this._action.toJSON();
+  }
 }

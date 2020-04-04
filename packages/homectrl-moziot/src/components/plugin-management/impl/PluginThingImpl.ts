@@ -101,4 +101,8 @@ export class PluginThingImpl implements OwnedPluginThing {
   toThing(): Thing {
     return this._thing;
   }
+
+  toJSON() {
+    return this._thing.toJSON();
+  }
 }

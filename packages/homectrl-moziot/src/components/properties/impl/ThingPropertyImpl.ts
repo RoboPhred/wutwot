@@ -13,7 +13,7 @@ export class ThingPropertyImpl implements ThingProperty {
     private _thingId: string,
     private _owner: object
   ) {
-    this._def = { ..._def };
+    this._def = { ..._def, enum: this.enum ? [...this.enum] : undefined };
     this._lastValue = this._def.initialValue;
     this._def.values.subscribe({
       next: (value: any) => (this._lastValue = value)
@@ -86,5 +86,24 @@ export class ThingPropertyImpl implements ThingProperty {
     };
     validateOrThrow(value, schema);
     this._def.onValueChangeRequested(this._thingId, this._id, value);
+  }
+
+  toJSON() {
+    return {
+      ownerPlugin: this.ownerPlugin,
+      id: this.id,
+      thingId: this.thingId,
+      title: this.title,
+      semanticType: this.semanticType,
+      description: this.description,
+      type: this.type,
+      unit: this.unit,
+      enum: this.enum,
+      minimum: this.minimum,
+      maximum: this.maximum,
+      multipleOf: this.multipleOf,
+      readOnly: this.readOnly,
+      value: this.value
+    };
   }
 }

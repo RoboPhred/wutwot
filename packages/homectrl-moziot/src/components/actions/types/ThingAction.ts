@@ -1,7 +1,7 @@
 import { JSONSchema6 } from "json-schema";
 
-import { makeReadOnly } from "../../../utils/readonly";
-import { DeepImmutableObject } from "../../../types";
+import { makeReadOnly, makeReadOnlyDeep } from "../../../utils/readonly";
+import { DeepImmutableObject, ToJSON } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
 
@@ -16,6 +16,8 @@ export interface ThingAction {
 
   readonly requests: ReadonlyArray<ThingActionRequest>;
   request(input: any): ThingActionRequest;
+
+  toJSON(): ToJSON<ThingAction>;
 }
 
 export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
@@ -27,5 +29,6 @@ export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
   "description",
   "input",
   "requests",
-  "request"
+  "request",
+  "toJSON"
 ]);

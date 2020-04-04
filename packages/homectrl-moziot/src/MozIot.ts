@@ -1,4 +1,5 @@
 import { Container } from "microinject";
+import { inspect, InspectOptionsStylized } from "util";
 
 import containerModule from "./module";
 
@@ -27,8 +28,31 @@ export class MozIot {
       .forEach(initializable => initializable.initialize());
   }
 
+  [inspect.custom](depth: number, options: InspectOptionsStylized) {
+    if (depth < 0) {
+      return options.stylize("[MozIot]", "special");
+    }
+
+    const newOptions = Object.assign({}, options, {
+      depth: options.depth == null ? null : options.depth - 1
+    });
+
+    const padding = " ".repeat(2);
+    const inner = inspect(this.toJSON(), newOptions).replace(
+      /\n/g,
+      `\n${padding}`
+    );
+    return `MozIot ${inner}`;
+  }
+
   // TODO: Should be live instance Record<thingId, Thing>
   get things(): ReadonlyArray<Thing> {
     return this._thingManager.getThings().map(thing => thing.publicProxy);
+  }
+
+  toJSON() {
+    return {
+      things: this.things.map(thing => thing.toJSON())
+    };
   }
 }

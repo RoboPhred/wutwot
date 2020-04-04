@@ -67,4 +67,16 @@ export class ThingActionRequestImpl implements ThingActionRequest {
   get status(): ThingActionRequestStatus {
     return this._lastStatus;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      thingId: this.thingId,
+      actionId: this.actionId,
+      input: this.input,
+      timeRequested: this.timeRequested,
+      timeCompleted: this.timeCompleted,
+      status: this.status
+    };
+  }
 }
