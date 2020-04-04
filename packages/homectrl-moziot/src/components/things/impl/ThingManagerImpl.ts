@@ -3,12 +3,12 @@ import { injectable, singleton, provides, inject } from "microinject";
 import { ThingDef } from "../types";
 import { InternalThingFactory, ThingEventSink } from "../components";
 
-import { ThingManager, InternalThing } from "../services";
+import { ThingsManager, InternalThing } from "../services";
 
 @injectable()
 @singleton()
-@provides(ThingManager)
-export class ThingManagerImpl implements ThingManager {
+@provides(ThingsManager)
+export class ThingManagerImpl implements ThingsManager {
   private _thingsById = new Map<string, InternalThing>();
 
   constructor(

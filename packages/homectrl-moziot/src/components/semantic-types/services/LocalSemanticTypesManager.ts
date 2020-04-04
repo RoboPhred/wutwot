@@ -2,10 +2,10 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-export const LocalSemanticTypeManager: Identifier<LocalSemanticTypeManager> = createSymbol(
+export const LocalSemanticTypesManager: Identifier<LocalSemanticTypesManager> = createSymbol(
   "LocalSemanticTypeManager"
 );
-export interface LocalSemanticTypeManager {
+export interface LocalSemanticTypesManager {
   addType(type: string): void;
   getTypes(): string[];
 }

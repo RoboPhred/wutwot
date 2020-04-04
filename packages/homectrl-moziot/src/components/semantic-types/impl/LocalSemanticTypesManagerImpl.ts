@@ -2,12 +2,13 @@ import { injectable, provides } from "microinject";
 
 import { asThingScope } from "../../things";
 
-import { LocalSemanticTypeManager } from "../services/LocalSemanticTypeManager";
+import { LocalSemanticTypesManager } from "../services/LocalSemanticTypesManager";
 
 @injectable()
 @asThingScope()
-@provides(LocalSemanticTypeManager)
-export class LocalSemanticTypeManagerImpl implements LocalSemanticTypeManager {
+@provides(LocalSemanticTypesManager)
+export class LocalSemanticTypesManagerImpl
+  implements LocalSemanticTypesManager {
   private _types = new Set<string>();
 
   addType(type: string): void {

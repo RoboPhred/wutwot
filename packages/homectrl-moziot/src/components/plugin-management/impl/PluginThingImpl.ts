@@ -3,7 +3,7 @@ import { mapValues } from "lodash";
 import { ReadonlyRecord } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
 
-import { Thing, ThingManager, InternalThing } from "../../things";
+import { Thing, ThingsManager, InternalThing } from "../../things";
 import { ThingActionDef, ActionService } from "../../actions";
 import { ThingProperty, ThingPropertyDef } from "../../properties";
 import { ThingEvent, EventService, ThingEventDef } from "../../thing-events";
@@ -21,7 +21,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   constructor(
     private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
-    private _thingManager: ThingManager,
+    private _thingManager: ThingsManager,
     private _actionService: ActionService,
     private _eventService: EventService,
     private _pluginThingActionFactory: PluginThingActionFactory

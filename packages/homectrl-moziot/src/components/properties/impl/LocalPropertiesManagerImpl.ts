@@ -10,14 +10,14 @@ import {
   validatePropertyDefOrThrow
 } from "../types";
 
-import { LocalPropertyManager } from "../services/LocalPropertyManager";
+import { LocalPropertiesManager } from "../services/LocalPropertiesManager";
 import { ThingPropertyImpl } from "./ThingPropertyImpl";
 import { PropertyEventSink } from "../components";
 
 @injectable()
 @inThingScope()
-@provides(LocalPropertyManager)
-export class LocalPropertyManagerImpl implements LocalPropertyManager {
+@provides(LocalPropertiesManager)
+export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
   private _idMapper = new IdMapper();
   private _properties = new Map<string, ThingProperty>();
 

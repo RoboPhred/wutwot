@@ -1,6 +1,6 @@
 import { Container } from "microinject";
 
-import { ThingManager, ThingDef } from "../../things";
+import { ThingsManager, ThingDef } from "../../things";
 
 import {
   MozIotPlugin,
@@ -8,7 +8,7 @@ import {
   PluginThing,
   PluginAdapter
 } from "../types";
-import { PluginThingManager } from "../services";
+import { PluginThingsManager } from "../services";
 
 import { PluginThingFactory } from "../components/PluginThingFactory";
 
@@ -19,20 +19,20 @@ export class PluginAdapterImpl implements PluginAdapter {
   constructor(
     private _plugin: MozIotPlugin,
     publicContainer: Container,
-    private _thingManager: ThingManager,
+    private _thingManager: ThingsManager,
     private _pluginThingFactory: PluginThingFactory
   ) {
     this._privateContainer = new Container();
     this._privateContainer.parent = publicContainer;
 
-    const pluginThingManager: PluginThingManager = {
+    const pluginThingManager: PluginThingsManager = {
       addThing: this._addThing.bind(this),
       getThing: this._getThing.bind(this),
       getThings: this._getThings.bind(this),
       getOwnThings: this._getOwnThings.bind(this)
     };
     this._privateContainer
-      .bind(PluginThingManager)
+      .bind(PluginThingsManager)
       .toConstantValue(pluginThingManager);
 
     if (_plugin.onRegisterPublicServices) {

@@ -6,10 +6,10 @@ import { ThingDef } from "../../things";
 
 import { OwnedPluginThing, PluginThing } from "../types/PluginThing";
 
-export const PluginThingManager: Identifier<PluginThingManager> = createSymbol(
-  "PluginThingManager"
+export const PluginThingsManager: Identifier<PluginThingsManager> = createSymbol(
+  "PluginThingsManager"
 );
-export interface PluginThingManager {
+export interface PluginThingsManager {
   /**
    * Adds a new thing owned by this plugin.
    *

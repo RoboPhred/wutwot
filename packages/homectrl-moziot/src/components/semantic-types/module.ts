@@ -1,7 +1,7 @@
 import { ContainerModule } from "microinject";
 
-import { LocalSemanticTypeManagerImpl } from "./impl/LocalSemanticTypeManagerImpl";
+import { LocalSemanticTypesManagerImpl } from "./impl/LocalSemanticTypesManagerImpl";
 
 export default new ContainerModule(bind => {
-  bind(LocalSemanticTypeManagerImpl);
+  bind(LocalSemanticTypesManagerImpl);
 });

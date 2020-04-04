@@ -1,1 +1,1 @@
-export * from "./LocalSemanticTypeManager";
+export * from "./LocalSemanticTypesManager";

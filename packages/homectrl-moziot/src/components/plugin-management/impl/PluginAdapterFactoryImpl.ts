@@ -6,7 +6,7 @@ import {
   Container
 } from "microinject";
 
-import { ThingManager } from "../../things";
+import { ThingsManager } from "../../things";
 
 import { MozIotPlugin, PluginAdapter } from "../types";
 
@@ -21,7 +21,7 @@ import { PluginAdapterImpl } from "./PluginAdapterImpl";
 export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
   constructor(
     @inject(Container) private _container: Container,
-    @inject(ThingManager) private _thingManager: ThingManager,
+    @inject(ThingsManager) private _thingManager: ThingsManager,
     @inject(PluginThingFactory) private _pluginThingFactory: PluginThingFactory
   ) {}
 

@@ -1,2 +1,2 @@
 export * from "./PluginManager";
-export * from "./PluginThingManager";
+export * from "./PluginThingsManager";

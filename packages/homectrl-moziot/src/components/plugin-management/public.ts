@@ -1,3 +1,3 @@
-export * from "./services/PluginThingManager";
+export * from "./services/PluginThingsManager";
 
 export * from "./types";

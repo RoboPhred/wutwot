@@ -4,10 +4,10 @@ import createSymbol from "../../../create-symbol";
 
 import { ThingProperty, ThingPropertyDef } from "../types";
 
-export const LocalPropertyManager: Identifier<LocalPropertyManager> = createSymbol(
-  "LocalPropertyManager"
+export const LocalPropertiesManager: Identifier<LocalPropertiesManager> = createSymbol(
+  "LocalPropertiesManager"
 );
-export interface LocalPropertyManager {
+export interface LocalPropertiesManager {
   getProperty(propertyId: string): ThingProperty | undefined;
   getAllProperties(): ThingProperty[];
 

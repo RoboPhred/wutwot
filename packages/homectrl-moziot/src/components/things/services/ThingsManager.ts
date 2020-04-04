@@ -6,10 +6,10 @@ import { ThingDef } from "../types";
 
 import { InternalThing } from "./InternalThing";
 
-export const ThingManager: Identifier<ThingManager> = createSymbol(
-  "ThingManager"
+export const ThingsManager: Identifier<ThingsManager> = createSymbol(
+  "ThingsManager"
 );
-export interface ThingManager {
+export interface ThingsManager {
   addThing(def: ThingDef, owner: object): InternalThing;
   removeThing(thingId: string): void;
 

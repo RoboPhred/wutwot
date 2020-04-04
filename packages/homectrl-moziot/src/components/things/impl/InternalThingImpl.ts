@@ -12,11 +12,11 @@ import { ReadonlyRecord } from "../../../types";
 
 import { ActionService, ThingAction } from "../../actions";
 import {
-  LocalPropertyManager,
+  LocalPropertiesManager,
   ThingProperty,
   ThingPropertyDef
 } from "../../properties";
-import { LocalSemanticTypeManager } from "../../semantic-types";
+import { LocalSemanticTypesManager } from "../../semantic-types";
 import { EventService, ThingEvent } from "../../thing-events";
 
 import { ThingDef, ThingKeys, Thing } from "../types";
@@ -38,12 +38,12 @@ export class InternalThingImpl implements InternalThing {
     private _id: string,
     @injectParam(InternalThingParams.Owner)
     private _owner: object,
-    @inject(LocalSemanticTypeManager)
-    private _typeManager: LocalSemanticTypeManager,
+    @inject(LocalSemanticTypesManager)
+    private _typesManager: LocalSemanticTypesManager,
     @inject(ActionService)
     private _actionService: ActionService,
-    @inject(LocalPropertyManager)
-    private _propertyManager: LocalPropertyManager,
+    @inject(LocalPropertiesManager)
+    private _propertiesManager: LocalPropertiesManager,
     @inject(EventService)
     private _eventService: EventService
   ) {
@@ -72,7 +72,7 @@ export class InternalThingImpl implements InternalThing {
 
   get semanticTypes(): ReadonlyArray<string> {
     // TODO: Get read only view of live data.
-    return makeReadOnly(this._typeManager.getTypes());
+    return makeReadOnly(this._typesManager.getTypes());
   }
 
   get description(): string | null {
@@ -95,7 +95,7 @@ export class InternalThingImpl implements InternalThing {
   get properties(): ReadonlyRecord<string, ThingProperty> {
     const properties: Record<string, ThingProperty> = {};
     // TODO: Get a read-only map proxy from propertyManager
-    this._propertyManager.getAllProperties().forEach(property => {
+    this._propertiesManager.getAllProperties().forEach(property => {
       properties[property.id] = property;
     });
     return makeReadOnly(properties);
@@ -110,10 +110,10 @@ export class InternalThingImpl implements InternalThing {
   }
 
   addSemanticType(type: string): void {
-    this._typeManager.addType(type);
+    this._typesManager.addType(type);
   }
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {
-    return this._propertyManager.createProperty(def, owner);
+    return this._propertiesManager.createProperty(def, owner);
   }
 }
