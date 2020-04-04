@@ -14,15 +14,13 @@ import {
   OwnedPluginThingAction,
   PluginAdapter
 } from "../types";
-
-import { PluginThingActionFactory } from "../components/PluginThingActionFactory";
+import { PluginThingActionImpl } from "./PluginThingActionImpl";
 
 export class PluginThingImpl implements OwnedPluginThing {
   constructor(
     private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
-    private _thingManager: ThingsManager,
-    private _pluginThingActionFactory: PluginThingActionFactory
+    private _thingManager: ThingsManager
   ) {}
 
   get id(): string {
@@ -50,8 +48,9 @@ export class PluginThingImpl implements OwnedPluginThing {
   }
 
   get actions(): ReadonlyRecord<string, PluginThingAction> {
-    const actions = mapValues(this._thing.actions, action =>
-      this._pluginThingActionFactory.getThingAction(action, this._pluginAdapter)
+    const actions = mapValues(
+      this._thing.actions,
+      action => new PluginThingActionImpl(action, this._pluginAdapter)
     );
     return makeReadOnly(actions);
   }
@@ -84,11 +83,10 @@ export class PluginThingImpl implements OwnedPluginThing {
 
   addAction(def: ThingActionDef): OwnedPluginThingAction {
     const action = this._thing.addAction(def, this._pluginAdapter.plugin);
-    const thingAction = this._pluginThingActionFactory.getThingAction(
+    return new PluginThingActionImpl(
       action,
       this._pluginAdapter
-    );
-    return thingAction as OwnedPluginThingAction;
+    ) as OwnedPluginThingAction;
   }
 
   addProperty(def: ThingPropertyDef): ThingProperty {

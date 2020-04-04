@@ -5,7 +5,7 @@ import createSymbol from "../../../create-symbol";
 import { Thing } from "../types";
 import { ThingPropertyDef, ThingProperty } from "../../properties";
 import { ThingEventDef, ThingEvent } from "../../thing-events";
-import { ThingActionDef, ThingAction, InternalAction } from "../../actions";
+import { ThingActionDef, InternalAction } from "../../actions";
 import { ReadonlyRecord } from "../../../types";
 
 /**
@@ -27,6 +27,6 @@ export interface InternalThing extends Thing {
 
   addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;
-  addAction(def: ThingActionDef, owner: object): ThingAction;
+  addAction(def: ThingActionDef, owner: object): InternalAction;
   addEvent(def: ThingEventDef, owner: object): ThingEvent;
 }

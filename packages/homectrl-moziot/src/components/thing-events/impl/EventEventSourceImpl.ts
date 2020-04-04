@@ -16,10 +16,10 @@ import { ThingEvent } from "../types";
 @provides(EventEventSink)
 export class EventEventSourceImpl extends EventEmitter
   implements EventEventSource, EventEventSink {
-  onEventAdded(thingId: string, eventId: string, event: ThingEvent): void {
+  onEventAdded(event: ThingEvent): void {
     const e: ThingEventAddedEventArgs = {
-      thingId,
-      eventId,
+      thingId: event.thingId,
+      eventId: event.id,
       event
     };
     this.emit("event.added", e);

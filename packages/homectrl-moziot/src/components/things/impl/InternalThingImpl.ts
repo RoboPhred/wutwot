@@ -5,6 +5,7 @@ import {
   injectParam,
   provides
 } from "microinject";
+import { mapValues } from "lodash";
 
 import { makeReadOnly } from "../../../utils/readonly";
 import { ReadonlyRecord } from "../../../types";
@@ -30,7 +31,6 @@ import {
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
 import { InternalThing, InternalThingParams } from "../services";
-import { mapValues } from "lodash";
 
 @injectable()
 @provides(InternalThing)
@@ -129,7 +129,7 @@ export class InternalThingImpl implements InternalThing {
     return this._propertiesManager.addProperty(def, owner);
   }
 
-  addAction(def: ThingActionDef, owner: object): ThingAction {
+  addAction(def: ThingActionDef, owner: object): InternalAction {
     return this._actionsManager.addAction(def, owner);
   }
 

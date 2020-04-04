@@ -16,14 +16,10 @@ import { ThingProperty } from "../types";
 @provides(PropertyEventSink)
 export class PropertyEventSourceImpl extends EventEmitter
   implements PropertyEventSource, PropertyEventSink {
-  onPropertyAdded(
-    thingId: string,
-    propertyId: string,
-    property: ThingProperty
-  ): void {
+  onPropertyAdded(property: ThingProperty): void {
     const e: ThingPropertyAddedEventArgs = {
-      thingId,
-      propertyId,
+      thingId: property.thingId,
+      propertyId: property.id,
       property
     };
     this.emit("property.added", e);

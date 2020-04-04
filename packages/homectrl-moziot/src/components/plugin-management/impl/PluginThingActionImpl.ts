@@ -2,20 +2,18 @@ import { JSONSchema6 } from "json-schema";
 
 import { DeepImmutableObject } from "../../../types";
 
-import { ThingAction } from "../../actions";
+import { InternalAction, ThingAction } from "../../actions";
 import {
   ThingActionRequest,
-  ThingActionRequestDef,
-  ActionRequestService
+  ThingActionRequestDef
 } from "../../action-requests";
 
 import { OwnedPluginThingAction, PluginAdapter } from "../types";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(
-    private _action: ThingAction,
-    private _pluginAdapter: PluginAdapter,
-    private _actionRequestService: ActionRequestService
+    private _action: InternalAction,
+    private _pluginAdapter: PluginAdapter
   ) {}
 
   get id(): string {
@@ -60,12 +58,7 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
         "The requesting plugin does not own this action.  Requests can only be added by the plugin that owns the action."
       );
     }
-    const request = this._actionRequestService.addRequest(
-      this._action.thingId,
-      this._action.id,
-      def
-    );
-    return request;
+    return this._action.addRequest(def);
   }
 
   request(input: any): ThingActionRequest {

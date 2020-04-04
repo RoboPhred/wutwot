@@ -48,7 +48,7 @@ export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
     );
     this._properties.set(property.id, property);
 
-    this._eventSink.onPropertyAdded(this._thingId, propertyId, property);
+    this._eventSink.onPropertyAdded(property);
 
     return property;
   }

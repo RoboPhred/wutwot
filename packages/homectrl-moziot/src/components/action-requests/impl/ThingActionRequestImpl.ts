@@ -2,7 +2,7 @@ import {
   ThingActionRequest,
   ThingActionRequestStatus,
   ThingActionRequestDef
-} from "../../types";
+} from "../types";
 
 export class ThingActionRequestImpl implements ThingActionRequest {
   private _lastStatus: ThingActionRequestStatus;

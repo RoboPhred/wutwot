@@ -1,4 +1,4 @@
-import { injectable, inScope, injectParam } from "microinject";
+import { injectable, inScope, injectParam, inject } from "microinject";
 import { JSONSchema6 } from "json-schema";
 
 import { DeepImmutableObject } from "../../../types";
@@ -10,13 +10,10 @@ import { validateOrThrow } from "../../json-schema";
 
 import {
   ThingActionRequest,
-  ThingActionRequestDef
+  ThingActionRequestDef,
+  LocalActionRequestsManager
 } from "../../action-requests";
 
-// TODO: Components should not be used outside their service scope.
-//  We need to access this functionality from an action-request service.
-import { ActionRequestFactory } from "../../action-requests/components/ActionRequestFactory";
-import { ActionRequestRepository } from "../../action-requests/components/ActionRequestRepository";
 import { ThingScope } from "../../things";
 
 import { InternalActionParams, InternalAction } from "../services";
@@ -39,8 +36,8 @@ export class InternalActionImpl implements InternalAction {
     private _thingId: string,
     @injectParam(InternalActionParams.Owner)
     private _owner: object,
-    private _actionRequestFactory: ActionRequestFactory,
-    private _actionRepository: ActionRequestRepository
+    @inject(LocalActionRequestsManager)
+    private _requestsManager: LocalActionRequestsManager
   ) {
     this._def = { ...def };
 
@@ -80,9 +77,7 @@ export class InternalActionImpl implements InternalAction {
   }
 
   get requests(): ReadonlyArray<ThingActionRequest> {
-    return makeReadOnly(
-      this._actionRepository.getForThingAction(this._thingId, this._id)
-    );
+    return makeReadOnly(this._requestsManager.getAllRequests());
   }
 
   request(input: any): ThingActionRequest {
@@ -94,28 +89,14 @@ export class InternalActionImpl implements InternalAction {
       input
     );
 
-    const request = this._actionRequestFactory.createActionRequest(
-      this._thingId,
-      this._id,
-      {
-        input,
-        timeRequested: new Date().toISOString(),
-        status
-      }
-    );
-
-    this._actionRepository.addRequest(request);
-    return request;
+    return this._requestsManager.addRequest({
+      input,
+      timeRequested: new Date().toISOString(),
+      status
+    });
   }
 
   addRequest(requestDef: ThingActionRequestDef): ThingActionRequest {
-    const request = this._actionRequestFactory.createActionRequest(
-      this._thingId,
-      this._id,
-      requestDef
-    );
-
-    this._actionRepository.addRequest(request);
-    return request;
+    return this._requestsManager.addRequest(requestDef);
   }
 }

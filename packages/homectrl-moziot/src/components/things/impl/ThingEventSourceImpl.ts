@@ -8,7 +8,7 @@ import {
   ThingEventSource,
   ThingAddedEventArgs,
   ThingRemovedEventArgs
-} from "../services/ThingEventSource";
+} from "../services";
 
 @injectable()
 @singleton()
@@ -16,9 +16,9 @@ import {
 @provides(ThingEventSink)
 export class ThingEventSourceImpl extends EventEmitter
   implements ThingEventSource, ThingEventSink {
-  onThingAdded(thingId: string, thing: Thing): void {
+  onThingAdded(thing: Thing): void {
     const e: ThingAddedEventArgs = {
-      thingId,
+      thingId: thing.id,
       thing
     };
     this.emit("thing.added", e);

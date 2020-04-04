@@ -2,16 +2,12 @@ import { injectable, provides, injectParam, inject } from "microinject";
 
 import { IdMapper } from "../../../utils";
 import { InternalThingParams, inThingScope } from "../../things";
-import {
-  ActionRequestFactory,
-  ActionRequestRepository
-} from "../../action-requests/components";
 
 import { ThingActionDef } from "../types";
 
 import { LocalActionsManager } from "../services/LocalActionsManager";
 
-import { ActionEventSink } from "../components";
+import { ActionEventSink, InternalActionFactory } from "../components";
 
 import { InternalAction } from "../services";
 
@@ -29,10 +25,8 @@ export class LocalActionsManagerImpl implements LocalActionsManager {
     private _thingId: string,
     @inject(ActionEventSink)
     private _eventSink: ActionEventSink,
-    @inject(ActionRequestFactory)
-    private _requestFactory: ActionRequestFactory,
-    @inject(ActionRequestRepository)
-    private _requestRepository: ActionRequestRepository
+    @inject(InternalActionFactory)
+    private _actionFactory: InternalActionFactory
   ) {}
 
   getAction(actionId: string): InternalAction | undefined {
@@ -44,17 +38,9 @@ export class LocalActionsManagerImpl implements LocalActionsManager {
   }
 
   addAction(def: ThingActionDef, owner: object): InternalAction {
-    const id = this._idMapper.createId(def.title);
-    const action = new InternalActionImpl(
-      def,
-      id,
-      this._thingId,
-      owner,
-      this._requestFactory,
-      this._requestRepository
-    );
-    this._actionsById.set(id, action);
-    this._eventSink.onActionAdded(this._thingId, id, action);
+    const action = this._actionFactory.createAction(def, owner);
+    this._actionsById.set(action.id, action);
+    this._eventSink.onActionAdded(action);
     return action;
   }
 }

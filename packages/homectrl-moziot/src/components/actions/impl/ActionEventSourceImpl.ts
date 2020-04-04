@@ -16,10 +16,10 @@ import { ThingAction } from "../types";
 @provides(ActionEventSink)
 export class ActionEventSourceImpl extends EventEmitter
   implements ActionEventSource, ActionEventSink {
-  onActionAdded(thingId: string, actionId: string, action: ThingAction): void {
+  onActionAdded(action: ThingAction): void {
     const e: ThingActionAddedEventArgs = {
-      thingId,
-      actionId,
+      thingId: action.thingId,
+      actionId: action.id,
       action
     };
     this.emit("action.added", e);

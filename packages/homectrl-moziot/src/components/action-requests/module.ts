@@ -1,12 +1,9 @@
 import { ContainerModule } from "microinject";
 
-import { ActionRequestServiceImpl } from "./services/impl/ActionRequestServiceImpl";
-
-import { ActionRequestFactoryImpl } from "./components/impl/ActionRequestFactoryImpl";
-import { ActionRequestRepositoryImpl } from "./components/impl/ActionRequestRepositoryImpl";
+import { ActionRequestEventSourceImpl } from "./impl/ActionRequestEventSourceImpl";
+import { LocalActionRequestsManagerImpl } from "./impl/LocalActionRequestsManagerImpl";
 
 export default new ContainerModule(bind => {
-  bind(ActionRequestServiceImpl);
-  bind(ActionRequestFactoryImpl);
-  bind(ActionRequestRepositoryImpl);
+  bind(ActionRequestEventSourceImpl);
+  bind(LocalActionRequestsManagerImpl);
 });

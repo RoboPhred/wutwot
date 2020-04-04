@@ -19,7 +19,7 @@ export class ThingManagerImpl implements ThingsManager {
   addThing(def: ThingDef, owner: object): InternalThing {
     const thing = this._factory.createThing(def, owner);
     this._thingsById.set(thing.id, thing);
-    this._eventSink.onThingAdded(thing.id, thing);
+    this._eventSink.onThingAdded(thing);
     return thing;
   }
 

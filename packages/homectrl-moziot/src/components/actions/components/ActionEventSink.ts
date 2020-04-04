@@ -8,6 +8,6 @@ export const ActionEventSink: Identifier<ActionEventSink> = createSymbol(
   "ActionEventSink"
 );
 export interface ActionEventSink {
-  onActionAdded(thingId: string, actionId: string, action: ThingAction): void;
+  onActionAdded(action: ThingAction): void;
   onActionRemoved(thingId: string, actionId: string): void;
 }
