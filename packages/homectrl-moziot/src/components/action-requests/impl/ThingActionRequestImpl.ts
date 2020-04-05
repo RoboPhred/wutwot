@@ -8,6 +8,9 @@ import {
   ThingActionRequestDef
 } from "../types";
 
+/**
+ * Provides the implementation of ThingActionRequest for public use.
+ */
 export class ThingActionRequestImpl implements ThingActionRequest {
   private _lastStatus: ThingActionRequestStatus;
   private _timeCompleted: string | null = null;

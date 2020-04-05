@@ -9,6 +9,11 @@ import {
   ThingActionRequestAddedEventArgs
 } from "../services";
 
+/**
+ * Provides the implementation for both ActionRequestEventSource and ActionRequestEventSink.
+ *
+ * When the sink receives notifications, this implementation will emit the corresponding source event.
+ */
 @injectable()
 @singleton()
 @provides(ActionRequestEventSource)

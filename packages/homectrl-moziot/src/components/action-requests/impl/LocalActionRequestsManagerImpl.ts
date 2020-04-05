@@ -10,6 +10,12 @@ import { ActionRequestEventSink } from "../components";
 
 import { ThingActionRequestImpl } from "./ThingActionRequestImpl";
 
+/**
+ * An implementation of the LocalActionRequestManager service.
+ *
+ * This service exists in the scope of an action, and manages
+ * ActionRequests for its parent action.
+ */
 @injectable()
 @inActionScope()
 @provides(LocalActionRequestsManager)
