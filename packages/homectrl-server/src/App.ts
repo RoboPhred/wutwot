@@ -1,18 +1,25 @@
 import { Container } from "microinject";
+import { MozIot } from "homectrl-moziot";
 
 import appModule from "./module";
 
-import { Entrypoint } from "./contracts";
+import { Entrypoint, Shutdownable } from "./contracts";
 
 export class App {
   private readonly _container = new Container();
 
   constructor() {
+    this._container.bind(App).toConstantValue(this);
     this._container.load(appModule);
   }
 
   run() {
     const entrypoints = this._container.getAll(Entrypoint);
     entrypoints.forEach(x => x.start());
+  }
+
+  async shutdown() {
+    this._container.getAll(Shutdownable).forEach(x => x.onShutdown());
+    await this._container.get(MozIot).shutdown();
   }
 }

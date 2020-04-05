@@ -3,3 +3,4 @@
 /node_modules/
 /OZW_Log.txt
 /ozwcache_*
+/moziot.persistence.json
