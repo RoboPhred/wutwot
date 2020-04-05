@@ -20,16 +20,32 @@ export const ActionRequestEventSource: Identifier<ActionRequestEventSource> = cr
  * regardless of parent action or thing.
  */
 export interface ActionRequestEventSource {
+  /**
+   * Attach a handler to handle when an action request is added.
+   * @param event The event to handle.
+   * @param handler The function to call when the event is raised.
+   */
   on(
     event: "actionRequest.add",
     handler: (e: ThingActionRequestAddedEventArgs) => void
   ): this;
+
+  /**
+   * Attach a handler to be raised the next time an action request is added.
+   * @param event The event to handle.
+   * @param handler The function to call when the event is raised.
+   */
   once(
     event: "actionRequest.add",
     handler: (e: ThingActionRequestAddedEventArgs) => void
   ): this;
 
-  removeListener(event: string, handler: Function): this;
+  /**
+   * Removes an action request handler.
+   * @param event The event to remove a handler for.
+   * @param handler The handler to remove.
+   */
+  removeListener(event: "actionRequest.add", handler: Function): this;
 }
 
 /**
