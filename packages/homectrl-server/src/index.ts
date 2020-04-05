@@ -1,5 +1,7 @@
-// import { install as installSourceMapSupport } from "source-map-support";
-// installSourceMapSupport();
+import "source-map-support/register";
+
+// Pre-import module to avoid circular requires between components and app.
+import "./module";
 
 import { App } from "./App";
 
