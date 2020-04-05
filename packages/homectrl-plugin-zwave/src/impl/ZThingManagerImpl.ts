@@ -2,10 +2,10 @@ import { injectable, inject, singleton, provides } from "microinject";
 import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
 import { ZWaveNode } from "zwave-js";
 
-import { ZWaveProvider } from "../ZWaveProvider";
-import { ZThingManager } from "../ZThingManager";
-import { ZThingAdapterFactory } from "../ZThingAdapterFactory";
-import { ZThingAdapter } from "../ZThingAdapter";
+import { ZWaveProvider } from "../components/ZWaveProvider";
+import { ZThingManager } from "../components/ZThingManager";
+import { ZThingAdapterFactory } from "../components/ZThingAdapterFactory";
+import { ZThingAdapter } from "../components/ZThingAdapter";
 
 @injectable()
 @provides(ZThingManager)

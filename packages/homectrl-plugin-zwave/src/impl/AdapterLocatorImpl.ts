@@ -2,9 +2,9 @@ import { join } from "path";
 import serialport, { PortInfo } from "serialport";
 import { injectable, provides, inject } from "microinject";
 
-import { ZWavePort } from "../../config";
+import { ZWavePort } from "../config";
 
-import { AdapterLocator } from "../AdapterLocator";
+import { AdapterLocator } from "../components/AdapterLocator";
 
 // TODO: Make configurable
 const adapters = require(join(

@@ -1,3 +1,5 @@
 import createSymbol from "./create-symbol";
 
-export const METADATA_ZWAVE_NODE = createSymbol("metadata/zwave-node");
+export const METADATA_ZWAVE_NODE: unique symbol = createSymbol(
+  "metadata/zwave-node"
+) as any;

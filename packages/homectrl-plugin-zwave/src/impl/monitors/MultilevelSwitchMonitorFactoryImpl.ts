@@ -10,8 +10,8 @@ import {
   ZWaveNodeValueUpdatedArgs
 } from "zwave-js/build/lib/node/Types";
 
-import { ZThingMonitor } from "../../../types";
-import { ZThingMonitorFactory } from "../../../contracts";
+import { ZThingMonitor } from "../../types";
+import { ZThingMonitorFactory } from "../../contracts";
 
 @injectable()
 @provides(ZThingMonitorFactory)

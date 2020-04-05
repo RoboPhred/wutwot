@@ -7,8 +7,8 @@ import { injectable, singleton, provides } from "microinject";
 import { Subject } from "rxjs";
 import { autobind } from "core-decorators";
 
-import { ZThingMonitor } from "../../../types";
-import { ZThingMonitorFactory } from "../../../contracts";
+import { ZThingMonitor } from "../../types";
+import { ZThingMonitorFactory } from "../../contracts";
 
 @injectable()
 @provides(ZThingMonitorFactory)

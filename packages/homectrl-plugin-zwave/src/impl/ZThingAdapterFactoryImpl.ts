@@ -2,10 +2,10 @@ import { injectable, provides, singleton, inject } from "microinject";
 import { PluginThingsManager } from "homectrl-moziot";
 import { ZWaveNode } from "zwave-js";
 
-import { ZThingMonitorFactory } from "../../contracts";
+import { ZThingMonitorFactory } from "../contracts";
 
-import { ZThingAdapterFactory } from "../ZThingAdapterFactory";
-import { ZThingAdapter } from "../ZThingAdapter";
+import { ZThingAdapterFactory } from "../components/ZThingAdapterFactory";
+import { ZThingAdapter } from "../components/ZThingAdapter";
 
 import { ZThingAdapterImpl } from "./ZThingAdapterImpl";
 

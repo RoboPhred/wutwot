@@ -3,12 +3,12 @@ import { ZWaveNode } from "zwave-js";
 import { OwnedPluginThing, PluginThingsManager } from "homectrl-moziot";
 import { autobind } from "core-decorators";
 
-import { ZThingMonitorFactory } from "../../contracts/ZThingMonitorFactory";
-import { METADATA_ZWAVE_NODE } from "../../metadata-keys";
-import { ZThingMonitor } from "../../types";
-import { isNotNull } from "../../utils";
+import { ZThingMonitorFactory } from "../contracts/ZThingMonitorFactory";
+import { METADATA_ZWAVE_NODE } from "../metadata-keys";
+import { ZThingMonitor } from "../types";
+import { isNotNull } from "../utils";
 
-import { ZThingAdapter } from "../ZThingAdapter";
+import { ZThingAdapter } from "../components/ZThingAdapter";
 
 export class ZThingAdapterImpl implements ZThingAdapter {
   private _destroyed = false;
