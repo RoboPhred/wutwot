@@ -33,26 +33,6 @@ https://www.npmjs.com/package/@microsoft/api-extractor
 
 Action / event / property services (main, repo, event source/sink) are very similar.
 
-#### Reconsider storing everything in seperate repos vs inside their owner thing
-
-The original intent behind keeping actions / events / properties in seperate repos was to
-enforce pluggable architecture, but that isn't really needed from inside moziot and
-any additional plugin conceps would need getters on the Thing class anyway.
-
-Either support this fully by having Thing js properties be declared by plugins, or do
-away with it and just store thing concerns inside the thing (and action events inside actions).
-
-Probably want to do away with it, as the mozilla wot spec isn't going to add any new concerns,
-and our management-as-thing strategy means we do not need to add additional management api.
-
-Event sinks for concerns will not be a problem, as the Thing can take a dependency on the sink and
-call the appropriate functions.
-
-Risk is that it will be harder to keep internals private, as the Thing / Action / Event / Property objects
-are public and a plugin might discover and misuse the internal functions that expose the repos from them.
-Possible workaround is to use alternate objects in the repos (ThingAdapter?) that expose a Thing object which
-is passed on as public.
-
 #### Persistent IDs
 
 Store chosen IDs for all concerns in a map file and re-use them on reboot.
@@ -61,5 +41,11 @@ some plugins (zwave) will have more than one facet of an id, so accept
 an IDClaims interface mapping many values as a compound ID.
 
 Will need to get rid of IDMapper and inject a more robust ID provider.
-This currently lives at the factory level, and needs a new instance per thing.
-More evidence that we need thing-local storage rather than global repos.
+
+#### Unify the json-schema variant that WOT uses
+
+WOT spec uses a small subset of JSON Schema. Make types and a validator
+for this subset and share them along all usages.
+This might need a bit of off-spec work, as the spec is inconsistent in how it defines
+these. For example, it often defines type can be `object` but does not always define a `properties` property.
+Sometimes, the spec shows json-schema properties in an example that it does not define in the spec.

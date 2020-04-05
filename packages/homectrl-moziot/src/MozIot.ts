@@ -28,7 +28,7 @@ export class MozIot {
 
     this._container
       .getAll(Initializable)
-      .forEach(initializable => initializable.initialize());
+      .forEach(initializable => initializable.onInitialize());
   }
 
   [inspect.custom] = makeInspectJson("MozIot");

@@ -20,7 +20,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
     private _pluginAdapterFactory: PluginAdapterFactory
   ) {}
 
-  initialize() {
+  onInitialize() {
     if (this._initialized) {
       return;
     }
