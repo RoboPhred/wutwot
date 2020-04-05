@@ -7,15 +7,17 @@ import { ThingActionRequest, ThingActionRequestDef } from "../types";
 /**
  * Identifies the LocalActionRequestsManager service
  *
- * This is a service scoped to an action, that manages the action requests
- * for its parent action.
+ * This service manages the action requests for its parent action.
+ * This service should be scoped to {@link ActionScope}
  */
 export const LocalActionRequestsManager: Identifier<LocalActionRequestsManager> = createSymbol(
   "ActionRequestService"
 );
 
 /**
- * Defines a service capable of managing action requests for a parent action.
+ * Defines the LocalActionRequestsManager service.
+ *
+ * This service manages the action requests for its parent action.
  */
 export interface LocalActionRequestsManager {
   getAllRequests(): ThingActionRequest[];

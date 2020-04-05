@@ -1,6 +1,7 @@
 import { injectable, inScope, injectParam, inject } from "microinject";
 import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
+import { isObservable } from "rxjs";
 
 import { DeepImmutableObject } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
@@ -92,6 +93,14 @@ export class InternalActionImpl implements InternalAction {
       this._id,
       input
     );
+
+    if (!isObservable(status)) {
+      // TODO: More details about the plugin that caused the error.
+      //  This is being thrown to the requester, but it is the fault of the plugin.
+      throw new TypeError(
+        "Expected onActionInvocationRequested to return an observable."
+      );
+    }
 
     return this._requestsManager.addRequest({
       input,

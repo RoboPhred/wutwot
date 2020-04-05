@@ -3,8 +3,7 @@ import { Observable } from "rxjs";
 import { ThingActionRequestStatus } from "./ThingActionRequestStatus";
 
 /**
- * Defines the minimum nescessary data required for
- * creating an action request.
+ * Defines the information required to create a {@link ThingActionRequest}.
  */
 export interface ThingActionRequestDef {
   /**

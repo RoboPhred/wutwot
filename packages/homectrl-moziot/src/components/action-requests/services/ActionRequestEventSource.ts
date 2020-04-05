@@ -7,7 +7,7 @@ import { ThingActionRequest } from "../types";
 /**
  * Identifies the ActionRequestEventSource service.
  *
- * This service can be used to receive events pertaining to any action request.
+ * This service can be used to receive events pertaining to any {@link ThingActionRequest}.
  */
 export const ActionRequestEventSource: Identifier<ActionRequestEventSource> = createSymbol(
   "ActionRequestEventSource"
@@ -21,32 +21,42 @@ export const ActionRequestEventSource: Identifier<ActionRequestEventSource> = cr
  */
 export interface ActionRequestEventSource {
   /**
-   * Attach a handler to handle when an action request is added.
+   * Attach a handler to handle when a {@link ThingActionRequest} is added.
    * @param event The event to handle.
    * @param handler The function to call when the event is raised.
    */
   on(
     event: "actionRequest.add",
-    handler: (e: ThingActionRequestAddedEventArgs) => void
+    handler: ThingActionRequestAddedEventHandler
   ): this;
 
   /**
-   * Attach a handler to be raised the next time an action request is added.
+   * Attach a handler to be raised the next time a {@link ThingActionRequest} is added.
    * @param event The event to handle.
    * @param handler The function to call when the event is raised.
    */
   once(
     event: "actionRequest.add",
-    handler: (e: ThingActionRequestAddedEventArgs) => void
+    handler: ThingActionRequestAddedEventHandler
   ): this;
 
   /**
-   * Removes an action request handler.
+   * Removes a handler for `actionRequest.add`.
    * @param event The event to remove a handler for.
    * @param handler The handler to remove.
    */
-  removeListener(event: "actionRequest.add", handler: Function): this;
+  removeListener(
+    event: "actionRequest.add",
+    handler: ThingActionRequestAddedEventHandler
+  ): this;
 }
+
+/**
+ * Describes an event handler for a `actionRequest.add` event.
+ */
+export type ThingActionRequestAddedEventHandler = (
+  e: ThingActionRequestAddedEventArgs
+) => void;
 
 /**
  * Event data for an "actionRequest.add" event.
