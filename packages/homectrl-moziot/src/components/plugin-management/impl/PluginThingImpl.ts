@@ -63,7 +63,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._thing.events;
   }
 
-  addType(type: string): OwnedPluginThing {
+  addSemanticType(type: string): OwnedPluginThing {
     this._thing.addSemanticType(type);
     return this;
   }
