@@ -22,14 +22,15 @@ export class EventEventSourceImpl extends EventEmitter
       eventId: event.id,
       event
     };
-    this.emit("event.added", e);
+    this.emit("event.add", e);
   }
 
-  onEventRemoved(thingId: string, eventId: string): void {
+  onEventRemoved(event: ThingEvent): void {
     const e: ThingEventRemovedEventArgs = {
-      thingId,
-      eventId
+      thingId: event.thingId,
+      eventId: event.id,
+      event
     };
-    this.emit("event.removed", e);
+    this.emit("event.remove", e);
   }
 }

@@ -27,6 +27,6 @@ export class ActionRequestEventSourceImpl extends EventEmitter
       actionRequestId: actionRequest.id,
       actionRequest
     };
-    this.emit("actionRequest.added", e);
+    this.emit("actionRequest.add", e);
   }
 }

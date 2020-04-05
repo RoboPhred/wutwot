@@ -24,8 +24,10 @@ export class ThingsManagerImpl implements ThingsManager {
   }
 
   removeThing(thingId: string): void {
-    if (this._thingsById.delete(thingId)) {
-      this._eventSink.onThingRemoved(thingId);
+    const thing = this._thingsById.get(thingId);
+    if (thing) {
+      this._thingsById.delete(thingId);
+      this._eventSink.onThingRemoved(thing);
     }
   }
 

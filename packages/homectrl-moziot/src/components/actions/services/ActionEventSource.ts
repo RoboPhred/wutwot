@@ -58,7 +58,7 @@ export interface ActionEventSource {
   once(event: "action.remove", handler: ThingActionRemovedEventHandler): this;
 
   /**
-   * Removes a handler for `actionRequest.remove`.
+   * Removes a handler for `action.remove`.
    * @param event The event to remove a handler for.
    * @param handler The handler to remove.
    */
@@ -103,7 +103,7 @@ export type ThingActionRemovedEventHandler = (
 ) => void;
 
 /**
- * Defines the event arguments passed to an `action.add` event.
+ * Defines the event arguments passed to an `action.remove` event.
  */
 export interface ThingActionRemovedEventArgs {
   /**
@@ -116,6 +116,8 @@ export interface ThingActionRemovedEventArgs {
    */
   actionId: string;
 
-  // TODO: Also include the action being removed, so we can
-  //  remove event handlers from it.
+  /**
+   * The action being removed.
+   */
+  action: ThingAction;
 }

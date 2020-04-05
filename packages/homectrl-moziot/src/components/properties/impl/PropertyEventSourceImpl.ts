@@ -22,14 +22,15 @@ export class PropertyEventSourceImpl extends EventEmitter
       propertyId: property.id,
       property
     };
-    this.emit("property.added", e);
+    this.emit("property.add", e);
   }
 
-  onPropertyRemoved(thingId: string, propertyId: string): void {
+  onPropertyRemoved(property: ThingProperty): void {
     const e: ThingPropertyRemovedEventArgs = {
-      thingId,
-      propertyId
+      thingId: property.thingId,
+      propertyId: property.id,
+      property
     };
-    this.emit("property.removed", e);
+    this.emit("property.remove", e);
   }
 }

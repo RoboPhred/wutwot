@@ -9,5 +9,5 @@ export const ThingEventSink: Identifier<ThingEventSink> = createSymbol(
 );
 export interface ThingEventSink {
   onThingAdded(thing: Thing): void;
-  onThingRemoved(thingId: string): void;
+  onThingRemoved(thing: Thing): void;
 }

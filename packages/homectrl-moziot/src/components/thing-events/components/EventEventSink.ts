@@ -9,5 +9,5 @@ export const EventEventSink: Identifier<EventEventSink> = createSymbol(
 );
 export interface EventEventSink {
   onEventAdded(event: ThingEvent): void;
-  onEventRemoved(thingId: string, eventId: string): void;
+  onEventRemoved(event: ThingEvent): void;
 }

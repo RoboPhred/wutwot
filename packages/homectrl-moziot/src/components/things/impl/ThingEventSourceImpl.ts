@@ -21,13 +21,14 @@ export class ThingEventSourceImpl extends EventEmitter
       thingId: thing.id,
       thing
     };
-    this.emit("thing.added", e);
+    this.emit("thing.add", e);
   }
 
-  onThingRemoved(thingId: string): void {
+  onThingRemoved(thing: Thing): void {
     const e: ThingRemovedEventArgs = {
-      thingId
+      thingId: thing.id,
+      thing
     };
-    this.emit("thing.removed", e);
+    this.emit("thing.remov", e);
   }
 }

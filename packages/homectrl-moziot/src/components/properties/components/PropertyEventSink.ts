@@ -9,5 +9,5 @@ export const PropertyEventSink: Identifier<PropertyEventSink> = createSymbol(
 );
 export interface PropertyEventSink {
   onPropertyAdded(property: ThingProperty): void;
-  onPropertyRemoved(thingId: string, propertyId: string): void;
+  onPropertyRemoved(property: ThingProperty): void;
 }

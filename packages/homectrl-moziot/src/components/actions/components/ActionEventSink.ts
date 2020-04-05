@@ -27,12 +27,8 @@ export interface ActionEventSink {
 
   /**
    * Announce the removal of a previously added {@link ThingAction}
-   * @param thingId The ID of the thing the action was removed from.
-   * @param actionId The ID of the action being removed.
+   * @param action The action being removed.
    */
   // TODO: This is not called when a thing is destroyed.
-  // TODO: This should include the action.
-  //  We want action to have its own events for requests eventually,
-  //  so we should pass the action on removal so consumers can removeListener
-  onActionRemoved(thingId: string, actionId: string): void;
+  onActionRemoved(action: ThingAction): void;
 }
