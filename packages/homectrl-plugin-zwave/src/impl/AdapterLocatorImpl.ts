@@ -7,10 +7,7 @@ import { ZWavePort } from "../config";
 import { AdapterLocator } from "../components/AdapterLocator";
 
 // TODO: Make configurable
-const adapters = require(join(
-  __dirname,
-  "../../../config/zwave-adapters.json"
-));
+const adapters = require(join(__dirname, "../../config/zwave-adapters.json"));
 
 @injectable()
 @provides(AdapterLocator)

@@ -9,19 +9,22 @@ import { ZWavePort } from "./config";
 import containerModule from "./module";
 
 export interface ZWavePluginOptions {
+  pluginId?: string;
   port?: string;
 }
 export class ZWavePlugin implements MozIotPlugin {
-  readonly id: string = "Z-Wave";
-
-  private _port: string | null = null;
-
   private _controller: ZWaveController | null = null;
   private _controllerError: Error | null = null;
 
-  constructor(opts: ZWavePluginOptions = {}) {
-    if (opts.port) {
-      this._port = opts.port;
+  constructor(private _opts: ZWavePluginOptions = {}) {}
+
+  get id(): string {
+    if (this._opts.pluginId) {
+      return `zwave[pluginId='${this._opts.pluginId}']`;
+    } else if (this._opts.port) {
+      return `zwave[port='${this._opts.port}']`;
+    } else {
+      return "zwave[auto]";
     }
   }
 
@@ -37,7 +40,7 @@ export class ZWavePlugin implements MozIotPlugin {
   }
 
   onRegisterPrivateServices(bind: BindFunction): RegistryModule {
-    bind(ZWavePort).toConstantValue(this._port);
+    bind(ZWavePort).toConstantValue(this._opts.port);
     return containerModule;
   }
 
@@ -45,10 +48,10 @@ export class ZWavePlugin implements MozIotPlugin {
     serviceLocator
       .get(ZWaveProvider)
       .getController()
-      .then(controller => {
+      .then((controller) => {
         this._controller = controller;
       })
-      .catch(e => {
+      .catch((e) => {
         this._controllerError = e;
       });
 
