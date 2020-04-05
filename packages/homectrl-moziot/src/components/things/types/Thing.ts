@@ -37,7 +37,7 @@ export interface Thing {
   /**
    * Additional metadata describing the thing.
    */
-  readonly metadata: Record<string, any>;
+  readonly metadata: Record<string | symbol, any>;
 
   /**
    * The actions this thing supports.
