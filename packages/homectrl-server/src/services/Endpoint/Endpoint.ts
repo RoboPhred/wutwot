@@ -1,5 +1,6 @@
 import express from "express";
 import { injectable, provides, inject } from "microinject";
+import nocache from "nocache";
 import helmet from "helmet";
 import cors from "cors";
 
@@ -21,9 +22,8 @@ export class Endpoint implements Entrypoint {
   start() {
     const app = express();
     app.use(
-      helmet({
-        noCache: true
-      }),
+      nocache(),
+      helmet(),
       cors({
         origin: this._corsOrigin
       })
