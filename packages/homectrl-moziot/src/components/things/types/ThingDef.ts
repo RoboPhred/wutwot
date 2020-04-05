@@ -11,18 +11,35 @@ import { ReadonlyRecord } from "../../../types";
  * such as capabilities.
  */
 export interface ThingDef {
-  readonly title: string;
-  readonly description?: string;
+  /**
+   * ID of this thing unique to the plugin that created it.
+   */
+  readonly pluginLocalId: string;
+
+  /**
+   * The default title to give this thing, if none is provided by the user.
+   */
+  readonly defaultTitle: string;
+
+  /**
+   * The default description to give this thing, if none is provided by the user.
+   */
+  readonly defaultDescription?: string;
+
+  /**
+   * Additional metadata to make available on this thing.
+   */
   readonly metadata?: ReadonlyRecord<string, any>;
 }
 export const thingDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
-    title: { type: "string", minLength: 1 },
-    description: { type: "string" },
+    pluginLocalId: { type: "string", minLength: 1 },
+    defaultTitle: { type: "string", minLength: 1 },
+    defaultDescription: { type: "string" },
     metadata: { type: "object", additionalProperties: true }
   },
-  required: ["title"]
+  required: ["pluginLocalId"]
 });
 
 export const validateThingDef = makeValidator(thingDefSchema);

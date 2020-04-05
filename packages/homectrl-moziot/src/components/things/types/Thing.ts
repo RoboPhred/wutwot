@@ -22,7 +22,7 @@ export interface Thing {
   /**
    * The name of the thing.
    */
-  readonly title: string;
+  title: string;
 
   /**
    * An array of semantic types describing the thing
@@ -32,7 +32,7 @@ export interface Thing {
   /**
    * The description of the thing.
    */
-  readonly description: string | null;
+  description: string;
 
   /**
    * Additional metadata describing the thing.

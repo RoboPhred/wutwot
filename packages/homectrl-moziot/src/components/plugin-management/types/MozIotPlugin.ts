@@ -8,6 +8,8 @@ import { BindFunction, ServiceLocator, RegistryModule } from "microinject";
  * into the ecosystem.
  */
 export interface MozIotPlugin {
+  readonly id: string;
+
   /**
    * Callback to register public services with MozIot.
    *

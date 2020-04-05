@@ -37,7 +37,7 @@ class MultilevelSwitchMonitorImpl implements ZThingMonitor {
   destroy() {}
 
   private _setupEndpoints() {
-    this._thing.addType("MultiLevelSwitch");
+    this._thing.addSemanticType("MultiLevelSwitch");
 
     const basicValues = this._node
       .getDefinedValueIDs()

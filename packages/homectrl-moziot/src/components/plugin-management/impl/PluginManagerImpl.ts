@@ -13,7 +13,7 @@ import { PluginManager } from "../services/PluginManager";
 @provides(Initializable)
 export class PluginManagerImpl implements PluginManager, Initializable {
   private _initialized = false;
-  private readonly _adapters = new Set<PluginAdapter>();
+  private readonly _adaptersByPluginId = new Map<string, PluginAdapter>();
 
   constructor(
     @inject(PluginAdapterFactory)
@@ -25,12 +25,18 @@ export class PluginManagerImpl implements PluginManager, Initializable {
       return;
     }
     this._initialized = true;
-    this._adapters.forEach(adapter => adapter.initialize());
+    this._adaptersByPluginId.forEach(adapter => adapter.initialize());
   }
 
   registerPlugin(plugin: MozIotPlugin): void {
+    if (this._adaptersByPluginId.has(plugin.id)) {
+      throw new Error(
+        `A plugin with id "${plugin.id}" already exists.  Please reconfigure the plugin to use a different ID.`
+      );
+    }
+
     const adapter = this._pluginAdapterFactory.createPluginAdapter(plugin);
-    this._adapters.add(adapter);
+    this._adaptersByPluginId.set(plugin.id, adapter);
     if (this._initialized) {
       adapter.initialize();
     }

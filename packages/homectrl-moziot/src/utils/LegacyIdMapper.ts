@@ -1,4 +1,4 @@
-export class IdMapper {
+export class LegacyIdMapper {
   private _ids = new Set<string>();
   private _nextRollingPostfix = 1;
 

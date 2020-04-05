@@ -32,16 +32,22 @@ import {
 
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
-import { InternalThing, InternalThingParams } from "../services";
+import {
+  InternalThing,
+  InternalThingParams,
+  ThingLocalPersistence
+} from "../services";
+import { DataPersistence, DataStorageKey } from "../../persistence";
+
+namespace ThingPersistenceKeys {
+  export const Name: DataStorageKey = ["name"];
+  export const Description: DataStorageKey = ["description"];
+}
 
 @injectable()
 @provides(InternalThing)
 @asScope(ThingScope)
 export class InternalThingImpl implements InternalThing {
-  private readonly _publicProxy: Thing;
-
-  private readonly _metadata: Record<string, any>;
-
   constructor(
     @injectParam(InternalThingParams.ThingDef)
     private _def: ThingDef,
@@ -49,6 +55,8 @@ export class InternalThingImpl implements InternalThing {
     private _id: string,
     @injectParam(InternalThingParams.Owner)
     private _owner: object,
+    @inject(ThingLocalPersistence)
+    private _persistence: DataPersistence,
     @inject(LocalSemanticTypesManager)
     private _typesManager: LocalSemanticTypesManager,
     @inject(LocalActionsManager)
@@ -63,9 +71,20 @@ export class InternalThingImpl implements InternalThing {
     };
     this._metadata = { ..._def.metadata };
 
+    this._title = this._persistence.get(
+      ThingPersistenceKeys.Name,
+      _def.defaultTitle
+    );
+    this._description =
+      this._persistence.get(
+        ThingPersistenceKeys.Description,
+        _def.defaultDescription
+      ) ?? "";
+
     this._publicProxy = createPublicThingApi(this);
   }
 
+  private readonly _publicProxy: Thing;
   get publicProxy(): Thing {
     return this._publicProxy;
   }
@@ -78,8 +97,13 @@ export class InternalThingImpl implements InternalThing {
     return this._owner;
   }
 
+  private _title: string;
   get title(): string {
-    return this._def.title;
+    return this._title;
+  }
+  set title(value: string) {
+    this._title = value;
+    this._persistence.set(ThingPersistenceKeys.Name, value);
   }
 
   get semanticTypes(): ReadonlyArray<string> {
@@ -87,10 +111,16 @@ export class InternalThingImpl implements InternalThing {
     return makeReadOnly(this._typesManager.getTypes());
   }
 
-  get description(): string | null {
-    return this._def.description || null;
+  private _description: string;
+  get description(): string {
+    return this._description;
+  }
+  set description(value: string) {
+    this._description = value;
+    this._persistence.set(ThingPersistenceKeys.Description, value);
   }
 
+  private readonly _metadata: Record<string, any>;
   get metadata(): Record<string, any> {
     return this._metadata;
   }
@@ -174,13 +204,19 @@ function createPublicThingApi(thing: InternalThing) {
     get title(): string {
       return thing.title;
     }
+    set title(value: string) {
+      thing.title = value;
+    }
 
     get semanticTypes(): readonly string[] {
       return thing.semanticTypes;
     }
 
-    get description(): string | null {
+    get description(): string {
       return thing.description;
+    }
+    set description(value: string) {
+      thing.description = value;
     }
 
     get metadata(): Record<string, any> {

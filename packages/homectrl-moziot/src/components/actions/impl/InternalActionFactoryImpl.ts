@@ -1,6 +1,6 @@
 import { Context } from "microinject";
 
-import { IdMapper } from "../../../utils";
+import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
 
 import { ThingActionDef, validateActionDefOrThrow } from "../types";
 import { InternalAction, InternalActionParams } from "../services";
@@ -14,7 +14,7 @@ export function internalThingFactoryImpl(
   context: Context
 ): InternalActionFactory {
   class InternalActionFactoryImpl implements InternalActionFactory {
-    private _idMapper = new IdMapper();
+    private _idMapper = new LegacyIdMapper();
 
     createAction(def: ThingActionDef, owner: object): InternalAction {
       validateActionDefOrThrow(def);

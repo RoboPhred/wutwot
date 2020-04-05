@@ -1,23 +1,26 @@
 import { Context } from "microinject";
 
-import { IdMapper } from "../../../utils";
+import { MozIotPlugin } from "../../plugin-management";
 
 import { ThingDef, validateThingDefOrThrow } from "../types";
 import { InternalThing, InternalThingParams } from "../services";
 
-import { InternalThingFactory } from "../components";
+import { InternalThingFactory, ThingIdMapper } from "../components";
 
 // TODO: Keep this as a class based factory.
 //  Needs to be able to request injection of service locator / context
 export function internalThingFactoryImpl(
   context: Context
 ): InternalThingFactory {
-  class InternalThingFactoryImpl implements InternalThingFactory {
-    private _idMapper = new IdMapper();
+  const idMapper = context.get(ThingIdMapper);
 
-    createThing(def: ThingDef, owner: object): InternalThing {
+  class InternalThingFactoryImpl implements InternalThingFactory {
+    createThing(def: ThingDef, owner: MozIotPlugin): InternalThing {
       validateThingDefOrThrow(def);
-      const id = this._idMapper.createId(def.title);
+      const id = idMapper.createId({
+        pluginId: owner.id,
+        pluginLocalThingId: def.pluginLocalId
+      });
       return context.get(InternalThing, {
         [InternalThingParams.ThingId]: id,
         [InternalThingParams.ThingDef]: def,

@@ -1,6 +1,6 @@
 import { injectable, provides, inject, injectParam } from "microinject";
 
-import { IdMapper } from "../../../utils";
+import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
 
 import { inThingScope, InternalThingParams } from "../../things";
 
@@ -10,15 +10,16 @@ import {
   validatePropertyDefOrThrow
 } from "../types";
 
-import { LocalPropertiesManager } from "../services/LocalPropertiesManager";
-import { ThingPropertyImpl } from "./ThingPropertyImpl";
+import { LocalPropertiesManager } from "../services";
 import { PropertyEventSink } from "../components";
+
+import { ThingPropertyImpl } from "./ThingPropertyImpl";
 
 @injectable()
 @inThingScope()
 @provides(LocalPropertiesManager)
 export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
-  private _idMapper = new IdMapper();
+  private _idMapper = new LegacyIdMapper();
   private _properties = new Map<string, ThingProperty>();
 
   constructor(

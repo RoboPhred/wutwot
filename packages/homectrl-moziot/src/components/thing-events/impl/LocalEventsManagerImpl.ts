@@ -1,18 +1,20 @@
 import { injectable, provides, injectParam } from "microinject";
 
+import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
+
 import { InternalThingParams, inThingScope } from "../../things";
 
 import { ThingEvent, ThingEventDef, validateEventDefOrThrow } from "../types";
 
 import { LocalEventsManager } from "../services/LocalEventsManager";
-import { IdMapper } from "../../../utils";
+
 import { ThingEventImpl } from "./ThingEventImpl";
 
 @injectable()
 @inThingScope()
 @provides(LocalEventsManager)
 export class EventServiceImpl implements LocalEventsManager {
-  private _idMapper = new IdMapper();
+  private _idMapper = new LegacyIdMapper();
   private _eventsById = new Map<string, ThingEvent>();
 
   constructor(

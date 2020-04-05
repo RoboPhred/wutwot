@@ -1,6 +1,7 @@
 import { injectable, provides, injectParam, inject } from "microinject";
 
-import { IdMapper } from "../../../utils";
+import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
+
 import { InternalThingParams, inThingScope } from "../../things";
 
 import { ThingActionDef } from "../types";
@@ -11,13 +12,11 @@ import { ActionEventSink, InternalActionFactory } from "../components";
 
 import { InternalAction } from "../services";
 
-import { InternalActionImpl } from "./InternalActionImpl";
-
 @injectable()
 @inThingScope()
 @provides(LocalActionsManager)
 export class LocalActionsManagerImpl implements LocalActionsManager {
-  private _idMapper = new IdMapper();
+  private _idMapper = new LegacyIdMapper();
   private _actionsById = new Map<string, InternalAction>();
 
   constructor(

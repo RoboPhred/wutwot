@@ -36,22 +36,23 @@ export class ZThingAdapterImpl implements ZThingAdapter {
       return;
     }
 
-    let title: string;
-    let description: string | undefined;
+    let defaultTitle: string;
+    let defaultDescription: string | undefined;
 
     if (this._node.supportsCC(CommandClasses["Node Naming and Location"])) {
-      title = await this._node.commandClasses[
+      defaultTitle = await this._node.commandClasses[
         "Node Naming and Location"
       ].getName();
-      description = await this._node.commandClasses[
+      defaultDescription = await this._node.commandClasses[
         "Node Naming and Location"
       ].getLocation();
     } else if (this._node.deviceConfig) {
-      title = this._node.deviceConfig.label;
-      description = this._node.deviceConfig.manufacturer;
+      defaultTitle = this._node.deviceConfig.label;
+      defaultDescription = this._node.deviceConfig.manufacturer;
     } else {
-      title = this._node.deviceClass?.specific.name ?? String(this._node.id);
-      description = this._node.deviceClass?.generic.name;
+      defaultTitle =
+        this._node.deviceClass?.specific.name ?? String(this._node.id);
+      defaultDescription = this._node.deviceClass?.generic.name;
     }
 
     this._node.on("notification", (node, label, params) => {
@@ -66,8 +67,9 @@ export class ZThingAdapterImpl implements ZThingAdapter {
     });
 
     this._pluginThing = this._thingsManager.addThing({
-      title,
-      description,
+      pluginLocalId: `${this._node.id}`,
+      defaultTitle,
+      defaultDescription,
       metadata: {
         [METADATA_ZWAVE_NODE]: this._node
       }

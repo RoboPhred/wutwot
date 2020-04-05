@@ -1,7 +1,11 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
 import { ThingDef } from "../types";
-import { InternalThingFactory, ThingEventSink } from "../components";
+import {
+  InternalThingFactory,
+  ThingEventSink,
+  ThingIdMapper
+} from "../components";
 
 import { ThingsManager, InternalThing } from "../services";
 
@@ -13,7 +17,8 @@ export class ThingsManagerImpl implements ThingsManager {
 
   constructor(
     @inject(InternalThingFactory) private _factory: InternalThingFactory,
-    @inject(ThingEventSink) private _eventSink: ThingEventSink
+    @inject(ThingEventSink) private _eventSink: ThingEventSink,
+    @inject(ThingIdMapper) private _idMapper: ThingIdMapper
   ) {}
 
   addThing(def: ThingDef, owner: object): InternalThing {
@@ -27,6 +32,7 @@ export class ThingsManagerImpl implements ThingsManager {
     const thing = this._thingsById.get(thingId);
     if (thing) {
       this._thingsById.delete(thingId);
+      this._idMapper.retireId(thingId);
       this._eventSink.onThingRemoved(thing);
     }
   }

@@ -34,13 +34,19 @@ export class PluginThingImpl implements OwnedPluginThing {
   get title(): string {
     return this._thing.title;
   }
+  set title(value: string) {
+    this._thing.title = value;
+  }
 
   get semanticTypes(): readonly string[] {
     return this._thing.semanticTypes;
   }
 
-  get description(): string | null {
+  get description(): string {
     return this._thing.description;
+  }
+  set description(value: string) {
+    this._thing.description = value;
   }
 
   get metadata(): Record<string, any> {

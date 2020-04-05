@@ -4,11 +4,12 @@ import { inspect } from "util";
 import containerModule from "./module";
 
 import { makeInspectJson } from "./utils/inspect";
+import { isNotNull } from "./utils/types";
 
 import { Thing, ThingsManager } from "./components/things";
 import { PluginManager, MozIotPlugin } from "./components/plugin-management";
 
-import { Initializable } from "./contracts";
+import { Initializable, Shutdownable } from "./contracts";
 
 export class MozIot {
   private _container: Container = new Container();
@@ -17,6 +18,7 @@ export class MozIot {
 
   constructor(plugins: MozIotPlugin[]) {
     this._container.bind(Container).toConstantValue(this._container);
+    this._container.bind(MozIot).toConstantValue(this);
     this._container.load(containerModule);
 
     this._pluginManager = this._container.get(PluginManager);
@@ -36,6 +38,14 @@ export class MozIot {
   // TODO: Should be live instance Record<thingId, Thing>
   get things(): ReadonlyArray<Thing> {
     return this._thingManager.getThings().map(thing => thing.publicProxy);
+  }
+
+  async shutdown(): Promise<void> {
+    const shutdownables = this._container.getAll(Shutdownable);
+    const awaits = shutdownables
+      .map(shutdownable => shutdownable.onShutdown())
+      .filter(isNotNull);
+    await Promise.all(awaits);
   }
 
   toJSON() {
