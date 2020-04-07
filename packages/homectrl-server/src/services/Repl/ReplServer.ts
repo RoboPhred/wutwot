@@ -14,7 +14,7 @@ export class ReplServer implements Entrypoint {
   constructor(
     @inject(App) private _app: App,
     @inject(MozIot) private _moziot: MozIot,
-    @inject(ZWavePlugin) private _zwave: ZWavePlugin
+    @inject(ZWavePlugin) private _zwave: ZWavePlugin,
   ) {}
 
   start() {

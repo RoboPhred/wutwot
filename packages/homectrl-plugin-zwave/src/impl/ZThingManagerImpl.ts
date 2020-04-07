@@ -16,9 +16,9 @@ export class ZThingManagerImpl implements ZThingManager {
   constructor(
     @inject(ZWaveProvider) zWaveProvider: ZWaveProvider,
     @inject(ZThingAdapterFactory)
-    private _adapterFactory: ZThingAdapterFactory
+    private _adapterFactory: ZThingAdapterFactory,
   ) {
-    zWaveProvider.getController().then(controller => this._start(controller));
+    zWaveProvider.getController().then((controller) => this._start(controller));
   }
 
   private _start(controller: ZWaveController) {

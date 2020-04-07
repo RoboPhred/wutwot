@@ -41,7 +41,7 @@ class CentralSceneMonitorImpl implements ZThingMonitor {
       description: "Raised when this device triggers a scene.",
       type: "object",
       // TODO: properties
-      eventSource: this._eventSubject
+      eventSource: this._eventSubject,
     });
   }
 
@@ -60,7 +60,7 @@ class CentralSceneMonitorImpl implements ZThingMonitor {
     this._eventSubject.next({
       scene: Number(e.propertyKey),
       key,
-      keyName: CentralSceneKeys[key]
+      keyName: CentralSceneKeys[key],
     });
   }
 }

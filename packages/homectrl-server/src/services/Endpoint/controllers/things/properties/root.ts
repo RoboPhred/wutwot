@@ -11,12 +11,12 @@ import { getThingOrThrow } from "../../../controller-utils";
 export class PropertiesRoot {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getProperties(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
-    return mapValues(thing.properties, x => x.value);
+    return mapValues(thing.properties, (x) => x.value);
   }
 }

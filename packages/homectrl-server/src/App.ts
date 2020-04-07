@@ -16,13 +16,13 @@ export class App {
   run() {
     if (this._container.has(Entrypoint)) {
       const entrypoints = this._container.getAll(Entrypoint);
-      entrypoints.forEach(x => x.start());
+      entrypoints.forEach((x) => x.start());
     }
   }
 
   async shutdown() {
     if (this._container.has(Shutdownable)) {
-      this._container.getAll(Shutdownable).forEach(x => x.onShutdown());
+      this._container.getAll(Shutdownable).forEach((x) => x.onShutdown());
     }
     await this._container.get(MozIot).shutdown();
   }

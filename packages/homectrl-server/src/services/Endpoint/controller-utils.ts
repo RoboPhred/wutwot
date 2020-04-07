@@ -15,7 +15,7 @@ export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
   if (!thing) {
     throw createError(
       HttpStatusCodes.NOT_FOUND,
-      "A Thing with the specified ID was not found."
+      "A Thing with the specified ID was not found.",
     );
   }
   return thing;
@@ -24,12 +24,12 @@ export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
 export function getActionOrThrow(
   thing: Thing,
   actionId: string,
-  errorCode: number = HttpStatusCodes.NOT_FOUND
+  errorCode: number = HttpStatusCodes.NOT_FOUND,
 ): ThingAction {
   if (!has(thing.actions, actionId)) {
     throw createError(
       errorCode,
-      "An action on the given Thing with the specified ID was not found."
+      "An action on the given Thing with the specified ID was not found.",
     );
   }
   return thing.actions[actionId];
@@ -37,13 +37,13 @@ export function getActionOrThrow(
 
 export function getRequestOrThrow(
   action: ThingAction,
-  requestId: string
+  requestId: string,
 ): ThingActionRequest {
   const request = action.requests.find((x) => x.id === requestId);
   if (!request) {
     throw createError(
       HttpStatusCodes.NOT_FOUND,
-      "An ActionRequest with the specified ID does not exist on the provided action."
+      "An ActionRequest with the specified ID does not exist on the provided action.",
     );
   }
   return request;
@@ -52,12 +52,12 @@ export function getRequestOrThrow(
 export function getPropertyOrThrow(
   thing: Thing,
   propertyId: string,
-  errorCode: number = HttpStatusCodes.NOT_FOUND
+  errorCode: number = HttpStatusCodes.NOT_FOUND,
 ): ThingProperty {
   if (!has(thing.properties, propertyId)) {
     throw createError(
       errorCode,
-      "A ThingProperty on the given Thing with the specified ID was not found."
+      "A ThingProperty on the given Thing with the specified ID was not found.",
     );
   }
   return thing.properties[propertyId];
@@ -66,12 +66,12 @@ export function getPropertyOrThrow(
 export function getEventOrThrow(
   thing: Thing,
   eventId: string,
-  errorCode: number = HttpStatusCodes.NOT_FOUND
+  errorCode: number = HttpStatusCodes.NOT_FOUND,
 ): ThingEvent {
   if (!has(thing.events, eventId)) {
     throw createError(
       errorCode,
-      "A ThingEvent on the given Thing with the specified ID was not found."
+      "A ThingEvent on the given Thing with the specified ID was not found.",
     );
   }
   return thing.events[eventId];

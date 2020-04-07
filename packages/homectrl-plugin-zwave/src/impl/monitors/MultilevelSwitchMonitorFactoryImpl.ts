@@ -7,7 +7,7 @@ import { PluginThing } from "homectrl-moziot";
 import { Subject } from "rxjs";
 import {
   TranslatedValueID,
-  ZWaveNodeValueUpdatedArgs
+  ZWaveNodeValueUpdatedArgs,
 } from "zwave-js/build/lib/node/Types";
 
 import { ZThingMonitor } from "../../types";
@@ -42,9 +42,9 @@ class MultilevelSwitchMonitorImpl implements ZThingMonitor {
     const basicValues = this._node
       .getDefinedValueIDs()
       .filter(
-        value =>
+        (value) =>
           value.commandClass === CommandClasses["Multilevel Switch"] &&
-          value.property === "targetValue"
+          value.property === "targetValue",
       );
 
     for (let i = 0; i < basicValues.length; i++) {
@@ -58,14 +58,14 @@ class MultilevelSwitchMonitorImpl implements ZThingMonitor {
   private _setupSwitch(
     valueId: TranslatedValueID,
     multi: boolean,
-    index: number
+    index: number,
   ) {
     const initialValue = this._node.getValue({
       ...valueId,
-      property: "currentValue"
+      property: "currentValue",
     });
     const metadata = this._node.getValueMetadata(
-      valueId
+      valueId,
     ) as ValueMetadataNumeric;
     const subject = new Subject<number>();
 
@@ -82,7 +82,7 @@ class MultilevelSwitchMonitorImpl implements ZThingMonitor {
       values: subject,
       onValueChangeRequested: (thingId, propertyId, value) => {
         this._node.setValue(valueId, value);
-      }
+      },
     });
   }
 

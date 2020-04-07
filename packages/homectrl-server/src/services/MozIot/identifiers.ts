@@ -5,5 +5,5 @@ import { createSymbol } from "./create-symbol";
 
 export type MozIotPlugin = IMozIotPlugin;
 export const MozIotPlugin: Identifier<IMozIotPlugin> = createSymbol(
-  "MozIotPlugin"
+  "MozIotPlugin",
 );

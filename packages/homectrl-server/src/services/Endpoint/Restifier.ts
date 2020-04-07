@@ -3,7 +3,7 @@ import {
   Thing,
   ThingAction,
   ThingProperty,
-  ThingActionRequest
+  ThingActionRequest,
 } from "homectrl-moziot";
 
 import { URL } from "url";
@@ -12,7 +12,7 @@ import { mapValues } from "lodash";
 import { RootURL } from "../../config";
 import {
   ThingEvent,
-  ThingEventRecord
+  ThingEventRecord,
 } from "homectrl-moziot/lib/components/thing-events";
 
 // TODO: Should be configurable.  There's not much in here and we will need
@@ -30,17 +30,17 @@ export class Restifier {
       id: joinURL(this._rootURL, "things", thing.id),
       title: thing.title,
       description: thing.description,
-      actions: mapValues(thing.actions, x => this.actionToRest(x)),
-      properties: mapValues(thing.properties, x => this.propertyToRest(x)),
-      events: mapValues(thing.events, x => this.eventToRest(x)),
+      actions: mapValues(thing.actions, (x) => this.actionToRest(x)),
+      properties: mapValues(thing.properties, (x) => this.propertyToRest(x)),
+      events: mapValues(thing.events, (x) => this.eventToRest(x)),
       links: buildArray(
         !isPrimary && createLink("href", `/things/${thing.id}`),
         isPrimary && [
           createLink("properties", `/things/${thing.id}/properties`),
           createLink("actions", `/things/${thing.id}/actions`),
-          createLink("events", `/things/${thing.id}/events`)
-        ]
-      )
+          createLink("events", `/things/${thing.id}/events`),
+        ],
+      ),
     };
   }
 
@@ -51,21 +51,21 @@ export class Restifier {
       description: action.description,
       input: action.input,
       links: [
-        createLink("href", `/things/${action.thingId}/actions/${action.id}`)
-      ]
+        createLink("href", `/things/${action.thingId}/actions/${action.id}`),
+      ],
     };
   }
 
   actionRequestToRest(
     request: ThingActionRequest,
-    isPrimary: boolean = true
+    isPrimary: boolean = true,
   ): object {
     return {
       input: request.input,
       href: `/things/${request.thingId}/actions/${request.actionId}/${request.id}`,
       timeRequested: isPrimary ? request.timeRequested : undefined,
       timeCompleted: isPrimary ? request.timeCompleted || undefined : undefined,
-      status: request.status
+      status: request.status,
     };
   }
 
@@ -85,9 +85,9 @@ export class Restifier {
       links: [
         createLink(
           "href",
-          `/things/${property.thingId}/properties/${property.id}`
-        )
-      ]
+          `/things/${property.thingId}/properties/${property.id}`,
+        ),
+      ],
     };
   }
 
@@ -101,14 +101,16 @@ export class Restifier {
       maximum: event.maximum,
       description: event.description,
       // TODO: "properties" for object type.
-      links: [createLink("href", `/things/${event.thingId}/events/${event.id}`)]
+      links: [
+        createLink("href", `/things/${event.thingId}/events/${event.id}`),
+      ],
     };
   }
 
   eventRecordToRest(record: ThingEventRecord): object {
     return {
       data: record.data,
-      timestamp: record.timestamp
+      timestamp: record.timestamp,
     };
   }
 }
@@ -116,7 +118,7 @@ export class Restifier {
 function joinURL(root: string, ...path: string[]) {
   var url = new URL(root);
   url.pathname = [...stripTrailingSlash(url.pathname).split("/"), ...path].join(
-    "/"
+    "/",
   );
   return url.toString();
 }
@@ -131,7 +133,7 @@ function stripTrailingSlash(str: string): string {
 function createLink(rel: string, href: string) {
   return {
     rel,
-    href
+    href,
   };
 }
 

@@ -3,5 +3,5 @@ import { Identifier } from "microinject";
 
 export const ZWavePort: Identifier<string> = createSymbol(
   "Config",
-  "ZWavePort"
+  "ZWavePort",
 );

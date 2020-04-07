@@ -11,5 +11,5 @@ export default composeModules(
   EndpointModule,
   MozIotModule,
   ReplModule,
-  ZWaveModule
+  ZWaveModule,
 );

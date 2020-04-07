@@ -3,7 +3,7 @@ import {
   Request,
   RequestHandler,
   Response,
-  NextFunction
+  NextFunction,
 } from "express";
 import { forEach } from "lodash";
 import HttpStatusCodes from "http-status-codes";
@@ -20,7 +20,7 @@ export function createControllerRouter(controller: Controller): Router {
   router.use(bodyParser.json());
 
   forEach(methodsMetadata, (metadata, key) =>
-    createControllerMethod(router, controller, key, metadata)
+    createControllerMethod(router, controller, key, metadata),
   );
 
   return router;
@@ -30,7 +30,7 @@ function createControllerMethod(
   router: Router,
   controller: Controller,
   propertyName: string,
-  methodMetadata: ControllerMethodMetadata
+  methodMetadata: ControllerMethodMetadata,
 ): Router {
   const controllerMetadata: ControllerMetadata = (controller.constructor as any)[
     ControllerMetadataKey
@@ -38,7 +38,7 @@ function createControllerMethod(
   const handler = createControllerMethodHandler(
     controller,
     propertyName,
-    methodMetadata
+    methodMetadata,
   );
   switch (methodMetadata.method) {
     case "get":
@@ -52,7 +52,7 @@ function createControllerMethod(
       break;
     default:
       throw new Error(
-        `Unhandled controller route method type "${methodMetadata.method}".`
+        `Unhandled controller route method type "${methodMetadata.method}".`,
       );
   }
   return router;
@@ -61,7 +61,7 @@ function createControllerMethod(
 function createControllerMethodHandler(
   controller: Controller,
   propertyName: string,
-  metadata: ControllerMethodMetadata
+  metadata: ControllerMethodMetadata,
 ): RequestHandler {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -79,9 +79,9 @@ function createControllerMethodHandler(
 function getControllerMethodHandlerArgs(
   req: Request,
   res: Response,
-  metadata: ControllerMethodMetadata
+  metadata: ControllerMethodMetadata,
 ): any[] {
-  return (metadata.args || []).map(arg => {
+  return (metadata.args || []).map((arg) => {
     if (arg.param) {
       return req.params[arg.param];
     }

@@ -8,7 +8,7 @@ import { ZThingAdapterFactoryImpl } from "./impl/ZThingAdapterFactoryImpl";
 import { ZThingManagerImpl } from "./impl/ZThingManagerImpl";
 import { ZWaveProviderImpl } from "./impl/ZWaveProviderImpl";
 
-export default new ContainerModule(bind => {
+export default new ContainerModule((bind) => {
   bind(MultilevelSwitchMonitorFactoryImpl);
   bind(CentralSceneMonitorFactoryImpl);
 

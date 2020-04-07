@@ -8,7 +8,7 @@ import type { ZWaveNode } from "zwave-js";
 export class ZAssociationManagerImpl {
   constructor(
     @inject(ThingEventSource)
-    thingEventSource: ThingEventSource
+    thingEventSource: ThingEventSource,
   ) {
     thingEventSource.on("thing.add", this._onThingAdded.bind(this));
   }
@@ -16,6 +16,5 @@ export class ZAssociationManagerImpl {
   private _onThingAdded(e: ThingAddedEventArgs) {
     const { thing } = e;
     const node = e.thing.metadata[METADATA_ZWAVE_NODE] as ZWaveNode;
-    
   }
 }

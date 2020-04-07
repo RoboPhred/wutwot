@@ -5,7 +5,7 @@ import { controller, get, param } from "../../../infrastructure";
 import {
   getThingOrThrow,
   getActionOrThrow,
-  getRequestOrThrow
+  getRequestOrThrow,
 } from "../../../controller-utils";
 import { Restifier } from "../../../Restifier";
 
@@ -14,20 +14,20 @@ import { Restifier } from "../../../Restifier";
 export class ThingActionRequest {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getRequest(
     @param("thingId") thingId: string,
     @param("actionId") actionId: string,
-    @param("requestId") requestId: string
+    @param("requestId") requestId: string,
   ) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     const action = getActionOrThrow(thing, actionId);
     const request = getRequestOrThrow(action, requestId);
     return {
-      [actionId]: this._restifier.actionRequestToRest(request)
+      [actionId]: this._restifier.actionRequestToRest(request),
     };
   }
 

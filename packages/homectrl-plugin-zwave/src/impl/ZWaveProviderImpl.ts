@@ -12,7 +12,7 @@ export class ZWaveProviderImpl implements ZWaveProvider {
   private _promise: Promise<ZWaveController> | null = null;
 
   constructor(
-    @inject(AdapterLocator) private _adapterLocator: AdapterLocator
+    @inject(AdapterLocator) private _adapterLocator: AdapterLocator,
   ) {}
 
   getController(): Promise<ZWaveController> {
@@ -26,7 +26,7 @@ export class ZWaveProviderImpl implements ZWaveProvider {
     const port = await this._adapterLocator.getAdapterPort();
     if (!port) {
       throw new Error(
-        "No z-wave device detected.  Please ensure the device is plugged in or configure a port manually."
+        "No z-wave device detected.  Please ensure the device is plugged in or configure a port manually.",
       );
     }
 

@@ -18,7 +18,7 @@ export class ZThingAdapterImpl implements ZThingAdapter {
   constructor(
     private _node: ZWaveNode,
     private _thingsManager: PluginThingsManager,
-    private _monitorFactories: ZThingMonitorFactory[]
+    private _monitorFactories: ZThingMonitorFactory[],
   ) {
     this._node.once("interview completed", this._onNodeInterviewed);
   }
@@ -26,7 +26,7 @@ export class ZThingAdapterImpl implements ZThingAdapter {
   destroy(): void {
     this._destroyed = true;
     this._node.removeListener("interview completed", this._onNodeInterviewed);
-    this._monitors.forEach(monitor => monitor.destroy());
+    this._monitors.forEach((monitor) => monitor.destroy());
     this._monitors = [];
   }
 
@@ -57,12 +57,12 @@ export class ZThingAdapterImpl implements ZThingAdapter {
 
     this._node.on("notification", (node, label, params) => {
       console.log(
-        `Node ${node.id} notification ${label} ${JSON.stringify(params)}`
+        `Node ${node.id} notification ${label} ${JSON.stringify(params)}`,
       );
     });
     this._node.on("value updated", (node, e) => {
       console.log(
-        `Node ${node.id} value updated ${JSON.stringify(e, null, 2)}`
+        `Node ${node.id} value updated ${JSON.stringify(e, null, 2)}`,
       );
     });
 
@@ -71,12 +71,12 @@ export class ZThingAdapterImpl implements ZThingAdapter {
       defaultTitle,
       defaultDescription,
       metadata: {
-        [METADATA_ZWAVE_NODE]: this._node
-      }
+        [METADATA_ZWAVE_NODE]: this._node,
+      },
     });
 
     this._monitors = this._monitorFactories
-      .map(factory => factory.createMonitor(this._node, this._pluginThing!))
+      .map((factory) => factory.createMonitor(this._node, this._pluginThing!))
       .filter(isNotNull);
   }
 }

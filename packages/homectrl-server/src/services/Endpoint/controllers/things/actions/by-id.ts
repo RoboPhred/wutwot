@@ -10,7 +10,7 @@ import {
   param,
   post,
   status,
-  body
+  body,
 } from "../../../infrastructure";
 import { getThingOrThrow, getActionOrThrow } from "../../../controller-utils";
 
@@ -19,18 +19,18 @@ import { getThingOrThrow, getActionOrThrow } from "../../../controller-utils";
 export class ThingActionById {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getActions(
     @param("thingId") thingId: string,
-    @param("actionId") actionId: string
+    @param("actionId") actionId: string,
   ) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     const action = getActionOrThrow(thing, actionId);
-    return action.requests.map(request => ({
-      [actionId]: this._restifier.actionRequestToRest(request)
+    return action.requests.map((request) => ({
+      [actionId]: this._restifier.actionRequestToRest(request),
     }));
   }
 
@@ -39,14 +39,14 @@ export class ThingActionById {
   postAction(
     @param("thingId") thingId: string,
     @param("actionId") actionId: string,
-    @body() body: any
+    @body() body: any,
   ) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     const bodyKeys = Object.keys(body);
     if (bodyKeys.length != 1 || bodyKeys[0] !== actionId) {
       throw createError(
         HttpStatusCodes.BAD_REQUEST,
-        "One Action must be passed in the body."
+        "One Action must be passed in the body.",
       );
     }
     const input = body[actionId];

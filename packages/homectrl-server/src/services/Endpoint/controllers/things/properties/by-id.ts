@@ -15,12 +15,12 @@ export class PropertiesById {
   @get()
   getProperties(
     @param("thingId") thingId: string,
-    @param("propertyId") propertyId: string
+    @param("propertyId") propertyId: string,
   ) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     const property = getPropertyOrThrow(thing, propertyId);
     return {
-      [propertyId]: property.value
+      [propertyId]: property.value,
     };
   }
 
@@ -28,14 +28,14 @@ export class PropertiesById {
   putPropertyValue(
     @param("thingId") thingId: string,
     @param("propertyId") propertyId: string,
-    @body() body: any
+    @body() body: any,
   ) {
     const thing = getThingOrThrow(this._mozIot, thingId);
     const property = getPropertyOrThrow(thing, propertyId);
     if (!has(body, propertyId)) {
       throw createError(
         HttpStatusCodes.BAD_REQUEST,
-        "The request body must contain an object mapping the property name to its intended value."
+        "The request body must contain an object mapping the property name to its intended value.",
       );
     }
     const value = body[propertyId];
@@ -50,7 +50,7 @@ export class PropertiesById {
     }
 
     return {
-      [propertyId]: value
+      [propertyId]: value,
     };
   }
 }

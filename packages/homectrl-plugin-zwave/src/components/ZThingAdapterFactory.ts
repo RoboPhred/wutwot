@@ -4,7 +4,7 @@ import { Identifier } from "microinject";
 import createSymbol from "../create-symbol";
 
 export const ZThingAdapterFactory: Identifier<ZThingAdapterFactory> = createSymbol(
-  "ZThingAdapterFactory"
+  "ZThingAdapterFactory",
 );
 export interface ZThingAdapterFactory {
   createAdapter(node: ZWaveNode): ZThingAdapter;

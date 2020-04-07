@@ -8,7 +8,7 @@ import { ThingActionRequest } from "./things/actions/request";
 import { PropertiesRoot } from "./things/properties/root";
 import { PropertiesById } from "./things/properties/by-id";
 
-export default new ContainerModule(bind => {
+export default new ContainerModule((bind) => {
   bind(ThingsRoot);
   bind(ThingById);
   bind(ThingActionsRoot);

@@ -16,14 +16,14 @@ export class ZThingAdapterFactoryImpl implements ZThingAdapterFactory {
   constructor(
     @inject(PluginThingsManager) private _thingsManager: PluginThingsManager,
     @inject(ZThingMonitorFactory, { all: true })
-    private _monitorFactories: ZThingMonitorFactory[]
+    private _monitorFactories: ZThingMonitorFactory[],
   ) {}
 
   createAdapter(node: ZWaveNode): ZThingAdapter {
     return new ZThingAdapterImpl(
       node,
       this._thingsManager,
-      this._monitorFactories
+      this._monitorFactories,
     );
   }
 }

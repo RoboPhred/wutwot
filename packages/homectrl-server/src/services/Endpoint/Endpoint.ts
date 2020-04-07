@@ -16,7 +16,7 @@ export class Endpoint implements Entrypoint {
   constructor(
     @inject(Port) private _port: number,
     @inject(CorsOrigin) private _corsOrigin: string,
-    @inject(Controller, { all: true }) private _controllers: Controller[]
+    @inject(Controller, { all: true }) private _controllers: Controller[],
   ) {}
 
   start() {
@@ -25,15 +25,15 @@ export class Endpoint implements Entrypoint {
       nocache(),
       helmet(),
       cors({
-        origin: this._corsOrigin
-      })
+        origin: this._corsOrigin,
+      }),
     );
 
-    const routes = this._controllers.map(controller =>
-      createControllerRouter(controller)
+    const routes = this._controllers.map((controller) =>
+      createControllerRouter(controller),
     );
     app.use(...routes);
-    app.listen(this._port, err => {
+    app.listen(this._port, (err) => {
       if (err) {
         // TODO: log better
         console.error(err);

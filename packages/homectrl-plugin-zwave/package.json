@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "build": "tsc -p src"
+    "build": "tsc -p src",
+    "format": "prettier --write src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@types/core-decorators": "^0.20.0",
     "@types/serialport": "^7.0.5",
+    "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
     "typescript": "^3.8.3"
   },

@@ -3,7 +3,7 @@ import { Identifier } from "microinject";
 import createSymbol from "../create-symbol";
 
 export const Entrypoint: Identifier<Entrypoint> = createSymbol(
-  "app-entrypoint"
+  "app-entrypoint",
 );
 export interface Entrypoint {
   start(): void;

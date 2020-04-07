@@ -13,7 +13,7 @@ const adapters = require(join(__dirname, "../../config/zwave-adapters.json"));
 @provides(AdapterLocator)
 export class AdapterLocatorImpl {
   constructor(
-    @inject(ZWavePort, { optional: true }) private _port: string | undefined
+    @inject(ZWavePort, { optional: true }) private _port: string | undefined,
   ) {}
 
   async getAdapterPort(): Promise<string | null> {
@@ -28,7 +28,7 @@ export class AdapterLocatorImpl {
 function findSerialPortByIDs(
   ports: PortInfo[],
   vendor: number,
-  product: number
+  product: number,
 ) {
   for (const port of ports) {
     // vendorId and productId are in hex but without the hex marker.

@@ -10,13 +10,13 @@ import { controller, get } from "../../infrastructure";
 export class ThingsRoot {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getThings() {
     const body = values(this._mozIot.things).map((thing) =>
-      this._restifier.thingToRest(thing, false)
+      this._restifier.thingToRest(thing, false),
     );
 
     return body;

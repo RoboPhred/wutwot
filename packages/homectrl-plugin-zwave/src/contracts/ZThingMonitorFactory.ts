@@ -7,7 +7,7 @@ import createSymbol from "../create-symbol";
 import { ZThingMonitor } from "../types/ZThingMonitor";
 
 export const ZThingMonitorFactory: Identifier<ZThingMonitorFactory> = createSymbol(
-  "ZThingMonitorFactory"
+  "ZThingMonitorFactory",
 );
 export interface ZThingMonitorFactory {
   createMonitor(node: ZWaveNode, thing: PluginThing): ZThingMonitor | null;

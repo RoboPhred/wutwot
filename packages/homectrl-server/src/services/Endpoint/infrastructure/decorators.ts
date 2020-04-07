@@ -19,13 +19,13 @@ export interface ControllerMethodArgMetadata {
 }
 
 export function controller<TFunction extends Function>(
-  path: string
+  path: string,
 ): (target: TFunction) => void {
-  return function(target: any) {
+  return function (target: any) {
     provides(Controller)(target);
 
     const metadata: ControllerMetadata = {
-      path
+      path,
     };
     target[ControllerMetadataKey] = metadata;
   };
@@ -34,11 +34,11 @@ export function controller<TFunction extends Function>(
 export function get(): (
   target: any,
   propertyKey: string,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) => void {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     mergeMethodMetadata(target, propertyKey, {
-      method: "get"
+      method: "get",
     });
   };
 }
@@ -46,11 +46,11 @@ export function get(): (
 export function post(): (
   target: any,
   propertyKey: string,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) => void {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     mergeMethodMetadata(target, propertyKey, {
-      method: "post"
+      method: "post",
     });
   };
 }
@@ -58,35 +58,35 @@ export function post(): (
 export function put(): (
   target: any,
   propertyKey: string,
-  descriptor: PropertyDescriptor
+  descriptor: PropertyDescriptor,
 ) => void {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     mergeMethodMetadata(target, propertyKey, {
-      method: "put"
+      method: "put",
     });
   };
 }
 
 export function status(
-  code: number
+  code: number,
 ): (target: any, propertyKey: string, descriptor: PropertyDescriptor) => void {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     mergeMethodMetadata(target, propertyKey, {
-      status: code
+      status: code,
     });
   };
 }
 
 export function param(
-  name: string
+  name: string,
 ): (target: any, propertyKey: string, parameterIndex: number) => void {
   return (target: any, propertyKey: string, parameterIndex: number) => {
     const args: ControllerMethodArgMetadata[] = [];
     args[parameterIndex] = {
-      param: name
+      param: name,
     };
     mergeMethodMetadata(target, propertyKey, {
-      args
+      args,
     });
   };
 }
@@ -94,15 +94,15 @@ export function param(
 export function body(): (
   target: any,
   propertyKey: string,
-  parameterIndex: number
+  parameterIndex: number,
 ) => void {
   return (target: any, propertyKey: string, parameterIndex: number) => {
     const args: ControllerMethodArgMetadata[] = [];
     args[parameterIndex] = {
-      body: true
+      body: true,
     };
     mergeMethodMetadata(target, propertyKey, {
-      args
+      args,
     });
   };
 }
@@ -110,7 +110,7 @@ export function body(): (
 function mergeMethodMetadata(
   target: any,
   propertyKey: string,
-  mergeData: Partial<ControllerMethodMetadata>
+  mergeData: Partial<ControllerMethodMetadata>,
 ) {
   let methods = target[ControllerMethodsMetadataKey];
   if (!methods) {
@@ -125,7 +125,7 @@ function mergeMethodMetadata(
 function createOrUpdateArray<T>(
   array: T[] | null | undefined,
   index: number,
-  value: T
+  value: T,
 ): T[] {
   if (!array) {
     array = [];

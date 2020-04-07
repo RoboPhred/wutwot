@@ -11,7 +11,7 @@ import {
   param,
   post,
   status,
-  body
+  body,
 } from "../../../infrastructure";
 import { getThingOrThrow, getActionOrThrow } from "../../../controller-utils";
 
@@ -20,14 +20,17 @@ import { getThingOrThrow, getActionOrThrow } from "../../../controller-utils";
 export class ThingActionsRoot {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getActionRequests(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
 
-    const requests = flatMap(values(thing.actions), action => action.requests);
+    const requests = flatMap(
+      values(thing.actions),
+      (action) => action.requests,
+    );
     // TODO: Sort requests.  Newer / pending actions should be before completed / older
     return requests;
   }
@@ -40,7 +43,7 @@ export class ThingActionsRoot {
     if (bodyKeys.length != 1) {
       throw createError(
         HttpStatusCodes.BAD_REQUEST,
-        "One Action must be passed in the body."
+        "One Action must be passed in the body.",
       );
     }
     const actionName = bodyKeys[0];
@@ -48,7 +51,7 @@ export class ThingActionsRoot {
     const action = getActionOrThrow(
       thing,
       actionName,
-      HttpStatusCodes.BAD_REQUEST
+      HttpStatusCodes.BAD_REQUEST,
     );
     const request = action.request(input);
     return this._restifier.actionRequestToRest(request, false);

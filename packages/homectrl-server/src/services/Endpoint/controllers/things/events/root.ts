@@ -11,14 +11,14 @@ import { getThingOrThrow } from "../../../controller-utils";
 export class ThingEventsRoot {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getThingEvents(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
-    let records = flatMap(values(thing.events), event => event.records);
-    records = sortBy(records, record => record.timestamp);
-    return records.map(record => this._restifier.eventRecordToRest(record));
+    let records = flatMap(values(thing.events), (event) => event.records);
+    records = sortBy(records, (record) => record.timestamp);
+    return records.map((record) => this._restifier.eventRecordToRest(record));
   }
 }

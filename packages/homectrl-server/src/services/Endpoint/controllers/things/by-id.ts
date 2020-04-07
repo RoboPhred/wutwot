@@ -10,7 +10,7 @@ import { getThingOrThrow } from "../../controller-utils";
 export class ThingById {
   constructor(
     @inject(MozIot) private _mozIot: MozIot,
-    @inject(Restifier) private _restifier: Restifier
+    @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
