@@ -40,5 +40,5 @@ export const ThingPropertyTypes: ThingPropertyType[] = [
   "number",
   "integer",
   "string",
-  "boolean"
+  "boolean",
 ];

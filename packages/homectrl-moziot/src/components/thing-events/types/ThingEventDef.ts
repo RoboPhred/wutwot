@@ -30,9 +30,9 @@ export const eventDefSchema = makeReadOnlyDeep<JSONSchema6>({
     enum: { type: "array", items: { type: "string", minLength: 1 } },
     minimum: { type: "number" },
     maximum: { type: "number" },
-    multipleOf: { type: "number" }
+    multipleOf: { type: "number" },
   },
-  required: ["title", "description", "type"]
+  required: ["title", "description", "type"],
 });
 
 export const validateEventDef = makeValidator(eventDefSchema);

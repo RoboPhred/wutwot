@@ -5,7 +5,7 @@ import { EventEventSink } from "../components/EventEventSink";
 import {
   EventEventSource,
   ThingEventAddedEventArgs,
-  ThingEventRemovedEventArgs
+  ThingEventRemovedEventArgs,
 } from "../services";
 
 import { ThingEvent } from "../types";
@@ -20,7 +20,7 @@ export class EventEventSourceImpl extends EventEmitter
     const e: ThingEventAddedEventArgs = {
       thingId: event.thingId,
       eventId: event.id,
-      event
+      event,
     };
     this.emit("event.add", e);
   }
@@ -29,7 +29,7 @@ export class EventEventSourceImpl extends EventEmitter
     const e: ThingEventRemovedEventArgs = {
       thingId: event.thingId,
       eventId: event.id,
-      event
+      event,
     };
     this.emit("event.remove", e);
   }

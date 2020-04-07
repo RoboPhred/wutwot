@@ -6,7 +6,7 @@ export enum ThingActionRequestStatus {
   Started = "started",
   Completed = "completed",
   Cancelled = "cancelled",
-  Error = "error"
+  Error = "error",
 }
 
 export namespace ThingActionRequestStatus {

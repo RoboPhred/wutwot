@@ -34,7 +34,7 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
       enumerable,
       // We have to mark it as writable
       //  We will stop writes with the proxy.
-      writable: true
+      writable: true,
     });
   }
   Object.seal(target);
@@ -64,7 +64,10 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
     },
     ownKeys() {
       return [...whitelist];
-    }
+    },
+    setPrototypeOf() {
+      throw new TypeError("Cannot change prototype of a read-only Proxy.");
+    },
   };
 
   return new Proxy(target, handler);

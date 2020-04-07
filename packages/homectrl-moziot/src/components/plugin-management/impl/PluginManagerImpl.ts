@@ -25,7 +25,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
       return;
     }
     this._initialized = true;
-    this._adaptersByPluginId.forEach(adapter => adapter.initialize());
+    this._adaptersByPluginId.forEach((adapter) => adapter.initialize());
   }
 
   registerPlugin(plugin: MozIotPlugin): void {

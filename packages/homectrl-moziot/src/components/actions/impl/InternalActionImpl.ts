@@ -6,19 +6,19 @@ import { isObservable } from "rxjs";
 import { DeepImmutableObject } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
 import { makeInspectJson } from "../../../utils/inspect";
-import { createWhitelistProxy } from "../../../utils/proxies";
+import { createWhitelistProxy } from "../../../utils/proxies/whitelist";
 
-import { ThingAction, ThingActionDef, ThingActionKeys } from "../types";
 import { validateOrThrow } from "../../json-schema";
 
 import {
   ThingActionRequest,
   ThingActionRequestDef,
-  LocalActionRequestsManager
+  LocalActionRequestsManager,
 } from "../../action-requests";
 
 import { ThingScope } from "../../things";
 
+import { ThingAction, ThingActionDef, ThingActionKeys } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
 
@@ -105,7 +105,7 @@ export class InternalActionImpl implements InternalAction {
     return this._requestsManager.addRequest({
       input,
       timeRequested: new Date().toISOString(),
-      status
+      status,
     });
   }
 
@@ -122,7 +122,7 @@ export class InternalActionImpl implements InternalAction {
       semanticType: this.semanticType,
       description: this.description,
       input: this.input,
-      requests: this.requests.map(x => x.toJSON())
+      requests: this.requests.map((x) => x.toJSON()),
     };
   }
 }

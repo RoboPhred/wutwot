@@ -5,7 +5,7 @@ import { PropertyEventSink } from "../components/PropertyEventSink";
 import {
   PropertyEventSource,
   ThingPropertyAddedEventArgs,
-  ThingPropertyRemovedEventArgs
+  ThingPropertyRemovedEventArgs,
 } from "../services";
 
 import { ThingProperty } from "../types";
@@ -20,7 +20,7 @@ export class PropertyEventSourceImpl extends EventEmitter
     const e: ThingPropertyAddedEventArgs = {
       thingId: property.thingId,
       propertyId: property.id,
-      property
+      property,
     };
     this.emit("property.add", e);
   }
@@ -29,7 +29,7 @@ export class PropertyEventSourceImpl extends EventEmitter
     const e: ThingPropertyRemovedEventArgs = {
       thingId: property.thingId,
       propertyId: property.id,
-      property
+      property,
     };
     this.emit("property.remove", e);
   }

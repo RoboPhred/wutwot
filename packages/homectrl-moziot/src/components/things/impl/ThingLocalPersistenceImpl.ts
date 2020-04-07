@@ -3,7 +3,7 @@ import { injectable, provides, inject, injectParam } from "microinject";
 import {
   ScopedDataPersistence,
   Database,
-  DataStorageKey
+  DataStorageKey,
 } from "../../persistence";
 
 import { ThingLocalPersistence, InternalThingParams } from "../services";

@@ -7,11 +7,11 @@ import {
   ThingAction,
   ThingActionRequest,
   ThingProperty,
-  ThingEvent
+  ThingEvent,
 } from "homectrl-moziot";
 
 export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
-  const thing = mozIot.things.find(x => x.id === thingId);
+  const thing = mozIot.things[thingId];
   if (!thing) {
     throw createError(
       HttpStatusCodes.NOT_FOUND,
@@ -39,7 +39,7 @@ export function getRequestOrThrow(
   action: ThingAction,
   requestId: string
 ): ThingActionRequest {
-  const request = action.requests.find(x => x.id === requestId);
+  const request = action.requests.find((x) => x.id === requestId);
   if (!request) {
     throw createError(
       HttpStatusCodes.NOT_FOUND,

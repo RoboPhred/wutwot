@@ -7,7 +7,7 @@ import { inThingScope, InternalThingParams } from "../../things";
 import {
   ThingProperty,
   ThingPropertyDef,
-  validatePropertyDefOrThrow
+  validatePropertyDefOrThrow,
 } from "../types";
 
 import { LocalPropertiesManager } from "../services";

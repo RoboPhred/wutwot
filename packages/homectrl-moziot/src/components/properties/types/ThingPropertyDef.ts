@@ -38,9 +38,9 @@ export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
     maximum: { type: "number" },
     multipleOf: { type: "number" },
     readOnly: { type: "boolean" },
-    initialValue: { type: ThingPropertyTypes }
+    initialValue: { type: ThingPropertyTypes },
   },
-  required: ["title", "description", "type", "initialValue"]
+  required: ["title", "description", "type", "initialValue"],
 });
 
 export const validatePropertyDef = makeValidator(propertyDefSchema);

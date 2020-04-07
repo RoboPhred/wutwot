@@ -9,7 +9,7 @@ import { internalThingFactoryImpl } from "./impl/InternalActionFactoryImpl";
 import { InternalActionImpl } from "./impl/InternalActionImpl";
 import { LocalActionsManagerImpl } from "./impl/LocalActionsManagerImpl";
 
-export default new ContainerModule(bind => {
+export default new ContainerModule((bind) => {
   bind(InternalActionFactory)
     .toFactory(internalThingFactoryImpl)
     .inScope(ThingScope);

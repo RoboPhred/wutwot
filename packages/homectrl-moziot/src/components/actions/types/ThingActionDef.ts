@@ -54,9 +54,9 @@ export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
     title: { type: "string", minLength: 1 },
     semanticType: { type: "string", minLength: 1 },
     description: { type: "string", minLength: 1 },
-    input: { type: "object" }
+    input: { type: "object" },
   },
-  required: ["title", "description", "input"]
+  required: ["title", "description", "input"],
 });
 
 /**

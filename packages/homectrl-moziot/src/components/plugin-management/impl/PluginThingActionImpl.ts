@@ -5,7 +5,7 @@ import { DeepImmutableObject } from "../../../types";
 import { InternalAction, ThingAction } from "../../actions";
 import {
   ThingActionRequest,
-  ThingActionRequestDef
+  ThingActionRequestDef,
 } from "../../action-requests";
 
 import { OwnedPluginThingAction, PluginAdapter } from "../types";

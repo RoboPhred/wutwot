@@ -19,7 +19,7 @@ export class ThingPropertyImpl implements ThingProperty {
     this._def = { ..._def, enum: this.enum ? [...this.enum] : undefined };
     this._lastValue = this._def.initialValue;
     this._def.values.subscribe({
-      next: (value: any) => (this._lastValue = value)
+      next: (value: any) => (this._lastValue = value),
     });
   }
 
@@ -87,7 +87,7 @@ export class ThingPropertyImpl implements ThingProperty {
       enum: this._def.enum,
       minimum: this._def.minimum,
       maximum: this._def.maximum,
-      multipleOf: this._def.multipleOf
+      multipleOf: this._def.multipleOf,
     };
     validateOrThrow(value, schema);
     this._def.onValueChangeRequested(this._thingId, this._id, value);
@@ -108,7 +108,7 @@ export class ThingPropertyImpl implements ThingProperty {
       maximum: this.maximum,
       multipleOf: this.multipleOf,
       readOnly: this.readOnly,
-      value: this.value
+      value: this.value,
     };
   }
 }

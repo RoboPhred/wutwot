@@ -7,7 +7,7 @@ export interface JSONAble {
 export function makeInspectJson<T extends JSONAble>(
   name: string
 ): (depth: number, options: InspectOptionsStylized) => string {
-  return function(
+  return function (
     this: JSONAble,
     depth: number,
     options: InspectOptionsStylized
@@ -17,7 +17,7 @@ export function makeInspectJson<T extends JSONAble>(
     }
 
     const newOptions = Object.assign({}, options, {
-      depth: options.depth == null ? null : options.depth - 1
+      depth: options.depth == null ? null : options.depth - 1,
     });
 
     const inner = inspect(this.toJSON(), newOptions);

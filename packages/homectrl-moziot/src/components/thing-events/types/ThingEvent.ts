@@ -37,5 +37,5 @@ export const ThingEventTypes: ThingEventType[] = [
   "number",
   "integer",
   "string",
-  "boolean"
+  "boolean",
 ];

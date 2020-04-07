@@ -3,7 +3,7 @@ import {
   provides,
   inject,
   singleton,
-  Container
+  Container,
 } from "microinject";
 
 import { ThingsManager } from "../../things";

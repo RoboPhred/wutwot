@@ -75,5 +75,5 @@ export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
   "input",
   "requests",
   "request",
-  "toJSON"
+  "toJSON",
 ]);

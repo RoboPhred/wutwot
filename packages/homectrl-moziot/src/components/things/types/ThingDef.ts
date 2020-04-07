@@ -37,9 +37,9 @@ export const thingDefSchema = makeReadOnlyDeep<JSONSchema6>({
     pluginLocalId: { type: "string", minLength: 1 },
     defaultTitle: { type: "string", minLength: 1 },
     defaultDescription: { type: "string" },
-    metadata: { type: "object", additionalProperties: true }
+    metadata: { type: "object", additionalProperties: true },
   },
-  required: ["pluginLocalId"]
+  required: ["pluginLocalId"],
 });
 
 export const validateThingDef = makeValidator(thingDefSchema);

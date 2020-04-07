@@ -2,8 +2,11 @@
 
 #### Prevent data from becomming stale.
 
-thing.properties, thing.actions, thing.events, action.requests, and event.records become stale after accessed.
-Use proxy objects to create a live view into this data that remains read-only.
+~~thing.properties, thing.actions, thing.events, action.requests, and event.records become stale after accessed.
+Use proxy objects to create a live view into this data that remains read-only.~~
+
+Do we really want to do this? Nothing else in javascript works like this and its a rather
+silly use of proxies.
 
 #### Metadata on properties, actions, events
 

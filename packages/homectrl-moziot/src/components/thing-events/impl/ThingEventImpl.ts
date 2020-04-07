@@ -83,7 +83,7 @@ export class ThingEventImpl implements ThingEvent {
       minimum: this.minimum,
       maximum: this.maximum,
       multipleOf: this.multipleOf,
-      records: this.records
+      records: this.records,
     };
   }
 
@@ -93,7 +93,7 @@ export class ThingEventImpl implements ThingEvent {
     this._records.push(
       makeReadOnlyDeep({
         data,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       })
     );
   }

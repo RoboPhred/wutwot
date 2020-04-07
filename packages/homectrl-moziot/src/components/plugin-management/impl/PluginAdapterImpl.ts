@@ -6,7 +6,7 @@ import {
   MozIotPlugin,
   OwnedPluginThing,
   PluginThing,
-  PluginAdapter
+  PluginAdapter,
 } from "../types";
 import { PluginThingsManager } from "../services";
 
@@ -29,7 +29,7 @@ export class PluginAdapterImpl implements PluginAdapter {
       addThing: this._addThing.bind(this),
       getThing: this._getThing.bind(this),
       getThings: this._getThings.bind(this),
-      getOwnThings: this._getOwnThings.bind(this)
+      getOwnThings: this._getOwnThings.bind(this),
     };
     this._privateContainer
       .bind(PluginThingsManager)
@@ -85,15 +85,15 @@ export class PluginAdapterImpl implements PluginAdapter {
   private _getThings(): PluginThing[] {
     return this._thingManager
       .getThings()
-      .map(thing => this._pluginThingFactory.getPluginThing(thing, this));
+      .map((thing) => this._pluginThingFactory.getPluginThing(thing, this));
   }
 
   private _getOwnThings(): OwnedPluginThing[] {
     return this._thingManager
       .getThings()
-      .filter(x => x.ownerPlugin === this._plugin)
+      .filter((x) => x.ownerPlugin === this._plugin)
       .map(
-        thing =>
+        (thing) =>
           this._pluginThingFactory.getPluginThing(
             thing,
             this

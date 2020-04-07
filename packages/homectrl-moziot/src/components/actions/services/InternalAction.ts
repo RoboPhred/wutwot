@@ -4,7 +4,7 @@ import createSymbol from "../../../create-symbol";
 
 import {
   ThingActionRequestDef,
-  ThingActionRequest
+  ThingActionRequest,
 } from "../../action-requests";
 
 import { ThingAction } from "../types";

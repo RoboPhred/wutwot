@@ -24,7 +24,7 @@ export function internalThingFactoryImpl(
         [InternalActionParams.ThingId]:
           context.parameters[InternalThingParams.ThingId],
         [InternalActionParams.ActionDef]: def,
-        [InternalActionParams.Owner]: owner
+        [InternalActionParams.Owner]: owner,
       });
     }
   }

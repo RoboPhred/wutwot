@@ -5,7 +5,7 @@ import { makeInspectJson } from "../../../utils/inspect";
 import {
   ThingActionRequest,
   ThingActionRequestStatus,
-  ThingActionRequestDef
+  ThingActionRequestDef,
 } from "../types";
 
 /**
@@ -25,7 +25,7 @@ export class ThingActionRequestImpl implements ThingActionRequest {
 
     this._lastStatus = ThingActionRequestStatus.Pending;
     _def.status.subscribe({
-      next: status => {
+      next: (status) => {
         if (ThingActionRequestStatus.canTransition(this._lastStatus, status)) {
           this._lastStatus = status;
         }
@@ -43,7 +43,7 @@ export class ThingActionRequestImpl implements ThingActionRequest {
         if (!ThingActionRequestStatus.isFinalStatus(this._lastStatus)) {
           this._lastStatus = ThingActionRequestStatus.Error;
         }
-      }
+      },
     });
   }
 
@@ -85,7 +85,7 @@ export class ThingActionRequestImpl implements ThingActionRequest {
       input: this.input,
       timeRequested: this.timeRequested,
       timeCompleted: this.timeCompleted,
-      status: this.status
+      status: this.status,
     };
   }
 }

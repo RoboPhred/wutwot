@@ -6,7 +6,7 @@ import { ThingActionRequest } from "../types";
 
 import {
   ActionRequestEventSource,
-  ThingActionRequestAddedEventArgs
+  ThingActionRequestAddedEventArgs,
 } from "../services";
 
 /**
@@ -25,7 +25,7 @@ export class ActionRequestEventSourceImpl extends EventEmitter
       thingId: actionRequest.thingId,
       actionId: actionRequest.actionId,
       actionRequestId: actionRequest.id,
-      actionRequest
+      actionRequest,
     };
     this.emit("actionRequest.add", e);
   }

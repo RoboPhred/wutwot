@@ -19,12 +19,12 @@ export function internalThingFactoryImpl(
       validateThingDefOrThrow(def);
       const id = idMapper.createId({
         pluginId: owner.id,
-        pluginLocalThingId: def.pluginLocalId
+        pluginLocalThingId: def.pluginLocalId,
       });
       return context.get(InternalThing, {
         [InternalThingParams.ThingId]: id,
         [InternalThingParams.ThingDef]: def,
-        [InternalThingParams.Owner]: owner
+        [InternalThingParams.Owner]: owner,
       });
     }
   }

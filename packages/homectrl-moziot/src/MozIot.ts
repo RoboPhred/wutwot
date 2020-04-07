@@ -1,5 +1,6 @@
 import { Container } from "microinject";
 import { inspect } from "util";
+import { mapValues } from "lodash";
 
 import containerModule from "./module";
 
@@ -10,6 +11,7 @@ import { Thing, ThingsManager } from "./components/things";
 import { PluginManager, MozIotPlugin } from "./components/plugin-management";
 
 import { Initializable, Shutdownable } from "./contracts";
+import { ReadonlyRecord } from "./types";
 
 export class MozIot {
   private _container: Container = new Container();
@@ -30,27 +32,30 @@ export class MozIot {
 
     this._container
       .getAll(Initializable)
-      .forEach(initializable => initializable.onInitialize());
+      .forEach((initializable) => initializable.onInitialize());
   }
 
   [inspect.custom] = makeInspectJson("MozIot");
 
-  // TODO: Should be live instance Record<thingId, Thing>
-  get things(): ReadonlyArray<Thing> {
-    return this._thingManager.getThings().map(thing => thing.publicProxy);
+  get things(): ReadonlyRecord<string, Thing> {
+    // TODO: Should be live instance Record<thingId, Thing>
+    return mapValues(
+      this._thingManager.objectAccessor,
+      (thing) => thing.publicProxy
+    );
   }
 
   async shutdown(): Promise<void> {
     const shutdownables = this._container.getAll(Shutdownable);
     const awaits = shutdownables
-      .map(shutdownable => shutdownable.onShutdown())
+      .map((shutdownable) => shutdownable.onShutdown())
       .filter(isNotNull);
     await Promise.all(awaits);
   }
 
   toJSON() {
     return {
-      things: this.things.map(thing => thing.toJSON())
+      things: mapValues(this.things, (thing) => thing.toJSON()),
     };
   }
 }

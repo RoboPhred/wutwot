@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "build": "tsc -p src"
+    "build": "tsc -p src",
+    "format": "prettier --write src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "@types/json-schema": "^7.0.4",
     "@types/lodash": "^4.14.149",
     "@types/uuid": "^7.0.2",
+    "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
     "typescript": "^3.8.3"
   },

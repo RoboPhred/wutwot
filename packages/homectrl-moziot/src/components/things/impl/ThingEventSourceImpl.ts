@@ -7,7 +7,7 @@ import { Thing } from "../types";
 import {
   ThingEventSource,
   ThingAddedEventArgs,
-  ThingRemovedEventArgs
+  ThingRemovedEventArgs,
 } from "../services";
 
 @injectable()
@@ -19,7 +19,7 @@ export class ThingEventSourceImpl extends EventEmitter
   onThingAdded(thing: Thing): void {
     const e: ThingAddedEventArgs = {
       thingId: thing.id,
-      thing
+      thing,
     };
     this.emit("thing.add", e);
   }
@@ -27,7 +27,7 @@ export class ThingEventSourceImpl extends EventEmitter
   onThingRemoved(thing: Thing): void {
     const e: ThingRemovedEventArgs = {
       thingId: thing.id,
-      thing
+      thing,
     };
     this.emit("thing.remov", e);
   }

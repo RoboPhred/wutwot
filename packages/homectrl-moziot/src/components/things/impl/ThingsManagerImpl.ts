@@ -4,22 +4,30 @@ import { ThingDef } from "../types";
 import {
   InternalThingFactory,
   ThingEventSink,
-  ThingIdMapper
+  ThingIdMapper,
 } from "../components";
 
 import { ThingsManager, InternalThing } from "../services";
+import { createMapProxy } from "../../../utils/proxies/map";
 
 @injectable()
 @singleton()
 @provides(ThingsManager)
 export class ThingsManagerImpl implements ThingsManager {
   private _thingsById = new Map<string, InternalThing>();
+  private _objectAccessor: Record<string, InternalThing>;
 
   constructor(
     @inject(InternalThingFactory) private _factory: InternalThingFactory,
     @inject(ThingEventSink) private _eventSink: ThingEventSink,
     @inject(ThingIdMapper) private _idMapper: ThingIdMapper
-  ) {}
+  ) {
+    this._objectAccessor = createMapProxy(this._thingsById);
+  }
+
+  get objectAccessor(): Record<string, InternalThing> {
+    return this, this._objectAccessor;
+  }
 
   addThing(def: ThingDef, owner: object): InternalThing {
     const thing = this._factory.createThing(def, owner);
