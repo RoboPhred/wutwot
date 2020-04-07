@@ -1,3 +1,6 @@
-import { URN_PREFIX } from "./create-symbol";
+import createSymbol from "./create-symbol";
+import { createMetadataIdentifier } from "homectrl-moziot";
 
-export const METADATA_ZWAVE_NODE = `${URN_PREFIX}metadata/ZWaveNode`;
+export const METADATA_ZWAVE_NODE = createMetadataIdentifier(
+  createSymbol("metadata/ZWaveNode")
+);

@@ -5,6 +5,8 @@
 thing.properties, thing.actions, thing.events, action.requests, and event.records become stale after accessed.
 Use proxy objects to create a live view into this data that remains read-only.
 
+#### Metadata on properties, actions, events
+
 #### NodeJS events for individual topics
 
 - Thing events
@@ -28,15 +30,6 @@ Use proxy objects to create a live view into this data that remains read-only.
 #### API documentation
 
 https://www.npmjs.com/package/@microsoft/api-extractor
-
-#### Persistent IDs
-
-Store chosen IDs for all concerns in a map file and re-use them on reboot.
-Need to accept a more rigerous id from plugins to do this. Keep in mind
-some plugins (zwave) will have more than one facet of an id, so accept
-an IDClaims interface mapping many values as a compound ID.
-
-Will need to get rid of IDMapper and inject a more robust ID provider.
 
 #### Unify the json-schema variant that WOT uses
 

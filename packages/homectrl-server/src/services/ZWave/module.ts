@@ -5,15 +5,15 @@ import { ZWavePort } from "../../config";
 
 import { MozIotPlugin } from "../MozIot";
 
-export default new ContainerModule(bind => {
+export default new ContainerModule((bind) => {
   bind(MozIotPlugin)
     .provides(ZWavePlugin)
-    .toFactory(context => {
+    .toFactory((context) => {
       let zwavePort: string | undefined;
       if (context.has(ZWavePort)) {
         zwavePort = context.get(ZWavePort);
       }
-      return new ZWavePlugin({ port: zwavePort });
+      return new ZWavePlugin({ pluginId: "zwave-master", port: zwavePort });
     })
     .inSingletonScope();
 });

@@ -12,9 +12,10 @@ import {
   OwnedPluginThing,
   PluginThingAction,
   OwnedPluginThingAction,
-  PluginAdapter
+  PluginAdapter,
 } from "../types";
 import { PluginThingActionImpl } from "./PluginThingActionImpl";
+import { MetadataIdentifier } from "../../metadata";
 
 export class PluginThingImpl implements OwnedPluginThing {
   constructor(
@@ -49,14 +50,10 @@ export class PluginThingImpl implements OwnedPluginThing {
     this._thing.description = value;
   }
 
-  get metadata(): Record<string, any> {
-    return this._thing.metadata;
-  }
-
   get actions(): ReadonlyRecord<string, PluginThingAction> {
     const actions = mapValues(
       this._thing.actions,
-      action => new PluginThingActionImpl(action, this._pluginAdapter)
+      (action) => new PluginThingActionImpl(action, this._pluginAdapter)
     );
     return makeReadOnly(actions);
   }
@@ -67,6 +64,14 @@ export class PluginThingImpl implements OwnedPluginThing {
 
   get events(): ReadonlyRecord<string, ThingEvent> {
     return this._thing.events;
+  }
+
+  getMetadataKeys(): MetadataIdentifier<unknown>[] {
+    return this._thing.getMetadataKeys();
+  }
+
+  getMetadata<T>(identifier: MetadataIdentifier<T>): T | undefined {
+    return this._thing.getMetadata(identifier);
   }
 
   addSemanticType(type: string): OwnedPluginThing {

@@ -4,11 +4,12 @@ import { makeReadOnly } from "../../../utils/readonly";
 import { ThingAction } from "../../actions";
 import { ThingProperty } from "../../properties";
 import { ThingEvent } from "../../thing-events";
+import { MetadataProvider } from "../../metadata";
 
 /**
  * Describes a thing in the system.
  */
-export interface Thing {
+export interface Thing extends MetadataProvider {
   /**
    * The ID of this thing.
    */
@@ -35,11 +36,6 @@ export interface Thing {
   description: string;
 
   /**
-   * Additional metadata describing the thing.
-   */
-  readonly metadata: Record<string | symbol, any>;
-
-  /**
    * The actions this thing supports.
    */
   readonly actions: ReadonlyRecord<string, ThingAction>;
@@ -56,15 +52,3 @@ export interface Thing {
 
   toJSON(): ToJSON<Thing>;
 }
-export const ThingKeys = makeReadOnly<(keyof Thing)[]>([
-  "id",
-  "ownerPlugin",
-  "title",
-  "semanticTypes",
-  "description",
-  "metadata",
-  "actions",
-  "properties",
-  "events",
-  "toJSON"
-]);

@@ -3,7 +3,7 @@ import {
   asScope,
   inject,
   injectParam,
-  provides
+  provides,
 } from "microinject";
 import { mapValues } from "lodash";
 import { inspect } from "util";
@@ -16,18 +16,18 @@ import {
   LocalActionsManager,
   ThingAction,
   ThingActionDef,
-  InternalAction
+  InternalAction,
 } from "../../actions";
 import {
   LocalPropertiesManager,
   ThingProperty,
-  ThingPropertyDef
+  ThingPropertyDef,
 } from "../../properties";
 import { LocalSemanticTypesManager } from "../../semantic-types";
 import {
   LocalEventsManager,
   ThingEvent,
-  ThingEventDef
+  ThingEventDef,
 } from "../../thing-events";
 
 import { ThingDef, Thing } from "../types";
@@ -35,9 +35,11 @@ import { ThingScope } from "../scopes";
 import {
   InternalThing,
   InternalThingParams,
-  ThingLocalPersistence
+  ThingLocalPersistence,
 } from "../services";
 import { DataPersistence, DataStorageKey } from "../../persistence";
+import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
+import { mapToObject } from "../../../utils/map";
 
 namespace ThingPersistenceKeys {
   export const Name: DataStorageKey = ["name"];
@@ -48,6 +50,11 @@ namespace ThingPersistenceKeys {
 @provides(InternalThing)
 @asScope(ThingScope)
 export class InternalThingImpl implements InternalThing {
+  private readonly _publicProxy: Thing;
+  private _title: string;
+  private _description: string;
+  private _metadata = new Map<string | symbol, any>();
+
   constructor(
     @injectParam(InternalThingParams.ThingDef)
     private _def: ThingDef,
@@ -67,9 +74,9 @@ export class InternalThingImpl implements InternalThing {
     private _eventsManager: LocalEventsManager
   ) {
     this._def = {
-      ..._def
+      ..._def,
     };
-    this._metadata = { ..._def.metadata };
+    metadataObjectToMap(_def.metadata || {}, this._metadata);
 
     this._title = this._persistence.get(
       ThingPersistenceKeys.Name,
@@ -84,7 +91,6 @@ export class InternalThingImpl implements InternalThing {
     this._publicProxy = createPublicThingApi(this);
   }
 
-  private readonly _publicProxy: Thing;
   get publicProxy(): Thing {
     return this._publicProxy;
   }
@@ -97,7 +103,6 @@ export class InternalThingImpl implements InternalThing {
     return this._owner;
   }
 
-  private _title: string;
   get title(): string {
     return this._title;
   }
@@ -111,7 +116,6 @@ export class InternalThingImpl implements InternalThing {
     return makeReadOnly(this._typesManager.getTypes());
   }
 
-  private _description: string;
   get description(): string {
     return this._description;
   }
@@ -120,15 +124,10 @@ export class InternalThingImpl implements InternalThing {
     this._persistence.set(ThingPersistenceKeys.Description, value);
   }
 
-  private readonly _metadata: Record<string, any>;
-  get metadata(): Record<string, any> {
-    return this._metadata;
-  }
-
   get actions(): ReadonlyRecord<string, InternalAction> {
     const actions: Record<string, InternalAction> = {};
     // TODO: Get a read-only map proxy from propertyManager
-    this._actionsManager.getAllActions().forEach(action => {
+    this._actionsManager.getAllActions().forEach((action) => {
       actions[action.id] = action;
     });
 
@@ -138,7 +137,7 @@ export class InternalThingImpl implements InternalThing {
   get properties(): ReadonlyRecord<string, ThingProperty> {
     const properties: Record<string, ThingProperty> = {};
     // TODO: Get a read-only map proxy from propertyManager
-    this._propertiesManager.getAllProperties().forEach(property => {
+    this._propertiesManager.getAllProperties().forEach((property) => {
       properties[property.id] = property;
     });
     return makeReadOnly(properties);
@@ -147,7 +146,7 @@ export class InternalThingImpl implements InternalThing {
   get events(): ReadonlyRecord<string, ThingEvent> {
     const events: Record<string, ThingEvent> = {};
     // TODO: Get a read-only map proxy from propertyManager
-    this._eventsManager.getAllEvents().forEach(event => {
+    this._eventsManager.getAllEvents().forEach((event) => {
       events[event.id] = event;
     });
     return makeReadOnly(events);
@@ -169,6 +168,14 @@ export class InternalThingImpl implements InternalThing {
     return this._eventsManager.addEvent(def, owner);
   }
 
+  getMetadataKeys() {
+    return Array.from(this._metadata.keys()) as MetadataIdentifier<unknown>[];
+  }
+
+  getMetadata<T>(identifier: MetadataIdentifier<T>): T | undefined {
+    return this._metadata.get(identifier) as T;
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -176,10 +183,10 @@ export class InternalThingImpl implements InternalThing {
       title: this.title,
       semanticTypes: this.semanticTypes,
       description: this.description,
-      metadata: this.metadata,
-      actions: mapValues(this.actions, action => action.toJSON()),
-      properties: mapValues(this.properties, property => property.toJSON()),
-      events: mapValues(this.events, event => event.toJSON())
+      metadata: mapToObject(this._metadata),
+      actions: mapValues(this.actions, (action) => action.toJSON()),
+      properties: mapValues(this.properties, (property) => property.toJSON()),
+      events: mapValues(this.events, (event) => event.toJSON()),
     };
   }
 }
@@ -219,13 +226,9 @@ function createPublicThingApi(thing: InternalThing) {
       thing.description = value;
     }
 
-    get metadata(): Record<string, any> {
-      return thing.metadata;
-    }
-
     get actions(): Readonly<Record<string, ThingAction>> {
       // TODO: Preserve live instance view.
-      return mapValues(thing.actions, action => action.publicProxy);
+      return mapValues(thing.actions, (action) => action.publicProxy);
     }
 
     get properties(): Readonly<Record<string, ThingProperty>> {
@@ -234,6 +237,14 @@ function createPublicThingApi(thing: InternalThing) {
 
     get events(): Readonly<Record<string, ThingEvent>> {
       return thing.events;
+    }
+
+    getMetadataKeys() {
+      return thing.getMetadataKeys();
+    }
+
+    getMetadata<T>(identifier: MetadataIdentifier<T>): T | undefined {
+      return thing.getMetadata(identifier);
     }
 
     toJSON() {

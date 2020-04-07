@@ -1,6 +1,6 @@
 import repl from "repl";
 import { MozIot } from "homectrl-moziot";
-import { ZWavePlugin } from "homectrl-plugin-zwave";
+import { ZWavePlugin, METADATA_ZWAVE_NODE } from "homectrl-plugin-zwave";
 import { injectable, inject } from "microinject";
 
 import { Entrypoint } from "../../contracts";
@@ -27,11 +27,12 @@ export class ReplServer implements Entrypoint {
     }
 
     this._replServer = repl.start({
-      prompt: ">"
+      prompt: ">",
     });
     const reset = (context: any) => {
       context.moziot = this._moziot;
       context.zwave = this._zwave;
+      context.zwaveNodeMetadata = METADATA_ZWAVE_NODE;
     };
     reset(this._replServer.context);
     this._replServer.on("exit", async () => {
