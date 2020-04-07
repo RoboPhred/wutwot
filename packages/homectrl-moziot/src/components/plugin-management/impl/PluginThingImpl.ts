@@ -21,7 +21,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   constructor(
     private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
-    private _thingManager: ThingsManager
+    private _thingManager: ThingsManager,
   ) {}
 
   get id(): string {
@@ -53,7 +53,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   get actions(): ReadonlyRecord<string, PluginThingAction> {
     const actions = mapValues(
       this._thing.actions,
-      (action) => new PluginThingActionImpl(action, this._pluginAdapter)
+      (action) => new PluginThingActionImpl(action, this._pluginAdapter),
     );
     return makeReadOnly(actions);
   }
@@ -82,7 +82,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   delete(): void {
     if (!this.isOwned()) {
       throw new Error(
-        "The requesting plugin does not own this Thing.  Things can only be deleted by their owner plugins."
+        "The requesting plugin does not own this Thing.  Things can only be deleted by their owner plugins.",
       );
     }
     this._thingManager.removeThing(this._thing.id);
@@ -96,7 +96,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     const action = this._thing.addAction(def, this._pluginAdapter.plugin);
     return new PluginThingActionImpl(
       action,
-      this._pluginAdapter
+      this._pluginAdapter,
     ) as OwnedPluginThingAction;
   }
 

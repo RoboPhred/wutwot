@@ -7,7 +7,7 @@ import { ThingDef, Thing } from "../types";
 import { InternalThing } from "./InternalThing";
 
 export const ThingsManager: Identifier<ThingsManager> = createSymbol(
-  "ThingsManager"
+  "ThingsManager",
 );
 export interface ThingsManager {
   objectAccessor: Record<string, InternalThing>;

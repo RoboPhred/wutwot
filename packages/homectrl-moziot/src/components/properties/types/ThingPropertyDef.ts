@@ -45,5 +45,5 @@ export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
 
 export const validatePropertyDef = makeValidator(propertyDefSchema);
 export const validatePropertyDefOrThrow = makeValidateOrThrow(
-  validatePropertyDef
+  validatePropertyDef,
 );

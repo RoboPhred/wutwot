@@ -15,7 +15,7 @@ export class ThingEventImpl implements ThingEvent {
     private _def: ThingEventDef,
     private _id: string,
     private _thingId: string,
-    private _owner: object
+    private _owner: object,
   ) {
     _def.eventSource.subscribe(this._onEventRaised.bind(this));
   }
@@ -94,7 +94,7 @@ export class ThingEventImpl implements ThingEvent {
       makeReadOnlyDeep({
         data,
         timestamp: new Date().toISOString(),
-      })
+      }),
     );
   }
 }

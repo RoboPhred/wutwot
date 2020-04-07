@@ -10,7 +10,7 @@ import { ThingAction } from "../types";
  * This service should be used to announce events pertaining to {@link ThingAction}s.
  */
 export const ActionEventSink: Identifier<ActionEventSink> = createSymbol(
-  "ActionEventSink"
+  "ActionEventSink",
 );
 
 /**

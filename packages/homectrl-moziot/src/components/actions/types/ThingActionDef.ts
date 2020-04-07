@@ -41,7 +41,7 @@ export interface ThingActionDef {
   onActionInvocationRequested(
     thingId: string,
     actionId: string,
-    input: any
+    input: any,
   ): Observable<ThingActionRequestStatus>;
 }
 

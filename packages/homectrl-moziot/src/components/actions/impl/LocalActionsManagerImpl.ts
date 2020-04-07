@@ -25,7 +25,7 @@ export class LocalActionsManagerImpl implements LocalActionsManager {
     @inject(ActionEventSink)
     private _eventSink: ActionEventSink,
     @inject(InternalActionFactory)
-    private _actionFactory: InternalActionFactory
+    private _actionFactory: InternalActionFactory,
   ) {}
 
   getAction(actionId: string): InternalAction | undefined {

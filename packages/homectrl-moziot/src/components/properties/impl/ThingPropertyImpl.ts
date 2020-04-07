@@ -14,7 +14,7 @@ export class ThingPropertyImpl implements ThingProperty {
     private _def: ThingPropertyDef,
     private _id: string,
     private _thingId: string,
-    private _owner: object
+    private _owner: object,
   ) {
     this._def = { ..._def, enum: this.enum ? [...this.enum] : undefined };
     this._lastValue = this._def.initialValue;

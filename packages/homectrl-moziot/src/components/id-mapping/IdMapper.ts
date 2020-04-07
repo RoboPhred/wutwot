@@ -52,7 +52,7 @@ export class IdMapperImpl {
   private _loadIds() {
     const record = this._database.get<Record<string, string>>(
       this._dataKey,
-      {}
+      {},
     );
     this._idsByClaim.clear();
     objectToMap(record, this._idsByClaim);

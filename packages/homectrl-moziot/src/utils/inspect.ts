@@ -5,12 +5,12 @@ export interface JSONAble {
 }
 
 export function makeInspectJson<T extends JSONAble>(
-  name: string
+  name: string,
 ): (depth: number, options: InspectOptionsStylized) => string {
   return function (
     this: JSONAble,
     depth: number,
-    options: InspectOptionsStylized
+    options: InspectOptionsStylized,
   ) {
     if (depth < 0) {
       return options.stylize(`[${name}]`, "special");

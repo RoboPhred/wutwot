@@ -40,7 +40,7 @@ export class InternalActionImpl implements InternalAction {
     @injectParam(InternalActionParams.Owner)
     private _owner: object,
     @inject(LocalActionRequestsManager)
-    private _requestsManager: LocalActionRequestsManager
+    private _requestsManager: LocalActionRequestsManager,
   ) {
     this._def = { ...def };
 
@@ -91,14 +91,14 @@ export class InternalActionImpl implements InternalAction {
     const status = this._def.onActionInvocationRequested(
       this._thingId,
       this._id,
-      input
+      input,
     );
 
     if (!isObservable(status)) {
       // TODO: More details about the plugin that caused the error.
       //  This is being thrown to the requester, but it is the fault of the plugin.
       throw new TypeError(
-        "Expected onActionInvocationRequested to return an observable."
+        "Expected onActionInvocationRequested to return an observable.",
       );
     }
 

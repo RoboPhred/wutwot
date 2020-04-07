@@ -19,7 +19,7 @@ export class EventServiceImpl implements LocalEventsManager {
 
   constructor(
     @injectParam(InternalThingParams.ThingId)
-    private _thingId: string
+    private _thingId: string,
   ) {}
 
   getEvent(eventId: string): ThingEvent | undefined {

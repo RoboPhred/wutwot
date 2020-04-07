@@ -11,7 +11,7 @@
 export function createWhitelistProxy<T extends object, K extends keyof T>(
   obj: T,
   whitelist: readonly K[],
-  enumerable = true
+  enumerable = true,
 ): Pick<T, K> {
   // Produce a dummy target containing the keys we want.
   //  This allows us to produce nonconfigurable properties in the proxy
@@ -58,8 +58,8 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
     set(target, p, value) {
       throw new TypeError(
         `Cannot write property ${String(
-          p
-        )}; Proxy is a read-only view into the target.`
+          p,
+        )}; Proxy is a read-only view into the target.`,
       );
     },
     ownKeys() {
@@ -75,7 +75,7 @@ export function createWhitelistProxy<T extends object, K extends keyof T>(
 
 function isWhitelistedKey<K extends string | number | symbol>(
   key: string | number | symbol,
-  whitelist: readonly K[]
+  whitelist: readonly K[],
 ): key is K {
   return whitelist.includes(key as any);
 }

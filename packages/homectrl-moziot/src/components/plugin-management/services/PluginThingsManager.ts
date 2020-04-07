@@ -14,7 +14,7 @@ import { OwnedPluginThing, PluginThing } from "../types/PluginThing";
  * within a plugin service scope.
  */
 export const PluginThingsManager: Identifier<PluginThingsManager> = createSymbol(
-  "PluginThingsManager"
+  "PluginThingsManager",
 );
 
 /**

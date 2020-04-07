@@ -10,7 +10,7 @@ import { ThingAction } from "../types";
  * The ActionEventSource service provides events pertaining to any {@link ThingAction}.
  */
 export const ActionEventSource: Identifier<ActionEventSource> = createSymbol(
-  "ActionEventSource"
+  "ActionEventSource",
 );
 
 /**
@@ -40,7 +40,7 @@ export interface ActionEventSource {
    */
   removeListener(
     event: "action.add",
-    handler: ThingActionAddedEventHandler
+    handler: ThingActionAddedEventHandler,
   ): this;
 
   /**
@@ -64,7 +64,7 @@ export interface ActionEventSource {
    */
   removeListener(
     event: "action.remove",
-    handler: ThingActionRemovedEventHandler
+    handler: ThingActionRemovedEventHandler,
   ): this;
 }
 
@@ -72,7 +72,7 @@ export interface ActionEventSource {
  * Defines an event handler for an `action.add` event.
  */
 export type ThingActionAddedEventHandler = (
-  e: ThingActionAddedEventArgs
+  e: ThingActionAddedEventArgs,
 ) => void;
 
 /**
@@ -99,7 +99,7 @@ export interface ThingActionAddedEventArgs {
  * Defines an event handler for an `action.remove` event.
  */
 export type ThingActionRemovedEventHandler = (
-  e: ThingActionRemovedEventArgs
+  e: ThingActionRemovedEventArgs,
 ) => void;
 
 /**

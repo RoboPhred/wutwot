@@ -13,7 +13,7 @@ import { OwnedPluginThingAction, PluginAdapter } from "../types";
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(
     private _action: InternalAction,
-    private _pluginAdapter: PluginAdapter
+    private _pluginAdapter: PluginAdapter,
   ) {}
 
   get id(): string {
@@ -55,7 +55,7 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
   addRequest(def: ThingActionRequestDef): ThingActionRequest {
     if (!this.isOwned()) {
       throw new Error(
-        "The requesting plugin does not own this action.  Requests can only be added by the plugin that owns the action."
+        "The requesting plugin does not own this action.  Requests can only be added by the plugin that owns the action.",
       );
     }
     return this._action.addRequest(def);

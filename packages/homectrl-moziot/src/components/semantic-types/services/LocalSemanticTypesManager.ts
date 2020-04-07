@@ -3,7 +3,7 @@ import { Identifier } from "microinject";
 import createSymbol from "../../../create-symbol";
 
 export const LocalSemanticTypesManager: Identifier<LocalSemanticTypesManager> = createSymbol(
-  "LocalSemanticTypeManager"
+  "LocalSemanticTypeManager",
 );
 export interface LocalSemanticTypesManager {
   addType(type: string): void;

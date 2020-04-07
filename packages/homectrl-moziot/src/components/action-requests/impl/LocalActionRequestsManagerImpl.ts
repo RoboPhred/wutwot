@@ -29,7 +29,7 @@ export class LocalActionRequestsManagerImpl
     @injectParam(InternalActionParams.ActionId)
     private _actionId: string,
     @inject(ActionRequestEventSink)
-    private _eventSink: ActionRequestEventSink
+    private _eventSink: ActionRequestEventSink,
   ) {}
 
   getAllRequests(): ThingActionRequest[] {
@@ -42,7 +42,7 @@ export class LocalActionRequestsManagerImpl
       id,
       this._thingId,
       this._actionId,
-      def
+      def,
     );
     this._requestsById.set(id, request);
     this._eventSink.onActionRequestAdded(request);

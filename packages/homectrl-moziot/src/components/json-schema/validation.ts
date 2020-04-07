@@ -13,7 +13,7 @@ const validatorMap = new WeakMap<
 
 export function validateOrThrow(
   obj: any,
-  schema: DeepImmutableObject<JSONSchema6>
+  schema: DeepImmutableObject<JSONSchema6>,
 ) {
   let validator = validatorMap.get(schema);
   if (!validator) {

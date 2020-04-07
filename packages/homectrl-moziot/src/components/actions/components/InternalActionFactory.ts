@@ -12,7 +12,7 @@ import { InternalAction } from "../services";
  * given action definitions.
  */
 export const InternalActionFactory: Identifier<InternalActionFactory> = createSymbol(
-  "InternalActionFactory"
+  "InternalActionFactory",
 );
 
 /**

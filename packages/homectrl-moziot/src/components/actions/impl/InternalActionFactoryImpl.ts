@@ -11,7 +11,7 @@ import { InternalThingParams } from "../../things";
 // TODO: Keep this as a class based factory.
 //  Needs to be able to request injection of service locator / context
 export function internalThingFactoryImpl(
-  context: Context
+  context: Context,
 ): InternalActionFactory {
   class InternalActionFactoryImpl implements InternalActionFactory {
     private _idMapper = new LegacyIdMapper();

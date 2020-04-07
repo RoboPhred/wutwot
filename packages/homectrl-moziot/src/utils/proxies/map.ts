@@ -4,7 +4,7 @@ import { makeReadOnly } from "../readonly";
 
 //  Cant we store them as objects and use a read only object proxy instead?
 export function createMapProxy<K extends PropertyKey, V>(
-  map: Map<K, V>
+  map: Map<K, V>,
 ): Record<K, V> {
   const target = {} as Record<K, V>;
   const handler: ProxyHandler<Record<K, V>> = {
@@ -28,8 +28,8 @@ export function createMapProxy<K extends PropertyKey, V>(
     defineProperty(target, key) {
       throw new TypeError(
         `Cannot define property ${String(
-          key
-        )}; Proxy is a read-only view into the target.`
+          key,
+        )}; Proxy is a read-only view into the target.`,
       );
     },
     has(target, key) {
@@ -41,8 +41,8 @@ export function createMapProxy<K extends PropertyKey, V>(
     set(target, key) {
       throw new TypeError(
         `Cannot write property ${String(
-          key
-        )}; Proxy is a read-only view into the target.`
+          key,
+        )}; Proxy is a read-only view into the target.`,
       );
     },
     ownKeys() {

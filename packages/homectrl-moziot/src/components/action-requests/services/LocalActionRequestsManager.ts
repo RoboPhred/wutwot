@@ -11,7 +11,7 @@ import { ThingActionRequest, ThingActionRequestDef } from "../types";
  * This service should be scoped to {@link ActionScope}
  */
 export const LocalActionRequestsManager: Identifier<LocalActionRequestsManager> = createSymbol(
-  "ActionRequestService"
+  "ActionRequestService",
 );
 
 /**

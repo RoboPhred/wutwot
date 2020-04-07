@@ -10,6 +10,6 @@ import { IdMapper } from "../../id-mapping";
  * The ThingIdMapper service tracks persistent IDs for {@link Thing}s.
  */
 export const ThingIdMapper: Identifier<IdMapper> = createSymbol(
-  "ThingIdMapper"
+  "ThingIdMapper",
 );
 export type ThingIdMapper = IdMapper;

@@ -36,7 +36,7 @@ export namespace ThingActionRequestStatus {
    */
   export function canTransition(
     from: ThingActionRequestStatus,
-    to: ThingActionRequestStatus
+    to: ThingActionRequestStatus,
   ) {
     if (from === to) {
       return false;

@@ -5,7 +5,7 @@ import createSymbol from "../../../create-symbol";
 import { ThingProperty } from "../types";
 
 export const PropertyEventSink: Identifier<PropertyEventSink> = createSymbol(
-  "PropertyEventSink"
+  "PropertyEventSink",
 );
 export interface PropertyEventSink {
   onPropertyAdded(property: ThingProperty): void;

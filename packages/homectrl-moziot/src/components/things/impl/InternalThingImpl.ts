@@ -71,7 +71,7 @@ export class InternalThingImpl implements InternalThing {
     @inject(LocalPropertiesManager)
     private _propertiesManager: LocalPropertiesManager,
     @inject(LocalEventsManager)
-    private _eventsManager: LocalEventsManager
+    private _eventsManager: LocalEventsManager,
   ) {
     this._def = {
       ..._def,
@@ -80,12 +80,12 @@ export class InternalThingImpl implements InternalThing {
 
     this._title = this._persistence.get(
       ThingPersistenceKeys.Name,
-      _def.defaultTitle
+      _def.defaultTitle,
     );
     this._description =
       this._persistence.get(
         ThingPersistenceKeys.Description,
-        _def.defaultDescription
+        _def.defaultDescription,
       ) ?? "";
 
     this._publicProxy = createPublicThingApi(this);

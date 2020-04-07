@@ -10,7 +10,7 @@ import { InternalThingFactory, ThingIdMapper } from "../components";
 // TODO: Keep this as a class based factory.
 //  Needs to be able to request injection of service locator / context
 export function internalThingFactoryImpl(
-  context: Context
+  context: Context,
 ): InternalThingFactory {
   const idMapper = context.get(ThingIdMapper);
 

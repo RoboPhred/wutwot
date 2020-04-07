@@ -10,7 +10,7 @@ import { ThingActionRequest } from "../types";
  * This service can be used to receive events pertaining to any {@link ThingActionRequest}.
  */
 export const ActionRequestEventSource: Identifier<ActionRequestEventSource> = createSymbol(
-  "ActionRequestEventSource"
+  "ActionRequestEventSource",
 );
 
 /**
@@ -27,7 +27,7 @@ export interface ActionRequestEventSource {
    */
   on(
     event: "actionRequest.add",
-    handler: ThingActionRequestAddedEventHandler
+    handler: ThingActionRequestAddedEventHandler,
   ): this;
 
   /**
@@ -37,7 +37,7 @@ export interface ActionRequestEventSource {
    */
   once(
     event: "actionRequest.add",
-    handler: ThingActionRequestAddedEventHandler
+    handler: ThingActionRequestAddedEventHandler,
   ): this;
 
   /**
@@ -47,7 +47,7 @@ export interface ActionRequestEventSource {
    */
   removeListener(
     event: "actionRequest.add",
-    handler: ThingActionRequestAddedEventHandler
+    handler: ThingActionRequestAddedEventHandler,
   ): this;
 }
 
@@ -55,7 +55,7 @@ export interface ActionRequestEventSource {
  * Describes an event handler for a `actionRequest.add` event.
  */
 export type ThingActionRequestAddedEventHandler = (
-  e: ThingActionRequestAddedEventArgs
+  e: ThingActionRequestAddedEventArgs,
 ) => void;
 
 /**

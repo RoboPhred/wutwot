@@ -18,7 +18,7 @@ export namespace InternalThingParams {
 }
 
 export const InternalThing: Identifier<InternalThing> = createSymbol(
-  "InternalThing"
+  "InternalThing",
 );
 export interface InternalThing extends Thing {
   readonly publicProxy: Thing;

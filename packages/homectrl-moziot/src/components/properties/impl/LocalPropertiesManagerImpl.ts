@@ -26,7 +26,7 @@ export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
     @inject(PropertyEventSink)
-    private _eventSink: PropertyEventSink
+    private _eventSink: PropertyEventSink,
   ) {}
 
   getProperty(propertyId: string): ThingProperty | undefined {
@@ -45,7 +45,7 @@ export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
       propertyDef,
       propertyId,
       this._thingId,
-      owner
+      owner,
     );
     this._properties.set(property.id, property);
 

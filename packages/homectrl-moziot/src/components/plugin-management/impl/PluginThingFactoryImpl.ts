@@ -14,12 +14,12 @@ import { PluginThingImpl } from "./PluginThingImpl";
 export class PluginThingFactoryImpl implements PluginThingFactory {
   constructor(
     @inject(ThingsManager)
-    private _thingsManager: ThingsManager
+    private _thingsManager: ThingsManager,
   ) {}
 
   getPluginThing(
     thing: InternalThing,
-    pluginAdapter: PluginAdapter
+    pluginAdapter: PluginAdapter,
   ): PluginThing | OwnedPluginThing {
     return new PluginThingImpl(thing, pluginAdapter, this._thingsManager);
   }

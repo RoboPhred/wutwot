@@ -10,7 +10,7 @@
  */
 export function metadataObjectToMap(
   obj: Record<string | symbol, any>,
-  map = new Map<string | symbol, any>()
+  map = new Map<string | symbol, any>(),
 ): Map<string | Symbol, any> {
   const keys = [
     ...Object.getOwnPropertyNames(obj),

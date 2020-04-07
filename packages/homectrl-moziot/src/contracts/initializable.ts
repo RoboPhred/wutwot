@@ -8,7 +8,7 @@ import createSymbol from "../create-symbol";
  * Initializable components are initialized after all services are registered.
  */
 export const Initializable: Identifier<Initializable> = createSymbol(
-  "Initializable"
+  "Initializable",
 );
 
 /**

@@ -20,7 +20,7 @@ export class PluginAdapterImpl implements PluginAdapter {
     private _plugin: MozIotPlugin,
     publicContainer: Container,
     private _thingManager: ThingsManager,
-    private _pluginThingFactory: PluginThingFactory
+    private _pluginThingFactory: PluginThingFactory,
   ) {
     this._privateContainer = new Container();
     this._privateContainer.parent = publicContainer;
@@ -37,7 +37,7 @@ export class PluginAdapterImpl implements PluginAdapter {
 
     if (_plugin.onRegisterPublicServices) {
       const registryModule = _plugin.onRegisterPublicServices(
-        publicContainer.bind.bind(publicContainer)
+        publicContainer.bind.bind(publicContainer),
       );
       if (registryModule) {
         publicContainer.load(registryModule);
@@ -46,7 +46,7 @@ export class PluginAdapterImpl implements PluginAdapter {
 
     if (_plugin.onRegisterPrivateServices) {
       const registryModule = _plugin.onRegisterPrivateServices(
-        this._privateContainer.bind.bind(this._privateContainer)
+        this._privateContainer.bind.bind(this._privateContainer),
       );
       if (registryModule) {
         this._privateContainer.load(registryModule);
@@ -96,8 +96,8 @@ export class PluginAdapterImpl implements PluginAdapter {
         (thing) =>
           this._pluginThingFactory.getPluginThing(
             thing,
-            this
-          ) as OwnedPluginThing
+            this,
+          ) as OwnedPluginThing,
       );
   }
 }

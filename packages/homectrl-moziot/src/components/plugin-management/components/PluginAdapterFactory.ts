@@ -10,7 +10,7 @@ import { MozIotPlugin, PluginAdapter } from "../types";
  * The PluginAdapterFactory service is responsible for creation {@link PluginAdapter}s from {@link MozIotPlugin}s.
  */
 export const PluginAdapterFactory: Identifier<PluginAdapterFactory> = createSymbol(
-  "PluginAdapterFactory"
+  "PluginAdapterFactory",
 );
 
 /**

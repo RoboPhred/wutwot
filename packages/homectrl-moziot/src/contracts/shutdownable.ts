@@ -5,7 +5,7 @@ import createSymbol from "../create-symbol";
  * Identifies a component wishing to be notified on shutdown.
  */
 export const Shutdownable: Identifier<Shutdownable> = createSymbol(
-  "Shutdownable"
+  "Shutdownable",
 );
 
 /**

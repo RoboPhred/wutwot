@@ -1,7 +1,7 @@
 import { typedKeys } from "./types";
 
 export function mapToObject<K extends string | number | symbol, V>(
-  map: Map<K, V>
+  map: Map<K, V>,
 ): Record<K, V> {
   const record: Record<K, V> = {} as any;
   for (const [key, value] of map) {
@@ -12,7 +12,7 @@ export function mapToObject<K extends string | number | symbol, V>(
 
 export function objectToMap<K extends string | number | symbol, V>(
   obj: Record<K, V>,
-  map: Map<K, V> = new Map<K, V>()
+  map: Map<K, V> = new Map<K, V>(),
 ): Map<K, V> {
   for (const key of typedKeys(obj)) {
     map.set(key, obj[key]);

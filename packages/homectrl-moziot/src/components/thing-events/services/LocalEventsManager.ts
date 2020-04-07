@@ -5,7 +5,7 @@ import createSymbol from "../../../create-symbol";
 import { ThingEvent, ThingEventDef } from "../types";
 
 export const LocalEventsManager: Identifier<LocalEventsManager> = createSymbol(
-  "LocalEventsManager"
+  "LocalEventsManager",
 );
 export interface LocalEventsManager {
   getEvent(eventId: string): ThingEvent | undefined;

@@ -19,7 +19,7 @@ export class ThingActionRequestImpl implements ThingActionRequest {
     private _id: string,
     private _thingId: string,
     private _actionId: string,
-    private _def: ThingActionRequestDef
+    private _def: ThingActionRequestDef,
   ) {
     this._def = { ..._def };
 

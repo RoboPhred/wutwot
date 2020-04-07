@@ -22,7 +22,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
   constructor(
     @inject(Container) private _container: Container,
     @inject(ThingsManager) private _thingManager: ThingsManager,
-    @inject(PluginThingFactory) private _pluginThingFactory: PluginThingFactory
+    @inject(PluginThingFactory) private _pluginThingFactory: PluginThingFactory,
   ) {}
 
   createPluginAdapter(plugin: MozIotPlugin): PluginAdapter {
@@ -30,7 +30,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
       plugin,
       this._container,
       this._thingManager,
-      this._pluginThingFactory
+      this._pluginThingFactory,
     );
   }
 }

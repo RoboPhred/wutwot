@@ -13,7 +13,7 @@ import { InternalAction } from "./InternalAction";
  * This service should be scoped to {@link ThingScope}
  */
 export const LocalActionsManager: Identifier<LocalActionsManager> = createSymbol(
-  "LocalActionsManager"
+  "LocalActionsManager",
 );
 
 /**

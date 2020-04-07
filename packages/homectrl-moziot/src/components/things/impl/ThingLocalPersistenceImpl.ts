@@ -17,7 +17,7 @@ export class ThingLocalPersistenceImpl extends ScopedDataPersistence {
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
-    @inject(Database) database: Database
+    @inject(Database) database: Database,
   ) {
     super(database);
   }

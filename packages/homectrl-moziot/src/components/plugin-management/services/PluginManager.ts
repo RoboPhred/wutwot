@@ -10,7 +10,7 @@ import { MozIotPlugin } from "../types";
  * The PluginManager service handles the creation and management of plugins.
  */
 export const PluginManager: Identifier<PluginManager> = createSymbol(
-  "PluginManager"
+  "PluginManager",
 );
 
 /**

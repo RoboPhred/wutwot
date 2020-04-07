@@ -10,7 +10,7 @@ import { ThingEvent } from "../types";
  * The EventEventSource service provides events pertaining to any {@link ThingEvent}.
  */
 export const EventEventSource: Identifier<EventEventSource> = createSymbol(
-  "EventEventSource"
+  "EventEventSource",
 );
 
 /**
@@ -40,7 +40,7 @@ export interface EventEventSource {
    */
   removeListener(
     event: "event.add",
-    handler: ThingEventAddedEventHandler
+    handler: ThingEventAddedEventHandler,
   ): this;
 
   /**
@@ -64,7 +64,7 @@ export interface EventEventSource {
    */
   removeListener(
     event: "event.remove",
-    handler: ThingEventRemovedEventHandler
+    handler: ThingEventRemovedEventHandler,
   ): this;
 }
 
@@ -97,7 +97,7 @@ export interface ThingEventAddedEventArgs {
  * Defines an event handler for an `event.remove` event.
  */
 export type ThingEventRemovedEventHandler = (
-  e: ThingEventRemovedEventArgs
+  e: ThingEventRemovedEventArgs,
 ) => void;
 
 /**

@@ -10,7 +10,7 @@ import { Thing } from "../types";
  * The ThingEventSource service provides events pertaining to any {@link Thing}.
  */
 export const ThingEventSource: Identifier<ThingEventSource> = createSymbol(
-  "ThingEventSource"
+  "ThingEventSource",
 );
 
 /**
@@ -61,7 +61,7 @@ export interface ThingEventSource {
    */
   removeListener(
     event: "thing.remove",
-    handler: ThingRemovedEventHandler
+    handler: ThingRemovedEventHandler,
   ): this;
 }
 

@@ -17,6 +17,6 @@ const mozIotModule = composeModules(
   propertiesModule,
   thingEventsModule,
   thingTypesModule,
-  thingModule
+  thingModule,
 );
 export default mozIotModule;

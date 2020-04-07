@@ -20,7 +20,7 @@ export class ThingsManagerImpl implements ThingsManager {
   constructor(
     @inject(InternalThingFactory) private _factory: InternalThingFactory,
     @inject(ThingEventSink) private _eventSink: ThingEventSink,
-    @inject(ThingIdMapper) private _idMapper: ThingIdMapper
+    @inject(ThingIdMapper) private _idMapper: ThingIdMapper,
   ) {
     this._objectAccessor = createMapProxy(this._thingsById);
   }

@@ -26,7 +26,7 @@ export namespace InternalActionParams {
  * This identifier can be used to create InternalActions.
  */
 export const InternalAction: Identifier<InternalAction> = createSymbol(
-  "InternalAction"
+  "InternalAction",
 );
 
 /**

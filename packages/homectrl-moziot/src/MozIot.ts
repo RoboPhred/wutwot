@@ -41,7 +41,7 @@ export class MozIot {
     // TODO: Should be live instance Record<thingId, Thing>
     return mapValues(
       this._thingManager.objectAccessor,
-      (thing) => thing.publicProxy
+      (thing) => thing.publicProxy,
     );
   }
 

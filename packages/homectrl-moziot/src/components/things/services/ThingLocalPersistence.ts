@@ -10,7 +10,7 @@ import { DataPersistence } from "../../persistence";
  * The ThingLocalPersistence service persists data on behalf of a specifc {@link Thing}.
  */
 export const ThingLocalPersistence: Identifier<ThingLocalPersistence> = createSymbol(
-  "ThingLocalPersistence"
+  "ThingLocalPersistence",
 );
 
 /**

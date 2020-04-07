@@ -17,7 +17,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
 
   constructor(
     @inject(PluginAdapterFactory)
-    private _pluginAdapterFactory: PluginAdapterFactory
+    private _pluginAdapterFactory: PluginAdapterFactory,
   ) {}
 
   onInitialize() {
@@ -31,7 +31,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
   registerPlugin(plugin: MozIotPlugin): void {
     if (this._adaptersByPluginId.has(plugin.id)) {
       throw new Error(
-        `A plugin with id "${plugin.id}" already exists.  Please reconfigure the plugin to use a different ID.`
+        `A plugin with id "${plugin.id}" already exists.  Please reconfigure the plugin to use a different ID.`,
       );
     }
 

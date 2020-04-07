@@ -10,7 +10,7 @@ import { ThingProperty } from "../types";
  * The PropertyEventSource service provides events pertaining to any {@link ThingProperty}.
  */
 export const PropertyEventSource: Identifier<PropertyEventSource> = createSymbol(
-  "PropertyEventSource"
+  "PropertyEventSource",
 );
 
 /**
@@ -40,7 +40,7 @@ export interface PropertyEventSource {
    */
   removeListener(
     event: "property.add",
-    handler: ThingPropertyAddedEventHandler
+    handler: ThingPropertyAddedEventHandler,
   ): this;
 
   /**
@@ -57,7 +57,7 @@ export interface PropertyEventSource {
    */
   once(
     event: "property.remove",
-    handler: ThingPropertyRemovedEventHandler
+    handler: ThingPropertyRemovedEventHandler,
   ): this;
 
   /**
@@ -67,7 +67,7 @@ export interface PropertyEventSource {
    */
   removeListener(
     event: "property.remove",
-    handler: ThingPropertyRemovedEventHandler
+    handler: ThingPropertyRemovedEventHandler,
   ): this;
 }
 
@@ -75,7 +75,7 @@ export interface PropertyEventSource {
  * Defines an event handler for a `property.add` event.
  */
 export type ThingPropertyAddedEventHandler = (
-  e: ThingPropertyAddedEventArgs
+  e: ThingPropertyAddedEventArgs,
 ) => void;
 
 /**
@@ -102,7 +102,7 @@ export interface ThingPropertyAddedEventArgs {
  * Defines an event handler for a `property.remove` event.
  */
 export type ThingPropertyRemovedEventHandler = (
-  e: ThingPropertyRemovedEventArgs
+  e: ThingPropertyRemovedEventArgs,
 ) => void;
 
 /**

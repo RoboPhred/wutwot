@@ -13,7 +13,7 @@ import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
  * given a {@link InternalThing} and a {@link PluginAdapter} to create it for.
  */
 export const PluginThingFactory: Identifier<PluginThingFactory> = createSymbol(
-  "PluginThingFactory"
+  "PluginThingFactory",
 );
 
 /**
@@ -31,6 +31,6 @@ export interface PluginThingFactory {
    */
   getPluginThing(
     thing: InternalThing,
-    pluginAdapter: PluginAdapter
+    pluginAdapter: PluginAdapter,
   ): PluginThing | OwnedPluginThing;
 }
