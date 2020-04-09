@@ -10,56 +10,43 @@ import {
   ZWaveNodeValueUpdatedArgs,
 } from "zwave-js/build/lib/node/Types";
 
-import { ZThingMonitor } from "../../types";
-import { ZThingMonitorFactory } from "../../contracts";
+import { ZWaveEndpointMonitor } from "../../types";
+import { ZWaveEndpointMonitorFactory } from "../../contracts";
+import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
+import { ValueID } from "zwave-js/build/lib/node/ValueDB";
 
 @injectable()
-@provides(ZThingMonitorFactory)
+@provides(ZWaveEndpointMonitorFactory)
 @singleton()
 export class MultilevelSwitchMonitorFactoryImpl
-  implements ZThingMonitorFactory {
-  createMonitor(node: ZWaveNode, thing: PluginThing): ZThingMonitor | null {
-    if (!node.supportsCC(CommandClasses["Multilevel Switch"])) {
+  implements ZWaveEndpointMonitorFactory {
+  createMonitor(
+    endpoint: Endpoint,
+    thing: PluginThing,
+  ): ZWaveEndpointMonitor | null {
+    if (!endpoint.commandClasses["Multilevel Switch"].isSupported()) {
       return null;
     }
-    return new MultilevelSwitchMonitorImpl(node, thing);
+    return new MultilevelSwitchMonitorImpl(endpoint, thing);
   }
 }
 
-class MultilevelSwitchMonitorImpl implements ZThingMonitor {
+class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
   private _subjectsByEndpoint = new Map<number, Subject<number>>();
+  private _subject = new Subject<number>();
+  private _node: ZWaveNode;
 
-  constructor(private _node: ZWaveNode, private _thing: PluginThing) {
-    // TODO: Capture and log errors
-    this._setupEndpoints();
-  }
+  constructor(endpoint: Endpoint, private _thing: PluginThing) {
+    this._node = endpoint.getNodeUnsafe()!;
 
-  destroy() {}
-
-  private _setupEndpoints() {
     this._thing.addSemanticType("MultiLevelSwitch");
 
-    const basicValues = this._node
-      .getDefinedValueIDs()
-      .filter(
-        (value) =>
-          value.commandClass === CommandClasses["Multilevel Switch"] &&
-          value.property === "targetValue",
-      );
+    const valueId: ValueID = {
+      commandClass: CommandClasses["Multilevel Switch"],
+      property: "targetValue",
+      endpoint: endpoint.index,
+    };
 
-    for (let i = 0; i < basicValues.length; i++) {
-      const value = basicValues[i];
-      this._setupSwitch(value, basicValues.length > 1, i);
-    }
-
-    this._node.on("value updated", this._onValueUpdated);
-  }
-
-  private _setupSwitch(
-    valueId: TranslatedValueID,
-    multi: boolean,
-    index: number,
-  ) {
     const initialValue = this._node.getValue({
       ...valueId,
       property: "currentValue",
@@ -67,23 +54,26 @@ class MultilevelSwitchMonitorImpl implements ZThingMonitor {
     const metadata = this._node.getValueMetadata(
       valueId,
     ) as ValueMetadataNumeric;
-    const subject = new Subject<number>();
-
-    this._subjectsByEndpoint.set(valueId.endpoint ?? -1, subject);
 
     this._thing.addProperty({
-      title: multi ? `Switch ${index + 1}` : "Switch",
+      title: "Switch",
       description: metadata.description || "",
       semanticType: "LevelProperty",
       type: "number",
       minimum: metadata.min ?? 0,
       maximum: metadata.max ?? 99,
       initialValue,
-      values: subject,
+      values: this._subject,
       onValueChangeRequested: (thingId, propertyId, value) => {
         this._node.setValue(valueId, value);
       },
     });
+
+    this._node.on("value updated", this._onValueUpdated);
+  }
+
+  destroy() {
+    this._node.removeListener("value updated", this._onValueUpdated);
   }
 
   @autobind()
@@ -96,11 +86,6 @@ class MultilevelSwitchMonitorImpl implements ZThingMonitor {
       return;
     }
 
-    const subject = this._subjectsByEndpoint.get(endpoint ?? -1);
-    if (!subject) {
-      return;
-    }
-
-    subject.next(newValue as number);
+    this._subject.next(newValue as number);
   }
 }

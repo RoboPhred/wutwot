@@ -4,7 +4,7 @@ import { injectable, provides, inject } from "microinject";
 
 import { ZWavePort } from "../config";
 
-import { AdapterLocator } from "../components/AdapterLocator";
+import { AdapterLocator } from "../components";
 
 // TODO: Make configurable
 const adapters = require(join(__dirname, "../../config/zwave-adapters.json"));

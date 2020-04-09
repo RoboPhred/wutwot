@@ -2,8 +2,7 @@ import { Driver } from "zwave-js";
 import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
 import { injectable, provides, inject, singleton } from "microinject";
 
-import { ZWaveProvider } from "../components/ZWaveProvider";
-import { AdapterLocator } from "../components/AdapterLocator";
+import { ZWaveProvider, AdapterLocator } from "../components";
 
 @injectable()
 @provides(ZWaveProvider)

@@ -1,1 +1,1 @@
-export * from "./ZThingMonitor";
+export * from "./ZWaveEndpointMonitor";

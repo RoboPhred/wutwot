@@ -2,8 +2,7 @@ import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
 import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
 import { MozIotPlugin } from "homectrl-moziot";
 
-import { ZWaveProvider } from "./components/ZWaveProvider";
-import { ZThingManager } from "./components/ZThingManager";
+import { ZWaveProvider, ZWaveEndpointThingMapper } from "./components";
 
 import { ZWavePort } from "./config";
 import containerModule from "./module";
@@ -57,6 +56,6 @@ export class ZWavePlugin implements MozIotPlugin {
 
     // Instantiate the thing manager.
     //  It will automatically start syncing things.
-    serviceLocator.get(ZThingManager);
+    serviceLocator.get(ZWaveEndpointThingMapper);
   }
 }

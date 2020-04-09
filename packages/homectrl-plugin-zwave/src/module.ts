@@ -4,8 +4,8 @@ import { MultilevelSwitchMonitorFactoryImpl } from "./impl/monitors/MultilevelSw
 import { CentralSceneMonitorFactoryImpl } from "./impl/monitors/CentralSceneMonitorFactoryImpl";
 
 import { AdapterLocatorImpl } from "./impl/AdapterLocatorImpl";
-import { ZThingAdapterFactoryImpl } from "./impl/ZThingAdapterFactoryImpl";
-import { ZThingManagerImpl } from "./impl/ZThingManagerImpl";
+import { ZWaveEndpointHandlerFactoryImpl } from "./impl/ZWaveEndpointHandlerFactoryImpl";
+import { ZWaveEndpointThingMapperImpl } from "./impl/ZWaveEndpointThingMapper";
 import { ZWaveProviderImpl } from "./impl/ZWaveProviderImpl";
 
 export default new ContainerModule((bind) => {
@@ -13,7 +13,7 @@ export default new ContainerModule((bind) => {
   bind(CentralSceneMonitorFactoryImpl);
 
   bind(AdapterLocatorImpl);
-  bind(ZThingAdapterFactoryImpl);
-  bind(ZThingManagerImpl);
+  bind(ZWaveEndpointHandlerFactoryImpl);
+  bind(ZWaveEndpointThingMapperImpl);
   bind(ZWaveProviderImpl);
 });
