@@ -94,7 +94,7 @@ export class PluginThingImpl implements OwnedPluginThing {
         "The requesting plugin does not own this Thing.  Things can only be deleted by their owner plugins.",
       );
     }
-    this._thingManager.removeThing(this._thing.id);
+    this._thingManager.deleteThing(this._thing.id);
   }
 
   isOwned(): this is OwnedPluginThing {

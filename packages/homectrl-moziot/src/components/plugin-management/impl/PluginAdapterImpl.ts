@@ -68,13 +68,13 @@ export class PluginAdapterImpl implements PluginAdapter {
   }
 
   private _addThing(def: ThingDef): OwnedPluginThing {
-    const thing = this._thingManager.addThing(def, this._plugin);
+    const thing = this._thingManager.createThing(def, this._plugin);
     const pluginThing = this._pluginThingFactory.getPluginThing(thing, this);
     return pluginThing as OwnedPluginThing;
   }
 
   private _getThing(id: string): PluginThing | null {
-    const thing = this._thingManager.getThing(id);
+    const thing = this._thingManager.get(id);
     if (!thing) {
       return null;
     }
@@ -83,14 +83,13 @@ export class PluginAdapterImpl implements PluginAdapter {
   }
 
   private _getThings(): PluginThing[] {
-    return this._thingManager
-      .getThings()
-      .map((thing) => this._pluginThingFactory.getPluginThing(thing, this));
+    return Array.from(this._thingManager.values()).map((thing) =>
+      this._pluginThingFactory.getPluginThing(thing, this),
+    );
   }
 
   private _getOwnThings(): OwnedPluginThing[] {
-    return this._thingManager
-      .getThings()
+    return Array.from(this._thingManager.values())
       .filter((x) => x.ownerPlugin === this._plugin)
       .map(
         (thing) =>

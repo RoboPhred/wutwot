@@ -11,11 +11,13 @@ import { Thing, ThingsManager } from "./components/things";
 import { PluginManager, MozIotPlugin } from "./components/plugin-management";
 
 import { Initializable, Shutdownable } from "./contracts";
+import { createReadonlyMapWrapper } from "./immutable";
 
 export class MozIot {
   private _container: Container = new Container();
   private _pluginManager: PluginManager;
   private _thingManager: ThingsManager;
+  private _publicThingsMap: ReadonlyMap<string, Thing>;
 
   constructor(plugins: MozIotPlugin[]) {
     this._container.bind(Container).toConstantValue(this._container);
@@ -23,7 +25,12 @@ export class MozIot {
     this._container.load(containerModule);
 
     this._pluginManager = this._container.get(PluginManager);
+
     this._thingManager = this._container.get(ThingsManager);
+    this._publicThingsMap = createReadonlyMapWrapper(
+      this._thingManager,
+      (internal) => internal.publicProxy,
+    );
 
     for (const plugin of plugins) {
       this._pluginManager.registerPlugin(plugin);
@@ -37,7 +44,7 @@ export class MozIot {
   [inspect.custom] = makeInspectJson("MozIot");
 
   get things(): ReadonlyMap<string, Thing> {
-    return this._thingManager.publicReadonlyMap;
+    return this._publicThingsMap;
   }
 
   async shutdown(): Promise<void> {
@@ -50,7 +57,7 @@ export class MozIot {
 
   toJSON() {
     return {
-      things: mapToObject(this._thingManager.publicReadonlyMap),
+      things: mapToObject(this._publicThingsMap),
     };
   }
 }
