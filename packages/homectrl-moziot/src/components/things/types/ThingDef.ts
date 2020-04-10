@@ -12,7 +12,7 @@ import { ReadonlyRecord } from "../../../types";
  */
 export interface ThingDef {
   /**
-   * ID of this thing unique to the plugin that created it.
+   * The ID of this thing unique to the plugin that created it.
    */
   readonly pluginLocalId: string;
 

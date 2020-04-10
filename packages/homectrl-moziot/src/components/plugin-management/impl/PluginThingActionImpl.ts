@@ -1,5 +1,3 @@
-import { JSONSchema6 } from "json-schema";
-
 import { DeepImmutableObject } from "../../../types";
 
 import { InternalAction, ThingAction } from "../../actions";
@@ -9,6 +7,7 @@ import {
 } from "../../action-requests";
 
 import { OwnedPluginThingAction, PluginAdapter } from "../types";
+import { DataSchema } from "../../data-schema";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(
@@ -40,8 +39,12 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
     return this._action.description;
   }
 
-  get input(): DeepImmutableObject<JSONSchema6> {
+  get input(): DeepImmutableObject<DataSchema> | undefined {
     return this._action.input;
+  }
+
+  get output(): DeepImmutableObject<DataSchema> | undefined {
+    return this._action.output;
   }
 
   get requests(): readonly ThingActionRequest[] {

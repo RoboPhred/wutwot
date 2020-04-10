@@ -27,6 +27,11 @@ export interface ThingActionRequest {
   readonly input: any;
 
   /**
+   * If status is "completed", the output of the action.
+   */
+  readonly output: any | null;
+
+  /**
    * The ISO 8601 timestamp this action was requested on.
    */
   readonly timeRequested: string;

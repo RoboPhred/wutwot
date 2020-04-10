@@ -4,6 +4,12 @@
 
 [The Standard](https://w3c.github.io/wot-thing-description/).
 
+- Follow the spec more closely for affordances
+  - Handle affoardances that are poly. ThingProperty is actually NumericThingProperty | ObjectThingProperty and so on.
+  - ThingProperty is a subclass of DataSchema
+  - Titles and descriptions are all optional
+  - Action inputs are optional
+
 #### Use urns for IDs.
 
 Currently, we implement this in homectrl-server.
@@ -20,6 +26,11 @@ generate the urls that way.
 Bindings are a property of the server though, and we cannot expose
 them from moziot. Maybe we should just cover the core concepts of WOT
 and leave the api for server.
+
+WOT examples use a urn specific to physical devices, but we cannot do that as:
+
+- we are not a device registrar churning out hardware, so we don't have a serial number to use.
+- We are making virtual devices as well as targeting physical ones.
 
 #### Ensure actions / events / properties are unique between plugins
 
@@ -57,16 +68,6 @@ that each thing is a single cohesive thing.
 #### API documentation
 
 https://www.npmjs.com/package/@microsoft/api-extractor
-
-#### Unify the json-schema variant that WOT uses
-
-WOT spec uses a small subset of JSON Schema. Make types and a validator
-for this subset and share them along all usages.
-
-~~This might need a bit of off-spec work, as the spec is inconsistent in how it defines
-these. For example, it often defines type can be `object` but does not always define a `properties` property.
-Sometimes, the spec shows json-schema properties in an example that it does not define in the spec.~~
-This seems to be taken care of in [the new spec](https://w3c.github.io/wot-thing-description/).
 
 #### Call remove event sink functions when things are removed.
 

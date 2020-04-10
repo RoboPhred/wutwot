@@ -1,5 +1,8 @@
 import { ToJSON } from "../../../types";
 
+// TODO: According to the specs, this inherits from DataSchema.
+//  However, DataSchema is multiple types combined, so we need to implement each one.
+// Maybe we should provide multiple ThingProperty interfaces based on the core type?
 export interface ThingProperty {
   readonly id: string;
   readonly thingId: string;

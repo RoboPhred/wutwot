@@ -1,5 +1,4 @@
 import { injectable, inScope, injectParam, inject } from "microinject";
-import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
 import { isObservable } from "rxjs";
 
@@ -14,6 +13,7 @@ import {
   ThingActionRequest,
   ThingActionRequestDef,
   LocalActionRequestsManager,
+  ThingActionRequestStatus,
 } from "../../action-requests";
 
 import { ThingScope } from "../../things";
@@ -21,6 +21,7 @@ import { ThingScope } from "../../things";
 import { ThingAction, ThingActionDef, ThingActionKeys } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
+import { DataSchema } from "../../data-schema";
 
 @injectable()
 @inScope(ThingScope)
@@ -77,8 +78,12 @@ export class InternalActionImpl implements InternalAction {
     return this._def.description;
   }
 
-  get input(): DeepImmutableObject<JSONSchema6> {
+  get input(): DeepImmutableObject<DataSchema> | undefined {
     return this._def.input;
+  }
+
+  get output(): DeepImmutableObject<DataSchema> | undefined {
+    return this._def.output;
   }
 
   get requests(): ReadonlyArray<ThingActionRequest> {
@@ -86,13 +91,13 @@ export class InternalActionImpl implements InternalAction {
   }
 
   request(input: any): ThingActionRequest {
-    validateOrThrow(input, this._def.input);
+    const { input: inputSchema, onActionInvocationRequested } = this._def;
 
-    const status = this._def.onActionInvocationRequested(
-      this._thingId,
-      this._id,
-      input,
-    );
+    if (inputSchema) {
+      validateOrThrow(input, inputSchema);
+    }
+
+    const status = onActionInvocationRequested(this._thingId, this._id, input);
 
     if (!isObservable(status)) {
       // TODO: More details about the plugin that caused the error.
@@ -105,6 +110,7 @@ export class InternalActionImpl implements InternalAction {
     return this._requestsManager.addRequest({
       input,
       timeRequested: new Date().toISOString(),
+      initialStatus: ThingActionRequestStatus.Started,
       status,
     });
   }
