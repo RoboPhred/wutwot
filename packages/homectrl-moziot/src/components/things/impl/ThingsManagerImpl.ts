@@ -1,6 +1,6 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
-import { ThingDef } from "../types";
+import { ThingDef, Thing } from "../types";
 import {
   InternalThingFactory,
   ThingEventSink,
@@ -8,25 +8,27 @@ import {
 } from "../components";
 
 import { ThingsManager, InternalThing } from "../services";
-import { createMapProxy } from "../../../utils/proxies/map";
+import { createReadonlyMapWrapper } from "../../../immutable";
 
 @injectable()
 @singleton()
 @provides(ThingsManager)
 export class ThingsManagerImpl implements ThingsManager {
   private _thingsById = new Map<string, InternalThing>();
-  private _objectAccessor: Record<string, InternalThing>;
+  private _readonlyThingsById = createReadonlyMapWrapper<
+    string,
+    InternalThing,
+    Thing
+  >(this._thingsById, (internal) => internal.publicProxy);
 
   constructor(
     @inject(InternalThingFactory) private _factory: InternalThingFactory,
     @inject(ThingEventSink) private _eventSink: ThingEventSink,
     @inject(ThingIdMapper) private _idMapper: ThingIdMapper,
-  ) {
-    this._objectAccessor = createMapProxy(this._thingsById);
-  }
+  ) {}
 
-  get objectAccessor(): Record<string, InternalThing> {
-    return this, this._objectAccessor;
+  get publicReadonlyMap(): ReadonlyMap<string, Thing> {
+    return this._readonlyThingsById;
   }
 
   addThing(def: ThingDef, owner: object): InternalThing {

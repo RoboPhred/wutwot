@@ -15,7 +15,7 @@ export class ThingsRoot {
 
   @get()
   getThings() {
-    const body = values(this._mozIot.things).map((thing) =>
+    const body = Array.from(this._mozIot.things.values()).map((thing) =>
       this._restifier.thingToRest(thing, false),
     );
 

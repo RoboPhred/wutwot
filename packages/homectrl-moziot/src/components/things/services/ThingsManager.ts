@@ -10,7 +10,7 @@ export const ThingsManager: Identifier<ThingsManager> = createSymbol(
   "ThingsManager",
 );
 export interface ThingsManager {
-  objectAccessor: Record<string, InternalThing>;
+  readonly publicReadonlyMap: ReadonlyMap<string, Thing>;
 
   addThing(def: ThingDef, owner: object): InternalThing;
   removeThing(thingId: string): void;

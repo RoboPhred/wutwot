@@ -1,10 +1,9 @@
 // This seems a bit silly, do we gain an advantage from storing things as maps?
 
-import { makeReadOnly } from "../readonly";
-
 //  Cant we store them as objects and use a read only object proxy instead?
-export function createMapProxy<K extends PropertyKey, V>(
+export function createMapProxy<K extends PropertyKey, V, VOut = V>(
   map: Map<K, V>,
+  valueMapper?: (value: V) => VOut,
 ): Record<K, V> {
   const target = {} as Record<K, V>;
   const handler: ProxyHandler<Record<K, V>> = {
@@ -12,8 +11,11 @@ export function createMapProxy<K extends PropertyKey, V>(
       return false;
     },
     getOwnPropertyDescriptor(target, key) {
-      const value = map.get(key as K);
+      let value: V | VOut | undefined = map.get(key as K);
       if (value) {
+        if (valueMapper) {
+          value = valueMapper(value);
+        }
         // We need to return configurable: true due to some archaic
         //  rule about the proxy relationship with the underlying target.
         return {
@@ -36,7 +38,11 @@ export function createMapProxy<K extends PropertyKey, V>(
       return map.has(key as K);
     },
     get(target, key) {
-      return map.get(key as K);
+      let value: V | VOut | undefined = map.get(key as K);
+      if (value && valueMapper) {
+        value = valueMapper(value);
+      }
+      return value;
     },
     set(target, key) {
       throw new TypeError(

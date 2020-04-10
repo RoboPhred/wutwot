@@ -11,7 +11,7 @@ import {
 } from "homectrl-moziot";
 
 export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
-  const thing = mozIot.things[thingId];
+  const thing = mozIot.things.get(thingId);
   if (!thing) {
     throw createError(
       HttpStatusCodes.NOT_FOUND,
