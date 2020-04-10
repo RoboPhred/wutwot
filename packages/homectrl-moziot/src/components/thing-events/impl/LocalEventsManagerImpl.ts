@@ -30,7 +30,7 @@ export class EventServiceImpl
 
   createEvent(eventDef: ThingEventDef, owner: object): ThingEvent {
     validateEventDefOrThrow(eventDef);
-    const id = this._idMapper.createId(eventDef.title);
+    const id = this._idMapper.createId(eventDef.pluginLocalId);
     const event = new ThingEventImpl(eventDef, id, this._thingId, owner);
     this._set(id, event);
     this._eventSink.onEventAdded(event);

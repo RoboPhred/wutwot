@@ -1,11 +1,16 @@
 import { inspect } from "util";
+import { cloneDeep } from "lodash";
 
 import { makeReadOnly, makeReadOnlyDeep } from "../../../utils/readonly";
 import { makeInspectJson } from "../../../utils/inspect";
 
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
+import { DeepImmutable } from "../../../types";
+import { DataSchema } from "../../data-schema";
 
 export class ThingEventImpl implements ThingEvent {
+  private _data: DeepImmutable<DataSchema> | undefined = undefined;
+
   /**
    * Event records sorted by date ascending.
    */
@@ -18,6 +23,9 @@ export class ThingEventImpl implements ThingEvent {
     private _owner: object,
   ) {
     _def.eventSource.subscribe(this._onEventRaised.bind(this));
+    if (_def.data) {
+      this._data = makeReadOnlyDeep(cloneDeep(_def.data));
+    }
   }
 
   [inspect.custom] = makeInspectJson("ThingEvent");
@@ -34,36 +42,27 @@ export class ThingEventImpl implements ThingEvent {
     return this._owner;
   }
 
-  get title(): string {
+  get title(): string | undefined {
     return this._def.title;
   }
 
-  get semanticType(): string {
-    return this._def.semanticType;
+  get semanticTypes(): readonly string[] {
+    let value: string[] = [];
+    if (Array.isArray(this._def.semanticType)) {
+      value = [...this._def.semanticType];
+    } else if (typeof this._def.semanticType === "string") {
+      value = [this._def.semanticType];
+    }
+
+    return makeReadOnly(value);
   }
 
-  get description(): string {
+  get description(): string | undefined {
     return this._def.description;
   }
 
-  get type(): string {
-    return this._def.type;
-  }
-
-  get unit(): string | undefined {
-    return this._def.unit;
-  }
-
-  get minimum(): number | undefined {
-    return this._def.minimum;
-  }
-
-  get maximum(): number | undefined {
-    return this._def.maximum;
-  }
-
-  get multipleOf(): number | undefined {
-    return this._def.multipleOf;
+  get data(): DeepImmutable<DataSchema> | undefined {
+    return this._data;
   }
 
   get records(): readonly ThingEventRecord[] {
@@ -76,13 +75,9 @@ export class ThingEventImpl implements ThingEvent {
       thingId: this.thingId,
       ownerPlugin: this.ownerPlugin,
       title: this.title,
-      semanticType: this.semanticType,
+      semanticTypes: this.semanticTypes,
       description: this.description,
-      type: this.type,
-      unit: this.unit,
-      minimum: this.minimum,
-      maximum: this.maximum,
-      multipleOf: this.multipleOf,
+      data: this.data,
       records: this.records,
     };
   }
