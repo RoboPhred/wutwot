@@ -38,7 +38,7 @@ export interface Thing extends MetadataProvider {
   /**
    * The actions this thing supports.
    */
-  readonly actions: ReadonlyRecord<string, ThingAction>;
+  readonly actions: ReadonlyMap<string, ThingAction>;
 
   /**
    * The properties this thing supports.

@@ -30,7 +30,9 @@ export class Restifier {
       id: joinURL(this._rootURL, "things", thing.id),
       title: thing.title,
       description: thing.description,
-      actions: mapValues(thing.actions, (x) => this.actionToRest(x)),
+      actions: mapValues(mapToObject(thing.actions), (x) =>
+        this.actionToRest(x),
+      ),
       properties: mapValues(thing.properties, (x) => this.propertyToRest(x)),
       events: mapValues(thing.events, (x) => this.eventToRest(x)),
       links: buildArray(
@@ -142,4 +144,13 @@ function buildArray<T>(...args: (T | T[] | false)[]): T[] {
 }
 function isNotFalsey<T>(val: T | null | undefined | false): val is T {
   return Boolean(val);
+}
+function mapToObject<K extends PropertyKey, V>(
+  map: ReadonlyMap<K, V>,
+): Record<K, V> {
+  const record: Record<K, V> = {} as any;
+  for (const [key, value] of map) {
+    record[key] = value;
+  }
+  return record;
 }

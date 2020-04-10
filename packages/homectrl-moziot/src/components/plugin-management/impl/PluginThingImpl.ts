@@ -2,11 +2,13 @@ import { mapValues } from "lodash";
 
 import { ReadonlyRecord } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
+import { createReadonlyMapWrapper } from "../../../immutable";
 
 import { Thing, ThingsManager, InternalThing } from "../../things";
-import { ThingActionDef } from "../../actions";
+import { ThingActionDef, InternalAction } from "../../actions";
 import { ThingProperty, ThingPropertyDef } from "../../properties";
 import { ThingEvent, ThingEventDef } from "../../thing-events";
+import { MetadataIdentifier } from "../../metadata";
 
 import {
   OwnedPluginThing,
@@ -14,15 +16,26 @@ import {
   OwnedPluginThingAction,
   PluginAdapter,
 } from "../types";
+
 import { PluginThingActionImpl } from "./PluginThingActionImpl";
-import { MetadataIdentifier } from "../../metadata";
 
 export class PluginThingImpl implements OwnedPluginThing {
+  private _pluginActionsById: ReadonlyMap<string, PluginThingAction>;
+  private _pluginActionsByInternal = new WeakMap<
+    InternalAction,
+    PluginThingAction
+  >();
+
   constructor(
     private _thing: InternalThing,
     private _pluginAdapter: PluginAdapter,
     private _thingManager: ThingsManager,
-  ) {}
+  ) {
+    this._pluginActionsById = createReadonlyMapWrapper(
+      this._thing.actions,
+      (action) => this._getPluginAction(action),
+    );
+  }
 
   get id(): string {
     return this._thing.id;
@@ -50,12 +63,8 @@ export class PluginThingImpl implements OwnedPluginThing {
     this._thing.description = value;
   }
 
-  get actions(): ReadonlyRecord<string, PluginThingAction> {
-    const actions = mapValues(
-      this._thing.actions,
-      (action) => new PluginThingActionImpl(action, this._pluginAdapter),
-    );
-    return makeReadOnly(actions);
+  get actions(): ReadonlyMap<string, PluginThingAction> {
+    return this._pluginActionsById;
   }
 
   get properties(): ReadonlyRecord<string, ThingProperty> {
@@ -115,5 +124,14 @@ export class PluginThingImpl implements OwnedPluginThing {
 
   toJSON() {
     return this._thing.toJSON();
+  }
+
+  private _getPluginAction(action: InternalAction): PluginThingAction {
+    let pluginAction = this._pluginActionsByInternal.get(action);
+    if (!pluginAction) {
+      pluginAction = new PluginThingActionImpl(action, this._pluginAdapter);
+      this._pluginActionsByInternal.set(action, pluginAction);
+    }
+    return pluginAction;
   }
 }

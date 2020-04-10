@@ -23,7 +23,7 @@ export const InternalThing: Identifier<InternalThing> = createSymbol(
 export interface InternalThing extends Thing {
   readonly publicProxy: Thing;
 
-  readonly actions: ReadonlyRecord<string, InternalAction>;
+  readonly actions: ReadonlyMap<string, InternalAction>;
 
   addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;

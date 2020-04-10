@@ -40,6 +40,7 @@ import {
 import { DataPersistence, DataStorageKey } from "../../persistence";
 import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
 import { mapToObject } from "../../../utils/map";
+import { createReadonlyMapWrapper } from "../../../immutable";
 
 namespace ThingPersistenceKeys {
   export const Name: DataStorageKey = ["name"];
@@ -124,14 +125,8 @@ export class InternalThingImpl implements InternalThing {
     this._persistence.set(ThingPersistenceKeys.Description, value);
   }
 
-  get actions(): ReadonlyRecord<string, InternalAction> {
-    const actions: Record<string, InternalAction> = {};
-    // TODO: Get a read-only map proxy from propertyManager
-    this._actionsManager.getAllActions().forEach((action) => {
-      actions[action.id] = action;
-    });
-
-    return makeReadOnly(actions);
+  get actions(): ReadonlyMap<string, InternalAction> {
+    return this._actionsManager;
   }
 
   get properties(): ReadonlyRecord<string, ThingProperty> {
@@ -161,7 +156,7 @@ export class InternalThingImpl implements InternalThing {
   }
 
   addAction(def: ThingActionDef, owner: object): InternalAction {
-    return this._actionsManager.addAction(def, owner);
+    return this._actionsManager.createAction(def, owner);
   }
 
   addEvent(def: ThingEventDef, owner: object): ThingEvent {
@@ -184,7 +179,9 @@ export class InternalThingImpl implements InternalThing {
       semanticTypes: this.semanticTypes,
       description: this.description,
       metadata: mapToObject(this._metadata),
-      actions: mapValues(this.actions, (action) => action.toJSON()),
+      actions: Array.from(this.actions.values()).map((action) =>
+        action.toJSON(),
+      ),
       properties: mapValues(this.properties, (property) => property.toJSON()),
       events: mapValues(this.events, (event) => event.toJSON()),
     };
@@ -193,6 +190,11 @@ export class InternalThingImpl implements InternalThing {
 
 // Move this somewhere.  Make a factory for it?
 function createPublicThingApi(thing: InternalThing) {
+  const publicActions = createReadonlyMapWrapper(
+    thing.actions,
+    (internal) => internal.publicProxy,
+  );
+
   class PublicThing implements Thing {
     get [Symbol.toStringTag]() {
       return "Thing";
@@ -226,16 +228,15 @@ function createPublicThingApi(thing: InternalThing) {
       thing.description = value;
     }
 
-    get actions(): Readonly<Record<string, ThingAction>> {
-      // TODO: Preserve live instance view.
-      return mapValues(thing.actions, (action) => action.publicProxy);
+    get actions(): ReadonlyMap<string, ThingAction> {
+      return publicActions;
     }
 
-    get properties(): Readonly<Record<string, ThingProperty>> {
+    get properties(): ReadonlyRecord<string, ThingProperty> {
       return thing.properties;
     }
 
-    get events(): Readonly<Record<string, ThingEvent>> {
+    get events(): ReadonlyRecord<string, ThingEvent> {
       return thing.events;
     }
 

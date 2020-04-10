@@ -17,7 +17,7 @@ export interface PluginThing extends Thing {
    * The actions contained in this object provide additional
    * functionality for use by plugins.
    */
-  readonly actions: ReadonlyRecord<string, PluginThingAction>;
+  readonly actions: ReadonlyMap<string, PluginThingAction>;
 
   /**
    * Gets a value indicating whether the current plugin owns this Thing.

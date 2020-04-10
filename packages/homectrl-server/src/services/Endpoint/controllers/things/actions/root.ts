@@ -1,7 +1,7 @@
 import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
-import { mapValues, values, flatMap } from "lodash";
+import { flatMap } from "lodash";
 import { MozIot } from "homectrl-moziot";
 
 import { Restifier } from "../../../Restifier";
@@ -28,7 +28,7 @@ export class ThingActionsRoot {
     const thing = getThingOrThrow(this._mozIot, thingId);
 
     const requests = flatMap(
-      values(thing.actions),
+      Array.from(thing.actions.values()),
       (action) => action.requests,
     );
     // TODO: Sort requests.  Newer / pending actions should be before completed / older

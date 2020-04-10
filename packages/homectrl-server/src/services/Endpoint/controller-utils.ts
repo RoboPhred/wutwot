@@ -26,13 +26,14 @@ export function getActionOrThrow(
   actionId: string,
   errorCode: number = HttpStatusCodes.NOT_FOUND,
 ): ThingAction {
-  if (!has(thing.actions, actionId)) {
+  const action = thing.actions.get(actionId);
+  if (!action) {
     throw createError(
       errorCode,
       "An action on the given Thing with the specified ID was not found.",
     );
   }
-  return thing.actions[actionId];
+  return action;
 }
 
 export function getRequestOrThrow(
