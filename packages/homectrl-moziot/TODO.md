@@ -2,56 +2,24 @@
 
 #### The standard has moved on, update to follow it
 
-[The Standard](https://w3c.github.io/wot-thing-description/#http-binding-assertions).
+[The Standard](https://w3c.github.io/wot-thing-description/).
 
-#### Use urn format for thing IDs instead of guids.
+#### Use urns for IDs.
 
-Follows [the Standard](https://w3c.github.io/wot-thing-description/#http-binding-assertions).
+Currently, we implement this in homectrl-server.
 
-Could always use guid urn:
-`urn:uuid:0393990-393094309-293u3099-9u4209`
+The WOT spec is web centric, how close do we want to conform to it from
+our library?
 
-WoT docs use this:
-`urn:dev:ops:32473-WoTLamp-1234`
+Implementing it in homectrl-server is nice as that means
+the urns can be urls pointing at the actual location of the thing.
 
-URN docs frown upon creating our own urns like this though... but we could.
-`urn:moziot:thing:<pluginId>-<pluginLocalId>-<title>`
+Might want to accept a baseUrl property into moziot and
+generate the urls that way.
 
-#### Prevent data from becomming stale.
-
-~~thing.properties, thing.actions, thing.events, action.requests, and event.records become stale after accessed.
-Use proxy objects to create a live view into this data that remains read-only.~~
-
-Do we really want to do this? Nothing else in javascript works like this and its a rather
-silly use of proxies.
-
-Alternative: Use functions that are allowed to be stale
-
-```
-moziot.getAllThingIds()
-moziot.getAllThings()
-moziot.getThing(id)
-```
-
-Alternative 2: Use ReadonlyMap
-
-```
-moziot.things.keys()
-for(const thing of moziot.things.values()) {}
-moziot.things.get("id")
-```
-
-Maps are messy with sub-items though, which dont use urns
-
-```
-moziot.things.get("urn:foo").events.get("myEvent").records
-```
-
-#### Mask private fields on exposed properties / events / actions of PluginThing
-
-We mask public stuff just fine by creating map proxies, but public things
-expose the InternalThing props which are not masked. Should move the mask
-to them.
+Bindings are a property of the server though, and we cannot expose
+them from moziot. Maybe we should just cover the core concepts of WOT
+and leave the api for server.
 
 #### Ensure actions / events / properties are unique between plugins
 
@@ -62,7 +30,7 @@ Abstracting them as uuids is easiest, but very unfriendly to humans trying to co
 the api.
 
 Specs seems to have human readable names here, but the specs seem to make the assumption
-that there is a single cohesive owner of the thing.
+that each thing is a single cohesive thing.
 
 #### Metadata on properties, actions, events
 
@@ -98,7 +66,7 @@ for this subset and share them along all usages.
 ~~This might need a bit of off-spec work, as the spec is inconsistent in how it defines
 these. For example, it often defines type can be `object` but does not always define a `properties` property.
 Sometimes, the spec shows json-schema properties in an example that it does not define in the spec.~~
-This seems to be taken care of in [the new spec](https://w3c.github.io/wot-thing-description/#http-binding-assertions).
+This seems to be taken care of in [the new spec](https://w3c.github.io/wot-thing-description/).
 
 #### Call remove event sink functions when things are removed.
 
