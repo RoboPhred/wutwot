@@ -71,7 +71,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._thing.properties;
   }
 
-  get events(): ReadonlyRecord<string, ThingEvent> {
+  get events(): ReadonlyMap<string, ThingEvent> {
     return this._thing.events;
   }
 

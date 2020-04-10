@@ -1,6 +1,7 @@
 import { injectable, provides, inject, injectParam } from "microinject";
 
 import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
+import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { inThingScope, InternalThingParams } from "../../things";
 
@@ -14,7 +15,6 @@ import { LocalPropertiesManager } from "../services";
 import { PropertyEventSink } from "../components";
 
 import { ThingPropertyImpl } from "./ThingPropertyImpl";
-import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 @injectable()
 @inThingScope()

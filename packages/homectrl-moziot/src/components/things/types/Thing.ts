@@ -48,7 +48,7 @@ export interface Thing extends MetadataProvider {
   /**
    * The events this thing supports.
    */
-  readonly events: ReadonlyRecord<string, ThingEvent>;
+  readonly events: ReadonlyMap<string, ThingEvent>;
 
   toJSON(): ToJSON<Thing>;
 }

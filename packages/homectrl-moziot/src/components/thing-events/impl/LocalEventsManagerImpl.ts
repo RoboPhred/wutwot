@@ -1,40 +1,39 @@
-import { injectable, provides, injectParam } from "microinject";
+import { injectable, provides, injectParam, inject } from "microinject";
 
 import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
+import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { InternalThingParams, inThingScope } from "../../things";
 
 import { ThingEvent, ThingEventDef, validateEventDefOrThrow } from "../types";
-
 import { LocalEventsManager } from "../services/LocalEventsManager";
+import { EventEventSink } from "../components/EventEventSink";
 
 import { ThingEventImpl } from "./ThingEventImpl";
 
 @injectable()
 @inThingScope()
 @provides(LocalEventsManager)
-export class EventServiceImpl implements LocalEventsManager {
+export class EventServiceImpl
+  extends SelfPopulatingReadonlyMap<string, ThingEvent>
+  implements LocalEventsManager {
   private _idMapper = new LegacyIdMapper();
-  private _eventsById = new Map<string, ThingEvent>();
 
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
-  ) {}
-
-  getEvent(eventId: string): ThingEvent | undefined {
-    return this._eventsById.get(eventId);
+    @inject(EventEventSink)
+    private _eventSink: EventEventSink,
+  ) {
+    super();
   }
 
-  getAllEvents(): ThingEvent[] {
-    return Array.from(this._eventsById.values());
-  }
-
-  addEvent(eventDef: ThingEventDef, owner: object): ThingEvent {
+  createEvent(eventDef: ThingEventDef, owner: object): ThingEvent {
     validateEventDefOrThrow(eventDef);
     const id = this._idMapper.createId(eventDef.title);
     const event = new ThingEventImpl(eventDef, id, this._thingId, owner);
-    this._eventsById.set(event.id, event);
+    this._set(id, event);
+    this._eventSink.onEventAdded(event);
     return event;
   }
 }

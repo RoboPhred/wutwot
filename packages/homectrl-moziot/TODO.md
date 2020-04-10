@@ -47,6 +47,12 @@ Maps are messy with sub-items though, which dont use urns
 moziot.things.get("urn:foo").events.get("myEvent").records
 ```
 
+#### Mask private fields on exposed properties / events / actions of PluginThing
+
+We mask public stuff just fine by creating map proxies, but public things
+expose the InternalThing props which are not masked. Should move the mask
+to them.
+
 #### Ensure actions / events / properties are unique between plugins
 
 As multiple plugins can contribute to a single thing, we need a way to unique the

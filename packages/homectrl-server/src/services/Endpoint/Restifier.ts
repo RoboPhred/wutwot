@@ -35,7 +35,7 @@ export class Restifier {
       properties: mapValues(mapToObject(thing.properties), (x) =>
         this.propertyToRest(x),
       ),
-      events: mapValues(thing.events, (x) => this.eventToRest(x)),
+      events: mapValues(mapToObject(thing.events), (x) => this.eventToRest(x)),
       links: buildArray(
         !isPrimary && createLink("href", `/things/${thing.id}`),
         isPrimary && [

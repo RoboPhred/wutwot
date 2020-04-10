@@ -56,6 +56,10 @@ export class InternalThingImpl implements InternalThing {
   private _description: string;
   private _metadata = new Map<string | symbol, any>();
 
+  private _actions: ReadonlyMap<string, InternalAction>;
+  private _properties: ReadonlyMap<string, ThingProperty>;
+  private _events: ReadonlyMap<string, ThingEvent>;
+
   constructor(
     @injectParam(InternalThingParams.ThingDef)
     private _def: ThingDef,
@@ -88,6 +92,12 @@ export class InternalThingImpl implements InternalThing {
         ThingPersistenceKeys.Description,
         _def.defaultDescription,
       ) ?? "";
+
+    // Create masks of the managers to prevent
+    //  tampering with internal properties.
+    this._actions = createReadonlyMapWrapper(this._actionsManager);
+    this._properties = createReadonlyMapWrapper(this._propertiesManager);
+    this._events = createReadonlyMapWrapper(this._eventsManager);
 
     this._publicProxy = createPublicThingApi(this);
   }
@@ -126,20 +136,15 @@ export class InternalThingImpl implements InternalThing {
   }
 
   get actions(): ReadonlyMap<string, InternalAction> {
-    return this._actionsManager;
+    return this._actions;
   }
 
   get properties(): ReadonlyMap<string, ThingProperty> {
-    return this._propertiesManager;
+    return this._properties;
   }
 
-  get events(): ReadonlyRecord<string, ThingEvent> {
-    const events: Record<string, ThingEvent> = {};
-    // TODO: Get a read-only map proxy from propertyManager
-    this._eventsManager.getAllEvents().forEach((event) => {
-      events[event.id] = event;
-    });
-    return makeReadOnly(events);
+  get events(): ReadonlyMap<string, ThingEvent> {
+    return this._events;
   }
 
   addSemanticType(type: string): void {
@@ -155,7 +160,7 @@ export class InternalThingImpl implements InternalThing {
   }
 
   addEvent(def: ThingEventDef, owner: object): ThingEvent {
-    return this._eventsManager.addEvent(def, owner);
+    return this._eventsManager.createEvent(def, owner);
   }
 
   getMetadataKeys() {
@@ -180,13 +185,15 @@ export class InternalThingImpl implements InternalThing {
       properties: mapValues(mapToObject(this.properties), (property) =>
         property.toJSON(),
       ),
-      events: mapValues(this.events, (event) => event.toJSON()),
+      events: mapValues(mapToObject(this.events), (event) => event.toJSON()),
     };
   }
 }
 
 // Move this somewhere.  Make a factory for it?
 function createPublicThingApi(thing: InternalThing) {
+  // We need to convert the InternalThing api of InternalActions
+  //  to the public api ThingActions
   const publicActions = createReadonlyMapWrapper(
     thing.actions,
     (internal) => internal.publicProxy,
@@ -230,10 +237,12 @@ function createPublicThingApi(thing: InternalThing) {
     }
 
     get properties(): ReadonlyMap<string, ThingProperty> {
+      // Already masked by InternalThing
       return thing.properties;
     }
 
-    get events(): ReadonlyRecord<string, ThingEvent> {
+    get events(): ReadonlyMap<string, ThingEvent> {
+      // Already masked by InternalThing
       return thing.events;
     }
 

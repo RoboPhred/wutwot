@@ -17,7 +17,10 @@ export class ThingEventsRoot {
   @get()
   getThingEvents(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._mozIot, thingId);
-    let records = flatMap(values(thing.events), (event) => event.records);
+    let records = flatMap(
+      Array.from(thing.events.values()),
+      (event) => event.records,
+    );
     records = sortBy(records, (record) => record.timestamp);
     return records.map((record) => this._restifier.eventRecordToRest(record));
   }

@@ -70,11 +70,12 @@ export function getEventOrThrow(
   eventId: string,
   errorCode: number = HttpStatusCodes.NOT_FOUND,
 ): ThingEvent {
-  if (!has(thing.events, eventId)) {
+  const event = thing.events.get(eventId);
+  if (!event) {
     throw createError(
       errorCode,
       "A ThingEvent on the given Thing with the specified ID was not found.",
     );
   }
-  return thing.events[eventId];
+  return event;
 }
