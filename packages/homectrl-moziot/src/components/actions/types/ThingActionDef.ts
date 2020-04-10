@@ -7,31 +7,15 @@ import { DeepImmutableObject } from "../../../types";
 
 import { DataSchema } from "../../data-schema";
 import { ThingActionRequestUpdate } from "../../action-requests";
+import {
+  InteractionAffoardanceDef,
+  interactionAffoardanceDefSchema,
+} from "../../affoardance";
 
 /**
  * Defines the information required to create a {@link ThingAction}
  */
-export interface ThingActionDef {
-  /**
-   * The ID of this action unique to the plugin that created it.
-   */
-  readonly pluginLocalId: string;
-
-  /**
-   * The title of the action.
-   */
-  readonly title?: string;
-
-  /**
-   * The semantic type of the action, if any.
-   */
-  readonly semanticType?: string | string[];
-
-  /**
-   * The description of the action.
-   */
-  readonly description?: string;
-
+export interface ThingActionDef extends InteractionAffoardanceDef {
   /**
    * JSON Schema describing the input this action takes.
    */
@@ -62,10 +46,6 @@ export interface ThingActionDef {
 export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
-    pluginLocalId: { type: "string", minLength: 1 },
-    title: { type: "string", minLength: 1 },
-    semanticType: { type: "string", minLength: 1 },
-    description: { type: "string", minLength: 1 },
     input: {
       type: "object",
       // TODO: This should reference dataSchemaSchema
@@ -82,7 +62,10 @@ export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
  * A validator function for a {@link ThingActionDef} that returns
  * details about the validation.
  */
-export const validateActionDef = makeValidator(actionDefSchema);
+export const validateActionDef = makeValidator(
+  interactionAffoardanceDefSchema,
+  actionDefSchema,
+);
 
 /**
  * A validator function for a {@link ThingActionDef} that throws an error

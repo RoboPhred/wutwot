@@ -3,41 +3,15 @@ import { DeepImmutableObject, ToJSON } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
 import { DataSchema } from "../../data-schema";
+import {
+  InteractionAffoardance,
+  InteractionAffoardanceKeys,
+} from "../../affoardance";
 
 /**
  * Represents an Action on a {@link Thing}.
  */
-export interface ThingAction {
-  /**
-   * The ID of this action.
-   */
-  readonly id: string;
-
-  /**
-   * The ID of the {@link Thing} this action is for.
-   */
-  readonly thingId: string;
-
-  /**
-   * The plugin that created this action.
-   */
-  readonly ownerPlugin: object;
-
-  /**
-   * The title of this action.
-   */
-  readonly title: string | undefined;
-
-  /**
-   * The semantic types of this action, if any.
-   */
-  readonly semanticTypes: readonly string[];
-
-  /**
-   * The description of this action.
-   */
-  readonly description: string | undefined;
-
+export interface ThingAction extends InteractionAffoardance {
   /**
    * JSON Schema describing this action's input.
    */
@@ -70,12 +44,7 @@ export interface ThingAction {
  * An array of keys making up the public api of a {@link ThingAction}.
  */
 export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
-  "id",
-  "thingId",
-  "ownerPlugin",
-  "title",
-  "semanticTypes",
-  "description",
+  ...InteractionAffoardanceKeys,
   "input",
   "output",
   "requests",

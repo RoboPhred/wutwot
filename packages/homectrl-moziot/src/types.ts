@@ -1,6 +1,7 @@
 export type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
   Record<K, V>
 >;
+export type ArrayItem<T> = T extends (infer A)[] ? A : never;
 
 export type JSONPrimitive = undefined | null | boolean | string | number;
 export type ToJSON<T> = T extends JSONPrimitive
