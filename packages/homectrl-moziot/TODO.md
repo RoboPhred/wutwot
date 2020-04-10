@@ -6,10 +6,6 @@
 
 - Follow the spec more closely for affordances
   - Handle affoardances that are poly. ThingProperty is actually NumericThingProperty | ObjectThingProperty and so on.
-  - ThingProperty is a subclass of DataSchema
-  - Titles and descriptions are all optional
-  - Action inputs are optional
-- semanticType (@type) can now be string or array of strings for all affordances.
 
 #### Use urns for IDs.
 
@@ -42,7 +38,7 @@ Abstracting them as uuids is easiest, but very unfriendly to humans trying to co
 the api.
 
 Specs seems to have human readable names here, but the specs seem to make the assumption
-that each thing is a single cohesive thing.
+that each thing is well defined and self contained.
 
 #### Metadata on properties, actions, events
 

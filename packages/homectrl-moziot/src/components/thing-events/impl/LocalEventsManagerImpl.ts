@@ -1,6 +1,5 @@
 import { injectable, provides, injectParam, inject } from "microinject";
 
-import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { InternalThingParams, inThingScope } from "../../things";
@@ -10,6 +9,7 @@ import { LocalEventsManager } from "../services/LocalEventsManager";
 import { EventEventSink } from "../components/EventEventSink";
 
 import { ThingEventImpl } from "./ThingEventImpl";
+import { MozIotPlugin } from "../../plugin-management";
 
 @injectable()
 @inThingScope()
@@ -17,8 +17,6 @@ import { ThingEventImpl } from "./ThingEventImpl";
 export class EventServiceImpl
   extends SelfPopulatingReadonlyMap<string, ThingEvent>
   implements LocalEventsManager {
-  private _idMapper = new LegacyIdMapper();
-
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
@@ -28,12 +26,20 @@ export class EventServiceImpl
     super();
   }
 
-  createEvent(eventDef: ThingEventDef, owner: object): ThingEvent {
-    validateEventDefOrThrow(eventDef);
-    const id = this._idMapper.createId(eventDef.pluginLocalId);
-    const event = new ThingEventImpl(eventDef, id, this._thingId, owner);
+  createEvent(def: ThingEventDef, owner: MozIotPlugin): ThingEvent {
+    validateEventDefOrThrow(def);
+    const id = `${owner.id}-${def.pluginLocalId}`;
+
+    if (this.has(id)) {
+      throw new Error(
+        `Plugin-Local ID ${def.pluginLocalId} is already in use.`,
+      );
+    }
+
+    const event = new ThingEventImpl(def, id, this._thingId, owner);
     this._set(id, event);
     this._eventSink.onEventAdded(event);
+
     return event;
   }
 }

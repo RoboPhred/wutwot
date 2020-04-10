@@ -1,9 +1,9 @@
 import { injectable, provides, inject, injectParam } from "microinject";
 
-import { LegacyIdMapper } from "../../../utils/LegacyIdMapper";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { inThingScope, InternalThingParams } from "../../things";
+import { MozIotPlugin } from "../../plugin-management";
 
 import {
   ThingProperty,
@@ -22,8 +22,6 @@ import { ThingPropertyImpl } from "./ThingPropertyImpl";
 export class LocalPropertiesManagerImpl
   extends SelfPopulatingReadonlyMap<string, ThingProperty>
   implements LocalPropertiesManager {
-  private _idMapper = new LegacyIdMapper();
-
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
@@ -33,18 +31,20 @@ export class LocalPropertiesManagerImpl
     super();
   }
 
-  createProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty {
-    validatePropertyDefOrThrow(propertyDef);
+  createProperty(def: ThingPropertyDef, owner: MozIotPlugin): ThingProperty {
+    validatePropertyDefOrThrow(def);
+    const id = `${owner.id}-${def.pluginLocalId}`;
 
-    const propertyId = this._idMapper.createId(propertyDef.pluginLocalId);
-    const property = new ThingPropertyImpl(
-      propertyDef,
-      propertyId,
-      this._thingId,
-      owner,
-    );
-    this._set(property.id, property);
+    if (this.has(id)) {
+      throw new Error(
+        `Plugin-Local ID ${def.pluginLocalId} is already in use.`,
+      );
+    }
+
+    const property = new ThingPropertyImpl(def, id, this._thingId, owner);
+    this._set(id, property);
     this._eventSink.onPropertyAdded(property);
+
     return property;
   }
 }
