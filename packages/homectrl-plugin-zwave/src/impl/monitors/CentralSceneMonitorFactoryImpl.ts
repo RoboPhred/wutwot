@@ -42,13 +42,20 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
     this._node.on("value updated", this._onValueUpdated);
 
     thing.addEvent({
+      pluginLocalId: "central-scene-triggered",
       title: "Central Scene Triggered",
       // TODO: Not an official moz wot type.  They only have press and long press, neither of which fit.
-      //  We need to make our own standard.
+      //  We need to make our own standard and use their extension mechanism.
       semanticType: "CentralScene",
       description: "Raised when this device triggers a scene.",
-      type: "object",
-      // TODO: properties
+      data: {
+        type: "object",
+        properties: {
+          scene: { type: "number" },
+          key: { type: "number" },
+          keyName: { type: "string" },
+        },
+      },
       eventSource: this._eventSubject,
     });
   }

@@ -3,12 +3,9 @@ import { autobind } from "core-decorators";
 import { ZWaveNode } from "zwave-js";
 import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
 import { ValueMetadataNumeric } from "zwave-js/build/lib/values/Metadata";
+import { ZWaveNodeValueUpdatedArgs } from "zwave-js/build/lib/node/Types";
 import { PluginThing } from "homectrl-moziot";
 import { Subject } from "rxjs";
-import {
-  TranslatedValueID,
-  ZWaveNodeValueUpdatedArgs,
-} from "zwave-js/build/lib/node/Types";
 
 import { ZWaveEndpointMonitor } from "../../types";
 import { ZWaveEndpointMonitorFactory } from "../../contracts";
@@ -32,7 +29,6 @@ export class MultilevelSwitchMonitorFactoryImpl
 }
 
 class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
-  private _subjectsByEndpoint = new Map<number, Subject<number>>();
   private _subject = new Subject<number>();
   private _node: ZWaveNode;
 
@@ -56,8 +52,9 @@ class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
     ) as ValueMetadataNumeric;
 
     this._thing.addProperty({
+      pluginLocalId: "multilevel-switch",
       title: "Switch",
-      description: metadata.description || "",
+      description: metadata.description,
       semanticType: "LevelProperty",
       type: "number",
       minimum: metadata.min ?? 0,
