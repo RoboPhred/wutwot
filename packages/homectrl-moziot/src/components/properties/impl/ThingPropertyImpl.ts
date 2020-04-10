@@ -6,6 +6,7 @@ import { makeInspectJson } from "../../../utils/inspect";
 import { validateOrThrow } from "../../json-schema";
 
 import { ThingProperty, ThingPropertyDef, ThingPropertyType } from "../types";
+import { makeReadOnly } from "../../../utils/readonly";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
@@ -37,15 +38,22 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._thingId;
   }
 
-  get title(): string {
+  get title(): string | undefined {
     return this._def.title;
   }
 
-  get semanticType(): string | undefined {
-    return this._def.semanticType;
+  get semanticTypes(): readonly string[] {
+    var value: string[] = [];
+    if (Array.isArray(this._def.semanticType)) {
+      value = [...this._def.semanticType];
+    } else if (typeof this._def.semanticType === "string") {
+      value = [this._def.semanticType];
+    }
+
+    return makeReadOnly(value);
   }
 
-  get description(): string {
+  get description(): string | undefined {
     return this._def.description;
   }
 
@@ -99,7 +107,7 @@ export class ThingPropertyImpl implements ThingProperty {
       id: this.id,
       thingId: this.thingId,
       title: this.title,
-      semanticType: this.semanticType,
+      semanticTypes: this.semanticTypes,
       description: this.description,
       type: this.type,
       unit: this.unit,

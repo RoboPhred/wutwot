@@ -1,17 +1,10 @@
 import { ToJSON } from "../../../types";
+import { InteractionAffoardance } from "../../affoardance";
 
 // TODO: According to the specs, this inherits from DataSchema.
 //  However, DataSchema is multiple types combined, so we need to implement each one.
 // Maybe we should provide multiple ThingProperty interfaces based on the core type?
-export interface ThingProperty {
-  readonly id: string;
-  readonly thingId: string;
-
-  readonly ownerPlugin: object;
-
-  readonly title: string;
-  readonly semanticType: string | undefined;
-  readonly description: string;
+export interface ThingProperty extends InteractionAffoardance {
   readonly type: ThingPropertyType;
   readonly unit: string | undefined;
   readonly enum: string[] | undefined;

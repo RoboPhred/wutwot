@@ -32,6 +32,9 @@ export type SimpleValidateFunction = Pick<
 export function makeValidator(
   ...schemas: DeepImmutable<JSONSchema6>[]
 ): SimpleValidateFunction {
+  // We could more simply make a schema that contains an allOf which each
+  //  sub-schema, but that would break refs and root definitions.
+
   const compiledSchemas = schemas.map((schema) => ajv.compile(schema));
 
   const validator: SimpleValidateFunction = (data: any): boolean => {

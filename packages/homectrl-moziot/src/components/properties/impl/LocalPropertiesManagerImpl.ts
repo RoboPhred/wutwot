@@ -36,7 +36,7 @@ export class LocalPropertiesManagerImpl
   createProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty {
     validatePropertyDefOrThrow(propertyDef);
 
-    const propertyId = this._idMapper.createId(propertyDef.title);
+    const propertyId = this._idMapper.createId(propertyDef.pluginLocalId);
     const property = new ThingPropertyImpl(
       propertyDef,
       propertyId,

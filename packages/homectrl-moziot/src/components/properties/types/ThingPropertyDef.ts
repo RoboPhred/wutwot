@@ -5,11 +5,15 @@ import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
 import { makeReadOnlyDeep } from "../../../utils/readonly";
 
 import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
+import {
+  InteractionAffoardanceDef,
+  interactionAffoardanceDefSchema,
+} from "../../affoardance";
 
-export interface ThingPropertyDef {
-  title: string;
-  semanticType?: string;
-  description: string;
+// TODO: This should extend DataSchema
+//  or more probably, there should be multiple of these that collectively
+//  each extend one of the DataSchema sub types.
+export interface ThingPropertyDef extends InteractionAffoardanceDef {
   type: ThingPropertyType;
   unit?: string;
   enum?: string[];
@@ -28,9 +32,6 @@ export interface ThingPropertyDef {
 export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
-    title: { type: "string", minLength: 1 },
-    semanticType: { type: "string", minLength: 1 },
-    description: { type: "string" },
     type: { enum: ThingPropertyTypes },
     unit: { type: "string", minLength: 1 },
     enum: { type: "array", items: { type: "string", minLength: 1 } },
@@ -40,10 +41,13 @@ export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
     readOnly: { type: "boolean" },
     initialValue: { type: ThingPropertyTypes },
   },
-  required: ["title", "description", "type", "initialValue"],
+  required: ["type", "initialValue"],
 });
 
-export const validatePropertyDef = makeValidator(propertyDefSchema);
+export const validatePropertyDef = makeValidator(
+  interactionAffoardanceDefSchema,
+  propertyDefSchema,
+);
 export const validatePropertyDefOrThrow = makeValidateOrThrow(
   validatePropertyDef,
 );
