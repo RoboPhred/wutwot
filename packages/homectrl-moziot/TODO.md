@@ -7,7 +7,7 @@
 - Follow the spec more closely for affordances
   - Handle affoardances that are poly. ThingProperty is actually NumericThingProperty | ObjectThingProperty and so on.
 
-#### Use urns for IDs.
+#### Use urns for Thing IDs.
 
 Currently, we implement this in homectrl-server.
 
@@ -29,16 +29,17 @@ WOT examples use a urn specific to physical devices, but we cannot do that as:
 - we are not a device registrar churning out hardware, so we don't have a serial number to use.
 - We are making virtual devices as well as targeting physical ones.
 
-#### Ensure actions / events / properties are unique between plugins
+#### Support extension contexts.
 
-As multiple plugins can contribute to a single thing, we need a way to unique the
-ids of the actions / events / properties.
+The standard now allows `@context` to be a map. We can make our own contexts for semantic types.
+We need to be able to support adding to this when we add a semantic type to an affoardance that uses it.
+This should be done automatically, so a property can use a custom type and its context should be
+automatically included in the contexts for the thing.
 
-Abstracting them as uuids is easiest, but very unfriendly to humans trying to consume
-the api.
+Up until now, we have ignored context on the thing and made the server support that. Perhaps
+we need to support it more directly.
 
-Specs seems to have human readable names here, but the specs seem to make the assumption
-that each thing is well defined and self contained.
+This starts to enroach us into the web provider concerns that we avoided with the non-urn IDs...
 
 #### Metadata on properties, actions, events
 

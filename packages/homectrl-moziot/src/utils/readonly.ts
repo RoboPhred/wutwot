@@ -6,7 +6,10 @@ export function makeReadOnly<T>(obj: T): Readonly<T> {
 
 export function makeReadOnlyDeep<T>(obj: T): DeepImmutable<T> {
   makeReadOnly(obj);
-  for (const prop in Object.getOwnPropertyNames(obj)) {
+  for (const prop in [
+    ...Object.getOwnPropertyNames(obj),
+    ...Object.getOwnPropertySymbols(obj),
+  ]) {
     const value = obj[prop as keyof T];
     if (value) {
       makeReadOnlyDeep(value);
