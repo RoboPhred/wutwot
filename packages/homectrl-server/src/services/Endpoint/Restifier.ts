@@ -14,8 +14,8 @@ import { mapValues } from "lodash";
 import { RootURL } from "../../config";
 import { mapToObject } from "../../utils/map";
 
-// TODO: Should be configurable.  There's not much in here and we will need
-//  custom semantic types for management.
+// TODO: Should be provided by moziot, as wot now supports
+//  multiple contexts referenced from the semantic types, and other places.
 const WOT_CONTEXT = "https://iot.mozilla.org/schemas/";
 
 @injectable()
@@ -49,12 +49,21 @@ export class Restifier {
 
   actionToRest(action: ThingAction): object {
     return {
-      "@type": action.semanticType,
+      "@type": action.semanticTypes,
       title: action.title,
       description: action.description,
       input: action.input,
       links: [
         createLink("href", `/things/${action.thingId}/actions/${action.id}`),
+      ],
+      forms: [
+        createForm(
+          "invokeaction",
+          joinURL(
+            this._rootURL,
+            `/things/${action.thingId}/actions/${action.id}`,
+          ),
+        ),
       ],
     };
   }
@@ -76,7 +85,7 @@ export class Restifier {
     return {
       title: property.title,
       description: property.description,
-      "@type": property.semanticType,
+      "@type": property.semanticTypes,
       type: property.type,
       unit: property.unit,
       minimum: property.minimum,
@@ -91,19 +100,32 @@ export class Restifier {
           `/things/${property.thingId}/properties/${property.id}`,
         ),
       ],
+      forms: buildArray(
+        createForm(
+          "readproperty",
+          joinURL(
+            this._rootURL,
+            `/things/${property.thingId}/properties/${property.id}`,
+          ),
+        ),
+        !property.readOnly &&
+          createForm(
+            "writeproperty",
+            joinURL(
+              this._rootURL,
+              `/things/${property.thingId}/properties/${property.id}`,
+            ),
+          ),
+      ),
     };
   }
 
   eventToRest(event: ThingEvent): object {
     return {
       title: event.title,
-      "@type": event.semanticType,
-      type: event.type,
-      unit: event.unit,
-      minimum: event.minimum,
-      maximum: event.maximum,
+      "@type": event.semanticTypes,
       description: event.description,
-      // TODO: "properties" for object type.
+      data: event.data,
       links: [
         createLink("href", `/things/${event.thingId}/events/${event.id}`),
       ],
@@ -136,6 +158,26 @@ function stripTrailingSlash(str: string): string {
 function createLink(rel: string, href: string) {
   return {
     rel,
+    href,
+  };
+}
+
+type FormOp =
+  | "readproperty"
+  | "writeproperty"
+  | "observeproperty"
+  | "unobserveproperty"
+  | "invokeaction"
+  | "subscribeevent"
+  | "unsubscribeevent"
+  | "readallproperties"
+  | "writeallproperties"
+  | "readmultipleproperties"
+  | "writemultipleproperties";
+
+function createForm(op: FormOp, href: string) {
+  return {
+    op,
     href,
   };
 }
