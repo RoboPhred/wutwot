@@ -55,13 +55,14 @@ export function getPropertyOrThrow(
   propertyId: string,
   errorCode: number = HttpStatusCodes.NOT_FOUND,
 ): ThingProperty {
-  if (!has(thing.properties, propertyId)) {
+  const property = thing.properties.get(propertyId);
+  if (!property) {
     throw createError(
       errorCode,
       "A ThingProperty on the given Thing with the specified ID was not found.",
     );
   }
-  return thing.properties[propertyId];
+  return property;
 }
 
 export function getEventOrThrow(

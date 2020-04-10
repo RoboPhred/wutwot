@@ -67,7 +67,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._pluginActionsById;
   }
 
-  get properties(): ReadonlyRecord<string, ThingProperty> {
+  get properties(): ReadonlyMap<string, ThingProperty> {
     return this._thing.properties;
   }
 

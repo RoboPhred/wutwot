@@ -129,13 +129,8 @@ export class InternalThingImpl implements InternalThing {
     return this._actionsManager;
   }
 
-  get properties(): ReadonlyRecord<string, ThingProperty> {
-    const properties: Record<string, ThingProperty> = {};
-    // TODO: Get a read-only map proxy from propertyManager
-    this._propertiesManager.getAllProperties().forEach((property) => {
-      properties[property.id] = property;
-    });
-    return makeReadOnly(properties);
+  get properties(): ReadonlyMap<string, ThingProperty> {
+    return this._propertiesManager;
   }
 
   get events(): ReadonlyRecord<string, ThingEvent> {
@@ -152,7 +147,7 @@ export class InternalThingImpl implements InternalThing {
   }
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {
-    return this._propertiesManager.addProperty(def, owner);
+    return this._propertiesManager.createProperty(def, owner);
   }
 
   addAction(def: ThingActionDef, owner: object): InternalAction {
@@ -179,10 +174,12 @@ export class InternalThingImpl implements InternalThing {
       semanticTypes: this.semanticTypes,
       description: this.description,
       metadata: mapToObject(this._metadata),
-      actions: Array.from(this.actions.values()).map((action) =>
+      actions: mapValues(mapToObject(this.actions), (action) =>
         action.toJSON(),
       ),
-      properties: mapValues(this.properties, (property) => property.toJSON()),
+      properties: mapValues(mapToObject(this.properties), (property) =>
+        property.toJSON(),
+      ),
       events: mapValues(this.events, (event) => event.toJSON()),
     };
   }
@@ -232,7 +229,7 @@ function createPublicThingApi(thing: InternalThing) {
       return publicActions;
     }
 
-    get properties(): ReadonlyRecord<string, ThingProperty> {
+    get properties(): ReadonlyMap<string, ThingProperty> {
       return thing.properties;
     }
 

@@ -14,30 +14,26 @@ import { LocalPropertiesManager } from "../services";
 import { PropertyEventSink } from "../components";
 
 import { ThingPropertyImpl } from "./ThingPropertyImpl";
+import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 @injectable()
 @inThingScope()
 @provides(LocalPropertiesManager)
-export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
+export class LocalPropertiesManagerImpl
+  extends SelfPopulatingReadonlyMap<string, ThingProperty>
+  implements LocalPropertiesManager {
   private _idMapper = new LegacyIdMapper();
-  private _properties = new Map<string, ThingProperty>();
 
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
     @inject(PropertyEventSink)
     private _eventSink: PropertyEventSink,
-  ) {}
-
-  getProperty(propertyId: string): ThingProperty | undefined {
-    return this._properties.get(propertyId);
+  ) {
+    super();
   }
 
-  getAllProperties(): ThingProperty[] {
-    return Array.from(this._properties.values());
-  }
-
-  addProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty {
+  createProperty(propertyDef: ThingPropertyDef, owner: object): ThingProperty {
     validatePropertyDefOrThrow(propertyDef);
 
     const propertyId = this._idMapper.createId(propertyDef.title);
@@ -47,10 +43,8 @@ export class LocalPropertiesManagerImpl implements LocalPropertiesManager {
       this._thingId,
       owner,
     );
-    this._properties.set(property.id, property);
-
+    this._set(property.id, property);
     this._eventSink.onPropertyAdded(property);
-
     return property;
   }
 }

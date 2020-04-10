@@ -43,7 +43,7 @@ export interface Thing extends MetadataProvider {
   /**
    * The properties this thing supports.
    */
-  readonly properties: ReadonlyRecord<string, ThingProperty>;
+  readonly properties: ReadonlyMap<string, ThingProperty>;
 
   /**
    * The events this thing supports.
