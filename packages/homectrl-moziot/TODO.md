@@ -9,6 +9,7 @@
   - ThingProperty is a subclass of DataSchema
   - Titles and descriptions are all optional
   - Action inputs are optional
+- semanticType (@type) can now be string or array of strings for all affordances.
 
 #### Use urns for IDs.
 

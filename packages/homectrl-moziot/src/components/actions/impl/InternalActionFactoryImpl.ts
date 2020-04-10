@@ -18,7 +18,7 @@ export function internalThingFactoryImpl(
 
     createAction(def: ThingActionDef, owner: object): InternalAction {
       validateActionDefOrThrow(def);
-      const id = this._idMapper.createId(def.title);
+      const id = this._idMapper.createId(def.pluginLocalId);
       return context.get(InternalAction, {
         [InternalActionParams.ActionId]: id,
         [InternalActionParams.ThingId]:

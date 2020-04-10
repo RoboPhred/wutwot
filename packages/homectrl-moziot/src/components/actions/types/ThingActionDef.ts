@@ -5,31 +5,42 @@ import { makeReadOnlyDeep } from "../../../utils/readonly";
 import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
 import { DeepImmutableObject } from "../../../types";
 
-import { ThingActionRequestStatus } from "../../action-requests";
+import { DataSchema } from "../../data-schema";
+import { ThingActionRequestUpdate } from "../../action-requests";
 
 /**
  * Defines the information required to create a {@link ThingAction}
  */
 export interface ThingActionDef {
   /**
+   * The ID of this action unique to the plugin that created it.
+   */
+  readonly pluginLocalId: string;
+
+  /**
    * The title of the action.
    */
-  readonly title: string;
+  readonly title?: string;
 
   /**
    * The semantic type of the action, if any.
    */
-  readonly semanticType?: string;
+  readonly semanticType?: string | string[];
 
   /**
    * The description of the action.
    */
-  readonly description: string;
+  readonly description?: string;
 
   /**
-   * JSON Schema describing the inputs the action takes.
+   * JSON Schema describing the input this action takes.
    */
-  readonly input: DeepImmutableObject<JSONSchema6>;
+  readonly input?: DeepImmutableObject<DataSchema>;
+
+  /**
+   * JSON Schema describing the output this action returns.
+   */
+  readonly output?: DeepImmutableObject<DataSchema>;
 
   /**
    * A callback to handle the invocation of this action.
@@ -42,7 +53,7 @@ export interface ThingActionDef {
     thingId: string,
     actionId: string,
     input: any,
-  ): Observable<ThingActionRequestStatus>;
+  ): Observable<ThingActionRequestUpdate>;
 }
 
 /**
@@ -51,12 +62,20 @@ export interface ThingActionDef {
 export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
+    pluginLocalId: { type: "string", minLength: 1 },
     title: { type: "string", minLength: 1 },
     semanticType: { type: "string", minLength: 1 },
     description: { type: "string", minLength: 1 },
-    input: { type: "object" },
+    input: {
+      type: "object",
+      // TODO: This should reference dataSchemaSchema
+    },
+    output: {
+      type: "object",
+      // TODO: This should reference dataSchemaSchema
+    },
   },
-  required: ["title", "description", "input"],
+  required: ["pluginLocalId"],
 });
 
 /**

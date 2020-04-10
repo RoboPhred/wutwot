@@ -66,15 +66,23 @@ export class InternalActionImpl implements InternalAction {
     return this._owner;
   }
 
-  get title(): string {
+  get title(): string | undefined {
     return this._def.title;
   }
 
-  get semanticType(): string | undefined {
-    return this._def.semanticType;
+  get semanticTypes(): readonly string[] {
+    var value: string[] = [];
+
+    if (Array.isArray(this._def.semanticType)) {
+      value = [...this._def.semanticType];
+    } else if (typeof this._def.semanticType === "string") {
+      value = [this._def.semanticType];
+    }
+
+    return makeReadOnly(value);
   }
 
-  get description(): string {
+  get description(): string | undefined {
     return this._def.description;
   }
 
@@ -125,7 +133,7 @@ export class InternalActionImpl implements InternalAction {
       thingId: this.thingId,
       ownerPlugin: this.ownerPlugin,
       title: this.title,
-      semanticType: this.semanticType,
+      semanticType: this.semanticTypes,
       description: this.description,
       input: this.input,
       requests: this.requests.map((x) => x.toJSON()),

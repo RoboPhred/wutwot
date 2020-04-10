@@ -1,9 +1,8 @@
-import { JSONSchema6 } from "json-schema";
-
 import { makeReadOnly } from "../../../utils/readonly";
 import { DeepImmutableObject, ToJSON } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
+import { DataSchema } from "../../data-schema";
 
 /**
  * Represents an Action on a {@link Thing}.
@@ -27,22 +26,27 @@ export interface ThingAction {
   /**
    * The title of this action.
    */
-  readonly title: string;
+  readonly title: string | undefined;
 
   /**
-   * The semantic type of this action, if any.
+   * The semantic types of this action, if any.
    */
-  readonly semanticType: string | undefined;
+  readonly semanticTypes: readonly string[];
 
   /**
    * The description of this action.
    */
-  readonly description: string;
+  readonly description: string | undefined;
 
   /**
    * JSON Schema describing this action's input.
    */
-  readonly input: DeepImmutableObject<JSONSchema6>;
+  readonly input: DeepImmutableObject<DataSchema> | undefined;
+
+  /**
+   * JSON Schema describing this action's output.
+   */
+  readonly output: DeepImmutableObject<DataSchema> | undefined;
 
   /**
    * A read-only array of requests made to this action.
@@ -70,9 +74,10 @@ export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
   "thingId",
   "ownerPlugin",
   "title",
-  "semanticType",
+  "semanticTypes",
   "description",
   "input",
+  "output",
   "requests",
   "request",
   "toJSON",

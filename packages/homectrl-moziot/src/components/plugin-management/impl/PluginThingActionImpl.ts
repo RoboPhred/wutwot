@@ -27,15 +27,15 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
     return this._action.ownerPlugin;
   }
 
-  get title(): string {
+  get title(): string | undefined {
     return this._action.title;
   }
 
-  get semanticType(): string | undefined {
-    return this._action.semanticType;
+  get semanticTypes(): readonly string[] {
+    return this._action.semanticTypes;
   }
 
-  get description(): string {
+  get description(): string | undefined {
     return this._action.description;
   }
 
