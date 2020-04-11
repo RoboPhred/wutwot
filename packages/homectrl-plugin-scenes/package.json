@@ -4,7 +4,9 @@
   "description": "Scene support for MozIot",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf lib",
+    "prebuild": "npm run clean",
+    "build": "tsc -p src",
     "format": "prettier --write src/**/*.ts"
   },
   "repository": {
@@ -22,6 +24,7 @@
   },
   "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
     "@types/node": "^13.11.0",
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
@@ -29,6 +32,8 @@
   },
   "dependencies": {
     "homectrl-moziot": "^1.0.0",
-    "microinject": "^0.9.0"
+    "lodash": "^4.17.15",
+    "microinject": "^0.9.0",
+    "rxjs": "^6.5.5"
   }
 }

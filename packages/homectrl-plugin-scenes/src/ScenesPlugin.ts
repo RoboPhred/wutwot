@@ -1,10 +1,20 @@
 import { MozIotPlugin } from "homectrl-moziot";
-import { ServiceLocator } from "microinject";
+import { ServiceLocator, RegistryModule } from "microinject";
+
+import privateModule from "./module";
+
+import { SceneManager } from "./services";
 
 export class ScenesPlugin implements MozIotPlugin {
   get id(): string {
     return "scenes";
   }
 
-  onPluginInitialize(serviceLocator: ServiceLocator) {}
+  onRegisterPrivateServices(): RegistryModule {
+    return privateModule;
+  }
+
+  onPluginInitialize(serviceLocator: ServiceLocator) {
+    serviceLocator.get(SceneManager);
+  }
 }
