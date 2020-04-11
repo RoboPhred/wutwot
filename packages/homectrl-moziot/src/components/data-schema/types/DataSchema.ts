@@ -1,6 +1,7 @@
-import { JSONSchema6, JSONSchema6Definition } from "json-schema";
+import { JSONSchema6 } from "json-schema";
 import { makeReadOnly } from "../../../utils/readonly";
-import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
+
+import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 
 export type DataSchemaType =
   | "object"

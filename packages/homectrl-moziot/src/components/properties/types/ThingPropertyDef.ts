@@ -1,14 +1,15 @@
 import { Observable } from "rxjs";
 import { JSONSchema6 } from "json-schema";
 
-import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
 import { makeReadOnlyDeep } from "../../../utils/readonly";
 
-import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
+import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import {
   InteractionAffoardanceDef,
   interactionAffoardanceDefSchema,
 } from "../../affoardance";
+
+import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
 
 // TODO: This should extend DataSchema
 //  or more probably, there should be multiple of these that collectively

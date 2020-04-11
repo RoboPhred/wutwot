@@ -2,9 +2,9 @@ import { JSONSchema6 } from "json-schema";
 import { Observable } from "rxjs";
 
 import { makeReadOnlyDeep } from "../../../utils/readonly";
-import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
 import { DeepImmutableObject } from "../../../types";
 
+import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import { DataSchema } from "../../data-schema";
 import { ThingActionRequestUpdate } from "../../action-requests";
 import {

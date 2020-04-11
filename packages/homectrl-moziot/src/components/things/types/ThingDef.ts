@@ -1,8 +1,9 @@
 import { JSONSchema6 } from "json-schema";
 
-import { makeValidator, makeValidateOrThrow } from "../../../utils/ajv";
 import { makeReadOnlyDeep } from "../../../utils/readonly";
 import { ReadonlyRecord } from "../../../types";
+
+import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 
 /**
  * Describes the minimum set of unique properties required to create a thing.
