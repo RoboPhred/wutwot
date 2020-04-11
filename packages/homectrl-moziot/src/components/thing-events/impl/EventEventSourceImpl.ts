@@ -1,14 +1,15 @@
 import { EventEmitter } from "events";
 import { injectable, singleton, provides } from "microinject";
 
-import { EventEventSink } from "../components/EventEventSink";
+import { EventEventSink } from "../components";
 import {
   EventEventSource,
   ThingEventAddedEventArgs,
   ThingEventRemovedEventArgs,
+  ThingEventRaisedEventArgs,
 } from "../services";
 
-import { ThingEvent } from "../types";
+import { ThingEvent, ThingEventRecord } from "../types";
 
 @injectable()
 @singleton()
@@ -23,6 +24,16 @@ export class EventEventSourceImpl extends EventEmitter
       event,
     };
     this.emit("event.add", e);
+  }
+
+  onEventRaised(event: ThingEvent, record: ThingEventRecord): void {
+    const e: ThingEventRaisedEventArgs = {
+      thingId: event.thingId,
+      eventId: event.id,
+      event,
+      record,
+    };
+    this.emit("event.raise", e);
   }
 
   onEventRemoved(event: ThingEvent): void {

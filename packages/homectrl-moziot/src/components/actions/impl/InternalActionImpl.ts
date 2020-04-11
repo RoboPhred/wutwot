@@ -1,4 +1,10 @@
-import { injectable, inScope, injectParam, inject } from "microinject";
+import {
+  injectable,
+  inScope,
+  injectParam,
+  inject,
+  provides,
+} from "microinject";
 import { inspect } from "util";
 import { isObservable } from "rxjs";
 
@@ -26,6 +32,7 @@ import { DataSchema } from "../../data-schema";
 @injectable()
 @inScope(ThingScope)
 @asActionScope()
+@provides(InternalAction)
 export class InternalActionImpl implements InternalAction {
   private _publicProxy: ThingAction;
 

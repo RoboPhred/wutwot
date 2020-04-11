@@ -45,10 +45,10 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._thing.ownerPlugin;
   }
 
-  get title(): string {
+  get title(): string | undefined {
     return this._thing.title;
   }
-  set title(value: string) {
+  set title(value: string | undefined) {
     this._thing.title = value;
   }
 
@@ -56,10 +56,10 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._thing.semanticTypes;
   }
 
-  get description(): string {
+  get description(): string | undefined {
     return this._thing.description;
   }
-  set description(value: string) {
+  set description(value: string | undefined) {
     this._thing.description = value;
   }
 

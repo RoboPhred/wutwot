@@ -52,8 +52,8 @@ namespace ThingPersistenceKeys {
 @asScope(ThingScope)
 export class InternalThingImpl implements InternalThing {
   private readonly _publicProxy: Thing;
-  private _title: string;
-  private _description: string;
+  private _title: string | undefined;
+  private _description: string | undefined;
   private _metadata = new Map<string | symbol, any>();
 
   private _actions: ReadonlyMap<string, InternalAction>;
@@ -87,11 +87,10 @@ export class InternalThingImpl implements InternalThing {
       ThingPersistenceKeys.Name,
       _def.defaultTitle,
     );
-    this._description =
-      this._persistence.get(
-        ThingPersistenceKeys.Description,
-        _def.defaultDescription,
-      ) ?? "";
+    this._description = this._persistence.get(
+      ThingPersistenceKeys.Description,
+      _def.defaultDescription,
+    );
 
     // Create masks of the managers to prevent
     //  tampering with internal properties.
@@ -114,10 +113,10 @@ export class InternalThingImpl implements InternalThing {
     return this._owner;
   }
 
-  get title(): string {
+  get title(): string | undefined {
     return this._title;
   }
-  set title(value: string) {
+  set title(value: string | undefined) {
     this._title = value;
     this._persistence.set(ThingPersistenceKeys.Name, value);
   }
@@ -127,10 +126,10 @@ export class InternalThingImpl implements InternalThing {
     return makeReadOnly(this._typesManager.getTypes());
   }
 
-  get description(): string {
+  get description(): string | undefined {
     return this._description;
   }
-  set description(value: string) {
+  set description(value: string | undefined) {
     this._description = value;
     this._persistence.set(ThingPersistenceKeys.Description, value);
   }
@@ -214,10 +213,10 @@ function createPublicThingApi(thing: InternalThing) {
       return thing.ownerPlugin;
     }
 
-    get title(): string {
+    get title(): string | undefined {
       return thing.title;
     }
-    set title(value: string) {
+    set title(value: string | undefined) {
       thing.title = value;
     }
 
@@ -225,10 +224,10 @@ function createPublicThingApi(thing: InternalThing) {
       return thing.semanticTypes;
     }
 
-    get description(): string {
+    get description(): string | undefined {
       return thing.description;
     }
-    set description(value: string) {
+    set description(value: string | undefined) {
       thing.description = value;
     }
 

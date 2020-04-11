@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { ThingEvent } from "../types";
+import { ThingEvent, ThingEventRecord } from "../types";
 
 /**
  * Identifies a EventEventSource service.
@@ -41,6 +41,30 @@ export interface EventEventSource {
   removeListener(
     event: "event.add",
     handler: ThingEventAddedEventHandler,
+  ): this;
+
+  /**
+   * Attach a handler to handle when a {@link ThingEvent} raises an event.
+   * @param event The event to handle.
+   * @param handler The function to call when the event is raised.
+   */
+  on(event: "event.raise", handler: ThingEventRaisedEventHandler): this;
+
+  /**
+   * Attach a handler to handle the next time a {@link ThingEvent} raises an event.
+   * @param event The event to handle.
+   * @param handler The function to call when the event is next raised.
+   */
+  once(event: "event.raise", handler: ThingEventRaisedEventHandler): this;
+
+  /**
+   * Removes a handler for `event.raise`.
+   * @param event The event to remove a handler for.
+   * @param handler The handler to remove.
+   */
+  removeListener(
+    event: "event.raise",
+    handler: ThingEventRaisedEventHandler,
   ): this;
 
   /**
@@ -118,4 +142,36 @@ export interface ThingEventRemovedEventArgs {
    * The removed event
    */
   event: ThingEvent;
+}
+
+/**
+ * Defines an event handler for an 'event.raise' event.
+ */
+export type ThingEventRaisedEventHandler = (
+  e: ThingEventRaisedEventArgs,
+) => void;
+
+/***
+ * Defines the event arguments passed for an 'event.raise' event.
+ */
+export interface ThingEventRaisedEventArgs {
+  /**
+   * The ID of the thing the event was raised on.
+   */
+  thingId: string;
+
+  /**
+   * The ID of the event that was raised.
+   */
+  eventId: string;
+
+  /**
+   * The event that was raised.
+   */
+  event: ThingEvent;
+
+  /**
+   * The record of the raised event.
+   */
+  record: ThingEventRecord;
 }

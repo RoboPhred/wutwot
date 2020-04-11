@@ -23,7 +23,7 @@ export interface Thing extends MetadataProvider {
   /**
    * The name of the thing.
    */
-  title: string;
+  title: string | undefined;
 
   /**
    * An array of semantic types describing the thing
@@ -33,7 +33,7 @@ export interface Thing extends MetadataProvider {
   /**
    * The description of the thing.
    */
-  description: string;
+  description: string | undefined;
 
   /**
    * The actions this thing supports.

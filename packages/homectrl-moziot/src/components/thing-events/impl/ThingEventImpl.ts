@@ -3,10 +3,12 @@ import { cloneDeep } from "lodash";
 
 import { makeReadOnly, makeReadOnlyDeep } from "../../../utils/readonly";
 import { makeInspectJson } from "../../../utils/inspect";
-
-import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
 import { DeepImmutable } from "../../../types";
+
 import { DataSchema } from "../../data-schema";
+
+import { EventEventSink } from "../components";
+import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
 
 export class ThingEventImpl implements ThingEvent {
   private _data: DeepImmutable<DataSchema> | undefined = undefined;
@@ -21,6 +23,7 @@ export class ThingEventImpl implements ThingEvent {
     private _id: string,
     private _thingId: string,
     private _owner: object,
+    private _eventSink: EventEventSink,
   ) {
     _def.eventSource.subscribe(this._onEventRaised.bind(this));
     if (_def.data) {
@@ -83,13 +86,15 @@ export class ThingEventImpl implements ThingEvent {
   }
 
   private _onEventRaised(data: any) {
+    const record: ThingEventRecord = makeReadOnlyDeep({
+      data,
+      timestamp: new Date().toISOString(),
+    });
+
     // Don't need to sort, as we know this is going to be newer
     //  than anything in the array.
-    this._records.push(
-      makeReadOnlyDeep({
-        data,
-        timestamp: new Date().toISOString(),
-      }),
-    );
+    this._records.push(record);
+
+    this._eventSink.onEventRaised(this, record);
   }
 }

@@ -3,13 +3,13 @@ import { injectable, provides, injectParam, inject } from "microinject";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { InternalThingParams, inThingScope } from "../../things";
+import { MozIotPlugin } from "../../plugin-management";
 
 import { ThingEvent, ThingEventDef, validateEventDefOrThrow } from "../types";
-import { LocalEventsManager } from "../services/LocalEventsManager";
-import { EventEventSink } from "../components/EventEventSink";
+import { LocalEventsManager } from "../services";
+import { EventEventSink } from "../components";
 
 import { ThingEventImpl } from "./ThingEventImpl";
-import { MozIotPlugin } from "../../plugin-management";
 
 @injectable()
 @inThingScope()
@@ -36,7 +36,13 @@ export class EventServiceImpl
       );
     }
 
-    const event = new ThingEventImpl(def, id, this._thingId, owner);
+    const event = new ThingEventImpl(
+      def,
+      id,
+      this._thingId,
+      owner,
+      this._eventSink,
+    );
     this._set(id, event);
     this._eventSink.onEventAdded(event);
 

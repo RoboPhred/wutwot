@@ -19,7 +19,7 @@ export interface ThingDef {
   /**
    * The default title to give this thing, if none is provided by the user.
    */
-  readonly defaultTitle: string;
+  readonly defaultTitle?: string;
 
   /**
    * The default description to give this thing, if none is provided by the user.
