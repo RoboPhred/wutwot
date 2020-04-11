@@ -195,7 +195,7 @@ function createPublicThingApi(thing: InternalThing) {
   //  to the public api ThingActions
   const publicActions = createReadonlyMapWrapper(
     thing.actions,
-    (internal) => internal.publicProxy,
+    (internal) => internal.publicAPI,
   );
 
   class PublicThing implements Thing {

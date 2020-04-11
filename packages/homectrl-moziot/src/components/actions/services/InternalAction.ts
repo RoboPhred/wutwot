@@ -41,7 +41,7 @@ export interface InternalAction extends ThingAction {
    *
    * This should be used whenever exposing this action outside of MozIot internals.
    */
-  readonly publicProxy: ThingAction;
+  readonly publicAPI: ThingAction;
 
   /**
    * Creates an action request for this action.

@@ -11,7 +11,6 @@ import { isObservable } from "rxjs";
 import { DeepImmutableObject } from "../../../types";
 import { makeReadOnly } from "../../../utils/readonly";
 import { makeInspectJson } from "../../../utils/inspect";
-import { createWhitelistProxy } from "../../../utils/proxies/whitelist";
 
 import { validateOrThrow } from "../../json-schema";
 
@@ -34,7 +33,7 @@ import { DataSchema } from "../../data-schema";
 @asActionScope()
 @provides(InternalAction)
 export class InternalActionImpl implements InternalAction {
-  private _publicProxy: ThingAction;
+  private _publicAPI: ThingAction;
 
   private _def: ThingActionDef;
 
@@ -52,13 +51,13 @@ export class InternalActionImpl implements InternalAction {
   ) {
     this._def = { ...def };
 
-    this._publicProxy = createWhitelistProxy(this, ThingActionKeys);
+    this._publicAPI = createPublicActionApi(this);
   }
 
   [inspect.custom] = makeInspectJson("ThingAction");
 
-  get publicProxy(): ThingAction {
-    return this._publicProxy;
+  get publicAPI(): ThingAction {
+    return this._publicAPI;
   }
 
   get id(): string {
@@ -146,4 +145,60 @@ export class InternalActionImpl implements InternalAction {
       requests: this.requests.map((x) => x.toJSON()),
     };
   }
+}
+
+function createPublicActionApi(action: InternalAction): ThingAction {
+  class PublicAction implements ThingAction {
+    get [Symbol.toStringTag]() {
+      return "ThingAction";
+    }
+
+    [inspect.custom] = makeInspectJson("ThingAction");
+
+    get id() {
+      return action.id;
+    }
+
+    get thingId() {
+      return action.thingId;
+    }
+
+    get ownerPlugin() {
+      return action.ownerPlugin;
+    }
+
+    get title() {
+      return action.title;
+    }
+
+    get semanticTypes() {
+      return action.semanticTypes;
+    }
+
+    get description() {
+      return action.description;
+    }
+
+    get input() {
+      return action.input;
+    }
+
+    get output() {
+      return action.output;
+    }
+
+    get requests() {
+      return action.requests;
+    }
+
+    request(input: any) {
+      return action.request(input);
+    }
+
+    toJSON() {
+      return action.toJSON();
+    }
+  }
+
+  return new PublicAction();
 }
