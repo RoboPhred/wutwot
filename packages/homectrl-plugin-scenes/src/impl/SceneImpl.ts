@@ -29,8 +29,6 @@ interface SceneTrigger {
 @injectable()
 @provides(Scene)
 export class SceneImpl implements Scene {
-  private _sceneThing: OwnedPluginThing;
-
   // TODO: Currently capturing entire payload data and comparing.
   //  Some data might change per-invocation, we need to have a more
   //  robust trigger, possibly by a well-known event.
@@ -40,6 +38,8 @@ export class SceneImpl implements Scene {
   constructor(
     @injectParam(SceneParams.SceneId)
     private _sceneId: number,
+    @injectParam(SceneParams.SceneThing)
+    private _sceneThing: OwnedPluginThing,
     @inject(PluginThingsManager)
     private _thingsManager: PluginThingsManager,
     @inject(EventEventSource)
@@ -48,14 +48,6 @@ export class SceneImpl implements Scene {
     private _moziot: MozIot,
   ) {
     this._eventEventSource.on("event.raise", this._onEventRaised.bind(this));
-
-    this._sceneThing = this._thingsManager
-      .addThing({
-        pluginLocalId: `scene-${_sceneId}`,
-        defaultTitle: `Scene ${_sceneId}`,
-      })
-      // TODO: Add semantic context
-      .addSemanticType("Scene");
 
     this._sceneThing.addAction({
       pluginLocalId: "learn-trigger",
