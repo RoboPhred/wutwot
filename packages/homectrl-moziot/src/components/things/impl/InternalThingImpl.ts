@@ -94,9 +94,21 @@ export class InternalThingImpl implements InternalThing {
 
     // Create masks of the managers to prevent
     //  tampering with internal properties.
-    this._actions = createReadonlyMapWrapper(this._actionsManager);
-    this._properties = createReadonlyMapWrapper(this._propertiesManager);
-    this._events = createReadonlyMapWrapper(this._eventsManager);
+    this._actions = createReadonlyMapWrapper(
+      this._actionsManager,
+      undefined,
+      "ThingActionMap",
+    );
+    this._properties = createReadonlyMapWrapper(
+      this._propertiesManager,
+      undefined,
+      "ThingPropertyMap",
+    );
+    this._events = createReadonlyMapWrapper(
+      this._eventsManager,
+      undefined,
+      "ThingEventMap",
+    );
 
     this._publicProxy = createPublicThingApi(this);
   }
@@ -196,6 +208,7 @@ function createPublicThingApi(thing: InternalThing) {
   const publicActions = createReadonlyMapWrapper(
     thing.actions,
     (internal) => internal.publicAPI,
+    "ThingActionMap",
   );
 
   class PublicThing implements Thing {

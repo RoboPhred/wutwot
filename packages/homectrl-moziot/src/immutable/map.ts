@@ -1,11 +1,17 @@
+import { inspect } from "util";
+import { isJSONAble, makeInspectJson } from "../utils/inspect";
+
 export function createReadonlyMapWrapper<K, V, VOut = V>(
   map: Map<K, V> | ReadonlyMap<K, V>,
   valueMapper?: (value: V) => VOut,
+  inspectName = "ReadonlyMap",
 ): ReadonlyMap<K, VOut> {
   // Completely encapsulte the map in a closure to prevent
   //  access by hidden property.
 
   class ReadonlyMapWrapper implements ReadonlyMap<K, VOut> {
+    [inspect.custom] = makeInspectJson(inspectName);
+
     forEach(
       callbackfn: (value: VOut, key: K, map: ReadonlyMap<K, VOut>) => void,
       thisArg?: any,
@@ -65,6 +71,13 @@ export function createReadonlyMapWrapper<K, V, VOut = V>(
           return value as any;
         })
         [Symbol.iterator]();
+    }
+
+    toJSON() {
+      if (isJSONAble(map)) {
+        return map.toJSON();
+      }
+      return this;
     }
   }
 

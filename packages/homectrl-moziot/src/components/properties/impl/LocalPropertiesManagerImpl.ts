@@ -28,7 +28,7 @@ export class LocalPropertiesManagerImpl
     @inject(PropertyEventSink)
     private _eventSink: PropertyEventSink,
   ) {
-    super();
+    super("PropertiesManager");
   }
 
   createProperty(def: ThingPropertyDef, owner: MozIotPlugin): ThingProperty {

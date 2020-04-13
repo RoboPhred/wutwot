@@ -26,7 +26,7 @@ export class LocalActionsManagerImpl
     @inject(InternalActionFactory)
     private _actionFactory: InternalActionFactory,
   ) {
-    super();
+    super("ActionsManager");
   }
 
   createAction(def: ThingActionDef, owner: object): InternalAction {

@@ -21,7 +21,7 @@ export class ThingsManagerImpl
     @inject(ThingEventSink) private _eventSink: ThingEventSink,
     @inject(ThingIdMapper) private _idMapper: ThingIdMapper,
   ) {
-    super();
+    super("ThingsManager");
   }
 
   createThing(def: ThingDef, owner: object): InternalThing {

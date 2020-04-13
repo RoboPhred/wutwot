@@ -4,6 +4,10 @@ export interface JSONAble {
   toJSON(): any;
 }
 
+export function isJSONAble(obj: any): obj is JSONAble {
+  return typeof (obj as any).toJSON === "function";
+}
+
 export function makeInspectJson<T extends JSONAble>(
   name: string,
 ): (depth: number, options: InspectOptionsStylized) => string {

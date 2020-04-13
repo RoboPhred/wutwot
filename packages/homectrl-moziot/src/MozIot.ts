@@ -30,6 +30,7 @@ export class MozIot {
     this._publicThingsMap = createReadonlyMapWrapper(
       this._thingManager,
       (internal) => internal.publicProxy,
+      "ThingMap",
     );
 
     for (const plugin of plugins) {

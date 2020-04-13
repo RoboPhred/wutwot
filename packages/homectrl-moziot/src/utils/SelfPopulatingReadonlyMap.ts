@@ -1,6 +1,14 @@
-export abstract class SelfPopulatingReadonlyMap<K, V>
+import { inspect } from "util";
+import { mapValues } from "lodash";
+
+import { mapToObject } from "./map";
+import { makeInspectJson, isJSONAble } from "./inspect";
+
+export abstract class SelfPopulatingReadonlyMap<K extends PropertyKey, V>
   implements ReadonlyMap<K, V> {
   private _contents = new Map<K, V>();
+
+  constructor(private _toStringName: string = "ReadonlyMap") {}
 
   protected _set(key: K, value: V): this {
     this._contents.set(key, value);
@@ -10,6 +18,8 @@ export abstract class SelfPopulatingReadonlyMap<K, V>
   protected _delete(key: K): boolean {
     return this._contents.delete(key);
   }
+
+  [inspect.custom] = makeInspectJson(this._toStringName);
 
   forEach(
     callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void,
@@ -45,5 +55,14 @@ export abstract class SelfPopulatingReadonlyMap<K, V>
   }
   values(): IterableIterator<V> {
     return this._contents.values();
+  }
+
+  toJSON(): any {
+    return mapValues(mapToObject(this._contents), (value) => {
+      if (isJSONAble(value)) {
+        return value.toJSON();
+      }
+      return value;
+    });
   }
 }

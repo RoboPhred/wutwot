@@ -23,7 +23,7 @@ export class EventServiceImpl
     @inject(EventEventSink)
     private _eventSink: EventEventSink,
   ) {
-    super();
+    super("EventsManager");
   }
 
   createEvent(def: ThingEventDef, owner: MozIotPlugin): ThingEvent {

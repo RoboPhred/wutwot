@@ -34,6 +34,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     this._pluginActionsById = createReadonlyMapWrapper(
       this._thing.actions,
       (action) => this._getPluginAction(action),
+      "ThingActionMap",
     );
   }
 

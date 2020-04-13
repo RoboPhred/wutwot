@@ -124,7 +124,7 @@ export class InternalActionImpl implements InternalAction {
     return this._requestsManager.addRequest({
       input,
       timeRequested: new Date().toISOString(),
-      initialStatus: ThingActionRequestStatus.Started,
+      initialStatus: ThingActionRequestStatus.Pending,
       status,
     });
   }
