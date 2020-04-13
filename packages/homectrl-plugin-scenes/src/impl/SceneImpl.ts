@@ -10,6 +10,7 @@ import { isEqual, cloneDeep } from "lodash";
 
 import { SceneParams, Scene, ScenePersistenceManager } from "../components";
 import { SceneTrigger, ScenePropertySetting, PersistedScene } from "../types";
+import { setFlagsFromString } from "v8";
 
 @injectable()
 @provides(Scene)
@@ -55,6 +56,19 @@ export class SceneImpl implements Scene {
   }
 
   addSceneProperty(setting: ScenePropertySetting) {
+    const { thingId, propertyId } = setting;
+    for (const existing of this._propertySettings) {
+      const {
+        thingId: existingThingId,
+        propertyId: existingPropertyId,
+      } = existing;
+      if (thingId === existingThingId && propertyId === existingPropertyId) {
+        existing.value = setting.value;
+        this._persist();
+        return;
+      }
+    }
+
     this._propertySettings.push(setting);
     this._persist();
   }
