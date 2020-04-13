@@ -13,18 +13,12 @@ export function internalThingFactoryImpl(
   context: Context,
 ): InternalActionFactory {
   class InternalActionFactoryImpl implements InternalActionFactory {
-    private _actionIds = new Set<string>();
-
-    createAction(def: ThingActionDef, owner: MozIotPlugin): InternalAction {
+    createAction(
+      id: string,
+      def: ThingActionDef,
+      owner: MozIotPlugin,
+    ): InternalAction {
       validateActionDefOrThrow(def);
-      const id = `${owner.id}-${def.pluginLocalId}`;
-
-      if (this._actionIds.has(id)) {
-        throw new Error(
-          `Plugin-Local ID ${def.pluginLocalId} is already in use.`,
-        );
-      }
-      this._actionIds.add(id);
 
       return context.get(InternalAction, {
         [InternalActionParams.ActionId]: id,

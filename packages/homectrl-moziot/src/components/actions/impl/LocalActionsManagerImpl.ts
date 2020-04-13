@@ -3,6 +3,7 @@ import { injectable, provides, injectParam, inject } from "microinject";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { InternalThingParams, inThingScope } from "../../things";
+import { formCompoundId, DuplicateIDError } from "../../id-mapping";
 
 import { ThingActionDef } from "../types";
 
@@ -11,6 +12,7 @@ import { LocalActionsManager } from "../services/LocalActionsManager";
 import { ActionEventSink, InternalActionFactory } from "../components";
 
 import { InternalAction } from "../services";
+import { MozIotPlugin } from "../../plugin-management";
 
 @injectable()
 @inThingScope()
@@ -29,8 +31,15 @@ export class LocalActionsManagerImpl
     super("ActionsManager");
   }
 
-  createAction(def: ThingActionDef, owner: object): InternalAction {
-    const action = this._actionFactory.createAction(def, owner);
+  createAction(def: ThingActionDef, owner: MozIotPlugin): InternalAction {
+    const id = formCompoundId(owner.id, def.pluginLocalId);
+    if (this.has(id)) {
+      throw new DuplicateIDError(
+        `Plugin ${owner.id} has already registered an action with a plugin-local id of "${def.pluginLocalId}".`,
+      );
+    }
+
+    const action = this._actionFactory.createAction(id, def, owner);
     this._set(action.id, action);
     this._eventSink.onActionAdded(action);
     return action;

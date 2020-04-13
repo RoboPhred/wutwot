@@ -24,8 +24,9 @@ export const InternalActionFactory: Identifier<InternalActionFactory> = createSy
 export interface InternalActionFactory {
   /**
    * Creates a new {@link InternalAction} given a {@link ThingActionDef} and the owner plugin.
+   * @param id The new ID of the action to create.
    * @param def The definition of the action.
    * @param owner The plugin that owns this action.
    */
-  createAction(def: ThingActionDef, owner: object): InternalAction;
+  createAction(id: string, def: ThingActionDef, owner: object): InternalAction;
 }

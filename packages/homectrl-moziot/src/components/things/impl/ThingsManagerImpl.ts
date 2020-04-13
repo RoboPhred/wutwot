@@ -1,14 +1,12 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
-import { ThingDef } from "../types";
-import {
-  InternalThingFactory,
-  ThingEventSink,
-  ThingIdMapper,
-} from "../components";
-
-import { ThingsManager, InternalThing } from "../services";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
+import { MozIotPlugin } from "../../plugin-management";
+import { DuplicateIDError, formCompoundId } from "../../id-mapping";
+
+import { ThingDef } from "../types";
+import { InternalThingFactory, ThingEventSink } from "../components";
+import { ThingsManager, InternalThing } from "../services";
 
 @injectable()
 @singleton()
@@ -19,13 +17,19 @@ export class ThingsManagerImpl
   constructor(
     @inject(InternalThingFactory) private _factory: InternalThingFactory,
     @inject(ThingEventSink) private _eventSink: ThingEventSink,
-    @inject(ThingIdMapper) private _idMapper: ThingIdMapper,
   ) {
     super("ThingsManager");
   }
 
-  createThing(def: ThingDef, owner: object): InternalThing {
-    const thing = this._factory.createThing(def, owner);
+  createThing(def: ThingDef, owner: MozIotPlugin): InternalThing {
+    const id = formCompoundId(owner.id, def.pluginLocalId);
+    if (this.has(id)) {
+      throw new DuplicateIDError(
+        `Plugin ${owner.id} has already registered a thing with a plugin-local id of "${def.pluginLocalId}".`,
+      );
+    }
+
+    const thing = this._factory.createThing(id, def, owner);
     this._set(thing.id, thing);
     this._eventSink.onThingAdded(thing);
     return thing;
@@ -35,7 +39,6 @@ export class ThingsManagerImpl
     const thing = this.get(thingId);
     if (thing) {
       this._delete(thingId);
-      this._idMapper.retireId(thingId);
       this._eventSink.onThingRemoved(thing);
     }
   }

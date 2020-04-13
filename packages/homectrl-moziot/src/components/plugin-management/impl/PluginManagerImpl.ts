@@ -2,6 +2,8 @@ import { inject, injectable, singleton, provides } from "microinject";
 
 import { Initializable } from "../../../contracts";
 
+import { DuplicateIDError } from "../../id-mapping";
+
 import { MozIotPlugin, PluginAdapter } from "../types";
 import { PluginAdapterFactory } from "../components";
 
@@ -30,7 +32,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
 
   registerPlugin(plugin: MozIotPlugin): void {
     if (this._adaptersByPluginId.has(plugin.id)) {
-      throw new Error(
+      throw new DuplicateIDError(
         `A plugin with id "${plugin.id}" already exists.  Please reconfigure the plugin to use a different ID.`,
       );
     }

@@ -9,5 +9,5 @@ export const InternalThingFactory: Identifier<InternalThingFactory> = createSymb
   "InternalThingFactory",
 );
 export interface InternalThingFactory {
-  createThing(def: ThingDef, owner: object): InternalThing;
+  createThing(id: string, def: ThingDef, owner: object): InternalThing;
 }

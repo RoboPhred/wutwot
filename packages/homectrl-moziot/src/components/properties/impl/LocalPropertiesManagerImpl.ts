@@ -4,6 +4,7 @@ import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonly
 
 import { inThingScope, InternalThingParams } from "../../things";
 import { MozIotPlugin } from "../../plugin-management";
+import { formCompoundId, DuplicateIDError } from "../../id-mapping";
 
 import {
   ThingProperty,
@@ -33,11 +34,11 @@ export class LocalPropertiesManagerImpl
 
   createProperty(def: ThingPropertyDef, owner: MozIotPlugin): ThingProperty {
     validatePropertyDefOrThrow(def);
-    const id = `${owner.id}-${def.pluginLocalId}`;
 
+    const id = formCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
-      throw new Error(
-        `Plugin-Local ID ${def.pluginLocalId} is already in use.`,
+      throw new DuplicateIDError(
+        `Plugin ${owner.id} has already registered a property with a plugin-local id of "${def.pluginLocalId}".`,
       );
     }
 

@@ -1,3 +1,3 @@
 export * from "./types";
-
-export * from "./IdMapper";
+export * from "./errors";
+export * from "./utils";

@@ -4,6 +4,7 @@ import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonly
 
 import { InternalThingParams, inThingScope } from "../../things";
 import { MozIotPlugin } from "../../plugin-management";
+import { DuplicateIDError, formCompoundId } from "../../id-mapping";
 
 import { ThingEvent, ThingEventDef, validateEventDefOrThrow } from "../types";
 import { LocalEventsManager } from "../services";
@@ -28,11 +29,11 @@ export class EventServiceImpl
 
   createEvent(def: ThingEventDef, owner: MozIotPlugin): ThingEvent {
     validateEventDefOrThrow(def);
-    const id = `${owner.id}-${def.pluginLocalId}`;
 
+    const id = formCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
-      throw new Error(
-        `Plugin-Local ID ${def.pluginLocalId} is already in use.`,
+      throw new DuplicateIDError(
+        `Plugin ${owner.id} has already registered an event with a plugin-local id of "${def.pluginLocalId}".`,
       );
     }
 
