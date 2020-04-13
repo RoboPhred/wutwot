@@ -19,7 +19,7 @@ export class ZWavePlugin implements MozIotPlugin {
 
   get id(): string {
     if (this._opts.pluginId) {
-      return `zwave[pluginId='${this._opts.pluginId}']`;
+      return this._opts.pluginId;
     } else if (this._opts.port) {
       return `zwave[port='${this._opts.port}']`;
     } else {
