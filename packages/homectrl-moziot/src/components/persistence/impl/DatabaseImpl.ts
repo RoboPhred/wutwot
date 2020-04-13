@@ -7,7 +7,7 @@ import { JSONPrimitive } from "../../../types";
 import { Shutdownable } from "../../../contracts";
 
 import { Database } from "../services";
-import { DataStorageKey } from "../types";
+import { DataPersistenceKey } from "../types";
 
 @injectable()
 @singleton()
@@ -39,13 +39,13 @@ export class DatabaseImpl implements Database, Shutdownable {
     return pathResolve(process.cwd(), "moziot.persistence.json");
   }
 
-  get<T>(key: DataStorageKey): T | undefined;
-  get<T>(key: DataStorageKey, defaultValue: T): T;
-  get(key: DataStorageKey, defaultValue?: any): any {
+  get<T>(key: DataPersistenceKey): T | undefined;
+  get<T>(key: DataPersistenceKey, defaultValue: T): T;
+  get(key: DataPersistenceKey, defaultValue?: any): any {
     return get(this._data, key, defaultValue);
   }
 
-  set(key: DataStorageKey, value: JSONPrimitive) {
+  set(key: DataPersistenceKey, value: JSONPrimitive) {
     set(this._data, key, value);
 
     // TODO: Batch saves on a delay.

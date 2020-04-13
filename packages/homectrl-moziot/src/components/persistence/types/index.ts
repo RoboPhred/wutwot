@@ -1,2 +1,2 @@
 export * from "./DataPersistence";
-export * from "./DataStorageKey";
+export * from "./DataPersistenceKey";

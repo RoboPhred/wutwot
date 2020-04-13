@@ -37,14 +37,14 @@ import {
   InternalThingParams,
   ThingLocalPersistence,
 } from "../services";
-import { DataPersistence, DataStorageKey } from "../../persistence";
+import { DataPersistence, DataPersistenceKey } from "../../persistence";
 import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
 import { mapToObject } from "../../../utils/map";
 import { createReadonlyMapWrapper } from "../../../immutable";
 
 namespace ThingPersistenceKeys {
-  export const Name: DataStorageKey = ["name"];
-  export const Description: DataStorageKey = ["description"];
+  export const Name: DataPersistenceKey = ["name"];
+  export const Description: DataPersistenceKey = ["description"];
 }
 
 @injectable()

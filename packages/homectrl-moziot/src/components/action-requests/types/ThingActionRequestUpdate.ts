@@ -22,7 +22,7 @@ export interface ThingActionRequestCompletedUpdate {
   status: ThingActionRequestStatus.Completed;
   output: any;
 }
-function requestCompleted(output: any): ThingActionRequestCompletedUpdate {
+function requestCompleted(output?: any): ThingActionRequestCompletedUpdate {
   return { status: ThingActionRequestStatus.Completed, output };
 }
 

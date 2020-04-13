@@ -21,15 +21,12 @@ import {
   ThingActionRequestStatus,
 } from "../../action-requests";
 
-import { ThingScope } from "../../things";
-
-import { ThingAction, ThingActionDef, ThingActionKeys } from "../types";
+import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
 import { DataSchema } from "../../data-schema";
 
 @injectable()
-@inScope(ThingScope)
 @asActionScope()
 @provides(InternalAction)
 export class InternalActionImpl implements InternalAction {

@@ -1,6 +1,6 @@
 import { JSONPrimitive } from "../../../types";
 
-import { DataStorageKey } from "./DataStorageKey";
+import { DataPersistenceKey } from "./DataPersistenceKey";
 
 export interface DataPersistence {
   /**
@@ -8,7 +8,7 @@ export interface DataPersistence {
    * @param key The key to look up data by.
    * @returns The retrieved data, or `undefined`.
    */
-  get<T>(key: DataStorageKey): T | undefined;
+  get<T>(key: DataPersistenceKey): T | undefined;
 
   /**
    * Gets the value represented by the key, or returns a default.
@@ -16,12 +16,12 @@ export interface DataPersistence {
    * @param defaultValue The default value to return if no data exists by the specified key.
    * @returns The retrieved data, or the default value.
    */
-  get<T>(key: DataStorageKey, defaultValue: T): T;
+  get<T>(key: DataPersistenceKey, defaultValue: T): T;
 
   /**
    * Sets a value into data storage.
    * @param key The key to set data at.
    * @param value The data to set.
    */
-  set(key: DataStorageKey, value: JSONPrimitive | object): void;
+  set(key: DataPersistenceKey, value: JSONPrimitive | object): void;
 }

@@ -3,7 +3,7 @@ import { injectable, provides, inject, injectParam } from "microinject";
 import {
   ScopedDataPersistence,
   Database,
-  DataStorageKey,
+  DataPersistenceKey,
 } from "../../persistence";
 
 import { ThingLocalPersistence, InternalThingParams } from "../services";
@@ -22,7 +22,7 @@ export class ThingLocalPersistenceImpl extends ScopedDataPersistence {
     super(database);
   }
 
-  protected get dataKey(): DataStorageKey {
+  protected get dataKey(): DataPersistenceKey {
     return ["things", this._thingId];
   }
 }

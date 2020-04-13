@@ -79,3 +79,17 @@ https://www.npmjs.com/package/@microsoft/api-extractor
 - Thing
 - Property
 - Event
+
+#### Load previously defined things even if no plugin has defined them.
+
+DeviceStatus property supplied by internal plugin
+
+- Orphaned
+- Present
+
+Maybe make this ConnectionStatus and expose a way for plugins to set it
+
+- Orphaned
+- Disconnected
+- Sleeping
+- Connected

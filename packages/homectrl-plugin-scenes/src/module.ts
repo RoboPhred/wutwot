@@ -3,10 +3,16 @@ import { SceneFactory } from "./components";
 
 import { sceneFactoryFactory } from "./impl/SceneFactoryImpl";
 import { SceneImpl } from "./impl/SceneImpl";
-import { SceneManagerImpl } from "./impl/SceneManagerImpl";
+import { SceneManagerThingImpl } from "./impl/SceneManagerThingImpl";
+import { ScenePersistenceManagerImpl } from "./impl/ScenePersistenceManagerImpl";
+import { SceneRepositoryImpl } from "./impl/SceneRepositoryImpl";
+import { SceneThingsAdapterImpl } from "./impl/SceneThingsAdapterImpl";
 
 export default new ContainerModule((bind) => {
   bind(SceneFactory).toFactory(sceneFactoryFactory).inSingletonScope();
   bind(SceneImpl);
-  bind(SceneManagerImpl);
+  bind(SceneManagerThingImpl);
+  bind(ScenePersistenceManagerImpl);
+  bind(SceneRepositoryImpl);
+  bind(SceneThingsAdapterImpl);
 });

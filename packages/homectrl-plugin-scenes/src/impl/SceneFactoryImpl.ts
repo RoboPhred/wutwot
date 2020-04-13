@@ -1,26 +1,22 @@
 import { Context } from "microinject";
+import { v4 as uuidV4 } from "uuid";
+
 import { SceneFactory, Scene, SceneParams } from "../components";
-import { PluginThingsManager } from "homectrl-moziot";
+import { PersistedScene } from "../types";
 
 export function sceneFactoryFactory(context: Context): SceneFactory {
-  const thingsManager = context.get(PluginThingsManager);
-
   class SceneFactoryImpl implements SceneFactory {
-    createScene(sceneId: number): Scene {
-      const thing = thingsManager
-        .addThing({
-          pluginLocalId: `scene-${sceneId}`,
-          defaultTitle: `Scene ${sceneId}`,
-        })
-        // TODO: semantic context.
-        .addSemanticType("Scene");
-
-      const scene = context.get(Scene, {
-        [SceneParams.SceneId]: sceneId,
-        [SceneParams.SceneThing]: thing,
+    createScene(): Scene {
+      return context.get(Scene, {
+        [SceneParams.SceneId]: uuidV4(),
       });
+    }
 
-      return scene;
+    restoreScene(persisted: PersistedScene): Scene {
+      return context.get(Scene, {
+        [SceneParams.SceneId]: persisted.sceneId,
+        [SceneParams.ScenePersistedData]: persisted,
+      });
     }
   }
 

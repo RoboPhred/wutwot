@@ -1,6 +1,7 @@
 import { Container } from "microinject";
 
 import { ThingsManager, ThingDef } from "../../things";
+import { Database } from "../../persistence";
 
 import {
   MozIotPlugin,
@@ -8,9 +9,12 @@ import {
   PluginThing,
   PluginAdapter,
 } from "../types";
-import { PluginThingsManager } from "../services";
+import { PluginThingsManager, PluginDataPersistence } from "../services";
 
-import { PluginThingFactory } from "../components/PluginThingFactory";
+import { PluginThingFactory } from "../components";
+
+import { PluginDataPersistenceImpl } from "./PluginDataPersistenceImpl";
+import { Initializable } from "../../../contracts";
 
 export class PluginAdapterImpl implements PluginAdapter {
   private _initialized = false;
@@ -34,6 +38,15 @@ export class PluginAdapterImpl implements PluginAdapter {
     this._privateContainer
       .bind(PluginThingsManager)
       .toConstantValue(pluginThingManager);
+
+    this._privateContainer
+      .bind(PluginDataPersistence)
+      .toConstantValue(
+        new PluginDataPersistenceImpl(
+          _plugin.id,
+          publicContainer.get(Database),
+        ),
+      );
 
     if (_plugin.onRegisterPublicServices) {
       const registryModule = _plugin.onRegisterPublicServices(
@@ -63,6 +76,10 @@ export class PluginAdapterImpl implements PluginAdapter {
       return;
     }
     this._initialized = true;
+
+    this._privateContainer
+      .getAll(Initializable)
+      .forEach((x) => x.onInitialize());
 
     this._plugin.onPluginInitialize(this._privateContainer);
   }

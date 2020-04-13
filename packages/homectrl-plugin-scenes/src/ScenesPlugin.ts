@@ -2,8 +2,12 @@ import { MozIotPlugin } from "homectrl-moziot";
 import { ServiceLocator, RegistryModule } from "microinject";
 
 import privateModule from "./module";
-
-import { SceneManager } from "./services";
+import {
+  SceneManagerThing,
+  SceneFactory,
+  ScenePersistenceManager,
+} from "./components";
+import { SceneRepository } from "./components/SceneRepository";
 
 export class ScenesPlugin implements MozIotPlugin {
   get id(): string {
@@ -15,6 +19,13 @@ export class ScenesPlugin implements MozIotPlugin {
   }
 
   onPluginInitialize(serviceLocator: ServiceLocator) {
-    serviceLocator.get(SceneManager);
+    const repository = serviceLocator.get(SceneRepository);
+    const factory = serviceLocator.get(SceneFactory);
+    const persistence = serviceLocator.get(ScenePersistenceManager);
+
+    for (const persistedScene of persistence.getPersistedScenes()) {
+      const scene = factory.restoreScene(persistedScene);
+      repository.addScene(scene);
+    }
   }
 }
