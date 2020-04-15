@@ -5,7 +5,7 @@ WutWot is a plugin-driven Web of Things api provider.
 WutWot involves multiple parts that come together to provide a [W3C Web of Things](https://www.w3.org/TR/wot-thing-description/) API for plugin-provided devices.
 
 - [WutWot Core](/packages/@wutwot/core): The core thing provider and plugin manager
-- [WutWot Server](/packages/wutwot-server): The HTML API to expose Thing Descriptions from WutWot.
+- [WutWot Server](/packages/wutwot-server): A RESTful server exposing the (Mozilla WOT)[https://iot.mozilla.org/wot] flavor of HTML API bindings.
 
 ## Plugins or Bust
 

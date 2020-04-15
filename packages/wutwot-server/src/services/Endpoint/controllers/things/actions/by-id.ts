@@ -53,7 +53,7 @@ export class ThingActionById {
     const action = getActionOrThrow(thing, actionId);
 
     try {
-      const request = action.request(input);
+      const request = action.invoke(input);
       return this._restifier.actionRequestToRest(request, false);
     } catch (e) {
       if (e instanceof SchemaValidationError) {

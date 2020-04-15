@@ -64,8 +64,8 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
     return this._action.addRequest(def);
   }
 
-  request(input: any): ThingActionRequest {
-    return this._action.request(input);
+  invoke(input: any): ThingActionRequest {
+    return this._action.invoke(input);
   }
 
   toAction(): ThingAction {

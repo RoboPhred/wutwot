@@ -101,7 +101,7 @@ export class InternalActionImpl implements InternalAction {
     return makeReadOnly(this._requestsManager.getAllRequests());
   }
 
-  request(input: any): ThingActionRequest {
+  invoke(input: any): ThingActionRequest {
     const { input: inputSchema, onActionInvocationRequested } = this._def;
 
     if (inputSchema) {
@@ -188,8 +188,8 @@ function createPublicActionApi(action: InternalAction): ThingAction {
       return action.requests;
     }
 
-    request(input: any) {
-      return action.request(input);
+    invoke(input: any) {
+      return action.invoke(input);
     }
 
     toJSON() {

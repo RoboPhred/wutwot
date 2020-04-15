@@ -32,7 +32,7 @@ export interface ThingAction extends InteractionAffoardance {
    * @param input The input to the action.  Must match the json-schema specified in {@link #input}.
    * @returns An action request object representing this request.
    */
-  request(input: any): ThingActionRequest;
+  invoke(input: any): ThingActionRequest;
 
   /**
    * Gets a JSON representation of this action.
@@ -48,6 +48,6 @@ export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
   "input",
   "output",
   "requests",
-  "request",
+  "invoke",
   "toJSON",
 ]);

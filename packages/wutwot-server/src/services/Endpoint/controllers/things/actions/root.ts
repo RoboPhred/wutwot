@@ -53,7 +53,7 @@ export class ThingActionsRoot {
       actionName,
       HttpStatusCodes.BAD_REQUEST,
     );
-    const request = action.request(input);
+    const request = action.invoke(input);
     return this._restifier.actionRequestToRest(request, false);
   }
 }
