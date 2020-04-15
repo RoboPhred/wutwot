@@ -1,23 +1,23 @@
 import { BindFunction, ServiceLocator, RegistryModule } from "microinject";
 
 /**
- * Defines the contract for a plugin to MozIot.
+ * Defines the contract for a plugin to WutWot.
  *
- * Plugins provide services to MozIot and other plugins,
- * and can interact with MozIot provided services to add WOT items
+ * Plugins provide services to WutWot and other plugins,
+ * and can interact with WutWot provided services to add WOT items
  * into the ecosystem.
  */
-export interface MozIotPlugin {
+export interface WutWotPlugin {
   readonly id: string;
 
   /**
-   * Callback to register public services with MozIot.
+   * Callback to register public services with WutWot.
    *
-   * Services bound here will be available both to MozIot and
+   * Services bound here will be available both to WutWot and
    * to other plugins.
    *
    * Use this to expose services you want to share, or to
-   * provide supported services to MozIot.
+   * provide supported services to WutWot.
    *
    * Services can be bound in two ways.
    * - The bind argument provides a fluent API to configure service bindings

@@ -1,5 +1,5 @@
 import { Container } from "microinject";
-import { MozIot } from "@wutwot/core";
+import { WutWot } from "@wutwot/core";
 
 import appModule from "./module";
 
@@ -24,6 +24,6 @@ export class App {
     if (this._container.has(Shutdownable)) {
       this._container.getAll(Shutdownable).forEach((x) => x.onShutdown());
     }
-    await this._container.get(MozIot).shutdown();
+    await this._container.get(WutWot).shutdown();
   }
 }

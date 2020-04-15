@@ -1,7 +1,7 @@
 import { injectable, singleton, provides, inject } from "microinject";
 
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
-import { MozIotPlugin } from "../../plugin-management";
+import { WutWotPlugin } from "../../plugin-management";
 import { DuplicateIDError, formCompoundId } from "../../id-mapping";
 
 import { ThingDef } from "../types";
@@ -21,7 +21,7 @@ export class ThingsManagerImpl
     super("ThingsManager");
   }
 
-  createThing(def: ThingDef, owner: MozIotPlugin): InternalThing {
+  createThing(def: ThingDef, owner: WutWotPlugin): InternalThing {
     const id = formCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(

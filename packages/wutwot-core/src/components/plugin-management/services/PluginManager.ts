@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { MozIotPlugin } from "../types";
+import { WutWotPlugin } from "../types";
 
 /**
  * Identifies the PluginManager service.
@@ -27,5 +27,5 @@ export interface PluginManager {
    * populating WOT objects.
    * @param plugin The plugin to register.
    */
-  registerPlugin(plugin: MozIotPlugin): void;
+  registerPlugin(plugin: WutWotPlugin): void;
 }

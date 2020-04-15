@@ -17,11 +17,11 @@ our library?
 Implementing it in wutwot-server is nice as that means
 the urns can be urls pointing at the actual location of the thing.
 
-Might want to accept a baseUrl property into moziot and
+Might want to accept a baseUrl property into wutwot and
 generate the urls that way.
 
 Bindings are a property of the server though, and we cannot expose
-them from moziot. Maybe we should just cover the core concepts of WOT
+them from wutwot. Maybe we should just cover the core concepts of WOT
 and leave the api for server.
 
 WOT examples use a urn specific to physical devices, but we cannot do that as:

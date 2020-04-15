@@ -3,15 +3,15 @@ import HttpStatusCodes from "http-status-codes";
 import { has } from "lodash";
 import {
   Thing,
-  MozIot,
+  WutWot,
   ThingAction,
   ThingActionRequest,
   ThingProperty,
   ThingEvent,
 } from "@wutwot/core";
 
-export function getThingOrThrow(mozIot: MozIot, thingId: string): Thing {
-  const thing = mozIot.things.get(thingId);
+export function getThingOrThrow(wutwot: WutWot, thingId: string): Thing {
+  const thing = wutwot.things.get(thingId);
   if (!thing) {
     throw createError(
       HttpStatusCodes.NOT_FOUND,

@@ -1,5 +1,5 @@
 import { injectable, inject } from "microinject";
-import { MozIot } from "@wutwot/core";
+import { WutWot } from "@wutwot/core";
 
 import { Restifier } from "../../Restifier";
 import { controller, get, param } from "../../infrastructure";
@@ -9,13 +9,13 @@ import { getThingOrThrow } from "../../controller-utils";
 @controller("/things/:thingId")
 export class ThingById {
   constructor(
-    @inject(MozIot) private _mozIot: MozIot,
+    @inject(WutWot) private _wutwot: WutWot,
     @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getThingById(@param("thingId") thingId: string) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     return this._restifier.thingToRest(thing);
   }
 }

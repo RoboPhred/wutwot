@@ -3,7 +3,7 @@ import { injectable, provides, injectParam, inject } from "microinject";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { InternalThingParams, inThingScope } from "../../things";
-import { MozIotPlugin } from "../../plugin-management";
+import { WutWotPlugin } from "../../plugin-management";
 import { DuplicateIDError, formCompoundId } from "../../id-mapping";
 
 import { ThingEvent, ThingEventDef, validateEventDefOrThrow } from "../types";
@@ -27,7 +27,7 @@ export class EventServiceImpl
     super("EventsManager");
   }
 
-  createEvent(def: ThingEventDef, owner: MozIotPlugin): ThingEvent {
+  createEvent(def: ThingEventDef, owner: WutWotPlugin): ThingEvent {
     validateEventDefOrThrow(def);
 
     const id = formCompoundId(owner.id, def.pluginLocalId);

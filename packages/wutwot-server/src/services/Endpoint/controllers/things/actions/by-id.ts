@@ -1,7 +1,7 @@
 import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
-import { MozIot, SchemaValidationError } from "@wutwot/core";
+import { WutWot, SchemaValidationError } from "@wutwot/core";
 
 import { Restifier } from "../../../Restifier";
 import {
@@ -18,7 +18,7 @@ import { getThingOrThrow, getActionOrThrow } from "../../../controller-utils";
 @controller("/things/:thingId/actions/:actionId")
 export class ThingActionById {
   constructor(
-    @inject(MozIot) private _mozIot: MozIot,
+    @inject(WutWot) private _wutwot: WutWot,
     @inject(Restifier) private _restifier: Restifier,
   ) {}
 
@@ -27,7 +27,7 @@ export class ThingActionById {
     @param("thingId") thingId: string,
     @param("actionId") actionId: string,
   ) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     const action = getActionOrThrow(thing, actionId);
     return action.requests.map((request) => ({
       [actionId]: this._restifier.actionRequestToRest(request),
@@ -41,7 +41,7 @@ export class ThingActionById {
     @param("actionId") actionId: string,
     @body() body: any,
   ) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     const bodyKeys = Object.keys(body);
     if (bodyKeys.length != 1 || bodyKeys[0] !== actionId) {
       throw createError(

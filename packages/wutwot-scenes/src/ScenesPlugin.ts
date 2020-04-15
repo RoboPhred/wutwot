@@ -1,4 +1,4 @@
-import { MozIotPlugin } from "@wutwot/core";
+import { WutWotPlugin } from "@wutwot/core";
 import { ServiceLocator, RegistryModule } from "microinject";
 
 import privateModule from "./module";
@@ -9,7 +9,7 @@ import {
 } from "./components";
 import { SceneRepository } from "./components/SceneRepository";
 
-export class ScenesPlugin implements MozIotPlugin {
+export class ScenesPlugin implements WutWotPlugin {
   get id(): string {
     return "scenes";
   }

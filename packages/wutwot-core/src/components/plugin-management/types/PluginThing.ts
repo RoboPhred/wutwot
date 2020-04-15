@@ -8,7 +8,7 @@ import { ThingEventDef, ThingEvent } from "../../thing-events";
 import { OwnedPluginThingAction, PluginThingAction } from "./PluginAction";
 
 /**
- * An instance of a MozIot Thing, with additional functionality for use by plugins.
+ * An instance of a WutWot Thing, with additional functionality for use by plugins.
  */
 export interface PluginThing extends Thing {
   /**

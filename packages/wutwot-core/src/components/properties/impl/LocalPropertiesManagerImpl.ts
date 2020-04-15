@@ -3,7 +3,7 @@ import { injectable, provides, inject, injectParam } from "microinject";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { inThingScope, InternalThingParams } from "../../things";
-import { MozIotPlugin } from "../../plugin-management";
+import { WutWotPlugin } from "../../plugin-management";
 import { formCompoundId, DuplicateIDError } from "../../id-mapping";
 
 import {
@@ -32,7 +32,7 @@ export class LocalPropertiesManagerImpl
     super("PropertiesManager");
   }
 
-  createProperty(def: ThingPropertyDef, owner: MozIotPlugin): ThingProperty {
+  createProperty(def: ThingPropertyDef, owner: WutWotPlugin): ThingProperty {
     validatePropertyDefOrThrow(def);
 
     const id = formCompoundId(owner.id, def.pluginLocalId);

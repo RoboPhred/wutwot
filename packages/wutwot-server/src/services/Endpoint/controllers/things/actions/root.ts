@@ -2,7 +2,7 @@ import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { flatMap } from "lodash";
-import { MozIot } from "@wutwot/core";
+import { WutWot } from "@wutwot/core";
 
 import { Restifier } from "../../../Restifier";
 import {
@@ -19,13 +19,13 @@ import { getThingOrThrow, getActionOrThrow } from "../../../controller-utils";
 @controller("/things/:thingId/actions")
 export class ThingActionsRoot {
   constructor(
-    @inject(MozIot) private _mozIot: MozIot,
+    @inject(WutWot) private _wutwot: WutWot,
     @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getActionRequests(@param("thingId") thingId: string) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
 
     const requests = flatMap(
       Array.from(thing.actions.values()),
@@ -38,7 +38,7 @@ export class ThingActionsRoot {
   @post()
   @status(HttpStatusCodes.CREATED)
   postAction(@param("thingId") thingId: string, @body() body: any) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     const bodyKeys = Object.keys(body);
     if (bodyKeys.length != 1) {
       throw createError(

@@ -1,5 +1,5 @@
 import { inject, injectable } from "microinject";
-import { MozIot } from "@wutwot/core";
+import { WutWot } from "@wutwot/core";
 
 import { controller, get, param } from "../../../infrastructure";
 import {
@@ -13,7 +13,7 @@ import { Restifier } from "../../../Restifier";
 @controller("/things/:thingId/actions/:actionId/:requestId")
 export class ThingActionRequest {
   constructor(
-    @inject(MozIot) private _mozIot: MozIot,
+    @inject(WutWot) private _wutwot: WutWot,
     @inject(Restifier) private _restifier: Restifier,
   ) {}
 
@@ -23,7 +23,7 @@ export class ThingActionRequest {
     @param("actionId") actionId: string,
     @param("requestId") requestId: string,
   ) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     const action = getActionOrThrow(thing, actionId);
     const request = getRequestOrThrow(action, requestId);
     return {

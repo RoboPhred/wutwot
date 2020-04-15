@@ -1,6 +1,6 @@
 import { injectable, inject } from "microinject";
 import { mapValues } from "lodash";
-import { MozIot } from "@wutwot/core";
+import { WutWot } from "@wutwot/core";
 
 import { mapToObject } from "../../../../../utils/map";
 
@@ -12,13 +12,13 @@ import { getThingOrThrow } from "../../../controller-utils";
 @controller("/things/:thingId/properties")
 export class PropertiesRoot {
   constructor(
-    @inject(MozIot) private _mozIot: MozIot,
+    @inject(WutWot) private _wutwot: WutWot,
     @inject(Restifier) private _restifier: Restifier,
   ) {}
 
   @get()
   getProperties(@param("thingId") thingId: string) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     return mapValues(mapToObject(thing.properties), (x) => x.value);
   }
 }

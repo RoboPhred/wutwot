@@ -1,6 +1,6 @@
 import { Context } from "microinject";
 
-import { MozIotPlugin } from "../../plugin-management";
+import { WutWotPlugin } from "../../plugin-management";
 
 import { ThingDef, validateThingDefOrThrow } from "../types";
 import { InternalThing, InternalThingParams } from "../services";
@@ -13,7 +13,7 @@ export function internalThingFactoryImpl(
   context: Context,
 ): InternalThingFactory {
   class InternalThingFactoryImpl implements InternalThingFactory {
-    createThing(id: string, def: ThingDef, owner: MozIotPlugin): InternalThing {
+    createThing(id: string, def: ThingDef, owner: WutWotPlugin): InternalThing {
       validateThingDefOrThrow(def);
       return context.get(InternalThing, {
         [InternalThingParams.ThingId]: id,

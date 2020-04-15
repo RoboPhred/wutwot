@@ -9,7 +9,7 @@ import thingEventsModule from "./components/thing-events/module";
 import thingTypesModule from "./components/semantic-types/module";
 import thingModule from "./components/things/module";
 
-const mozIotModule = composeModules(
+const wutwotModule = composeModules(
   actionRequestModule,
   actionModule,
   persistenceModule,
@@ -19,4 +19,4 @@ const mozIotModule = composeModules(
   thingTypesModule,
   thingModule,
 );
-export default mozIotModule;
+export default wutwotModule;

@@ -3,7 +3,7 @@ import { ThingActionRequestDef } from "../../action-requests";
 import { ThingActionRequest } from "../../action-requests";
 
 /**
- * An instance of a MozIot Thing Action, with additional functionality for use by plugins.
+ * An instance of a WutWot Thing Action, with additional functionality for use by plugins.
  */
 export interface PluginThingAction extends ThingAction {
   /**

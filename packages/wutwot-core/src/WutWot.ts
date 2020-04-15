@@ -8,20 +8,20 @@ import { isNotNull } from "./utils/types";
 import { mapToObject } from "./utils/map";
 
 import { Thing, ThingsManager } from "./components/things";
-import { PluginManager, MozIotPlugin } from "./components/plugin-management";
+import { PluginManager, WutWotPlugin } from "./components/plugin-management";
 
 import { Initializable, Shutdownable } from "./contracts";
 import { createReadonlyMapWrapper } from "./immutable";
 
-export class MozIot {
+export class WutWot {
   private _container: Container = new Container();
   private _pluginManager: PluginManager;
   private _thingManager: ThingsManager;
   private _publicThingsMap: ReadonlyMap<string, Thing>;
 
-  constructor(plugins: MozIotPlugin[]) {
+  constructor(plugins: WutWotPlugin[]) {
     this._container.bind(Container).toConstantValue(this._container);
-    this._container.bind(MozIot).toConstantValue(this);
+    this._container.bind(WutWot).toConstantValue(this);
     this._container.load(containerModule);
 
     this._pluginManager = this._container.get(PluginManager);
@@ -42,7 +42,7 @@ export class MozIot {
       .forEach((initializable) => initializable.onInitialize());
   }
 
-  [inspect.custom] = makeInspectJson("MozIot");
+  [inspect.custom] = makeInspectJson("WutWot");
 
   get things(): ReadonlyMap<string, Thing> {
     return this._publicThingsMap;

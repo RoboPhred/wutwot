@@ -1,5 +1,5 @@
 /**
- * A PluginAdapter is responsible for managing a single plugin in the MozIot instance.
+ * A PluginAdapter is responsible for managing a single plugin in the WutWot instance.
  */
 export interface PluginAdapter {
   /**

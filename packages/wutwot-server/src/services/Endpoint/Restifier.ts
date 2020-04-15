@@ -14,9 +14,7 @@ import { mapValues } from "lodash";
 import { RootURL } from "../../config";
 import { mapToObject } from "../../utils/map";
 
-// TODO: Should be provided by moziot, as wot now supports
-//  multiple contexts referenced from the semantic types, and other places.
-const WOT_CONTEXT = "https://iot.mozilla.org/schemas/";
+const WOT_CONTEXT = "https://www.w3.org/2019/wot/td/v1";
 
 @injectable()
 export class Restifier {
@@ -25,6 +23,8 @@ export class Restifier {
   thingToRest(thing: Thing, isPrimary: boolean = true): object {
     return {
       "@context": WOT_CONTEXT,
+      // TODO: Type is relative to context.  Semantic types should provide
+      //  their context.
       "@type": thing.semanticTypes,
       id: joinURL(this._rootURL, "things", thing.id),
       title: thing.title,
@@ -49,6 +49,8 @@ export class Restifier {
 
   actionToRest(action: ThingAction): object {
     return {
+      // TODO: Type is relative to context.  Semantic types should provide
+      //  their context.
       "@type": action.semanticTypes,
       title: action.title,
       description: action.description,
@@ -85,6 +87,8 @@ export class Restifier {
     return {
       title: property.title,
       description: property.description,
+      // TODO: Type is relative to context.  Semantic types should provide
+      //  their context.
       "@type": property.semanticTypes,
       type: property.type,
       unit: property.unit,
@@ -123,6 +127,8 @@ export class Restifier {
   eventToRest(event: ThingEvent): object {
     return {
       title: event.title,
+      // TODO: Type is relative to context.  Semantic types should provide
+      //  their context.
       "@type": event.semanticTypes,
       description: event.description,
       data: event.data,

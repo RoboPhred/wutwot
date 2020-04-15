@@ -1,5 +1,5 @@
 import repl from "repl";
-import { MozIot } from "@wutwot/core";
+import { WutWot } from "@wutwot/core";
 import { ZWavePlugin, METADATA_ZWAVE_NODE } from "@wutwot/zwave";
 import { injectable, inject } from "microinject";
 
@@ -13,7 +13,7 @@ export class ReplServer implements Entrypoint {
 
   constructor(
     @inject(App) private _app: App,
-    @inject(MozIot) private _moziot: MozIot,
+    @inject(WutWot) private _wutwot: WutWot,
     @inject(ZWavePlugin) private _zwave: ZWavePlugin,
   ) {}
 
@@ -30,7 +30,7 @@ export class ReplServer implements Entrypoint {
       prompt: ">",
     });
     const reset = (context: any) => {
-      context.moziot = this._moziot;
+      context.wutwot = this._wutwot;
       context.zwave = this._zwave;
       context.zwaveNodeMetadata = METADATA_ZWAVE_NODE;
     };

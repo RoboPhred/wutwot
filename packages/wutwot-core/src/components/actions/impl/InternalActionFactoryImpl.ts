@@ -1,7 +1,7 @@
 import { Context } from "microinject";
 
 import { InternalThingParams } from "../../things";
-import { MozIotPlugin } from "../../plugin-management";
+import { WutWotPlugin } from "../../plugin-management";
 
 import { ThingActionDef, validateActionDefOrThrow } from "../types";
 import { InternalAction, InternalActionParams } from "../services";
@@ -16,7 +16,7 @@ export function internalThingFactoryImpl(
     createAction(
       id: string,
       def: ThingActionDef,
-      owner: MozIotPlugin,
+      owner: WutWotPlugin,
     ): InternalAction {
       validateActionDefOrThrow(def);
 

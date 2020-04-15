@@ -36,7 +36,7 @@ export class DatabaseImpl implements Database, Shutdownable {
 
   // TODO: make configurable
   private get filePath() {
-    return pathResolve(process.cwd(), "moziot.persistence.json");
+    return pathResolve(process.cwd(), "wutwot.persistence.json");
   }
 
   get<T>(key: DataPersistenceKey): T | undefined;

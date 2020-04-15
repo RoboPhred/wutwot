@@ -4,7 +4,7 @@ import { Initializable } from "../../../contracts";
 
 import { DuplicateIDError } from "../../id-mapping";
 
-import { MozIotPlugin, PluginAdapter } from "../types";
+import { WutWotPlugin, PluginAdapter } from "../types";
 import { PluginAdapterFactory } from "../components";
 
 import { PluginManager } from "../services/PluginManager";
@@ -30,7 +30,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
     this._adaptersByPluginId.forEach((adapter) => adapter.initialize());
   }
 
-  registerPlugin(plugin: MozIotPlugin): void {
+  registerPlugin(plugin: WutWotPlugin): void {
     if (this._adaptersByPluginId.has(plugin.id)) {
       throw new DuplicateIDError(
         `A plugin with id "${plugin.id}" already exists.  Please reconfigure the plugin to use a different ID.`,

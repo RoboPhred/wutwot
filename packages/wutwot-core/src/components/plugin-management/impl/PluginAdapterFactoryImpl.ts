@@ -8,7 +8,7 @@ import {
 
 import { ThingsManager } from "../../things";
 
-import { MozIotPlugin, PluginAdapter } from "../types";
+import { WutWotPlugin, PluginAdapter } from "../types";
 
 import { PluginAdapterFactory } from "../components/PluginAdapterFactory";
 import { PluginThingFactory } from "../components/PluginThingFactory";
@@ -25,7 +25,7 @@ export class PluginAdapterFactoryImpl implements PluginAdapterFactory {
     @inject(PluginThingFactory) private _pluginThingFactory: PluginThingFactory,
   ) {}
 
-  createPluginAdapter(plugin: MozIotPlugin): PluginAdapter {
+  createPluginAdapter(plugin: WutWotPlugin): PluginAdapter {
     return new PluginAdapterImpl(
       plugin,
       this._container,

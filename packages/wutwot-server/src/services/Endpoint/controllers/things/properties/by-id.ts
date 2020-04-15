@@ -2,7 +2,7 @@ import { injectable, inject } from "microinject";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { has } from "lodash";
-import { MozIot, SchemaValidationError } from "@wutwot/core";
+import { WutWot, SchemaValidationError } from "@wutwot/core";
 
 import { controller, get, put, param, body } from "../../../infrastructure";
 import { getThingOrThrow, getPropertyOrThrow } from "../../../controller-utils";
@@ -10,14 +10,14 @@ import { getThingOrThrow, getPropertyOrThrow } from "../../../controller-utils";
 @injectable()
 @controller("/things/:thingId/properties/:propertyId")
 export class PropertiesById {
-  constructor(@inject(MozIot) private _mozIot: MozIot) {}
+  constructor(@inject(WutWot) private _wutwot: WutWot) {}
 
   @get()
   getProperties(
     @param("thingId") thingId: string,
     @param("propertyId") propertyId: string,
   ) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     const property = getPropertyOrThrow(thing, propertyId);
     return {
       [propertyId]: property.value,
@@ -30,7 +30,7 @@ export class PropertiesById {
     @param("propertyId") propertyId: string,
     @body() body: any,
   ) {
-    const thing = getThingOrThrow(this._mozIot, thingId);
+    const thing = getThingOrThrow(this._wutwot, thingId);
     const property = getPropertyOrThrow(thing, propertyId);
     if (!has(body, propertyId)) {
       throw createError(

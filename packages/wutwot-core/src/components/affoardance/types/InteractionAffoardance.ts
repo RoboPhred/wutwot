@@ -2,10 +2,10 @@
  * Defines the common structure shared by all affoardances.
  *
  * This is anaglous to the WOT Interaction Affoardance, but is tweaked and extended
- * to fit the needs of moziot.
+ * to fit the needs of wutwot.
  *
  * This does not include binding level properties, such as `forms`,
- * as moziot does not supply the bindings.  This is a concern left to the implementer.
+ * as wutwot does not supply the bindings.  This is a concern left to the implementer.
  *
  * {@see https://w3c.github.io/wot-thing-description/#interactionaffordance}
  */

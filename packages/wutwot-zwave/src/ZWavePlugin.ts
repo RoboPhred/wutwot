@@ -1,6 +1,6 @@
 import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
 import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
-import { MozIotPlugin } from "@wutwot/core";
+import { WutWotPlugin } from "@wutwot/core";
 
 import { ZWaveProvider, ZWaveEndpointThingMapper } from "./components";
 
@@ -11,7 +11,7 @@ export interface ZWavePluginOptions {
   pluginId?: string;
   port?: string;
 }
-export class ZWavePlugin implements MozIotPlugin {
+export class ZWavePlugin implements WutWotPlugin {
   private _controller: ZWaveController | null = null;
   private _controllerError: Error | null = null;
 

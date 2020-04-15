@@ -12,7 +12,7 @@ import { LocalActionsManager } from "../services/LocalActionsManager";
 import { ActionEventSink, InternalActionFactory } from "../components";
 
 import { InternalAction } from "../services";
-import { MozIotPlugin } from "../../plugin-management";
+import { WutWotPlugin } from "../../plugin-management";
 
 @injectable()
 @inThingScope()
@@ -31,7 +31,7 @@ export class LocalActionsManagerImpl
     super("ActionsManager");
   }
 
-  createAction(def: ThingActionDef, owner: MozIotPlugin): InternalAction {
+  createAction(def: ThingActionDef, owner: WutWotPlugin): InternalAction {
     const id = formCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(

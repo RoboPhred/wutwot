@@ -3,10 +3,10 @@ import { ScenesPlugin } from "@wutwot/scenes";
 
 import { ZWavePort } from "../../config";
 
-import { MozIotPlugin } from "../MozIot";
+import { WutWotPlugin } from "../WutWot";
 
 export default new ContainerModule((bind) => {
-  bind(MozIotPlugin)
+  bind(WutWotPlugin)
     .provides(ScenesPlugin)
     .toFactory((context) => {
       let zwavePort: string | undefined;

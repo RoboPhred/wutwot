@@ -3,7 +3,7 @@ import {
   ThingEventRaisedEventArgs,
   ThingEvent,
   ThingEventRecord,
-  MozIot,
+  WutWot,
 } from "@wutwot/core";
 import { injectable, provides, inject, injectParam } from "microinject";
 import { isEqual, cloneDeep } from "lodash";
@@ -28,8 +28,8 @@ export class SceneImpl implements Scene {
     persistedData: PersistedScene | null,
     @inject(EventEventSource)
     private _eventEventSource: EventEventSource,
-    @inject(MozIot)
-    private _moziot: MozIot,
+    @inject(WutWot)
+    private _wutwot: WutWot,
     @inject(ScenePersistenceManager)
     private _persistence: ScenePersistenceManager,
   ) {
@@ -97,7 +97,7 @@ export class SceneImpl implements Scene {
     for (const propSetting of this._propertySettings) {
       const { thingId, propertyId, value } = propSetting;
 
-      const thing = this._moziot.things.get(thingId);
+      const thing = this._wutwot.things.get(thingId);
       if (!thing) {
         continue;
       }

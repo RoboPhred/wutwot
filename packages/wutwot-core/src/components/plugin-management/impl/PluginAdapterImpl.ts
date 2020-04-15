@@ -4,7 +4,7 @@ import { ThingsManager, ThingDef } from "../../things";
 import { Database } from "../../persistence";
 
 import {
-  MozIotPlugin,
+  WutWotPlugin,
   OwnedPluginThing,
   PluginThing,
   PluginAdapter,
@@ -21,7 +21,7 @@ export class PluginAdapterImpl implements PluginAdapter {
   private _privateContainer: Container;
 
   constructor(
-    private _plugin: MozIotPlugin,
+    private _plugin: WutWotPlugin,
     publicContainer: Container,
     private _thingManager: ThingsManager,
     private _pluginThingFactory: PluginThingFactory,

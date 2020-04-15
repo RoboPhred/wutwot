@@ -1,7 +1,7 @@
 {
   "name": "@wutwot/zwave",
   "version": "1.0.0",
-  "description": "Provides z-wave Things to the MozIOT thing manager.",
+  "description": "Provides z-wave Things to the wutwot thing manager.",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",

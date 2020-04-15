@@ -39,7 +39,7 @@ export interface InternalAction extends ThingAction {
   /**
    * A proxy object providing the public API surface of {@link ThingAction}.
    *
-   * This should be used whenever exposing this action outside of MozIot internals.
+   * This should be used whenever exposing this action outside of WutWot internals.
    */
   readonly publicAPI: ThingAction;
 
