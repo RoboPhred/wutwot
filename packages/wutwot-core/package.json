@@ -10,12 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RoboPhred/wutwot-server.git"
+    "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
     "Mozilla",
     "IOT"
   ],
+  "bugs": {
+    "url": "https://github.com/RoboPhred/wutwot/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "author": "William Matthews",
   "license": "MIT",
   "devDependencies": {

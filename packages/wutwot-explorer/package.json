@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RoboPhred/wutwot-server.git"
+    "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
     "wutwot",
@@ -20,9 +20,9 @@
   "author": "William Matthews",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RoboPhred/wutwot-server/issues"
+    "url": "https://github.com/RoboPhred/wutwot/issues"
   },
-  "homepage": "https://github.com/RoboPhred/wutwot-server#readme",
+  "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.136",
