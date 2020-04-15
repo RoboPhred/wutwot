@@ -8,9 +8,9 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/packages/homectrl-server/src/index.ts",
-      "outFiles": ["${workspaceFolder}/packages/homectrl-server/lib/**/*.js"],
-      "cwd": "${workspaceFolder}/packages/homectrl-server",
+      "program": "${workspaceFolder}/packages/wutwot-server/src/index.ts",
+      "outFiles": ["${workspaceFolder}/packages/wutwot-server/lib/**/*.js"],
+      "cwd": "${workspaceFolder}/packages/wutwot-server",
       "sourceMaps": true,
       "console": "integratedTerminal",
       "env": {

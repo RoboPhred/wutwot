@@ -4,17 +4,12 @@
   "scripts": {
     "postinstall": "lerna bootstrap",
     "clean": "lerna run --parallel clean",
-    "build:moziot": "lerna run --scope homectrl-moziot build",
-    "build:plugin-zwave": "lerna run --scope homectrl-plugin-zwave build",
-    "build:server": "lerna run --scope homectrl-server build",
-    "build": "npm run build:moziot && npm run build:plugin-zwave && npm run build:server",
-    "start": "lerna run --scope homectrl-server --stream start",
-    "watch": "lerna run watch --stream",
+    "build": "lerna run build --scope=wutwot-server --include-filtered-dependencies",
     "lerna": "lerna"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RoboPhred/homectrl-server.git"
+    "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
     "mozilla-iot",
@@ -24,9 +19,9 @@
   "author": "William Matthews",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RoboPhred/homectrl-server/issues"
+    "url": "https://github.com/RoboPhred/wutwot/issues"
   },
-  "homepage": "https://github.com/RoboPhred/homectrl-server#readme",
+  "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
     "lerna": "^3.20.2"
   }
