@@ -1,5 +1,5 @@
 import { JSONSchema6 } from "json-schema";
-import { makeReadOnly } from "../../../utils/readonly";
+import { makeReadOnly } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 

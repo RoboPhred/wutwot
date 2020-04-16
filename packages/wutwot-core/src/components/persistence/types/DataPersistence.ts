@@ -1,4 +1,4 @@
-import { JSONPrimitive } from "../../../types";
+import { Scaler } from "../../../types";
 
 import { DataPersistenceKey } from "./DataPersistenceKey";
 
@@ -23,5 +23,5 @@ export interface DataPersistence {
    * @param key The key to set data at.
    * @param value The data to set.
    */
-  set(key: DataPersistenceKey, value: JSONPrimitive | object): void;
+  set(key: DataPersistenceKey, value: Scaler | object): void;
 }

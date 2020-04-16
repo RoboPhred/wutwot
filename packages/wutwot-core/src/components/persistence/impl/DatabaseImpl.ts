@@ -3,7 +3,7 @@ import { get, set } from "lodash";
 import { resolve as pathResolve } from "path";
 import { writeFileSync, readFileSync } from "fs";
 
-import { JSONPrimitive } from "../../../types";
+import { Scaler } from "../../../types";
 import { Shutdownable } from "../../../contracts";
 
 import { Database } from "../services";
@@ -45,7 +45,7 @@ export class DatabaseImpl implements Database, Shutdownable {
     return get(this._data, key, defaultValue);
   }
 
-  set(key: DataPersistenceKey, value: JSONPrimitive) {
+  set(key: DataPersistenceKey, value: Scaler) {
     set(this._data, key, value);
 
     // TODO: Batch saves on a delay.

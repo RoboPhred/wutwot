@@ -1,5 +1,5 @@
 import { inspect } from "util";
-import { isJSONAble, makeInspectJson } from "../utils/inspect";
+import { isJSONAble, makeInspectJson } from "../../utils/inspect";
 
 export function createReadonlyMapWrapper<K, V, VOut = V>(
   map: Map<K, V> | ReadonlyMap<K, V>,

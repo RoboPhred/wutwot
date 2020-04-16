@@ -1,7 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 
-import { DeepImmutable } from "../../../types";
-import { makeReadOnly } from "../../../utils/readonly";
+import { DeepImmutable, makeReadOnly } from "../../../immutable";
 
 /**
  * Defines the properties required when creating an {@link InteractionAffoardance}

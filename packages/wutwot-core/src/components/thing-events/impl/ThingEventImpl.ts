@@ -1,9 +1,12 @@
 import { inspect } from "util";
 import { cloneDeep } from "lodash";
 
-import { makeReadOnly, makeReadOnlyDeep } from "../../../utils/readonly";
+import {
+  DeepImmutable,
+  makeReadOnly,
+  makeReadOnlyDeep,
+} from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
-import { DeepImmutable } from "../../../types";
 
 import { DataSchema } from "../../data-schema";
 

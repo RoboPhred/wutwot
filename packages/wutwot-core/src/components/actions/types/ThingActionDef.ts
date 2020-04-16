@@ -1,8 +1,7 @@
 import { JSONSchema6 } from "json-schema";
 import { Observable } from "rxjs";
 
-import { makeReadOnlyDeep } from "../../../utils/readonly";
-import { DeepImmutableObject } from "../../../types";
+import { DeepImmutableObject, makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import { DataSchema } from "../../data-schema";

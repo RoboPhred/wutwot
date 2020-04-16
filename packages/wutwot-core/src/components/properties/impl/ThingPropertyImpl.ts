@@ -2,11 +2,11 @@ import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
 
 import { makeInspectJson } from "../../../utils/inspect";
+import { makeReadOnly } from "../../../immutable";
 
 import { validateOrThrow } from "../../json-schema";
 
 import { ThingProperty, ThingPropertyDef, ThingPropertyType } from "../types";
-import { makeReadOnly } from "../../../utils/readonly";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;

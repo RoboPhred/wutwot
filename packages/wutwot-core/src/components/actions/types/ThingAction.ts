@@ -1,5 +1,5 @@
-import { makeReadOnly } from "../../../utils/readonly";
-import { DeepImmutableObject, ToJSON } from "../../../types";
+import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
+import { ToJSON } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
 import { DataSchema } from "../../data-schema";

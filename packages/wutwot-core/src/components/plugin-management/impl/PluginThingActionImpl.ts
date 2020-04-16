@@ -1,4 +1,4 @@
-import { DeepImmutableObject } from "../../../types";
+import { DeepImmutableObject } from "../../../immutable";
 
 import { InternalAction, ThingAction } from "../../actions";
 import {

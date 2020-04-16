@@ -2,7 +2,7 @@ import Ajv, { ValidateFunction } from "ajv";
 import { JSONSchema6 } from "json-schema";
 import { findIndex, pick } from "lodash";
 
-import { DeepImmutableObject, DeepImmutable } from "../../types";
+import { DeepImmutableObject, DeepImmutable } from "../../immutable";
 
 import { SchemaValidationError } from "./errors";
 

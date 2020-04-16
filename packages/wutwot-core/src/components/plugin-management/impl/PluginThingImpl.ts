@@ -1,7 +1,3 @@
-import { mapValues } from "lodash";
-
-import { ReadonlyRecord } from "../../../types";
-import { makeReadOnly } from "../../../utils/readonly";
 import { createReadonlyMapWrapper } from "../../../immutable";
 
 import { Thing, ThingsManager, InternalThing } from "../../things";

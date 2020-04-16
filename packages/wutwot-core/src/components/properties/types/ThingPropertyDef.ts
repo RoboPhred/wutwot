@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { JSONSchema6 } from "json-schema";
 
-import { makeReadOnlyDeep } from "../../../utils/readonly";
+import { makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import {

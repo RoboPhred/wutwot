@@ -8,8 +8,7 @@ import {
 import { inspect } from "util";
 import { isObservable } from "rxjs";
 
-import { DeepImmutableObject } from "../../../types";
-import { makeReadOnly } from "../../../utils/readonly";
+import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
 
 import { validateOrThrow } from "../../json-schema";

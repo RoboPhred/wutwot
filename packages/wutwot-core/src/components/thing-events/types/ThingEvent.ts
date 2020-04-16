@@ -1,4 +1,5 @@
-import { ToJSON, DeepImmutable } from "../../../types";
+import { ToJSON } from "../../../types";
+import { DeepImmutable } from "../../../immutable";
 
 import { InteractionAffoardance } from "../../affoardance";
 import { DataSchema } from "../../data-schema";

@@ -8,9 +8,8 @@ import {
 import { mapValues } from "lodash";
 import { inspect } from "util";
 
-import { makeReadOnly } from "../../../utils/readonly";
+import { makeReadOnly } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
-import { ReadonlyRecord } from "../../../types";
 
 import {
   LocalActionsManager,

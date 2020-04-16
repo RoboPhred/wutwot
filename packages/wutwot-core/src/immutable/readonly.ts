@@ -1,4 +1,4 @@
-import { DeepImmutable } from "../types";
+import { DeepImmutable } from "./types";
 
 export function makeReadOnly<T>(obj: T): Readonly<T> {
   return Object.freeze(Object.seal(obj));

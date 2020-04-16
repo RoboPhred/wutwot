@@ -1,5 +1,4 @@
-import { ReadonlyRecord, ToJSON } from "../../../types";
-import { makeReadOnly } from "../../../utils/readonly";
+import { ToJSON } from "../../../types";
 
 import { ThingAction } from "../../actions";
 import { ThingProperty } from "../../properties";
