@@ -107,9 +107,6 @@ function throwValidatorError(
     validator.errors[0].message
   ) {
     const error = validator.errors[0];
-    if (validator.errors[0].dataPath) {
-      errorMessage += validator.errors[0].dataPath + " ";
-    }
     errorMessage += `${error.dataPath ?? "root value"} ${error.message}`;
   } else {
     errorMessage += "Schema validation failed.";
