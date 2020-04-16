@@ -1,15 +1,36 @@
 # TODO
 
-#### The standard has moved on, update to follow it
+#### Stronger typeings for ThingProperty.
 
-[The Standard](https://w3c.github.io/wot-thing-description/).
+- [The Standard](https://w3c.github.io/wot-thing-description/) defines NumericThingProperty, ObjectThingProperty, and so on.
 
-- Follow the spec more closely for affordances
-  - Handle affoardances that are poly. ThingProperty is actually NumericThingProperty | ObjectThingProperty and so on.
+#### Relationship between W3C WOT and JSON-LD is unclear.
 
-#### Use urns for Thing IDs.
+Is a WOT spec JSON-LD, or does it just borrow the context?
 
-Currently, we implement this in wutwot-server.
+W3C-WOT defines @context to be mandatory at the top level, but proper JSON-LD
+can just make every key a full IRI.
+
+I am tempted to make wutwot objects output full-IRI LD and let the consumer
+determine how to alias the context, as it saves us from having
+to come up with the context prefixes. This will let our api
+require full IRIs for types and other added semantic properties without
+dealing with context generation.
+
+#### Allow additional JSON-LD properties.
+
+Need to support
+
+- JSON-LD Types in semanticType (prefixed from Context, according to the spec. also allow IRIs?)
+- Additional JSON-LD extensions on everything.
+
+If we follow the WOT spec exactly, this means we have to come up with a @context
+that prefixes everything. This is difficult, and it would be better if we could
+use full IRI keys according to the JSON-LD spec and let the server compact it.
+
+#### IRI IDs.
+
+Currently, ids in wutwot are arbitrary strings, and we turn them into binding-specific urls in wutwot-server.
 
 The WOT spec is web centric, how close do we want to conform to it from
 our library?
@@ -28,18 +49,6 @@ WOT examples use a urn specific to physical devices, but we cannot do that as:
 
 - we are not a device registrar churning out hardware, so we don't have a serial number to use.
 - We are making virtual devices as well as targeting physical ones.
-
-#### Support extension contexts.
-
-The standard now allows `@context` to be a map. We can make our own contexts for semantic types.
-We need to be able to support adding to this when we add a semantic type to an affoardance that uses it.
-This should be done automatically, so a property can use a custom type and its context should be
-automatically included in the contexts for the thing.
-
-Up until now, we have ignored context on the thing and made the server support that. Perhaps
-we need to support it more directly.
-
-This starts to enroach us into the web provider concerns that we avoided with the non-urn IDs...
 
 #### Metadata on properties, actions, events
 
@@ -93,3 +102,5 @@ Maybe make this ConnectionStatus and expose a way for plugins to set it
 - Disconnected
 - Sleeping
 - Connected
+
+Might not need a property at all, and rely on adding a semanticType of "Orphan" or "Unknown"
