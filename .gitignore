@@ -2,3 +2,4 @@ node_modules/
 lib/
 /OZW_Log.txt
 /ozwcache_*.xml
+/.vscode
