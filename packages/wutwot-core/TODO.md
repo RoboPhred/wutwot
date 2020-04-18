@@ -11,9 +11,13 @@ Need to support
 - JSON-LD Types in semanticType (prefixed from Context, according to the spec. also allow IRIs?)
 - Additional JSON-LD extensions on everything.
 
-If we follow the WOT spec exactly, this means we have to come up with a @context
-that prefixes everything. This is difficult, and it would be better if we could
-use full IRI keys according to the JSON-LD spec and let the server compact it.
+We emit absolute IRIs for toJSONLD, which makes this a lot easier. We do not have to care
+about populating the context, all we need to do is collect the context url and allow arbitrary IRI / value pairs.
+
+`event.addExtensionProperty("http://my-context.com/c/v1", "http://my-context.com/c/terms/foobar", 42);`
+`event.addExtensionProperty({context: "http://my-context.com/c/v1", iri: "http://my-context.com/c/terms/foobar"}, 42);`
+
+We then need to pass the contexts up when generating json-ld, might need to change the return type to `{context, document}`.
 
 #### IRI IDs.
 
