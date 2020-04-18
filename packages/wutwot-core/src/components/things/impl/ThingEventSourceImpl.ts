@@ -29,6 +29,6 @@ export class ThingEventSourceImpl extends EventEmitter
       thingId: thing.id,
       thing,
     };
-    this.emit("thing.remov", e);
+    this.emit("thing.remove", e);
   }
 }
