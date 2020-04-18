@@ -14,8 +14,8 @@ import { JSONLDAble } from "../../json-ld";
  */
 export interface ThingAction
   extends InteractionAffordance,
-    JSONAble<ToJSON<ThingAction>>,
-    JSONLDAble {
+    JSONLDAble,
+    JSONAble<ToJSON<ThingAction>> {
   /**
    * JSON Schema describing this action's input.
    */
