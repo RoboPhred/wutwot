@@ -7,14 +7,14 @@ import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import { DataSchema } from "../../data-schema";
 import { ThingActionRequestUpdate } from "../../action-requests";
 import {
-  InteractionAffoardanceDef,
-  interactionAffoardanceDefSchema,
-} from "../../affoardance";
+  InteractionAffordanceDef,
+  interactionAffordanceDefSchema,
+} from "../../affordance";
 
 /**
  * Defines the information required to create a {@link ThingAction}
  */
-export interface ThingActionDef extends InteractionAffoardanceDef {
+export interface ThingActionDef extends InteractionAffordanceDef {
   /**
    * JSON Schema describing the input this action takes.
    */
@@ -62,7 +62,7 @@ export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
  * details about the validation.
  */
 export const validateActionDef = makeValidator(
-  interactionAffoardanceDefSchema,
+  interactionAffordanceDefSchema,
   actionDefSchema,
 );
 

@@ -7,12 +7,11 @@ import {
   ThingEvent,
   ThingEventRecord,
 } from "@wutwot/core";
+import { compact } from "jsonld";
 
 import { URL } from "url";
-import { mapValues } from "lodash";
 
 import { RootURL } from "../../config";
-import { mapToObject } from "../../utils/map";
 
 const WOT_CONTEXT = "https://www.w3.org/2019/wot/td/v1";
 
@@ -20,22 +19,12 @@ const WOT_CONTEXT = "https://www.w3.org/2019/wot/td/v1";
 export class Restifier {
   constructor(@inject(RootURL) private _rootURL: string) {}
 
-  thingToRest(thing: Thing, isPrimary: boolean = true): object {
+  async thingToRest(thing: Thing, isPrimary: boolean = true): Promise<object> {
+    const doc = thing.toJSONLD();
+    const compactDoc = await compact(doc, WOT_CONTEXT);
+    // TODO: Include forms for actions/events/properties
     return {
-      "@context": WOT_CONTEXT,
-      // TODO: Type is relative to context.  Semantic types should provide
-      //  their context.
-      "@type": thing.semanticTypes,
-      id: joinURL(this._rootURL, "things", thing.id),
-      title: thing.title,
-      description: thing.description,
-      actions: mapValues(mapToObject(thing.actions), (x) =>
-        this.actionToRest(x),
-      ),
-      properties: mapValues(mapToObject(thing.properties), (x) =>
-        this.propertyToRest(x),
-      ),
-      events: mapValues(mapToObject(thing.events), (x) => this.eventToRest(x)),
+      ...compactDoc,
       links: buildArray(
         !isPrimary && createLink("href", `/things/${thing.id}`),
         isPrimary && [
@@ -46,6 +35,10 @@ export class Restifier {
       ),
     };
   }
+
+  // TODO: w3c spec does not specify returning individual affordances.
+  //  This is a holdover from mozilla.  Should we get rid of it?
+  // If we keep it, should we convert it to json-ld and include the @context?
 
   actionToRest(action: ThingAction): object {
     return {

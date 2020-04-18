@@ -8,8 +8,9 @@ import {
 import { mapValues } from "lodash";
 import { inspect } from "util";
 
-import { makeReadOnly } from "../../../immutable";
+import { makeReadOnly, createReadonlyMapWrapper } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
+import { mapToObject } from "../../../utils/map";
 
 import {
   LocalActionsManager,
@@ -28,6 +29,9 @@ import {
   ThingEvent,
   ThingEventDef,
 } from "../../thing-events";
+import { DataPersistence, DataPersistenceKey } from "../../persistence";
+import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
+import { W3cWotLD } from "../../json-ld";
 
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
@@ -36,10 +40,7 @@ import {
   InternalThingParams,
   ThingLocalPersistence,
 } from "../services";
-import { DataPersistence, DataPersistenceKey } from "../../persistence";
-import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
-import { mapToObject } from "../../../utils/map";
-import { createReadonlyMapWrapper } from "../../../immutable";
+import { nonEmptyArray } from "../../../utils/types";
 
 namespace ThingPersistenceKeys {
   export const Name: DataPersistenceKey = ["name"];
@@ -186,7 +187,7 @@ export class InternalThingImpl implements InternalThing {
       id: this.id,
       ownerPlugin: this.ownerPlugin,
       title: this.title,
-      semanticTypes: this.semanticTypes,
+      semanticTypes: [...this.semanticTypes],
       description: this.description,
       metadata: mapToObject(this._metadata),
       actions: mapValues(mapToObject(this.actions), (action) =>
@@ -196,6 +197,28 @@ export class InternalThingImpl implements InternalThing {
         property.toJSON(),
       ),
       events: mapValues(mapToObject(this.events), (event) => event.toJSON()),
+    };
+  }
+
+  toJSONLD() {
+    const actions = Array.from(this.actions.values()).map((x) => x.toJSONLD());
+    const events = Array.from(this.events.values()).map((x) => x.toJSONLD());
+    const properties = Array.from(this.properties.values()).map((x) =>
+      x.toJSONLD(),
+    );
+
+    return {
+      "@id": `wutwut:thing:${this.id.replace(/\:/g, "-")}`,
+      // TODO: semanticTypes should always be full resolved IRIs
+      "@types": [...this.semanticTypes],
+      [W3cWotLD.Terms.Title]: this.title,
+      [W3cWotLD.Terms.Description]: this.description,
+      [W3cWotLD.Terms.HasActionAffordance]: nonEmptyArray(actions, undefined),
+      [W3cWotLD.Terms.HasEventAffordance]: nonEmptyArray(events, undefined),
+      [W3cWotLD.Terms.HasPropertyAffordance]: nonEmptyArray(
+        properties,
+        undefined,
+      ),
     };
   }
 }
@@ -267,6 +290,10 @@ function createPublicThingApi(thing: InternalThing) {
 
     toJSON() {
       return thing.toJSON();
+    }
+
+    toJSONLD() {
+      return thing.toJSONLD();
     }
   }
 

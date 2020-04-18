@@ -14,8 +14,8 @@ export class ThingById {
   ) {}
 
   @get()
-  getThingById(@param("thingId") thingId: string) {
+  async getThingById(@param("thingId") thingId: string) {
     const thing = getThingOrThrow(this._wutwot, thingId);
-    return this._restifier.thingToRest(thing);
+    return await this._restifier.thingToRest(thing);
   }
 }

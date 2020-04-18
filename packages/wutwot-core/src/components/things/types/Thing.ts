@@ -1,14 +1,15 @@
-import { ToJSON } from "../../../types";
+import { ToJSON, JSONAble } from "../../../types";
 
 import { ThingAction } from "../../actions";
 import { ThingProperty } from "../../properties";
 import { ThingEvent } from "../../thing-events";
 import { MetadataProvider } from "../../metadata";
+import { JSONLD, JSONLDAble } from "../../json-ld";
 
 /**
  * Describes a thing in the system.
  */
-export interface Thing extends MetadataProvider {
+export interface Thing extends MetadataProvider, JSONAble, JSONLDAble {
   /**
    * The ID of this thing.
    */
@@ -49,5 +50,23 @@ export interface Thing extends MetadataProvider {
    */
   readonly events: ReadonlyMap<string, ThingEvent>;
 
+  /**
+   * Produces a JSON representation of this thing.
+   *
+   * This is for diagnostic purposes, and does not follow
+   * any particular spec.
+   *
+   * {@see #toJSONLD}
+   */
   toJSON(): ToJSON<Thing>;
+
+  /**
+   * Produces a json-ld object representing this Thing.
+   *
+   * This produces a json-ld document in expanded form, and is not
+   * by itself compatible with the W3C WOT spec.  It must first be
+   * 'compacted' according to the json-ld spec using the W3C WOT
+   * context as the primary context.
+   */
+  toJSONLD(): JSONLD;
 }

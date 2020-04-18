@@ -1,7 +1,7 @@
 /**
- * Defines the common structure shared by all affoardances.
+ * Defines the common structure shared by all affordances.
  *
- * This is anaglous to the WOT Interaction Affoardance, but is tweaked and extended
+ * This is anaglous to the WOT Interaction Affordance, but is tweaked and extended
  * to fit the needs of wutwot.
  *
  * This does not include binding level properties, such as `forms`,
@@ -9,38 +9,38 @@
  *
  * {@see https://w3c.github.io/wot-thing-description/#interactionaffordance}
  */
-export interface InteractionAffoardance {
+export interface InteractionAffordance {
   /**
    * The ID of this action.
    */
   readonly id: string;
 
   /**
-   * The ID of the {@link Thing} this affoardance is for.
+   * The ID of the {@link Thing} this affordance is for.
    */
   readonly thingId: string;
 
   /**
-   * The plugin that created this affoardance.
+   * The plugin that created this affordance.
    */
   readonly ownerPlugin: object;
 
   /**
-   * The semantic types of this affoardance.
+   * The semantic types of this affordance.
    */
   readonly semanticTypes: readonly string[];
 
   /**
-   * The title of this affoardance.
+   * The title of this affordance.
    */
   readonly title: string | undefined;
 
   /**
-   * The description of this affoardance.
+   * The description of this affordance.
    */
   readonly description: string | undefined;
 }
-export const InteractionAffoardanceKeys: (keyof InteractionAffoardance)[] = [
+export const InteractionAffordanceKeys: (keyof InteractionAffordance)[] = [
   "id",
   "thingId",
   "ownerPlugin",

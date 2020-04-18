@@ -1,14 +1,7 @@
 import { inspect, InspectOptionsStylized } from "util";
+import { JSONAble } from "../types";
 
-export interface JSONAble {
-  toJSON(): any;
-}
-
-export function isJSONAble(obj: any): obj is JSONAble {
-  return typeof (obj as any).toJSON === "function";
-}
-
-export function makeInspectJson<T extends JSONAble>(
+export function makeInspectJson(
   name: string,
 ): (depth: number, options: InspectOptionsStylized) => string {
   return function (

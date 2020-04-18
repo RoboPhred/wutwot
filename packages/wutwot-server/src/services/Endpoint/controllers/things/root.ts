@@ -14,9 +14,10 @@ export class ThingsRoot {
   ) {}
 
   @get()
-  getThings() {
-    const body = Array.from(this._wutwot.things.values()).map((thing) =>
-      this._restifier.thingToRest(thing, false),
+  async getThings() {
+    const allThings = Array.from(this._wutwot.things.values());
+    const body = await Promise.all(
+      allThings.map((thing) => this._restifier.thingToRest(thing, false)),
     );
 
     return body;

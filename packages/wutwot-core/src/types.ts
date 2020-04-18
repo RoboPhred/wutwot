@@ -18,3 +18,11 @@ export type ToJSONObject<T> = {
 export type JSONKeys<T> = {
   [P in keyof T]: T[P] extends Scaler ? P : never;
 }[keyof T];
+
+export interface JSONAble<T = any> {
+  toJSON(): T;
+}
+
+export function isJSONAble(obj: any): obj is JSONAble {
+  return typeof (obj as any).toJSON === "function";
+}

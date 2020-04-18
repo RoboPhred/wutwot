@@ -1,8 +1,9 @@
-import { ToJSON } from "../../../types";
+import { ToJSON, JSONAble } from "../../../types";
 import { DeepImmutable } from "../../../immutable";
 
-import { InteractionAffoardance } from "../../affoardance";
+import { InteractionAffordance } from "../../affordance";
 import { DataSchema } from "../../data-schema";
+import { JSONLDAble } from "../../json-ld";
 
 import { ThingEventRecord } from "./ThingEventRecord";
 
@@ -13,7 +14,10 @@ import { ThingEventRecord } from "./ThingEventRecord";
  * Thing events also provide the array of records, containing the data for each raised event
  * in chronological order.
  */
-export interface ThingEvent extends InteractionAffoardance {
+export interface ThingEvent
+  extends InteractionAffordance,
+    JSONAble<ToJSON<ThingEvent>>,
+    JSONLDAble {
   /**
    * The schema of the data this event contains when raised.
    */

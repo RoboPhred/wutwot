@@ -7,6 +7,7 @@ import { makeReadOnly } from "../../../immutable";
 import { validateOrThrow } from "../../json-schema";
 
 import { ThingProperty, ThingPropertyDef, ThingPropertyType } from "../types";
+import { W3cWotLD } from "../../json-ld";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
@@ -111,7 +112,27 @@ export class ThingPropertyImpl implements ThingProperty {
       description: this.description,
       type: this.type,
       unit: this.unit,
-      enum: this.enum,
+      enum: this.enum ? [...this.enum] : undefined,
+      minimum: this.minimum,
+      maximum: this.maximum,
+      multipleOf: this.multipleOf,
+      readOnly: this.readOnly,
+      value: this.value,
+    };
+  }
+
+  toJSONLD() {
+    return {
+      "@context": {
+        "@vocab": W3cWotLD.Contexts.JsonSchema,
+      },
+      "@index": this.id,
+      [W3cWotLD.Terms.Title]: this.title,
+      [W3cWotLD.Terms.Description]: this.description,
+      // Currently relying on @vocab to specify the paths of these:
+      type: this.type,
+      unit: this.unit,
+      enum: this.enum ? [...this.enum] : undefined,
       minimum: this.minimum,
       maximum: this.maximum,
       multipleOf: this.multipleOf,

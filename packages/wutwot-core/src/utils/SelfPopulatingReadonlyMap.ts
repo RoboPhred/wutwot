@@ -1,8 +1,10 @@
 import { inspect } from "util";
 import { mapValues } from "lodash";
 
+import { isJSONAble } from "../types";
+
 import { mapToObject } from "./map";
-import { makeInspectJson, isJSONAble } from "./inspect";
+import { makeInspectJson } from "./inspect";
 
 export abstract class SelfPopulatingReadonlyMap<K extends PropertyKey, V>
   implements ReadonlyMap<K, V> {

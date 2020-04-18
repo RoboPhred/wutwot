@@ -63,10 +63,13 @@ function createControllerMethodHandler(
   propertyName: string,
   metadata: ControllerMethodMetadata,
 ): RequestHandler {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const args = getControllerMethodHandlerArgs(req, res, metadata);
-      const body = (controller as any)[propertyName].apply(controller, args);
+      let body = (controller as any)[propertyName].apply(controller, args);
+      if (body && typeof body === "object" && typeof body.then === "function") {
+        body = await body;
+      }
       res.status(metadata.status || HttpStatusCodes.OK).send(body);
     } catch (e) {
       // TODO log better

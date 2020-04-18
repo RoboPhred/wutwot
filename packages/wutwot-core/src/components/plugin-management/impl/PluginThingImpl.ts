@@ -123,6 +123,10 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._thing.toJSON();
   }
 
+  toJSONLD() {
+    return this._thing.toJSONLD();
+  }
+
   private _getPluginAction(action: InternalAction): PluginThingAction {
     let pluginAction = this._pluginActionsByInternal.get(action);
     if (!pluginAction) {

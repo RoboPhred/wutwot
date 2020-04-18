@@ -5,16 +5,16 @@ import { makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import {
-  InteractionAffoardanceDef,
-  interactionAffoardanceDefSchema,
-} from "../../affoardance";
+  InteractionAffordanceDef,
+  interactionAffordanceDefSchema,
+} from "../../affordance";
 
 import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
 
 // TODO: This should extend DataSchema
 //  or more probably, there should be multiple of these that collectively
 //  each extend one of the DataSchema sub types.
-export interface ThingPropertyDef extends InteractionAffoardanceDef {
+export interface ThingPropertyDef extends InteractionAffordanceDef {
   type: ThingPropertyType;
   unit?: string;
   enum?: string[];
@@ -46,7 +46,7 @@ export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
 });
 
 export const validatePropertyDef = makeValidator(
-  interactionAffoardanceDefSchema,
+  interactionAffordanceDefSchema,
   propertyDefSchema,
 );
 export const validatePropertyDefOrThrow = makeValidateOrThrow(

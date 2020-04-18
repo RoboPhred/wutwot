@@ -5,12 +5,12 @@ import { makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import {
-  InteractionAffoardanceDef,
-  interactionAffoardanceDefSchema,
-} from "../../affoardance";
+  InteractionAffordanceDef,
+  interactionAffordanceDefSchema,
+} from "../../affordance";
 import { DataSchema } from "../../data-schema";
 
-export interface ThingEventDef extends InteractionAffoardanceDef {
+export interface ThingEventDef extends InteractionAffordanceDef {
   /**
    * The schema for the data each event record will contain.
    */
@@ -33,7 +33,7 @@ export const eventDefSchema = makeReadOnlyDeep<JSONSchema6>({
 });
 
 export const validateEventDef = makeValidator(
-  interactionAffoardanceDefSchema,
+  interactionAffordanceDefSchema,
   eventDefSchema,
 );
 export const validateEventDefOrThrow = makeValidateOrThrow(validateEventDef);

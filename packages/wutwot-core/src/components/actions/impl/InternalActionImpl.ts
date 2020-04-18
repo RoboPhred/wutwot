@@ -1,12 +1,7 @@
-import {
-  injectable,
-  inScope,
-  injectParam,
-  inject,
-  provides,
-} from "microinject";
+import { injectable, injectParam, inject, provides } from "microinject";
 import { inspect } from "util";
 import { isObservable } from "rxjs";
+import { cloneDeep } from "lodash";
 
 import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
@@ -24,6 +19,7 @@ import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
 import { DataSchema } from "../../data-schema";
+import { W3cWotLD } from "../../json-ld";
 
 @injectable()
 @asActionScope()
@@ -137,8 +133,23 @@ export class InternalActionImpl implements InternalAction {
       title: this.title,
       semanticType: this.semanticTypes,
       description: this.description,
-      input: this.input,
+      input: cloneDeep(this.input),
       requests: this.requests.map((x) => x.toJSON()),
+    };
+  }
+
+  toJSONLD() {
+    return {
+      "@index": this.id,
+      "@type": [...this.semanticTypes],
+      [W3cWotLD.Terms.Title]: this.title,
+      [W3cWotLD.Terms.Description]: this.description,
+      [W3cWotLD.Terms.HasInputSchema]: {
+        "@context": {
+          "@vocab": W3cWotLD.Contexts.JsonSchema,
+        },
+        ...cloneDeep(this.input),
+      },
     };
   }
 }
@@ -193,6 +204,10 @@ function createPublicActionApi(action: InternalAction): ThingAction {
 
     toJSON() {
       return action.toJSON();
+    }
+
+    toJSONLD() {
+      return action.toJSONLD();
     }
   }
 
