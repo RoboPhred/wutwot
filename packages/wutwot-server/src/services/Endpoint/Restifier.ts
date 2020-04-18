@@ -25,6 +25,8 @@ export class Restifier {
     // TODO: Include forms for actions/events/properties
     return {
       ...compactDoc,
+      // Replace ID with URL ID.
+      id: joinURL(this._rootURL, "things", thing.id),
       links: buildArray(
         !isPrimary && createLink("href", `/things/${thing.id}`),
         isPrimary && [

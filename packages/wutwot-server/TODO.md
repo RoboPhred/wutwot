@@ -1,19 +1,12 @@
 # TODO
 
-## Bindings as plugins
+## Move td hosting and binding provider into own module.
 
-Should support various bindings. The most immediately useful are:
+Call it `wutwot-servient`. Should provide:
 
-- HTTP
-- Websocket
-- MQTT
-
-## Separate TD hosting / generation from server executable
-
-Should be able to grab the module to generate TDs and expose it manually
-with express, without having to use the self-contained server.
-
-## Who is responsible for json-ld?
-
-Currently, server handles json-ld context and serialization, but
-perhaps core should do so. Core should support attaching other ld contextual props.
+- Generation of W3C WOT ThingDescriptions
+- Optionally providing Mozilla-styled endpoints for fetching things and affordances.
+- Plugin system for hosting additional bindings.
+  - HTTP
+  - Websocket
+  - MQTT

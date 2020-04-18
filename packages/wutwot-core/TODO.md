@@ -4,19 +4,6 @@
 
 - [The Standard](https://w3c.github.io/wot-thing-description/) defines NumericThingProperty, ObjectThingProperty, and so on.
 
-#### Relationship between W3C WOT and JSON-LD is unclear.
-
-Is a WOT spec JSON-LD, or does it just borrow the context?
-
-W3C-WOT defines @context to be mandatory at the top level, but proper JSON-LD
-can just make every key a full IRI.
-
-I am tempted to make wutwot objects output full-IRI LD and let the consumer
-determine how to alias the context, as it saves us from having
-to come up with the context prefixes. This will let our api
-require full IRIs for types and other added semantic properties without
-dealing with context generation.
-
 #### Allow additional JSON-LD properties.
 
 Need to support
@@ -30,25 +17,11 @@ use full IRI keys according to the JSON-LD spec and let the server compact it.
 
 #### IRI IDs.
 
-Currently, ids in wutwot are arbitrary strings, and we turn them into binding-specific urls in wutwot-server.
+Currently, ids in wutwot are arbitrary strings. We have to use a URI for json-ld, so we use a `wutwot:things:${thingId}` form. We then override this in wutwot-server to use url ids.
 
-The WOT spec is web centric, how close do we want to conform to it from
-our library?
-
-Implementing it in wutwot-server is nice as that means
-the urns can be urls pointing at the actual location of the thing.
-
-Might want to accept a baseUrl property into wutwot and
-generate the urls that way.
-
-Bindings are a property of the server though, and we cannot expose
-them from wutwot. Maybe we should just cover the core concepts of WOT
-and leave the api for server.
-
-WOT examples use a urn specific to physical devices, but we cannot do that as:
-
-- we are not a device registrar churning out hardware, so we don't have a serial number to use.
-- We are making virtual devices as well as targeting physical ones.
+Consider adding an option to wutwot core to choose how to generate ids, or at the very least
+clean up and document our urn. Should move all id generation into functions of a single file to
+centralize them at the very least.
 
 #### Metadata on properties, actions, events
 
