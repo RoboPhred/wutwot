@@ -1,9 +1,9 @@
 import { injectable, provides, singleton } from "microinject";
 import { autobind } from "core-decorators";
 import { ZWaveNode } from "zwave-js";
+import { ZWaveNodeValueUpdatedArgs } from "zwave-js/build/lib/node/Node";
 import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
 import { ValueMetadataNumeric } from "zwave-js/build/lib/values/Metadata";
-import { ZWaveNodeValueUpdatedArgs } from "zwave-js/build/lib/node/Types";
 import { PluginThing } from "@wutwot/core";
 import { Subject } from "rxjs";
 

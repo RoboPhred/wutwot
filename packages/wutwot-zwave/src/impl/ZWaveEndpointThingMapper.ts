@@ -1,7 +1,7 @@
 import { injectable, inject, singleton, provides } from "microinject";
 import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
 import { ZWaveNode } from "zwave-js";
-import { InterviewStage } from "zwave-js/build/lib/node/Types";
+import { InterviewStage } from "zwave-js/build/lib/node/INode";
 import { autobind } from "core-decorators";
 
 import {
