@@ -2,5 +2,9 @@
   "things": {
     "noun_titlecase": "Things"
   },
+  "settings": {
+    "noun_titlecase": "Settings",
+    "thing_sources": "Thing Sources"
+  },
   "view-github": "View project on GitHub"
 }
