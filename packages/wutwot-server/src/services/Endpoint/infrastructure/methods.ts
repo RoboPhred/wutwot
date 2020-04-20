@@ -70,6 +70,7 @@ function createControllerMethodHandler(
       if (body && typeof body === "object" && typeof body.then === "function") {
         body = await body;
       }
+      res.setHeader("Content-Type", "application/json");
       res.status(metadata.status || HttpStatusCodes.OK).send(body);
     } catch (e) {
       // TODO log better
