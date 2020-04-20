@@ -1,8 +1,11 @@
 # TODO
 
-#### Stronger typeings for ThingProperty.
+#### Stronger typings for ThingProperty.
 
 - [The Standard](https://w3c.github.io/wot-thing-description/) defines NumericThingProperty, ObjectThingProperty, and so on.
+
+Need to rework ThingProperty to match the W3c DataSchema api.
+DataSchema (and rest of W3C TD specific types) should be in new library: `@wutwot/td`
 
 #### Allow additional JSON-LD properties.
 

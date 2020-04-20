@@ -8,8 +8,8 @@ import { JSONLDAble } from "../../json-ld";
 // Maybe we should provide multiple ThingProperty interfaces based on the core type?
 export interface ThingProperty
   extends InteractionAffordance,
-    JSONAble<ToJSON<ThingProperty>>,
-    JSONLDAble {
+    JSONLDAble,
+    JSONAble<ToJSON<ThingProperty>> {
   /**
    * The data type of this property.
    */
@@ -23,7 +23,7 @@ export interface ThingProperty
   /**
    * Allowed values.
    */
-  readonly enum: string[] | undefined;
+  readonly enum: any[] | undefined;
 
   /**
    * The minimum value, if type is numeric.
@@ -34,11 +34,6 @@ export interface ThingProperty
    * The maximum value, if type is numeric.
    */
   readonly maximum: number | undefined;
-
-  /**
-   * If specified and type is numeric, value must be a multiple of this number.
-   */
-  readonly multipleOf: number | undefined;
 
   /**
    * Whether the property is read ondly.

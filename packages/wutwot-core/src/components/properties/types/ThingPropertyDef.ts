@@ -38,7 +38,6 @@ export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
     enum: { type: "array", items: { type: "string", minLength: 1 } },
     minimum: { type: "number" },
     maximum: { type: "number" },
-    multipleOf: { type: "number" },
     readOnly: { type: "boolean" },
     initialValue: { type: ThingPropertyTypes },
   },
