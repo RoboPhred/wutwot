@@ -1,9 +1,10 @@
 {
   "things": {
-    "noun_titlecase": "Things"
+    "noun_titlecase_plural": "Things",
+    "not_found": "Thing Not Found"
   },
   "settings": {
-    "noun_titlecase": "Settings",
+    "noun_titlecase_plural": "Settings",
     "thing_sources": "Thing Sources"
   },
   "thing_sources": {

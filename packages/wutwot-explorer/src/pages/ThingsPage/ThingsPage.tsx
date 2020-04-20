@@ -14,7 +14,7 @@ const ThingsPage: React.FC = () => {
   const { t } = useTranslation();
   const thingIds = useSelector(thingIdsSelector);
   return (
-    <PageContainer title={t("things.noun_titlecase")}>
+    <PageContainer title={t("things.noun_titlecase_plural")}>
       <List>
         {thingIds.map((id) => (
           <ThingListItem key={id} id={id} />

@@ -33,11 +33,20 @@ async function fetchThingDefinitions(
     throw new Error(response.statusText);
   }
 
-  if (response.headers.get("Content-Type") !== "application/json") {
-    throw new Error("Expected content type application/json.");
+  // wutwot-server isnt sending this, despite the code to do so.
+  //  Others might not send it, and anyway we should also look
+  //  for application/td+json
+  // if (response.headers.get("Content-Type") !== "application/json") {
+  //   throw new Error("Expected content type application/json.");
+  // }
+
+  let body: any;
+  try {
+    body = await response.json();
+  } catch {
+    throw new Error("Expected JSON response");
   }
 
-  const body = await response.json();
   const thingDefinitions: ThingDefinition[] = asArray(body);
 
   thingDefinitions.forEach(validateThingDefinition);

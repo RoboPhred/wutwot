@@ -6,11 +6,11 @@ export interface NavItem {
 const NavItems: NavItem[] = [
   {
     path: "/",
-    i18nKey: "things.noun_titlecase",
+    i18nKey: "things.noun_titlecase_plural",
   },
   {
     path: "/settings",
-    i18nKey: "settings.noun_titlecase",
+    i18nKey: "settings.noun_titlecase_plural",
   },
 ];
 
