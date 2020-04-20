@@ -1,5 +1,8 @@
+import thingDefinitionsReducer from "@/services/thing-definitions/reducer";
 import thingSourcesReducer from "@/services/thing-sources/reducer";
 
-import { finalizeReducerList } from "./utils";
+import { finalizeReducerList, concatReducers } from "./utils";
 
-export default finalizeReducerList(thingSourcesReducer);
+export default finalizeReducerList(
+  concatReducers(thingDefinitionsReducer, thingSourcesReducer),
+);
