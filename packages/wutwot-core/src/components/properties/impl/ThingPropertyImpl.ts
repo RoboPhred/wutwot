@@ -137,7 +137,6 @@ export class ThingPropertyImpl implements ThingProperty {
       maximum: this.maximum,
       multipleOf: this.multipleOf,
       readOnly: this.readOnly,
-      value: this.value,
     };
   }
 }
