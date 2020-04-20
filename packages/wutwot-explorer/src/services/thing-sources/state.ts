@@ -1,9 +1,11 @@
+import { ThingSource } from "./types";
+
 export interface ThingSourcesState {
-  sourceUrls: string[];
+  sources: ThingSource[];
 }
 
 export const defaultThingSourcesState: Readonly<ThingSourcesState> = Object.freeze(
   {
-    sourceUrls: [],
+    sources: [],
   },
 );

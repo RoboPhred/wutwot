@@ -1,10 +1,5 @@
-import { AnyAction } from "redux";
+import thingSourcesReducer from "@/services/thing-sources/reducer";
 
-import { AppState, defaultAppState } from "@/state";
+import { finalizeReducerList } from "./utils";
 
-export default function rootReducer(
-  state: AppState = defaultAppState,
-  action: AnyAction,
-): AppState {
-  return state;
-}
+export default finalizeReducerList(thingSourcesReducer);

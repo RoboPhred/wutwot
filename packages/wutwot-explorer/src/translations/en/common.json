@@ -6,5 +6,17 @@
     "noun_titlecase": "Settings",
     "thing_sources": "Thing Sources"
   },
+  "thing_sources": {
+    "noun_titlecase_plural": "Thing Sources",
+    "source_name_titlecase": "Source Name",
+    "source_url_titlecase": "Source URL",
+    "verbs": {
+      "new_descriptive": "New Thing Source"
+    }
+  },
+  "verbs": {
+    "cancel_titlecase": "Cancel",
+    "add_titlecase": "Add"
+  },
   "view-github": "View project on GitHub"
 }

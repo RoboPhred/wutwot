@@ -13,7 +13,9 @@ const SettingsPage: React.FC = () => {
     <PageContainer title={t("settings.noun_titlecase")}>
       <List>
         <ListItemLink button to="/settings/thing-sources">
-          <ListItemText>{t("settings.thing_sources")}</ListItemText>
+          <ListItemText>
+            {t("thing_sources.noun_titlecase_plural")}
+          </ListItemText>
         </ListItemLink>
       </List>
     </PageContainer>
