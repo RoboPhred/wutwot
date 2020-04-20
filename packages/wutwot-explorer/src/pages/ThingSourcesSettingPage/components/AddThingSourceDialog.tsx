@@ -60,7 +60,7 @@ const AddThingSourceDialog: React.FC<AddThingSourceDialogProps> = ({
       onClose={onCancelClick}
     >
       <DialogTitle id="add-thing-source-title">
-        {t("thing_sources.verb.new_descriptive")}
+        {t("thing_sources.verbs.new_descriptive")}
       </DialogTitle>
       <DialogContent>
         <TextField

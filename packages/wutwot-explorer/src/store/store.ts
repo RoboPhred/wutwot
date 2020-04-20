@@ -8,6 +8,8 @@ import createSagaMiddleware from "redux-saga";
 
 import { defaultAppState } from "@/state";
 
+import { initialize } from "@/actions/initialize";
+
 import reducer from "./reducer";
 import saga from "./saga";
 
@@ -28,6 +30,8 @@ function createStore() {
   );
 
   sagaMiddleware.run(saga);
+
+  store.dispatch(initialize());
 
   return store;
 }
