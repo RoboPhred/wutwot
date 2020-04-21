@@ -89,7 +89,6 @@ export class Restifier {
       unit: property.unit,
       minimum: property.minimum,
       maximum: property.maximum,
-      multipleOf: property.multipleOf,
       enum: property.enum,
       // TODO: "properties" for object type.
       readOnly: property.readOnly,
