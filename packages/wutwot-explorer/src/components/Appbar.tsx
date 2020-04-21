@@ -16,6 +16,7 @@ import BackButton from "./BackButton";
 export interface AppbarProps {
   title: string;
   back?: boolean;
+  toolbarItems?: React.ReactNode;
 }
 
 const styles = (theme: Theme) =>
@@ -27,14 +28,17 @@ const styles = (theme: Theme) =>
 
 type Props = AppbarProps & WithStyles<typeof styles>;
 
-const Appbar: React.FC<Props> = ({ classes, title, back }) => (
-  <MaterialAppBar position="static">
-    <Toolbar>
-      {back && <BackButton />}
-      <Typography className={classes.title} variant="h6" color="inherit">
-        {title}
-      </Typography>
-    </Toolbar>
-  </MaterialAppBar>
-);
+const Appbar: React.FC<Props> = ({ classes, title, back, toolbarItems }) => {
+  return (
+    <MaterialAppBar position="static">
+      <Toolbar>
+        {back && <BackButton />}
+        <Typography className={classes.title} variant="h6" color="inherit">
+          {title}
+        </Typography>
+        {toolbarItems}
+      </Toolbar>
+    </MaterialAppBar>
+  );
+};
 export default withStyles(styles)(Appbar);

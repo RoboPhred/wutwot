@@ -37,17 +37,24 @@ const styles = createStyles({
 export interface PageContainerProps {
   title: string;
   back?: boolean;
+  toolbarItems?: React.ReactNode;
 }
 
 type Props = PageContainerProps & WithStyles<typeof styles>;
 
-const PageContainer: React.FC<Props> = ({ classes, title, back, children }) => (
+const PageContainer: React.FC<Props> = ({
+  classes,
+  title,
+  back,
+  toolbarItems,
+  children,
+}) => (
   <div className={classes.root}>
     <Drawer variant="permanent" anchor="left">
       <Sidebar className={classes.sidebar} />
     </Drawer>
     <div className={classes.appRoot}>
-      <Appbar title={title} back={back} />
+      <Appbar title={title} back={back} toolbarItems={toolbarItems} />
       <div className={classes.content}>{children}</div>
     </div>
   </div>

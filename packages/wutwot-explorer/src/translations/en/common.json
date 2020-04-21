@@ -1,7 +1,12 @@
 {
   "things": {
     "noun_titlecase_plural": "Things",
-    "not_found": "Thing Not Found"
+    "noun_titlecase": "Thing",
+    "not_found": "Thing Not Found",
+    "view_raw_definition": "View Raw Definition"
+  },
+  "thing_definitions": {
+    "noun_titlecase": "Thing Definition"
   },
   "settings": {
     "noun_titlecase_plural": "Settings",
@@ -19,5 +24,6 @@
     "cancel_titlecase": "Cancel",
     "add_titlecase": "Add"
   },
-  "view-github": "View project on GitHub"
+  "view-github": "View project on GitHub",
+  "more-options": "More Options"
 }

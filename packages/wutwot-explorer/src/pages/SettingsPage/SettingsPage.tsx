@@ -14,7 +14,7 @@ const SettingsPage: React.FC = () => {
       <List>
         <ListItemLink button to="/settings/thing-sources">
           <ListItemText>
-            {t("thing_sources.noun_titlecase_plural_plural")}
+            {t("thing_sources.noun_titlecase_plural")}
           </ListItemText>
         </ListItemLink>
       </List>

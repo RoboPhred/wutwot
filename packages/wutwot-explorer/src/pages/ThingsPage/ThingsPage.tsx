@@ -13,6 +13,7 @@ import ThingListItem from "./components/ThingListItem";
 const ThingsPage: React.FC = () => {
   const { t } = useTranslation();
   const thingIds = useSelector(thingIdsSelector);
+  // TODO: Sort by title
   return (
     <PageContainer title={t("things.noun_titlecase_plural")}>
       <List>
