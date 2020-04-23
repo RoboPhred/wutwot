@@ -8,7 +8,7 @@ export interface ThingDefinitionData {
 // TODO: Move to shared library, @wutwot/td
 export interface ThingDefinition {
   id: string;
-  title: string;
+  title?: string;
   description?: string;
   properties?: Record<string, PropertyAffordance>;
 }

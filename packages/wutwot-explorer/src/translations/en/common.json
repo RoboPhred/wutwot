@@ -3,7 +3,13 @@
     "noun_titlecase_plural": "Things",
     "noun_titlecase": "Thing",
     "not_found": "Thing Not Found",
-    "view_raw_definition": "View Raw Definition"
+    "view_raw_definition": "View Raw Definition",
+    "properties": {
+      "title_titlecase": "Title",
+      "title_empty": "[No Title]",
+      "description_titlecase": "Description",
+      "description_empty": "[No Description]"
+    }
   },
   "thing_definitions": {
     "noun_titlecase": "Thing Definition"

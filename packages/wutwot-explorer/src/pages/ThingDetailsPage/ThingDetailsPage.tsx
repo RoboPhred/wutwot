@@ -14,6 +14,9 @@ import PageContainer from "@/components/PageContainer";
 import MoreMenuButton from "@/components/MoreMenuButton";
 import MenuItemLink from "@/components/MenuItemLink";
 
+import ThingHeaderValue from "./components/ThingHeaderValue";
+import ThingPropertyList from "./components/ThingPropertyList";
+
 export interface ThingDetailsRouteParams {
   thingId: string;
 }
@@ -68,7 +71,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
     </MoreMenuButton>
   );
 
-  const { title, description } = definition;
+  const { title, description, properties } = definition;
   return (
     <PageContainer
       title={`${title} - ${t("things.noun_titlecase")}`}
@@ -76,12 +79,17 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
       toolbarItems={toolbarItems}
     >
       <div className={classes.root}>
-        {description && (
-          <div>
-            <Typography variant="overline">Description</Typography>
-            <Typography>{description}</Typography>
-          </div>
-        )}
+        <ThingHeaderValue
+          i18nTitle="things.properties.title_titlecase"
+          i18nFallback="things.properties.title_empty"
+          value={title}
+        />
+        <ThingHeaderValue
+          i18nTitle="things.properties.description_titlecase"
+          i18nFallback="things.properties.description_empty"
+          value={description}
+        />
+        <ThingPropertyList properties={properties} />
       </div>
     </PageContainer>
   );
