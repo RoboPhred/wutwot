@@ -53,7 +53,7 @@ class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
 
     this._thing.addProperty({
       pluginLocalId: "multilevel-switch",
-      title: "Switch",
+      title: "Brightness",
       description: metadata.description,
       semanticType: "LevelProperty",
       type: "number",
