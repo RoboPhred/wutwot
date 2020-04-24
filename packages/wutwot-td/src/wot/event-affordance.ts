@@ -1,4 +1,4 @@
-import { DataSchema } from "./data-schema";
+import { TypedDataSchema } from "./data-schema";
 import { InteractionAffordance } from "./interaction-affordance";
 
 /**
@@ -9,15 +9,15 @@ export interface EventAffordance extends InteractionAffordance {
   /**
    * Defines data that needs to be passed upon subscription, e.g., filters or message format for setting up Webhooks.
    */
-  subscription?: DataSchema;
+  subscription?: TypedDataSchema;
 
   /**
    * Defines the data schema of the Event instance messages pushed by the Thing.
    */
-  data?: DataSchema;
+  data?: TypedDataSchema;
 
   /**
    * Defines any data that needs to be passed to cancel a subscription, e.g., a specific message to remove a Webhook.
    */
-  cancellation?: DataSchema;
+  cancellation?: TypedDataSchema;
 }

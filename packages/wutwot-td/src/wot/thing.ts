@@ -8,7 +8,7 @@ import { Form } from "./form";
 import { SecurityScheme } from "./security-scheme";
 import { EventAffordance } from "./event-affordance";
 import { ActionAffordance } from "./action-affordance";
-import { PropertyAffordance } from "./property-affordance";
+import { TypedPropertyAffordance } from "./property-affordance";
 
 /**
  * {@link https://w3c.github.io/wot-thing-description/#thing}
@@ -78,7 +78,7 @@ export interface Thing {
   /**
    * All Property-based Interaction Affordances of the Thing.
    */
-  properties?: Record<string, PropertyAffordance>;
+  properties?: Record<string, TypedPropertyAffordance>;
 
   /**
    * All Action-based Interaction Affordances of the Thing.

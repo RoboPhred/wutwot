@@ -3,14 +3,14 @@ import { MaybeArray } from "../types";
 import { MultiLanguage } from "./multi-language";
 
 /**
- * Metadata that describes the data format used. It can be used for validation.
- *
- * Note: For the benefit of typings, this type referrs to any of DataSchema's subclasses,
- * identified by their type property.
- *
- * For the W3C definition of DataSchema, see {@link DataSchemaBase}.
+ * A {@link DataSchema} or {@link DataSchemaSubclass}, discriminated by the type property.
  */
-export type DataSchema =
+export type TypedDataSchema = DataSchema | DataSchemaSubclass;
+
+/**
+ * A subclass type of {@link DataSchemaSubclass}.
+ */
+export type DataSchemaSubclass =
   | ArraySchema
   | BooleanSchema
   | NumberSchema
@@ -23,7 +23,7 @@ export type DataSchema =
  * Metadata describing data of type Array. This Subclass is indicated by the value array assigned to type in DataSchema instances.
  * {@link https://w3c.github.io/wot-thing-description/#arrayschema}
  */
-export interface ArraySchema extends DataSchemaBase {
+export interface ArraySchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -32,7 +32,7 @@ export interface ArraySchema extends DataSchemaBase {
   /**
    * Used to define the characteristics of an array.
    */
-  items?: MaybeArray<DataSchema>;
+  items?: MaybeArray<TypedDataSchema>;
 
   /**
    * Defines the minimum number of items that have to be in the array.
@@ -49,7 +49,7 @@ export interface ArraySchema extends DataSchemaBase {
  * Metadata describing data of type boolean. This Subclass is indicated by the value boolean assigned to type in DataSchema instances.
  * {@link https://w3c.github.io/wot-thing-description/#booleanschema}
  */
-export interface BooleanSchema extends DataSchemaBase {
+export interface BooleanSchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -60,7 +60,7 @@ export interface BooleanSchema extends DataSchemaBase {
  * Metadata describing data of type number. This Subclass is indicated by the value number assigned to type in DataSchema instances.
  * {@link https://w3c.github.io/wot-thing-description/#numberschema}
  */
-export interface NumberSchema extends DataSchemaBase {
+export interface NumberSchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -81,7 +81,7 @@ export interface NumberSchema extends DataSchemaBase {
  * Metadata describing data of type integer. This Subclass is indicated by the value integer assigned to type in DataSchema instances.
  * {@link https://w3c.github.io/wot-thing-description/#integerschema}
  */
-export interface IntegerSchema extends DataSchemaBase {
+export interface IntegerSchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -102,7 +102,7 @@ export interface IntegerSchema extends DataSchemaBase {
  * Metadata describing data of type object. This Subclass is indicated by the value object assigned to type in DataSchema instances.
  * {@link https://w3c.github.io/wot-thing-description/#objectschema}
  */
-export interface ObjectSchema extends DataSchemaBase {
+export interface ObjectSchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -111,7 +111,7 @@ export interface ObjectSchema extends DataSchemaBase {
   /**
    * Data schema nested definitions.
    */
-  properties?: Record<string, DataSchema>;
+  properties?: Record<string, TypedDataSchema>;
 
   /**
    * Defines which members of the object type are mandatory.
@@ -123,7 +123,7 @@ export interface ObjectSchema extends DataSchemaBase {
  * Metadata describing data of type string. This Subclass is indicated by the value string assigned to type in DataSchema instances.
  * {@link https://w3c.github.io/wot-thing-description/#stringschema}
  */
-export interface StringSchema extends DataSchemaBase {
+export interface StringSchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -134,7 +134,7 @@ export interface StringSchema extends DataSchemaBase {
  * Metadata describing data of type null. This Subclass is indicated by the value null assigned to type in DataSchema instances. This Subclass describes only one acceptable value, namely null. It can be used as part of a oneOf declaration, where it is used to indicate, that the data can also be null.
  * {@link https://w3c.github.io/wot-thing-description/#nullschema}
  */
-export interface NullSchema extends DataSchemaBase {
+export interface NullSchema extends DataSchema {
   /**
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
@@ -142,9 +142,10 @@ export interface NullSchema extends DataSchemaBase {
 }
 
 /**
- * The base implementation of
+ * Metadata that describes the data format used. It can be used for validation.
+ * {@link https://w3c.github.io/wot-thing-description/#dataschema}
  */
-export interface DataSchemaBase {
+export interface DataSchema {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types)
    */
@@ -188,7 +189,7 @@ export interface DataSchemaBase {
   /**
    * Used to ensure that the data is valid against one of the specified schemas in the array.
    */
-  oneOf?: DataSchema[];
+  oneOf?: TypedDataSchema[];
 
   /**
    * Restricted set of values provided as an array.

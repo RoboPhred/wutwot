@@ -1,4 +1,4 @@
-import { DataSchema } from "./data-schema";
+import { TypedDataSchema } from "./data-schema";
 import { InteractionAffordance } from "./interaction-affordance";
 
 /**
@@ -9,12 +9,12 @@ export interface ActionAffordance extends InteractionAffordance {
   /**
    * Used to define the input data schema of the Action.
    */
-  input?: DataSchema;
+  input?: TypedDataSchema;
 
   /**
    * Used to define the output data schema of the Action.
    */
-  output?: DataSchema;
+  output?: TypedDataSchema;
 
   /**
    * Signals if the Action is safe (=true) or not. Used to signal if there is no internal state (cf. resource state) is changed when invoking an Action. In that case responses can be cached as example.

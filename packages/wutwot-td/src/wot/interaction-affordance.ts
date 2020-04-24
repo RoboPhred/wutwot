@@ -1,7 +1,7 @@
 import { LDType } from "../json-ld";
 import { MultiLanguage } from "./multi-language";
 import { Form } from "./form";
-import { DataSchema } from "./data-schema";
+import { TypedDataSchema } from "./data-schema";
 
 /**
  * Metadata of a Thing that shows the possible choices to Consumers, thereby suggesting how Consumers may interact with the Thing. There are many types of potential affordances, but W3C WoT defines three types of Interaction Affordances: Properties, Actions, and Events.
@@ -12,7 +12,7 @@ export interface InteractionAffordance {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types).
    */
-  "@type": LDType;
+  "@type"?: LDType;
 
   /**
    * Provides a human-readable title (e.g., display a text for UI representation) based on a default language.
@@ -42,5 +42,5 @@ export interface InteractionAffordance {
   /**
    * Define URI template variables as collection based on DataSchema declarations.
    */
-  uriVariables: Record<string, DataSchema>;
+  uriVariables?: Record<string, TypedDataSchema>;
 }
