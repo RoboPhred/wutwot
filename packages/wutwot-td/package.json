@@ -1,0 +1,28 @@
+{
+  "name": "wutwot-td",
+  "version": "1.0.0",
+  "description": "Types, schemas, and utils for W3C Thing Definitions.",
+  "main": "lib/index.js",
+  "types": "dts/index.d.ts",
+  "files": [
+    "src/**",
+    "dts/**"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/wutwot.git"
+  },
+  "keywords": [
+    "W3C",
+    "Thing Definition"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoboPhred/wutwot/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/wutwot#readme"
+}
