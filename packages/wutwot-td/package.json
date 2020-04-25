@@ -1,5 +1,5 @@
 {
-  "name": "wutwot-td",
+  "name": "@wutwot/td",
   "version": "1.0.0",
   "description": "Types, schemas, and utils for W3C Thing Definitions.",
   "main": "lib/index.js",
@@ -9,7 +9,8 @@
     "dts/**"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf lib",
+    "build": "tsc -p src --incremental"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/RoboPhred/wutwot/issues"
   },
-  "homepage": "https://github.com/RoboPhred/wutwot#readme"
+  "homepage": "https://github.com/RoboPhred/wutwot#readme",
+  "devDependencies": {
+    "rimraf": "3.0.2"
+  }
 }

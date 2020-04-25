@@ -1,5 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
+import { W3cWotTerms, W3cWotContexts } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
 import { makeReadOnly } from "../../../immutable";
@@ -7,7 +8,6 @@ import { makeReadOnly } from "../../../immutable";
 import { validateOrThrow } from "../../json-schema";
 
 import { ThingProperty, ThingPropertyDef, ThingPropertyType } from "../types";
-import { W3cWotLD } from "../../json-ld";
 
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
@@ -122,11 +122,11 @@ export class ThingPropertyImpl implements ThingProperty {
   toJSONLD() {
     return {
       "@context": {
-        "@vocab": W3cWotLD.Contexts.JsonSchema,
+        "@vocab": W3cWotContexts.JsonSchema,
       },
       "@index": this.id,
-      [W3cWotLD.Terms.Title]: this.title,
-      [W3cWotLD.Terms.Description]: this.description,
+      [W3cWotTerms.Title]: this.title,
+      [W3cWotTerms.Description]: this.description,
       // Currently relying on @vocab to specify the paths of these:
       type: this.type,
       unit: this.unit,

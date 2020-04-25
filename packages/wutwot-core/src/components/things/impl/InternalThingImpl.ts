@@ -7,6 +7,7 @@ import {
 } from "microinject";
 import { mapValues } from "lodash";
 import { inspect } from "util";
+import { W3cWotTerms } from "@wutwot/td";
 
 import { makeReadOnly, createReadonlyMapWrapper } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
@@ -31,7 +32,6 @@ import {
 } from "../../thing-events";
 import { DataPersistence, DataPersistenceKey } from "../../persistence";
 import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
-import { W3cWotLD } from "../../json-ld";
 
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
@@ -211,14 +211,11 @@ export class InternalThingImpl implements InternalThing {
       "@id": `wutwut:thing:${this.id.replace(/\:/g, "-")}`,
       // TODO: semanticTypes should always be full resolved IRIs
       "@types": [...this.semanticTypes],
-      [W3cWotLD.Terms.Title]: this.title,
-      [W3cWotLD.Terms.Description]: this.description,
-      [W3cWotLD.Terms.HasActionAffordance]: nonEmptyArray(actions, undefined),
-      [W3cWotLD.Terms.HasEventAffordance]: nonEmptyArray(events, undefined),
-      [W3cWotLD.Terms.HasPropertyAffordance]: nonEmptyArray(
-        properties,
-        undefined,
-      ),
+      [W3cWotTerms.Title]: this.title,
+      [W3cWotTerms.Description]: this.description,
+      [W3cWotTerms.HasActionAffordance]: nonEmptyArray(actions, undefined),
+      [W3cWotTerms.HasEventAffordance]: nonEmptyArray(events, undefined),
+      [W3cWotTerms.HasPropertyAffordance]: nonEmptyArray(properties, undefined),
     };
   }
 }

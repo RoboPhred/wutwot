@@ -110,3 +110,10 @@ export interface Thing {
    */
   securityDefinitions: Record<string, SecurityScheme>;
 }
+
+export function validateThingDefinition(value: any) {
+  // TODO: AJV json-schema validation.  Return detailed error.
+  if (!value || typeof value !== "object" || typeof value.title !== "string") {
+    throw new Error("Provided value is not a ThingDefinition");
+  }
+}
