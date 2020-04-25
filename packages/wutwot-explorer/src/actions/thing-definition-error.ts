@@ -2,11 +2,11 @@ import { AnyAction } from "redux";
 
 export const THING_DEFINITION_ERROR_ACTION = "thing-definition-error" as const;
 export const thingDefinitionError = (
-  sourceUrl: string,
+  sourceId: string,
   errorMessage: string,
 ) => ({
   type: THING_DEFINITION_ERROR_ACTION,
-  payload: { sourceUrl, errorMessage },
+  payload: { sourceId, errorMessage },
 });
 export type ThingDefinitionErrorAction = ReturnType<
   typeof thingDefinitionError

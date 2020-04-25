@@ -3,9 +3,10 @@ import values from "lodash/values";
 import keys from "lodash/keys";
 import find from "lodash/find";
 
+import { createId } from "@/utils/id";
+
 import { createThingSourcesSelector } from "./utils";
 import { ThingSourcesState } from "./state";
-import { stripId } from "@/utils/id";
 
 export const thingSourcesSelector = createThingSourcesSelector(
   createSelector(
@@ -14,9 +15,23 @@ export const thingSourcesSelector = createThingSourcesSelector(
   ),
 );
 
+export const thingSourceSelector = createThingSourcesSelector(
+  (state: ThingSourcesState, sourceId: string) => state.sourcesById[sourceId],
+);
+
+export const thingSourceIdForUrl = createThingSourcesSelector(
+  (state: ThingSourcesState, url: string) => {
+    const source = find(values(state.sourcesById), (x) => x.url === url);
+    if (!source) {
+      return null;
+    }
+    return source.id;
+  },
+);
+
 export const thingSourceTitleInUse = createThingSourcesSelector(
   (state: ThingSourcesState, title: string) => {
-    const id = stripId(title);
+    const id = createId(title);
     return find(keys(state.sourcesById), (sourceId) => sourceId === id) != null;
   },
 );

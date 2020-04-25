@@ -3,6 +3,7 @@ import * as React from "react";
 import ListItem from "@material-ui/core/ListItem";
 
 import { useLinkClicked } from "./utils";
+import { useLocation } from "react-router";
 
 export interface ListItemLinkProps {
   to: string;
@@ -17,9 +18,10 @@ export interface ListItemLinkProps {
 const ListItemLink = React.forwardRef<HTMLAnchorElement, ListItemLinkProps>(
   ({ to, target, disabled, autoselect, button, onClick, children }, ref) => {
     const { onLinkClick, href } = useLinkClicked({ to, target, onClick });
+    const { pathname } = useLocation();
     return (
       <ListItem
-        selected={autoselect && pathStartsWith(location.pathname, to)}
+        selected={autoselect && pathStartsWith(pathname, to)}
         component="a"
         button={button as any} // typings are weird here.  `button` works fine, `button={true}` does not.
         href={href}

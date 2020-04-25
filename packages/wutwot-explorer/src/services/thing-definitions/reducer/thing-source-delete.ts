@@ -22,8 +22,8 @@ export default createThingDefinitionsReducer(
     const { id } = action.payload;
 
     const keepIds = entries(state.thingDataByDisplayId)
-      .filter(([id, data]) => data.sourceId !== id)
-      .map(([id, data]) => id);
+      .filter(([_, data]) => data.sourceId !== id)
+      .map(([id, _]) => id);
 
     return {
       ...state,

@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
 export interface ThingRawDefinitionRouteParams {
-  thingId: string;
+  displayId: string;
 }
 
 export type ThingRawDefinitionPageProps = RouteComponentProps<
@@ -19,12 +19,12 @@ export type ThingRawDefinitionPageProps = RouteComponentProps<
 const ThingRawDefinitionPage: React.FC<ThingRawDefinitionPageProps> = ({
   match,
 }) => {
-  let { thingId } = match.params;
-  thingId = decodeURIComponent(thingId);
+  let { displayId } = match.params;
+  displayId = decodeURIComponent(displayId);
 
   const { t } = useTranslation();
   const definition = useAppSelector((state) =>
-    thingDefinitionSelector(state, thingId),
+    thingDefinitionSelector(state, displayId),
   );
 
   if (!definition) {

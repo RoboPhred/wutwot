@@ -40,7 +40,7 @@ const ThingSourcesSettingPage: React.FC = () => {
   }, []);
 
   return (
-    <PageContainer title={t("thing_sources.noun_titlecase_plural")}>
+    <PageContainer title={t("thing_sources.noun_titlecase_plural")} back>
       <List>
         {sourceUrls.map((source) => (
           <ThingSourceListItem key={source.id} {...source} />

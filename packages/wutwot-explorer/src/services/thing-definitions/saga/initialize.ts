@@ -14,7 +14,7 @@ function* onInitialize() {
 
   // Try to load all in parallel and leave it up to the browser to figure out
   //  how many to allow at once.
-  for (const { url } of sources) {
-    yield call(loadDefinitionsFromSource, url);
+  for (const { id } of sources) {
+    yield call(loadDefinitionsFromSource, id);
   }
 }

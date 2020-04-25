@@ -18,7 +18,7 @@ import ThingHeaderValue from "./components/ThingHeaderValue";
 import ThingPropertyList from "./components/ThingPropertyList";
 
 export interface ThingDetailsRouteParams {
-  thingId: string;
+  displayId: string;
 }
 
 export type ThingDetailsPageProps = RouteComponentProps<
@@ -34,15 +34,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
-  let { thingId } = match.params;
-  thingId = decodeURIComponent(thingId);
+  let { displayId } = match.params;
+  displayId = decodeURIComponent(displayId);
 
   const classes = useStyles();
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen, setMenuClosed] = useToggleState();
 
   const definition = useAppSelector((state) =>
-    thingDefinitionSelector(state, thingId),
+    thingDefinitionSelector(state, displayId),
   );
 
   if (!definition) {
@@ -63,7 +63,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
       onClose={setMenuClosed}
     >
       <MenuItemLink
-        to={`/things/${match.params.thingId}/definition`}
+        to={`/things/${match.params.displayId}/definition`}
         onClick={setMenuClosed}
       >
         {t("things.view_raw_definition")}

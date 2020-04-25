@@ -1,4 +1,4 @@
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import HttpStatusCodes from "http-status-codes";
 import { Thing, validateThing } from "@wutwot/td";
 
@@ -6,16 +6,24 @@ import { asArray } from "@/types";
 
 import { thingDefinitionReceived } from "@/actions/thing-definition-received";
 import { thingDefinitionError } from "@/actions/thing-definition-error";
+import { thingSourceSelector } from "@/services/thing-sources/selectors";
+import { ThingSource } from "@/services/thing-sources/types";
 
-export function* loadDefinitionsFromSource(sourceUrl: string) {
+export function* loadDefinitionsFromSource(sourceId: string) {
+  const source: ThingSource | null = yield select(
+    thingSourceSelector,
+    sourceId,
+  );
+  if (!source) {
+    return;
+  }
+
+  const { url } = source;
   try {
-    const thingDefinitions: Thing[] = yield call(
-      fetchThingDefinitions,
-      sourceUrl,
-    );
-    yield put(thingDefinitionReceived(sourceUrl, thingDefinitions));
+    const thingDefinitions: Thing[] = yield call(fetchThingDefinitions, url);
+    yield put(thingDefinitionReceived(sourceId, thingDefinitions));
   } catch (e) {
-    yield put(thingDefinitionError(sourceUrl, e.message));
+    yield put(thingDefinitionError(sourceId, e.message));
   }
 }
 

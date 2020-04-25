@@ -17,9 +17,9 @@ const Routes: React.FC = () => (
       component={ThingSourcesSettingPage}
     />
     <Route path="/things" exact component={ThingsPage} />
-    <Route path="/things/:thingId" exact component={ThingDetailsPage} />
+    <Route path="/things/:displayId" exact component={ThingDetailsPage} />
     <Route
-      path="/things/:thingId/definition"
+      path="/things/:displayId/definition"
       exact
       component={ThingRawDefinitionPage}
     />

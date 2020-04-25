@@ -9,6 +9,7 @@ import {
   ThingDefinitionsServiceState,
   defaultThingDefinitionsServiceState,
 } from "../state";
+import { createId } from "@/utils/id";
 
 export default createThingDefinitionsReducer(
   (
@@ -21,9 +22,11 @@ export default createThingDefinitionsReducer(
 
     const { sourceId, definitions } = action.payload;
 
-    for (const definition of definitions) {
-      const id = definition.id ?? `uuid:${uuidV4()}`;
-      state = fpSet(state, "thingDataByDisplayId", id, {
+    for (let i = 0; i < definitions.length; i++) {
+      const definition = definitions[i];
+      const displayId = createId(`${sourceId}-${definition.title}`);
+      state = fpSet(state, "thingDataByDisplayId", displayId, {
+        displayId,
         sourceId,
         definition,
       });
