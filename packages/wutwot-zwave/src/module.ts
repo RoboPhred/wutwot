@@ -5,7 +5,7 @@ import { CentralSceneMonitorFactoryImpl } from "./impl/monitors/CentralSceneMoni
 
 import { AdapterLocatorImpl } from "./impl/AdapterLocatorImpl";
 import { ZWaveEndpointHandlerFactoryImpl } from "./impl/ZWaveEndpointHandlerFactoryImpl";
-import { ZWaveEndpointThingMapperImpl } from "./impl/ZWaveEndpointThingMapper";
+import { ZWaveEndpointThingMapperImpl } from "./impl/ZWaveEndpointThingMapperImpl";
 import { ZWaveProviderImpl } from "./impl/ZWaveProviderImpl";
 
 export default new ContainerModule((bind) => {
