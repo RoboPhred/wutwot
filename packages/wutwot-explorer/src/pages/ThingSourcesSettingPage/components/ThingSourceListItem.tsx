@@ -13,17 +13,18 @@ import { thingSourceDelete } from "@/actions/thing-source-delete";
 interface ThingSourceListItemProps extends ThingSource {}
 
 const ThingSourceListItem: React.FC<ThingSourceListItemProps> = ({
-  name,
+  id,
+  title,
   url,
 }) => {
   const dispatch = useDispatch();
   const onDeleteClick = React.useCallback(() => {
-    dispatch(thingSourceDelete(url));
-  }, [url]);
+    dispatch(thingSourceDelete(id));
+  }, [id]);
 
   return (
     <ListItem key={url}>
-      <ListItemText primary={name} secondary={url} />
+      <ListItemText primary={title} secondary={url} />
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete" onClick={onDeleteClick}>
           <DeleteIcon />

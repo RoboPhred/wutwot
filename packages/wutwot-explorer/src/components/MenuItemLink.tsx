@@ -1,43 +1,32 @@
 import * as React from "react";
 
-import { withRouter, RouteComponentProps } from "react-router";
-
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { onLinkClick } from "./utils";
+import { useLinkClicked } from "./utils";
 
-export interface ListItemLinkProps {
+export interface MenuItemLinkProps {
   to: string;
+  target?: string;
   disabled?: boolean;
-  onClick(e: React.MouseEvent<any>): void;
+  onClick?(e: React.MouseEvent<any>): void;
+  children?: React.ReactNode;
 }
 
-type Props = ListItemLinkProps & RouteComponentProps;
-class MenuItemLink extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    this._onClick = this._onClick.bind(this);
-  }
-
-  render() {
-    const { history, location, to, disabled, onClick, children } = this.props;
+const MenuItemLink = React.forwardRef<HTMLAnchorElement, MenuItemLinkProps>(
+  ({ to, target, disabled, onClick, children }, ref) => {
+    const { onLinkClick, href } = useLinkClicked({ to, target, onClick });
     return (
       <MenuItem
+        ref={ref}
         component="a"
-        href={history.createHref({ pathname: to })}
+        href={href}
         disabled={disabled}
-        onClick={this._onClick}
+        onClick={onLinkClick}
       >
         {children}
       </MenuItem>
     );
-  }
+  },
+);
 
-  private _onClick(e: React.MouseEvent<any>) {
-    onLinkClick.call(this, e);
-    if (this.props.onClick) {
-      this.props.onClick(e);
-    }
-  }
-}
-export default withRouter(MenuItemLink);
+export default MenuItemLink;

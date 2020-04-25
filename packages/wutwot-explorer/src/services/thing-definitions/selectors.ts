@@ -6,14 +6,14 @@ import { ThingDefinitionsServiceState } from "./state";
 
 export const thingIdsSelector = createThingDefinitionsSelector(
   createSelector(
-    (state) => state.thingDefinitionsById,
+    (state) => state.thingDataByDisplayId,
     (thingDefinitionsById) => keys(thingDefinitionsById),
   ),
 );
 
 export const thingDefinitionSelector = createThingDefinitionsSelector(
-  (state: ThingDefinitionsServiceState, thingId: string) => {
-    const data = state.thingDefinitionsById[thingId];
+  (state: ThingDefinitionsServiceState, displayId: string) => {
+    const data = state.thingDataByDisplayId[displayId];
     if (!data) {
       return null;
     }

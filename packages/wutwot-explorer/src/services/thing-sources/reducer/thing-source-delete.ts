@@ -1,4 +1,6 @@
 import { AnyAction } from "redux";
+import pick from "lodash/pick";
+import keys from "lodash/keys";
 
 import { isThingSourceDeleteAction } from "@/actions/thing-source-delete";
 
@@ -11,10 +13,13 @@ export default createThingSourcesReducer(
       return state;
     }
 
-    const { url } = action.payload;
+    const { id } = action.payload;
     return {
       ...state,
-      sources: state.sources.filter((x) => x.url !== url),
+      sourcesById: pick(
+        state.sourcesById,
+        keys(state.sourcesById).filter((x) => x != id),
+      ),
     };
   },
 );

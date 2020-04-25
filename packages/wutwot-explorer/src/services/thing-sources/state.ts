@@ -1,11 +1,11 @@
 import { ThingSource } from "./types";
 
 export interface ThingSourcesState {
-  sources: ThingSource[];
+  sourcesById: Record<string, ThingSource>;
 }
 
 export const defaultThingSourcesState: Readonly<ThingSourcesState> = Object.freeze(
   {
-    sources: [],
+    sourcesById: {},
   },
 );

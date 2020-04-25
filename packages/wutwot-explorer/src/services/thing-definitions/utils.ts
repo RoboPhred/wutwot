@@ -1,3 +1,5 @@
+import { ThingData } from "./types";
+
 import {
   createServiceReducerCreator,
   createServiceSelectorCreator,

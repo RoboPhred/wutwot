@@ -1,13 +1,14 @@
 import { AnyAction } from "redux";
+import { v4 as uuidV4 } from "uuid";
 
 import { isThingDefinitionRecievedAction } from "@/actions/thing-definition-received";
+import { fpSet } from "@/utils/fpSet";
 
 import { createThingDefinitionsReducer } from "../utils";
 import {
   ThingDefinitionsServiceState,
   defaultThingDefinitionsServiceState,
 } from "../state";
-import { fpSet } from "@/utils/fpSet";
 
 export default createThingDefinitionsReducer(
   (
@@ -18,11 +19,12 @@ export default createThingDefinitionsReducer(
       return state;
     }
 
-    const { sourceUrl, definitions } = action.payload;
+    const { sourceId, definitions } = action.payload;
 
     for (const definition of definitions) {
-      state = fpSet(state, "thingDefinitionsById", definition.id, {
-        sourceUrl,
+      const id = definition.id ?? `uuid:${uuidV4()}`;
+      state = fpSet(state, "thingDataByDisplayId", id, {
+        sourceId,
         definition,
       });
     }

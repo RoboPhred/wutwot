@@ -1,16 +1,15 @@
 import { call, put } from "redux-saga/effects";
 import HttpStatusCodes from "http-status-codes";
+import { Thing, validateThing } from "@wutwot/td";
 
 import { asArray } from "@/types";
 
 import { thingDefinitionReceived } from "@/actions/thing-definition-received";
 import { thingDefinitionError } from "@/actions/thing-definition-error";
 
-import { ThingDefinition, validateThingDefinition } from "../../types";
-
 export function* loadDefinitionsFromSource(sourceUrl: string) {
   try {
-    const thingDefinitions: ThingDefinition[] = yield call(
+    const thingDefinitions: Thing[] = yield call(
       fetchThingDefinitions,
       sourceUrl,
     );
@@ -20,9 +19,7 @@ export function* loadDefinitionsFromSource(sourceUrl: string) {
   }
 }
 
-async function fetchThingDefinitions(
-  sourceUrl: string,
-): Promise<ThingDefinition[]> {
+async function fetchThingDefinitions(sourceUrl: string): Promise<Thing[]> {
   const response = await fetch(sourceUrl, {
     headers: {
       Accepts: "application/json",
@@ -47,9 +44,9 @@ async function fetchThingDefinitions(
     throw new Error("Expected JSON response");
   }
 
-  const thingDefinitions: ThingDefinition[] = asArray(body);
+  const thingDefinitions: Thing[] = asArray(body);
 
-  thingDefinitions.forEach(validateThingDefinition);
+  thingDefinitions.forEach(validateThing);
 
   return thingDefinitions;
 }

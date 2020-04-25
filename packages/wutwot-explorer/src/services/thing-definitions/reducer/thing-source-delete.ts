@@ -19,15 +19,15 @@ export default createThingDefinitionsReducer(
       return state;
     }
 
-    const { url } = action.payload;
+    const { id } = action.payload;
 
-    const keepIds = entries(state.thingDefinitionsById)
-      .filter(([id, data]) => data.sourceUrl !== url)
+    const keepIds = entries(state.thingDataByDisplayId)
+      .filter(([id, data]) => data.sourceId !== id)
       .map(([id, data]) => id);
 
     return {
       ...state,
-      thingDefinitionsById: pick(state.thingDefinitionsById, keepIds),
+      thingDefinitionsById: pick(state.thingDataByDisplayId, keepIds),
     };
   },
 );

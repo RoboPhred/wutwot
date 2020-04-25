@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 import { thingSourceAdd } from "@/actions/thing-source-add";
+import { useAppSelector } from "@/store/selectors";
+import { thingSourceTitleInUse } from "@/services/thing-sources/selectors";
 
 export interface AddThingSourceDialogProps {
   open: boolean;
@@ -23,12 +25,16 @@ const AddThingSourceDialog: React.FC<AddThingSourceDialogProps> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [sourceName, setSourceName] = React.useState("");
+  const [sourceTitle, setSourceTitle] = React.useState("");
   const [sourceUrl, setSourceUrl] = React.useState("");
 
-  const onNameChange = React.useCallback(
+  const titleInUse = useAppSelector((state) =>
+    thingSourceTitleInUse(state, sourceTitle),
+  );
+
+  const onTitleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSourceName(e.target.value);
+      setSourceTitle(e.target.value);
     },
     [],
   );
@@ -39,19 +45,19 @@ const AddThingSourceDialog: React.FC<AddThingSourceDialogProps> = ({
     [],
   );
   const onCancelClick = React.useCallback(() => {
-    setSourceName("");
+    setSourceTitle("");
     setSourceUrl("");
     onRequestClose();
   }, [onRequestClose]);
   const onAddClick = React.useCallback(() => {
-    if (sourceName === "" || sourceUrl === "") {
+    if (sourceTitle === "" || sourceUrl === "") {
       return;
     }
-    dispatch(thingSourceAdd(sourceName, sourceUrl));
-    setSourceName("");
+    dispatch(thingSourceAdd(sourceTitle, sourceUrl));
+    setSourceTitle("");
     setSourceUrl("");
     onRequestClose();
-  }, [sourceName, sourceUrl, onRequestClose]);
+  }, [sourceTitle, sourceUrl, onRequestClose]);
 
   return (
     <Dialog
@@ -65,11 +71,17 @@ const AddThingSourceDialog: React.FC<AddThingSourceDialogProps> = ({
       <DialogContent>
         <TextField
           autoFocus
+          fullWidth
           margin="dense"
           label={t("thing_sources.source_name_titlecase")}
-          fullWidth
-          value={sourceName}
-          onChange={onNameChange}
+          error={titleInUse}
+          helperText={
+            titleInUse
+              ? t("thing_sources.messages.error_name_in_use")
+              : undefined
+          }
+          value={sourceTitle}
+          onChange={onTitleChange}
         />
         <TextField
           margin="dense"
@@ -85,7 +97,7 @@ const AddThingSourceDialog: React.FC<AddThingSourceDialogProps> = ({
           {t("verbs.cancel_titlecase")}
         </Button>
         <Button
-          disabled={sourceName === "" || sourceUrl === ""}
+          disabled={sourceTitle === "" || sourceUrl === ""}
           onClick={onAddClick}
           color="primary"
         >

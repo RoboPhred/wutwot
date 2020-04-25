@@ -1,5 +1,6 @@
 import * as React from "react";
 import keys from "lodash/keys";
+import { PropertyAffordance } from "@wutwot/td";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -8,10 +9,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 
-import { ThingDefinition } from "@/services/thing-definitions/types";
-
 export interface ThingPropertyListProps {
-  properties: ThingDefinition["properties"];
+  properties: Record<string, PropertyAffordance>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -71,7 +71,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
     </MoreMenuButton>
   );
 
-  const { title, description, properties } = definition;
+  const { id, title, description, properties } = definition;
   return (
     <PageContainer
       title={`${title} - ${t("things.noun_titlecase")}`}
@@ -79,6 +79,11 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
       toolbarItems={toolbarItems}
     >
       <div className={classes.root}>
+        <ThingHeaderValue
+          i18nTitle="things.properties.id"
+          i18nFallback="things.properties.id_empty"
+          value={id}
+        />
         <ThingHeaderValue
           i18nTitle="things.properties.title_titlecase"
           i18nFallback="things.properties.title_empty"
@@ -89,7 +94,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
           i18nFallback="things.properties.description_empty"
           value={description}
         />
-        <ThingPropertyList properties={properties} />
+        {properties && <ThingPropertyList properties={properties} />}
       </div>
     </PageContainer>
   );

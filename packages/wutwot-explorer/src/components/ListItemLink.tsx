@@ -1,47 +1,38 @@
 import * as React from "react";
 
-import { withRouter, RouteComponentProps } from "react-router";
-
 import ListItem from "@material-ui/core/ListItem";
 
-import { onLinkClick } from "./utils";
+import { useLinkClicked } from "./utils";
 
 export interface ListItemLinkProps {
   to: string;
   autoselect?: boolean;
+  target?: string;
   button?: boolean;
   disabled?: boolean;
+  onClick?(e: React.MouseEvent<any>): void;
+  children?: React.ReactNode;
 }
 
-type Props = ListItemLinkProps & RouteComponentProps;
-class ListItemLink extends React.Component<Props> {
-  private _onClick = onLinkClick.bind(this);
-
-  render() {
-    const {
-      history,
-      location,
-      to,
-      autoselect,
-      button,
-      disabled,
-      children,
-    } = this.props;
+const ListItemLink = React.forwardRef<HTMLAnchorElement, ListItemLinkProps>(
+  ({ to, target, disabled, autoselect, button, onClick, children }, ref) => {
+    const { onLinkClick, href } = useLinkClicked({ to, target, onClick });
     return (
       <ListItem
         selected={autoselect && pathStartsWith(location.pathname, to)}
         component="a"
         button={button as any} // typings are weird here.  `button` works fine, `button={true}` does not.
-        href={history.createHref({ pathname: to })}
+        href={href}
         disabled={disabled}
-        onClick={this._onClick}
+        onClick={onLinkClick}
       >
         {children}
       </ListItem>
     );
-  }
-}
-export default withRouter(ListItemLink);
+  },
+);
+
+export default ListItemLink;
 
 function pathStartsWith(path: string, startsWith: string): boolean {
   if (path === startsWith) {

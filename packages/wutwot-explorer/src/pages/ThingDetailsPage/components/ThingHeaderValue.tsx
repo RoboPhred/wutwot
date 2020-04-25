@@ -12,7 +12,10 @@ export interface ThingValueProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    inset: {
+    root: {
+      marginBottom: theme.spacing(),
+    },
+    value: {
       // paddingLeft: theme.spacing(),
     },
   }),
@@ -27,10 +30,10 @@ const ThingHeaderValue: React.FC<ThingValueProps> = ({
   const { t } = useTranslation();
   const hasValue = value != undefined;
   return (
-    <div>
+    <div className={classes.root}>
       <Typography variant="overline">{t(i18nTitle)}</Typography>
       <Typography
-        className={classes.inset}
+        className={classes.value}
         color={hasValue ? ("textPrimary" as const) : ("textSecondary" as const)}
       >
         {hasValue ? value : t(i18nFallback)}

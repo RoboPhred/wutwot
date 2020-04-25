@@ -1,4 +1,6 @@
 import { AnyAction } from "redux";
+import values from "lodash/values";
+import keyBy from "lodash/keyBy";
 
 import { reducerPriority, PRIORITY_PERSIST } from "@/store/priorities";
 
@@ -23,12 +25,12 @@ export default reducerPriority(
         const sources = getPersistedSources();
         return {
           ...state,
-          sources,
+          sourcesById: keyBy(sources, "id"),
         };
       }
 
       if (PERSIST_TRIGGERS.indexOf(action.type) !== -1) {
-        setPersistedSources(state.sources);
+        setPersistedSources(values(state.sourcesById));
         return state;
       }
 

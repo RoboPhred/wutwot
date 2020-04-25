@@ -1,9 +1,9 @@
 import { AnyAction } from "redux";
 
 export const THING_SOURCE_DELETE_ACTION = "thing-source-delete" as const;
-export const thingSourceDelete = (url: string) => ({
+export const thingSourceDelete = (id: string) => ({
   type: THING_SOURCE_DELETE_ACTION,
-  payload: { url },
+  payload: { id },
 });
 export type ThingSourceDeleteAction = ReturnType<typeof thingSourceDelete>;
 export function isThingSourceDeleteAction(

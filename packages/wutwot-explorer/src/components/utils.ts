@@ -1,31 +1,44 @@
-import { RouteComponentProps } from "react-router";
+import * as React from "react";
+import { useHistory } from "react-router";
 
-export interface LinkProps extends RouteComponentProps {
+export interface UseLinkClickedOpts {
   to: string;
   target?: string;
   onClick?(e: React.MouseEvent<HTMLElement>): void;
 }
-export function onLinkClick(
-  this: React.Component<LinkProps>,
-  event: React.MouseEvent<HTMLElement>,
-) {
-  // Code copied from implementation of Link in react-router-dom
-  const { onClick, target, history } = this.props;
+export interface UseLinkClicked {
+  onLinkClick(e: React.MouseEvent<HTMLElement>): void;
+  href: string;
+}
+export function useLinkClicked(opts: UseLinkClickedOpts): UseLinkClicked {
+  const { to, target, onClick } = opts;
 
-  if (onClick) {
-    onClick(event);
-  }
+  const history = useHistory();
 
-  if (
-    !event.defaultPrevented && // onClick prevented default
-    event.button === 0 && // ignore everything but left clicks
-    (!target || target === "_self") && // let browser handle "target=_blank" etc.
-    !isModifierPressed(event) // ignore clicks with modifier keys
-  ) {
-    event.preventDefault();
+  const onLinkClick = React.useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      if (onClick) {
+        onClick(e);
+      }
 
-    history.push(this.props.to);
-  }
+      if (
+        !e.defaultPrevented && // onClick prevented default
+        e.button === 0 && // ignore everything but left clicks
+        (!target || target === "_self") && // let browser handle "target=_blank" etc.
+        !isModifierPressed(e) // ignore clicks with modifier keys
+      ) {
+        e.preventDefault();
+
+        history.push(to);
+      }
+    },
+    [history, to, target, onClick],
+  );
+
+  return {
+    onLinkClick,
+    href: history.createHref({ pathname: to }),
+  };
 }
 
 function isModifierPressed(event: React.MouseEvent<any>) {

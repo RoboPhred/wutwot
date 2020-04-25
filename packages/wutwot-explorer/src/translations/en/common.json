@@ -5,6 +5,8 @@
     "not_found": "Thing Not Found",
     "view_raw_definition": "View Raw Definition",
     "properties": {
+      "id": "ID",
+      "id_empty": "[No ID]",
       "title_titlecase": "Title",
       "title_empty": "[No Title]",
       "description_titlecase": "Description",
@@ -24,6 +26,9 @@
     "source_url_titlecase": "Source URL",
     "verbs": {
       "new_descriptive": "New Thing Source"
+    },
+    "messages": {
+      "error_name_in_use": "The provided name is already in use"
     }
   },
   "verbs": {
