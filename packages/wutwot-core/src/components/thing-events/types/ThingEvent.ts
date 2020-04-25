@@ -16,8 +16,8 @@ import { ThingEventRecord } from "./ThingEventRecord";
  */
 export interface ThingEvent
   extends InteractionAffordance,
-    JSONAble<ToJSON<ThingEvent>>,
-    JSONLDAble {
+    JSONLDAble,
+    JSONAble<ToJSON<ThingEvent>> {
   /**
    * The schema of the data this event contains when raised.
    */
