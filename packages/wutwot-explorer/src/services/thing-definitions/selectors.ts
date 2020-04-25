@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import keys from "lodash/keys";
+import values from "lodash/values";
 
 import { createThingDefinitionsSelector } from "./utils";
 import { ThingDefinitionsServiceState } from "./state";
@@ -8,6 +9,13 @@ export const thingIdsSelector = createThingDefinitionsSelector(
   createSelector(
     (state) => state.thingDataByDisplayId,
     (thingDefinitionsById) => keys(thingDefinitionsById),
+  ),
+);
+
+export const thingDatasSelector = createThingDefinitionsSelector(
+  createSelector(
+    (state) => state.thingDataByDisplayId,
+    (thingDefinitionsById) => values(thingDefinitionsById),
   ),
 );
 

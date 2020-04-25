@@ -5,7 +5,7 @@ export interface NavItem {
 
 const NavItems: NavItem[] = [
   {
-    path: "/",
+    path: "/things",
     i18nKey: "things.noun_titlecase_plural",
   },
   {
