@@ -3,14 +3,14 @@ import { WutWotPlugin } from "@wutwot/core";
 
 import { ThingDirectoryController } from "./components/ThingDirectoryController";
 
-export interface ExpressBindingsPluginOptions {
+export interface ExpressBindingPluginOptions {
   pluginId?: string;
 }
 
-export class ExpressBindingsPlugin implements WutWotPlugin {
+export class ExpressBindingPlugin implements WutWotPlugin {
   private _id: string = "bindings-express";
 
-  constructor(opts?: ExpressBindingsPluginOptions) {
+  constructor(opts?: ExpressBindingPluginOptions) {
     if (opts && opts.pluginId) {
       this._id = opts.pluginId;
     }

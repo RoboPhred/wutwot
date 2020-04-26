@@ -1,1 +1,1 @@
-export * from "./DirectoryExpressPlugin";
+export * from "./ExpressBindingPlugin";
