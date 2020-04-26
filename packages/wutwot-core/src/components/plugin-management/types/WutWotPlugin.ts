@@ -29,7 +29,9 @@ export interface WutWotPlugin {
    * @param bind The service binder function.
    * @returns A registry module of bindings, if desired.
    */
-  onRegisterPublicServices?(bind: BindFunction): RegistryModule | undefined;
+  onRegisterPublicServices?(
+    bind: BindFunction,
+  ): RegistryModule | undefined | void;
 
   /**
    * Callback to register private services within your plugin.
@@ -48,7 +50,9 @@ export interface WutWotPlugin {
    * @param bind The service binder function.
    * @returns A registry module of bindings, if desired.
    */
-  onRegisterPrivateServices?(bind: BindFunction): RegistryModule | undefined;
+  onRegisterPrivateServices?(
+    bind: BindFunction,
+  ): RegistryModule | undefined | void;
 
   /**
    * Callback to initialize the plugin.
