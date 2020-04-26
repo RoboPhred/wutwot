@@ -1,4 +1,4 @@
-import type { Router } from "express";
+import type { IRouter } from "express";
 import { ServiceLocator, BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
@@ -8,12 +8,12 @@ import { ExpressController } from "./contracts";
 
 export interface ExpressServientPluginOptions {
   pluginId?: string;
-  router: Router;
+  router: IRouter;
 }
 
 export class ExpressServientPlugin implements WutWotPlugin {
   private _id: string = "express-servient";
-  private _router: Router;
+  private _router: IRouter;
 
   constructor(opts: ExpressServientPluginOptions) {
     if (opts.pluginId) {
