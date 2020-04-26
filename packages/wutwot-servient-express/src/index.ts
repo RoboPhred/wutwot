@@ -1,3 +1,3 @@
 export * from "./contracts";
 export * from "./services";
-export * from "./ExpressServient";
+export * from "./ExpressServientPlugin";
