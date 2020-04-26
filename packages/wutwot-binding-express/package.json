@@ -1,7 +1,7 @@
 {
-  "name": "@wutwot/directory-express",
+  "name": "@wutwot/binding-express",
   "version": "1.0.0",
-  "description": "Provides a W3C WOT Thing Directory over the express servient",
+  "description": "Provides a thing directory and express bindings (http or https) over the express servient",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
