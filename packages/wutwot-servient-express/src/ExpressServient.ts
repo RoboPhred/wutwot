@@ -1,5 +1,9 @@
 import type { Router } from "express";
-import { ServiceLocator, BindFunction } from "microinject";
+import {
+  ServiceLocator,
+  BindFunction,
+  DependencyResolutionError,
+} from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
 
@@ -32,8 +36,10 @@ export class ExpressServient implements WutWotPlugin {
   }
 
   onPluginInitialize(serviceLocator: ServiceLocator) {
-    const controllers = serviceLocator.getAll(ExpressController);
-    const controllerRoute = createControllerRoute(...controllers);
-    this._router.use(controllerRoute);
+    if (serviceLocator.has(ExpressController)) {
+      const controllers = serviceLocator.getAll(ExpressController);
+      const controllerRoute = createControllerRoute(...controllers);
+      this._router.use(controllerRoute);
+    }
   }
 }
