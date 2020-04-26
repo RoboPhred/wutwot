@@ -1,9 +1,5 @@
 import type { Router } from "express";
-import {
-  ServiceLocator,
-  BindFunction,
-  DependencyResolutionError,
-} from "microinject";
+import { ServiceLocator, BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
 
