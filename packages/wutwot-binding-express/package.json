@@ -27,7 +27,8 @@
     "@types/jsonld": "^1.5.1",
     "@wutwot/core": "^1.0.0",
     "@wutwot/servient-express": "^1.0.0",
-    "microinject": "^0.9.2",
+    "express": "^4.17.1",
+    "microinject": "^0.9.3",
     "rimraf": "^3.0.2",
     "simply-express-controllers": "^1.1.4",
     "typescript": "^3.8.3"

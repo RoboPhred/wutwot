@@ -1,4 +1,5 @@
 import { Identifier } from "microinject";
+import { Router } from "express";
 
 import createSymbol from "../create-symbol";
 

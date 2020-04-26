@@ -1,13 +1,7 @@
-import { ContainerModule, composeModules } from "microinject";
+import { ContainerModule } from "microinject";
 
-import { Restifier } from "./Restifier";
 import { Endpoint } from "./Endpoint";
 
-import ControllersModule from "./controllers/module";
-
-const RootEndpointModule = new ContainerModule((bind) => {
-  bind(Restifier);
+export default new ContainerModule((bind) => {
   bind(Endpoint);
 });
-
-export default composeModules(RootEndpointModule, ControllersModule);

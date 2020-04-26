@@ -1,5 +1,5 @@
-import express from "express";
-import { injectable, provides, inject } from "microinject";
+import express, { IRouter, Router } from "express";
+import { injectable, provides, inject, singleton } from "microinject";
 import nocache from "nocache";
 import helmet from "helmet";
 import cors from "cors";
@@ -7,17 +7,20 @@ import cors from "cors";
 import { Entrypoint } from "../../contracts";
 import { Port, CorsOrigin } from "../../config";
 
-import { Controller } from "./infrastructure/services";
-import { createControllerRouter } from "./infrastructure/methods";
-
 @injectable()
+@singleton()
 @provides(Entrypoint)
 export class Endpoint implements Entrypoint {
+  private _router = Router();
+
   constructor(
     @inject(Port) private _port: number,
     @inject(CorsOrigin) private _corsOrigin: string,
-    @inject(Controller, { all: true }) private _controllers: Controller[],
   ) {}
+
+  get router(): IRouter {
+    return this._router;
+  }
 
   start() {
     const app = express();
@@ -29,11 +32,9 @@ export class Endpoint implements Entrypoint {
       }),
     );
 
-    const routes = this._controllers.map((controller) =>
-      createControllerRouter(controller),
-    );
-    app.use(...routes);
+    app.use(this._router);
     app.listen(this._port, (err) => {
+      console.log(this._router);
       if (err) {
         // TODO: log better
         console.error(err);

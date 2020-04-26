@@ -26,9 +26,9 @@
     "@types/json-schema": "^7.0.4",
     "@wutwot/core": "^1.0.0",
     "express": "^4.17.1",
-    "microinject": "^0.9.2",
+    "microinject": "^0.9.3",
     "rimraf": "^3.0.2",
-    "simply-express-controllers": "^1.1.4",
+    "simply-express-controllers": "^1.1.5",
     "typescript": "^3.8.3"
   },
   "peerDependencies": {

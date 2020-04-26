@@ -1,10 +1,11 @@
-import { provides, singleton, inject } from "microinject";
+import { provides, singleton, inject, injectable } from "microinject";
 import { WutWot } from "@wutwot/core";
 import { ExpressController } from "@wutwot/servient-express";
 import { W3cWotContexts } from "@wutwot/td";
 import { controller, get } from "simply-express-controllers";
 import { compact } from "jsonld";
 
+@injectable()
 @singleton()
 @provides(ExpressController)
 @controller("/things")
