@@ -6,7 +6,7 @@ import { isProd } from "@/runtime-env";
 i18n.use(initReactI18next).init({
   fallbackLng: "en",
 
-  ns: ["common", "oni"],
+  ns: ["common"],
   defaultNS: "common",
 
   resources: {

@@ -103,17 +103,14 @@ async function getTitleAndDescription(
 async function getEndpointCCNaming(
   endpoint: Endpoint,
 ): Promise<TitleAndDescription | null> {
-  if (!endpoint.commandClasses["Node Naming and Location"].isSupported()) {
+  const namingAndLocation = endpoint.commandClasses["Node Naming and Location"];
+  if (!namingAndLocation.isSupported()) {
     return null;
   }
 
-  const defaultTitle = await endpoint.commandClasses[
-    "Node Naming and Location"
-  ].getName();
+  const defaultTitle = await namingAndLocation.getName();
 
-  const defaultDescription = await endpoint.commandClasses[
-    "Node Naming and Location"
-  ].getLocation();
+  const defaultDescription = await namingAndLocation.getLocation();
 
   return {
     defaultTitle,

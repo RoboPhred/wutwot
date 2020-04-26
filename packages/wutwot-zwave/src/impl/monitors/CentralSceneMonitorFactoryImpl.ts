@@ -37,8 +37,8 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
   private _eventSubject = new Subject<CentralSceneEventData>();
   private _node: ZWaveNode;
 
-  constructor(endpoint: Endpoint, thing: PluginThing) {
-    this._node = endpoint.getNodeUnsafe()!;
+  constructor(private _endpoint: Endpoint, thing: PluginThing) {
+    this._node = _endpoint.getNodeUnsafe()!;
     this._node.on("value updated", this._onValueUpdated);
 
     thing.addEvent({
@@ -67,6 +67,9 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
   @autobind()
   private _onValueUpdated(node: ZWaveNode, e: ValueUpdatedArgs) {
     if (e.commandClass !== CommandClasses["Central Scene"]) {
+      return;
+    }
+    if (e.endpoint != this._endpoint.index) {
       return;
     }
 
