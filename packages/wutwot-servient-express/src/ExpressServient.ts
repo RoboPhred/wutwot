@@ -6,16 +6,16 @@ import { createControllerRoute } from "simply-express-controllers";
 import { ExpressRouter } from "./services";
 import { ExpressController } from "./contracts";
 
-export interface HttpServientOptions {
+export interface ExpressServientOptions {
   pluginId?: string;
   router: Router;
 }
 
-export class HttpServient implements WutWotPlugin {
-  private _id: string = "http-servient";
+export class ExpressServient implements WutWotPlugin {
+  private _id: string = "express-servient";
   private _router: Router;
 
-  constructor(opts: HttpServientOptions) {
+  constructor(opts: ExpressServientOptions) {
     if (opts.pluginId) {
       this._id = opts.pluginId;
     }
