@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "build": "tsc -p src",
+    "build": "tsc -p src --incremental",
     "format": "prettier --write src/**/*.ts"
   },
   "repository": {

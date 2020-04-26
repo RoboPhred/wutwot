@@ -1,5 +1,15 @@
 # TODO
 
+#### Support Forms
+
+Currently each binding supplies its own forms. This prevents cross-binding discovery. For example, the directory endpoint
+for the express binding cannot list mqtt forms.
+
+There are two ways we would want to set a form
+
+- Per-affordance, for affordance specific forms
+- In bulk, for bindings that map any affordance (eg binding-express)
+
 #### Stronger typings for ThingProperty.
 
 - [The Standard](https://w3c.github.io/wot-thing-description/) defines NumericThingProperty, ObjectThingProperty, and so on.

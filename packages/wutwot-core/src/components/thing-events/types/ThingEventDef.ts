@@ -1,5 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 import { Observable } from "rxjs";
+import { DataSchema } from "@wutwot/td";
 
 import { makeReadOnlyDeep } from "../../../immutable";
 
@@ -8,7 +9,6 @@ import {
   InteractionAffordanceDef,
   interactionAffordanceDefSchema,
 } from "../../affordance";
-import { DataSchema } from "../../data-schema";
 
 export interface ThingEventDef extends InteractionAffordanceDef {
   /**
@@ -17,7 +17,7 @@ export interface ThingEventDef extends InteractionAffordanceDef {
   data?: DataSchema;
 
   /**
-   * An observable to source event records from to announce an event invocation.
+   * An observable to deliver events as they occur.
    */
   eventSource: Observable<any>;
 }
