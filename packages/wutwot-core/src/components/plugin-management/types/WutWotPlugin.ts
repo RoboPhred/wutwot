@@ -63,5 +63,5 @@ export interface WutWotPlugin {
    *
    * @param serviceLocator A service locator used to gain access to any services your plugin needs.
    */
-  onPluginInitialize(serviceLocator: ServiceLocator): void;
+  onPluginInitialize?(serviceLocator: ServiceLocator): void;
 }

@@ -81,7 +81,9 @@ export class PluginAdapterImpl implements PluginAdapter {
       .getAll(Initializable)
       .forEach((x) => x.onInitialize());
 
-    this._plugin.onPluginInitialize(this._privateContainer);
+    if (this._plugin.onPluginInitialize) {
+      this._plugin.onPluginInitialize(this._privateContainer);
+    }
   }
 
   private _addThing(def: ThingDef): OwnedPluginThing {
