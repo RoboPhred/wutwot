@@ -1,10 +1,10 @@
 import { JSONSchema6 } from "json-schema";
 import { Observable } from "rxjs";
+import { TypedDataSchema } from "@wutwot/td";
 
 import { DeepImmutableObject, makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
-import { DataSchema } from "../../data-schema";
 import { ThingActionRequestUpdate } from "../../action-requests";
 import {
   InteractionAffordanceDef,
@@ -18,12 +18,12 @@ export interface ThingActionDef extends InteractionAffordanceDef {
   /**
    * JSON Schema describing the input this action takes.
    */
-  readonly input?: DeepImmutableObject<DataSchema>;
+  readonly input?: DeepImmutableObject<TypedDataSchema>;
 
   /**
    * JSON Schema describing the output this action returns.
    */
-  readonly output?: DeepImmutableObject<DataSchema>;
+  readonly output?: DeepImmutableObject<TypedDataSchema>;
 
   /**
    * A callback to handle the invocation of this action.

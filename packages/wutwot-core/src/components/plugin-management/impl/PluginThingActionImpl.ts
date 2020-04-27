@@ -1,3 +1,5 @@
+import { TypedDataSchema } from "@wutwot/td";
+
 import { DeepImmutableObject } from "../../../immutable";
 
 import { InternalAction, ThingAction } from "../../actions";
@@ -7,7 +9,6 @@ import {
 } from "../../action-requests";
 
 import { OwnedPluginThingAction, PluginAdapter } from "../types";
-import { DataSchema } from "../../data-schema";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(
@@ -39,11 +40,11 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
     return this._action.description;
   }
 
-  get input(): DeepImmutableObject<DataSchema> | undefined {
+  get input(): DeepImmutableObject<TypedDataSchema> | undefined {
     return this._action.input;
   }
 
-  get output(): DeepImmutableObject<DataSchema> | undefined {
+  get output(): DeepImmutableObject<TypedDataSchema> | undefined {
     return this._action.output;
   }
 

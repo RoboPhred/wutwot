@@ -2,7 +2,7 @@ import { injectable, injectParam, inject, provides } from "microinject";
 import { inspect } from "util";
 import { isObservable } from "rxjs";
 import { cloneDeep } from "lodash";
-import { W3cWotTerms, W3cWotContexts } from "@wutwot/td";
+import { W3cWotTerms, W3cWotContexts, TypedDataSchema } from "@wutwot/td";
 
 import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
@@ -19,7 +19,6 @@ import {
 import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
-import { DataSchema } from "../../data-schema";
 
 @injectable()
 @asActionScope()
@@ -84,11 +83,11 @@ export class InternalActionImpl implements InternalAction {
     return this._def.description;
   }
 
-  get input(): DeepImmutableObject<DataSchema> | undefined {
+  get input(): DeepImmutableObject<TypedDataSchema> | undefined {
     return this._def.input;
   }
 
-  get output(): DeepImmutableObject<DataSchema> | undefined {
+  get output(): DeepImmutableObject<TypedDataSchema> | undefined {
     return this._def.output;
   }
 
@@ -100,7 +99,8 @@ export class InternalActionImpl implements InternalAction {
     const { input: inputSchema, onActionInvocationRequested } = this._def;
 
     if (inputSchema) {
-      validateOrThrow(input, inputSchema);
+      // TODO: DataSchema has a type property of string, but JSONSchema6 is more strict
+      validateOrThrow(input, inputSchema as any);
     }
 
     const status = onActionInvocationRequested(this._thingId, this._id, input);

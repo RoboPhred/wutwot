@@ -1,8 +1,9 @@
+import { TypedDataSchema } from "@wutwot/td";
+
 import { ToJSON, JSONAble } from "../../../types";
 import { DeepImmutable } from "../../../immutable";
 
 import { InteractionAffordance } from "../../affordance";
-import { DataSchema } from "../../data-schema";
 import { JSONLDAble } from "../../json-ld";
 
 import { ThingEventRecord } from "./ThingEventRecord";
@@ -21,7 +22,7 @@ export interface ThingEvent
   /**
    * The schema of the data this event contains when raised.
    */
-  readonly data: DeepImmutable<DataSchema> | undefined;
+  readonly data: DeepImmutable<TypedDataSchema> | undefined;
 
   /**
    * An array of records of raised events, in chronological order.

@@ -1,8 +1,9 @@
+import { TypedDataSchema } from "@wutwot/td";
+
 import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { ToJSON, JSONAble } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
-import { DataSchema } from "../../data-schema";
 import {
   InteractionAffordance,
   InteractionAffordanceKeys,
@@ -19,12 +20,12 @@ export interface ThingAction
   /**
    * JSON Schema describing this action's input.
    */
-  readonly input: DeepImmutableObject<DataSchema> | undefined;
+  readonly input: DeepImmutableObject<TypedDataSchema> | undefined;
 
   /**
    * JSON Schema describing this action's output.
    */
-  readonly output: DeepImmutableObject<DataSchema> | undefined;
+  readonly output: DeepImmutableObject<TypedDataSchema> | undefined;
 
   /**
    * A read-only array of requests made to this action.

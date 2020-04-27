@@ -1,5 +1,6 @@
 import { inspect } from "util";
 import { cloneDeep } from "lodash";
+import { TypedDataSchema } from "@wutwot/td";
 
 import {
   DeepImmutable,
@@ -9,13 +10,11 @@ import {
 import { makeInspectJson } from "../../../utils/inspect";
 import { W3cWotTerms, W3cWotContexts } from "@wutwot/td";
 
-import { DataSchema } from "../../data-schema";
-
 import { EventEventSink } from "../components";
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
 
 export class ThingEventImpl implements ThingEvent {
-  private _data: DeepImmutable<DataSchema> | undefined = undefined;
+  private _data: DeepImmutable<TypedDataSchema> | undefined = undefined;
 
   /**
    * Event records sorted by date ascending.
@@ -68,7 +67,7 @@ export class ThingEventImpl implements ThingEvent {
     return this._def.description;
   }
 
-  get data(): DeepImmutable<DataSchema> | undefined {
+  get data(): DeepImmutable<TypedDataSchema> | undefined {
     return this._data;
   }
 
