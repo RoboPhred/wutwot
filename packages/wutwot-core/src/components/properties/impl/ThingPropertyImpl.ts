@@ -1,6 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
-import { W3cWotTerms, W3cWotContexts } from "@wutwot/td";
+import { JsonSchemaContext, DCMITermsTerms } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
 import { makeReadOnly } from "../../../immutable";
@@ -122,11 +122,11 @@ export class ThingPropertyImpl implements ThingProperty {
   toJSONLD() {
     return {
       "@context": {
-        "@vocab": W3cWotContexts.JsonSchema,
+        "@vocab": JsonSchemaContext,
       },
       "@index": this.id,
-      [W3cWotTerms.Title]: this.title,
-      [W3cWotTerms.Description]: this.description,
+      [DCMITermsTerms.Title]: this.title,
+      [DCMITermsTerms.Description]: this.description,
       // Currently relying on @vocab to specify the paths of these:
       type: this.type,
       unit: this.unit,

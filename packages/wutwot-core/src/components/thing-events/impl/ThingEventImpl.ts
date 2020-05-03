@@ -8,7 +8,7 @@ import {
   makeReadOnlyDeep,
 } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
-import { W3cWotTerms, W3cWotContexts } from "@wutwot/td";
+import { DCMITermsTerms, W3cWotTDTerms, JsonSchemaContext } from "@wutwot/td";
 
 import { EventEventSink } from "../components";
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
@@ -92,11 +92,11 @@ export class ThingEventImpl implements ThingEvent {
     return {
       "@index": this.id,
       "@type": [...this.semanticTypes],
-      [W3cWotTerms.Title]: this.title,
-      [W3cWotTerms.Description]: this.description,
-      [W3cWotTerms.HasNotificationSchema]: {
+      [DCMITermsTerms.Title]: this.title,
+      [DCMITermsTerms.Description]: this.description,
+      [W3cWotTDTerms.HasNotificationSchema]: {
         "@context": {
-          "@vocab": W3cWotContexts.JsonSchema,
+          "@vocab": JsonSchemaContext,
         },
         ...cloneDeep(this.data),
       },

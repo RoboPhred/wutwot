@@ -7,7 +7,7 @@ import {
 } from "microinject";
 import { mapValues } from "lodash";
 import { inspect } from "util";
-import { W3cWotTerms } from "@wutwot/td";
+import { W3cWotTDTerms, DCMITermsTerms } from "@wutwot/td";
 
 import { makeReadOnly, createReadonlyMapWrapper } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
@@ -208,14 +208,17 @@ export class InternalThingImpl implements InternalThing {
     );
 
     return {
-      "@id": `wutwut:thing:${this.id.replace(/\:/g, "-")}`,
+      "@id": this.id,
       // TODO: semanticTypes should always be full resolved IRIs
       "@types": [...this.semanticTypes],
-      [W3cWotTerms.Title]: this.title,
-      [W3cWotTerms.Description]: this.description,
-      [W3cWotTerms.HasActionAffordance]: nonEmptyArray(actions, undefined),
-      [W3cWotTerms.HasEventAffordance]: nonEmptyArray(events, undefined),
-      [W3cWotTerms.HasPropertyAffordance]: nonEmptyArray(properties, undefined),
+      [DCMITermsTerms.Title]: this.title,
+      [DCMITermsTerms.Description]: this.description,
+      [W3cWotTDTerms.HasActionAffordance]: nonEmptyArray(actions, undefined),
+      [W3cWotTDTerms.HasEventAffordance]: nonEmptyArray(events, undefined),
+      [W3cWotTDTerms.HasPropertyAffordance]: nonEmptyArray(
+        properties,
+        undefined,
+      ),
     };
   }
 }

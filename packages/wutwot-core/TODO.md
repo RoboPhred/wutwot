@@ -34,7 +34,8 @@ We then need to pass the contexts up when generating json-ld, might need to chan
 
 #### IRI IDs.
 
-Currently, ids in wutwot are arbitrary strings. We have to use a URI for json-ld, so we use a `wutwot:things:${thingId}` form. We then override this in wutwot-server to use url ids.
+Currently, ids in wutwot are arbitrary strings. We pass that as the @id in jsonld, but IDs
+should be IRIs. We should generate IRIs in wutwot for ids.
 
 Consider adding an option to wutwot core to choose how to generate ids, or at the very least
 clean up and document our urn. Should move all id generation into functions of a single file to

@@ -2,7 +2,12 @@ import { injectable, injectParam, inject, provides } from "microinject";
 import { inspect } from "util";
 import { isObservable } from "rxjs";
 import { cloneDeep } from "lodash";
-import { W3cWotTerms, W3cWotContexts, TypedDataSchema } from "@wutwot/td";
+import {
+  DCMITermsTerms,
+  W3cWotTDTerms,
+  TypedDataSchema,
+  JsonSchemaContext,
+} from "@wutwot/td";
 
 import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
@@ -142,11 +147,11 @@ export class InternalActionImpl implements InternalAction {
     return {
       "@index": this.id,
       "@type": [...this.semanticTypes],
-      [W3cWotTerms.Title]: this.title,
-      [W3cWotTerms.Description]: this.description,
-      [W3cWotTerms.HasInputSchema]: {
+      [DCMITermsTerms.Title]: this.title,
+      [DCMITermsTerms.Description]: this.description,
+      [W3cWotTDTerms.HasInputSchema]: {
         "@context": {
-          "@vocab": W3cWotContexts.JsonSchema,
+          "@vocab": JsonSchemaContext,
         },
         ...cloneDeep(this.input),
       },
