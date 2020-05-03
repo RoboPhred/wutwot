@@ -47,7 +47,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
 
   if (!definition) {
     return (
-      <PageContainer title={t("things.not_found")}>
+      <PageContainer title={t("things.not_found")} back>
         <div className={classes.root}>
           <Typography>{t("things.not_found")}</Typography>
         </div>
