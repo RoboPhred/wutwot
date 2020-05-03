@@ -103,9 +103,8 @@ export class ThingDirectoryController {
     const ld = thing.toJSONLD();
     let tdThing: TDThing = (await compact(ld, W3cWotTDContext)) as any;
 
-    // TODO: set base so form hrefs can be relative urls
-    //  Need to get what our root address is, which should be something
-    //  provided by servient-express
+    // TODO: Get root url from servient-express
+    tdThing.base = `www.example.com/things/${thing.id}`;
 
     // TODO: wutwot core should handle forms
     tdThing = this._injectForms(tdThing);
@@ -124,13 +123,13 @@ export class ThingDirectoryController {
         if (!property.writeOnly) {
           property.forms.push({
             op: "readproperty",
-            href: `/${thing.id}/properties/${propertyKey}`,
+            href: `/properties/${propertyKey}`,
           });
 
           if (!property.readOnly) {
             property.forms.push({
               op: "writeproperty",
-              href: `/${thing.id}/properties/${propertyKey}`,
+              href: `/properties/${propertyKey}`,
             });
           }
         }
