@@ -28,7 +28,7 @@
     "express": "^4.17.1",
     "microinject": "^0.9.3",
     "rimraf": "^3.0.2",
-    "simply-express-controllers": "^1.1.5",
+    "simply-express-controllers": "^1.1.8",
     "typescript": "^3.8.3"
   },
   "peerDependencies": {
