@@ -1,7 +1,7 @@
 import { Thing } from "@wutwot/td";
 import find from "lodash/find";
-import isRelativeUrl from "is-relative-url";
-import urlJoin from "url-join";
+
+import { executeForm } from "../thing-api/api";
 
 export async function getThingPropertyValue(
   thing: Thing,
@@ -26,19 +26,5 @@ export async function getThingPropertyValue(
     throw new Error("Property has no 'readproperty' form.");
   }
 
-  // TODO: Move form execution to a thing-api service.
-  let url = form.href;
-  const baseUrl = thing.base || sourceUrl;
-  if (isRelativeUrl(url)) {
-    url = urlJoin(baseUrl, url);
-  }
-
-  const request: RequestInit = {
-    // TODO: expand definition and get from IRI
-    method: (form as any)["htv:methodName"] ?? "GET",
-  };
-
-  const response = await fetch(url, request);
-  const body = await response.json();
-  return body;
+  return await executeForm(thing, sourceUrl, form);
 }
