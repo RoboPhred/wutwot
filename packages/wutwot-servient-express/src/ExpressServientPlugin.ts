@@ -3,39 +3,44 @@ import { ServiceLocator, BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
 
-import { ExpressRouter } from "./services";
+import { ExpressRouter, ExpressRootUrl } from "./services";
 import { ExpressController } from "./contracts";
 
 export interface ExpressServientPluginOptions {
   pluginId?: string;
+  rootUrl: string;
   router: IRouter;
 }
 
 export class ExpressServientPlugin implements WutWotPlugin {
-  private _id: string = "express-servient";
-  private _router: IRouter;
-
-  constructor(opts: ExpressServientPluginOptions) {
-    if (opts.pluginId) {
-      this._id = opts.pluginId;
+  constructor(private _opts: ExpressServientPluginOptions) {
+    if (!_opts.router) {
+      throw new Error(
+        "router must be specified in ExpressServientPlugin options.",
+      );
     }
 
-    this._router = opts.router;
+    if (!_opts.rootUrl) {
+      throw new Error(
+        "rootUrl must be specified in ExpressServientPlugin options.",
+      );
+    }
   }
 
   get id(): string {
-    return this._id;
+    return this._opts.pluginId ?? "express-servient";
   }
 
   onRegisterPublicServices(bind: BindFunction) {
-    bind(ExpressRouter).toConstantValue(this._router);
+    bind(ExpressRouter).toConstantValue(this._opts.rootUrl);
+    bind(ExpressRootUrl).toConstantValue(this._opts.rootUrl);
   }
 
   onPluginInitialize(serviceLocator: ServiceLocator) {
     if (serviceLocator.has(ExpressController)) {
       const controllers = serviceLocator.getAll(ExpressController);
       const controllerRoute = createControllerRoute(...controllers);
-      this._router.use(controllerRoute);
+      this._opts.router.use(controllerRoute);
     }
   }
 }

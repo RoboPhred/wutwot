@@ -4,8 +4,11 @@ import { WutWot } from "@wutwot/core";
 import { ExpressServientPlugin } from "@wutwot/servient-express";
 import { ExpressBindingPlugin } from "@wutwot/binding-express";
 
+import { Hostname, Port } from "../../config";
+
+import { Endpoint } from "../Endpoint";
+
 import { WutWotPlugin } from "./identifiers";
-import { Endpoint } from "../Endpoint/Endpoint";
 
 export default new ContainerModule((bind) => {
   bind(WutWot)
@@ -13,8 +16,13 @@ export default new ContainerModule((bind) => {
       const plugins = context.getAll(WutWotPlugin);
 
       const endpoint = context.get(Endpoint);
+      const hostname = context.get(Hostname);
+      const port = context.get(Port);
       plugins.push(
-        new ExpressServientPlugin({ router: endpoint.router }),
+        new ExpressServientPlugin({
+          router: endpoint.router,
+          rootUrl: `${hostname}:${port}`,
+        }),
         new ExpressBindingPlugin(),
       );
 

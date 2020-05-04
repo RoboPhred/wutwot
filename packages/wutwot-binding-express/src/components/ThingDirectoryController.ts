@@ -1,6 +1,6 @@
 import { provides, singleton, inject, injectable } from "microinject";
 import { WutWot, Thing, SchemaValidationError } from "@wutwot/core";
-import { ExpressController } from "@wutwot/servient-express";
+import { ExpressController, ExpressRootUrl } from "@wutwot/servient-express";
 import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
 import HttpStatusCodes from "http-status-codes";
 import {
@@ -13,13 +13,17 @@ import {
 import { compact } from "jsonld";
 import createError from "http-errors";
 import keys from "lodash/keys";
+import urlJoin from "url-join";
 
 @injectable()
 @singleton()
 @provides(ExpressController)
 @controller("/things")
 export class ThingDirectoryController {
-  constructor(@inject(WutWot) private _wutwot: WutWot) {}
+  constructor(
+    @inject(WutWot) private _wutwot: WutWot,
+    @inject(ExpressRootUrl) private _rootUrl: ExpressRootUrl,
+  ) {}
 
   @get("/", {
     description: "Gets an array of all thing descriptions",
@@ -103,8 +107,7 @@ export class ThingDirectoryController {
     const ld = thing.toJSONLD();
     let tdThing: TDThing = (await compact(ld, W3cWotTDContext)) as any;
 
-    // TODO: Get root url from servient-express
-    tdThing.base = `www.example.com/things/${thing.id}`;
+    tdThing.base = urlJoin(this._rootUrl, `/things/${thing.id}`);
 
     // TODO: wutwot core should handle forms
     tdThing = this._injectForms(tdThing);

@@ -1,9 +1,9 @@
 import { ContainerModule } from "microinject";
 
-import { CorsOrigin, RootURL, Port, ZWavePort } from "./identifiers";
+import { CorsOrigin, Port, ZWavePort, Hostname } from "./identifiers";
 
 export default new ContainerModule((bind) => {
-  bind(RootURL).toConstantValue("http://localhost:8080");
+  bind(Hostname).toConstantValue("http://localhost");
   bind(Port).toConstantValue(8080);
   bind(CorsOrigin).toConstantValue("*");
 
