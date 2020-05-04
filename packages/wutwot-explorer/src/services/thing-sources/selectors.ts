@@ -29,6 +29,16 @@ export const thingSourceIdForUrl = createThingSourcesSelector(
   },
 );
 
+export const thingSourceUrlSelector = createThingSourcesSelector(
+  (state: ThingSourcesState, sourceId: string) => {
+    const source = state.sourcesById[sourceId];
+    if (!source) {
+      return undefined;
+    }
+    return source.url;
+  },
+);
+
 export const thingSourceTitleInUse = createThingSourcesSelector(
   (state: ThingSourcesState, title: string) => {
     const id = createId(title);

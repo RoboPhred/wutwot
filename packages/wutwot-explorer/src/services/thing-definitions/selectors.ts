@@ -19,6 +19,13 @@ export const thingDatasSelector = createThingDefinitionsSelector(
   ),
 );
 
+export const thingDataSelector = createThingDefinitionsSelector(
+  (state: ThingDefinitionsServiceState, displayId: string) => {
+    const data = state.thingDataByDisplayId[displayId];
+    return data;
+  },
+);
+
 export const thingDefinitionSelector = createThingDefinitionsSelector(
   (state: ThingDefinitionsServiceState, displayId: string) => {
     const data = state.thingDataByDisplayId[displayId];

@@ -1,50 +1,50 @@
 import * as React from "react";
 import keys from "lodash/keys";
-import { PropertyAffordance } from "@wutwot/td";
 
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+
+import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 
+import { useAppSelector } from "@/store/selectors";
+import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
+
+import ThingPropertyRow from "./ThingPropertyRow";
+
 export interface ThingPropertyListProps {
-  properties: Record<string, PropertyAffordance>;
+  thingDisplayId: string;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {},
-  }),
-);
-
 const ThingPropertyList: React.FC<ThingPropertyListProps> = ({
-  properties,
+  thingDisplayId,
 }) => {
-  const classes = useStyles();
+  const definition = useAppSelector((state) =>
+    thingDefinitionSelector(state, thingDisplayId),
+  );
 
-  if (!properties) {
+  if (!definition || !definition.properties) {
     return null;
   }
-
-  const propertyKeys = keys(properties);
+  const propertyKeys = keys(definition.properties);
 
   return (
-    <div className={classes.root}>
+    <div>
       <Typography variant="overline">Properties</Typography>
-      <Paper>
-        <List>
-          {propertyKeys.map((key) => {
-            const { title, description } = properties[key];
-            return (
-              <ListItem key={key}>
-                <ListItemText primary={title || key} secondary={description} />
-              </ListItem>
-            );
-          })}
-        </List>
-      </Paper>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {propertyKeys.map((key) => (
+              <ThingPropertyRow
+                key={key}
+                thingDisplayId={thingDisplayId}
+                propertyKey={key}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
