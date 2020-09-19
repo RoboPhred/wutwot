@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
-import { useToggleState } from "@/hooks/useBooleanState";
+import { useLatchState } from "@/hooks/useLatchState";
 
 import PageContainer from "@/components/PageContainer";
 import MoreMenuButton from "@/components/MoreMenuButton";
@@ -39,7 +39,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
 
   const classes = useStyles();
   const { t } = useTranslation();
-  const [menuOpen, setMenuOpen, setMenuClosed] = useToggleState();
+  const [menuOpen, setMenuOpen, setMenuClosed] = useLatchState();
 
   const definition = useAppSelector((state) =>
     thingDefinitionSelector(state, displayId),

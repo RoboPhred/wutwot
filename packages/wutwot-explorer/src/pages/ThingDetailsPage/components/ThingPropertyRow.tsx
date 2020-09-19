@@ -5,13 +5,19 @@ import Typography from "@material-ui/core/Typography";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
 import Skeleton from "@material-ui/lab/Skeleton";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import ErrorIcon from "@material-ui/icons/Error";
+import EditIcon from "@material-ui/icons/Edit";
 
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 import { useThingPropertyValue } from "@/services/thing-properties/hooks/useThingPropertyValue";
+
+import DataSchemaEditor from "@/components/DataSchemaEditor";
 
 export interface ThingPropertyRowProps {
   thingDisplayId: string;
@@ -33,10 +39,18 @@ const ThingPropertyRow: React.FC<ThingPropertyRowProps> = ({
 }) => {
   const classes = useStyles();
 
+  const [isWriteDialogOpen, setWriteDialogOpen] = React.useState(false);
+  const onOpenWriteDialog = React.useCallback(() => {
+    setWriteDialogOpen(true);
+  }, []);
+  const onCloseWriteDialog = React.useCallback(() => {
+    setWriteDialogOpen(false);
+  }, []);
+
   const definition = useAppSelector((state) =>
     thingDefinitionSelector(state, thingDisplayId),
   );
-  const { value, refresh, errorMessage } = useThingPropertyValue(
+  const { value, refresh, setValue, errorMessage } = useThingPropertyValue(
     thingDisplayId,
     propertyKey,
   );
@@ -73,6 +87,15 @@ const ThingPropertyRow: React.FC<ThingPropertyRowProps> = ({
         <IconButton onClick={refresh}>
           <RefreshIcon />
         </IconButton>
+        <IconButton onClick={onOpenWriteDialog}>
+          <EditIcon />
+        </IconButton>
+        <Dialog open={isWriteDialogOpen} onClose={onCloseWriteDialog}>
+          <DialogTitle>Set Value</DialogTitle>
+          <DialogContent>
+            <DataSchemaEditor schema={property} onSubmit={setValue} />
+          </DialogContent>
+        </Dialog>
       </TableCell>
     </TableRow>
   );

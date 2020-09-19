@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export function useToggleState(
+export function useLatchState(
   defaultValue: boolean = false,
 ): [boolean, () => void, () => void] {
   const [state, setState] = React.useState(defaultValue);
