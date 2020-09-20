@@ -3,11 +3,10 @@ import { ServiceLocator, RegistryModule } from "microinject";
 
 import privateModule from "./module";
 import {
-  SceneManagerThing,
   SceneFactory,
   ScenePersistenceManager,
+  SceneRepository,
 } from "./components";
-import { SceneRepository } from "./components/SceneRepository";
 
 export class ScenesPlugin implements WutWotPlugin {
   get id(): string {
