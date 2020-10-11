@@ -1,4 +1,6 @@
-import { ToJSON, JSONAble } from "../../../types";
+import { DataSchemaType } from "@wutwot/td";
+
+import { ToJSON } from "../../../types";
 
 import { InteractionAffordance } from "../../affordance";
 import { JSONLDAble } from "../../json-ld";
@@ -6,14 +8,11 @@ import { JSONLDAble } from "../../json-ld";
 // TODO: According to the specs, this inherits from DataSchema.
 //  However, DataSchema is multiple types combined, so we need to implement each one.
 // Maybe we should provide multiple ThingProperty interfaces based on the core type?
-export interface ThingProperty
-  extends InteractionAffordance,
-    JSONLDAble,
-    JSONAble<ToJSON<ThingProperty>> {
+export interface ThingProperty extends InteractionAffordance, JSONLDAble {
   /**
    * The data type of this property.
    */
-  readonly type: ThingPropertyType;
+  readonly type: DataSchemaType;
 
   /**
    * The unit of the property value.
@@ -58,22 +57,3 @@ export interface ThingProperty
    */
   toJSON(): ToJSON<ThingProperty>;
 }
-
-export type ThingPropertyType =
-  | "null"
-  | "object"
-  | "array"
-  | "number"
-  | "integer"
-  | "string"
-  | "boolean";
-
-export const ThingPropertyTypes: ThingPropertyType[] = [
-  "null",
-  "object",
-  "array",
-  "number",
-  "integer",
-  "string",
-  "boolean",
-];

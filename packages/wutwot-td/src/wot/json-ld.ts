@@ -1,10 +1,55 @@
+import { DataSchemaType } from "./data-schema";
+
+/**
+ * A context for describing a thing description in terms of JSON-LD.
+ */
 export const W3cWotTDContext = "https://www.w3.org/2019/wot/td/v1#";
 
 /**
- * Collection of terms used by the W3C Thing Definition spec.
+ * A context for JSON Schema in JSON-LD.
+ * {@link https://www.w3.org/2019/wot/json-schema#interpreting-json-schema-as-json-ld-1-1}.
  *
- * Some of these are defined by the [W3C WOT TD Ontology]{@link https://www.w3.org/2019/wot/td}.
- * Others are borrowed terms from other ontologies.
+ * This contains the following changes from when it was copied:
+ * - A duplicate "enum" entry was removed
+ * - "properties"."@type" was changed from "@vocab" to "@id" to fix property name generation on compaction.
+ */
+export const W3CWotJsonSchemaContext = {
+  "@version": 1.1,
+  xsd: "http://www.w3.org/2001/XMLSchema#",
+  "@vocab": "https://www.w3.org/2019/wot/json-schema#",
+  id: { "@id": "@id" },
+  type: { "@id": "@type" },
+  object: "ObjectSchema",
+  array: "ArraySchema",
+  boolean: "BooleanSchema",
+  string: "StringSchema",
+  number: "NumberSchema",
+  integer: "IntegerSchema",
+  null: "NullSchema",
+  properties: {
+    "@type": "@id",
+    "@container": "@index",
+    "@index": "propertyName",
+  },
+  items: { "@type": "@vocab" },
+  oneOf: { "@type": "@vocab", "@container": "@set" },
+  allOf: { "@type": "@vocab", "@container": "@set" },
+  anyOf: { "@type": "@vocab", "@container": "@set" },
+  minItems: { "@type": "xsd:decimal" },
+  maxItems: { "@type": "xsd:decimal" },
+  minimum: { "@type": "xsd:decimal" },
+  maximum: { "@type": "xsd:decimal" },
+  enum: { "@container": "@set", "@type": "@json" },
+  writeOnly: { "@type": "xsd:boolean" },
+  readOnly: { "@type": "xsd:boolean" },
+  format: { "@type": "xsd:string" },
+  required: { "@type": "xsd:string", "@container": "@set" },
+  title: { "@type": "xsd:string" },
+  description: { "@type": "xsd:string" },
+};
+
+/**
+ * Collection of terms used by the [W3C Thing Definition spec]{@link https://www.w3.org/2019/wot/td}.
  */
 export namespace W3cWotTDTerms {
   /**
@@ -31,4 +76,57 @@ export namespace W3cWotTDTerms {
    */
   export const HasNotificationSchema =
     "https://www.w3.org/2019/wot/td#hasNotificationSchema";
+}
+
+/**
+ * Terms for json-schema defined in the [W3C WOT Json Schema spec]{@link https://www.w3.org/2019/wot/json-schema}.
+ */
+export namespace W3cWotJsonSchemaTerms {
+  /**
+   * {@link https://www.w3.org/2019/wot/json-schema#maximum}
+   */
+  export const Maximum = "https://www.w3.org/2019/wot/json-schema#maximum";
+
+  /**
+   * {@link https://www.w3.org/2019/wot/json-schema#minimum}
+   */
+  export const Minimum = "https://www.w3.org/2019/wot/json-schema#minimum";
+
+  /**
+   * {@link https://www.w3.org/2019/wot/json-schema#enum}
+   */
+  export const Enum = "https://www.w3.org/2019/wot/json-schema#enum";
+
+  /**
+   * {@link https://www.w3.org/2019/wot/json-schema#readonly}
+   */
+  export const ReadOnly = "https://www.w3.org/2019/wot/json-schema#readOnly";
+}
+
+/**
+ * RDF Class Type IRIs for the [W3C WOT Json Schema classes]{@link https://www.w3.org/2019/wot/json-schema#classes}.
+ */
+export namespace W3cWotJsonSchemaClasses {
+  export const Object = "https://www.w3.org/2019/wot/json-schema#ObjectSchema";
+  export const Array = "https://www.w3.org/2019/wot/json-schema#ArraySchema";
+  export const Boolean =
+    "https://www.w3.org/2019/wot/json-schema#BooleanSchema";
+  export const String = "https://www.w3.org/2019/wot/json-schema#StringSchema";
+  export const Number = "https://www.w3.org/2019/wot/json-schema#NumberSchema";
+  export const Integer =
+    "https://www.w3.org/2019/wot/json-schema#IntegerSchema";
+  export const Null = "https://www.w3.org/2019/wot/json-schema#NullSchema";
+}
+
+// DataSchemaType is not strictly correct here, as json-schema is related but not identical.
+//  In practice however, they use the same types.
+/**
+ * Obtains the W3C WOT Json Schema class IRI given a data schema type.
+ * @param type The data schema type to look up the class name for.
+ * @returns The class IRI for the given type, or undefined if the type was not known.
+ */
+export function dataSchemaTypeToW3cWotClass(type: DataSchemaType): string {
+  const mappedType = (type[0].toUpperCase() +
+    type.substr(1).toLowerCase()) as any;
+  return (W3cWotJsonSchemaClasses as any)[mappedType];
 }

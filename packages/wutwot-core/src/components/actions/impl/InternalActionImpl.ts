@@ -6,7 +6,7 @@ import {
   DCMITermsTerms,
   W3cWotTDTerms,
   TypedDataSchema,
-  JsonSchemaContext,
+  W3CWotJsonSchemaContext,
 } from "@wutwot/td";
 
 import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
@@ -150,9 +150,7 @@ export class InternalActionImpl implements InternalAction {
       [DCMITermsTerms.Title]: this.title,
       [DCMITermsTerms.Description]: this.description,
       [W3cWotTDTerms.HasInputSchema]: {
-        "@context": {
-          "@vocab": JsonSchemaContext,
-        },
+        "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.input),
       },
     };

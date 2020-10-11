@@ -4,6 +4,6 @@ export class SchemaValidationError extends Error {
     super(message);
     this.message = message;
     this.code = "ERR_SCHEMA_VIOLATION";
-    Object.setPrototypeOf(this, Error.prototype);
+    Object.setPrototypeOf(this, SchemaValidationError.prototype);
   }
 }

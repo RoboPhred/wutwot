@@ -1,0 +1,6 @@
+10 error TypeError: Cannot read property 'replace' of null
+10 error     at /mnt/d/dev/git/RoboPhred/wutwot/node_modules/@lerna/package-graph/index.js:60:49
+10 error     at Array.forEach (<anonymous>)
+10 error     at /mnt/d/dev/git/RoboPhred/wutwot/node_modules/@lerna/package-graph/index.js:55:38
+10 error     at Map.forEach (<anonymous>)
+10 error     at new PackageGraph (/mnt/d/dev/git/RoboPhred/wutwot/node_modules/@lerna/package-graph/index.js:44:10)

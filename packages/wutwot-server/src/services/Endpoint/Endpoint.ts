@@ -34,7 +34,6 @@ export class Endpoint implements Entrypoint {
 
     app.use(this._router);
     app.listen(this._port, (err) => {
-      console.log(this._router);
       if (err) {
         // TODO: log better
         console.error(err);

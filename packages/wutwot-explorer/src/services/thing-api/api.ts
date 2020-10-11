@@ -63,10 +63,15 @@ export async function executeForm(
     );
   }
 
-  const request: RequestInit = {
+  const request: RequestInit & { headers: Record<string, string> } = {
     method,
-    body: body ? JSON.stringify(body) : undefined,
+    headers: {},
   };
+
+  if (body != undefined) {
+    (request.body = JSON.stringify(body)),
+      (request.headers["Content-Type"] = "application/json");
+  }
 
   const response = await fetch(url, request);
   const responseBody = await response.json();

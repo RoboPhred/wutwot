@@ -8,6 +8,24 @@ import { MultiLanguage } from "./multi-language";
 export type TypedDataSchema = DataSchema | DataSchemaSubclass;
 
 /**
+ * Possible type values for DataSchema types.
+ */
+export type DataSchemaType = DataSchemaSubclass["type"];
+
+/**
+ * An array of possible DataSchema types.
+ */
+export const DataSchemaTypes: DataSchemaType[] = [
+  "string",
+  "number",
+  "boolean",
+  "object",
+  "array",
+  "integer",
+  "null",
+];
+
+/**
  * A subclass type of {@link DataSchemaSubclass}.
  */
 export type DataSchemaSubclass =

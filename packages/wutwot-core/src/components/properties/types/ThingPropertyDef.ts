@@ -1,5 +1,6 @@
 import { Observable } from "rxjs";
 import { JSONSchema6 } from "json-schema";
+import { DataSchemaType, DataSchemaTypes } from "@wutwot/td";
 
 import { makeReadOnlyDeep } from "../../../immutable";
 
@@ -9,13 +10,11 @@ import {
   interactionAffordanceDefSchema,
 } from "../../affordance";
 
-import { ThingPropertyType, ThingPropertyTypes } from "./ThingProperty";
-
 // TODO: This should extend DataSchema
 //  or more probably, there should be multiple of these that collectively
 //  each extend one of the DataSchema sub types.
 export interface ThingPropertyDef extends InteractionAffordanceDef {
-  type: ThingPropertyType;
+  type: DataSchemaType;
   unit?: string;
   enum?: string[];
   minimum?: number;
@@ -33,13 +32,13 @@ export interface ThingPropertyDef extends InteractionAffordanceDef {
 export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
   type: "object",
   properties: {
-    type: { enum: ThingPropertyTypes },
+    type: { enum: DataSchemaTypes },
     unit: { type: "string", minLength: 1 },
     enum: { type: "array", items: { type: "string", minLength: 1 } },
     minimum: { type: "number" },
     maximum: { type: "number" },
     readOnly: { type: "boolean" },
-    initialValue: { type: ThingPropertyTypes },
+    initialValue: { type: DataSchemaTypes },
   },
   required: ["type", "initialValue"],
 });

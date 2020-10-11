@@ -1,14 +1,22 @@
 import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
-import { JsonSchemaContext, DCMITermsTerms } from "@wutwot/td";
+import {
+  DCMITermsTerms,
+  RDFSyntaxTerms,
+  DataSchemaType,
+  W3cWotJsonSchemaTerms,
+  SchemaOrgTerms,
+  dataSchemaTypeToW3cWotClass,
+} from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
 import { makeReadOnly } from "../../../immutable";
 
 import { validateOrThrow } from "../../json-schema";
 
-import { ThingProperty, ThingPropertyDef, ThingPropertyType } from "../types";
+import { ThingProperty, ThingPropertyDef } from "../types";
 
+// TODO: Support object properties.  Currently only supports scalers
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
 
@@ -58,7 +66,7 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._def.description;
   }
 
-  get type(): ThingPropertyType {
+  get type(): DataSchemaType {
     return this._def.type;
   }
 
@@ -121,19 +129,15 @@ export class ThingPropertyImpl implements ThingProperty {
 
   toJSONLD() {
     return {
-      "@context": {
-        "@vocab": JsonSchemaContext,
-      },
       "@index": this.id,
       [DCMITermsTerms.Title]: this.title,
       [DCMITermsTerms.Description]: this.description,
-      // Currently relying on @vocab to specify the paths of these:
-      type: this.type,
-      unit: this.unit,
-      enum: this.enum ? [...this.enum] : undefined,
-      minimum: this.minimum,
-      maximum: this.maximum,
-      readOnly: this.readOnly,
+      [RDFSyntaxTerms.Type]: { "@id": dataSchemaTypeToW3cWotClass(this.type) },
+      [SchemaOrgTerms.Unit]: this.unit,
+      [W3cWotJsonSchemaTerms.Enum]: this.enum ? [...this.enum] : undefined,
+      [W3cWotJsonSchemaTerms.Minimum]: this.minimum,
+      [W3cWotJsonSchemaTerms.Maximum]: this.maximum,
+      [W3cWotJsonSchemaTerms.ReadOnly]: this.readOnly,
     };
   }
 }

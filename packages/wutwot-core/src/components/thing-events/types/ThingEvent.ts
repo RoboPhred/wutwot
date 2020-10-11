@@ -1,6 +1,6 @@
 import { TypedDataSchema } from "@wutwot/td";
 
-import { ToJSON, JSONAble } from "../../../types";
+import { ToJSON } from "../../../types";
 import { DeepImmutable } from "../../../immutable";
 
 import { InteractionAffordance } from "../../affordance";
@@ -15,10 +15,7 @@ import { ThingEventRecord } from "./ThingEventRecord";
  * Thing events also provide the array of records, containing the data for each raised event
  * in chronological order.
  */
-export interface ThingEvent
-  extends InteractionAffordance,
-    JSONLDAble,
-    JSONAble<ToJSON<ThingEvent>> {
+export interface ThingEvent extends InteractionAffordance, JSONLDAble {
   /**
    * The schema of the data this event contains when raised.
    */

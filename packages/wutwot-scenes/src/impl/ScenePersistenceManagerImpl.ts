@@ -21,7 +21,7 @@ export class ScenePersistenceManagerImpl {
 
   setPersistedScene(persistedScene: PersistedScene): void {
     this._dataPersistence.set(
-      ["scenes", String(persistedScene.sceneId)],
+      ["scenes", persistedScene.sceneId],
       persistedScene,
     );
   }

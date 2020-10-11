@@ -8,7 +8,7 @@ import {
   get,
   pathParam,
   body,
-  post,
+  put,
 } from "simply-express-controllers";
 import { compact } from "jsonld";
 import createError from "http-errors";
@@ -69,7 +69,7 @@ export class ThingDirectoryController {
     return prop.value ?? null;
   }
 
-  @post("/:thingId/properties/:propertyId", {
+  @put("/:thingId/properties/:propertyId", {
     description: "Sets the value of a thing property",
     tags: ["Thing", "Property"],
   })
