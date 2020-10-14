@@ -1,8 +1,16 @@
-import express, { IRouter, Router } from "express";
+import express, {
+  IRouter,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from "express";
 import { injectable, provides, inject, singleton } from "microinject";
 import nocache from "nocache";
 import helmet from "helmet";
 import cors from "cors";
+import HttpStatusCodes from "http-status-codes";
+import { HttpError } from "http-errors";
 
 import { Entrypoint } from "../../contracts";
 import { Port, CorsOrigin } from "../../config";
@@ -33,6 +41,23 @@ export class Endpoint implements Entrypoint {
     );
 
     app.use(this._router);
+
+    app.use(
+      (
+        err: Error | HttpError,
+        req: Request,
+        resp: Response,
+        next: NextFunction,
+      ) => {
+        if (isHttpError(err) && err.expose) {
+          resp.status(err.status);
+          resp.statusMessage = err.message;
+        } else {
+          console.error(err);
+          resp.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+        }
+      },
+    );
     app.listen(this._port, (err) => {
       if (err) {
         // TODO: log better
@@ -40,4 +65,11 @@ export class Endpoint implements Entrypoint {
       }
     });
   }
+}
+
+function isHttpError(err: Error): err is HttpError {
+  const anyError = err as any;
+  return (
+    typeof anyError.expose === "boolean" && typeof anyError.status === "number"
+  );
 }

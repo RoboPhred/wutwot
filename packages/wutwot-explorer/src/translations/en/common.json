@@ -31,6 +31,10 @@
       "error_name_in_use": "The provided name is already in use"
     }
   },
+  "errors": {
+    "error_count": "{{count}} Error",
+    "error_count_plural": "{{count}} Errors"
+  },
   "verbs": {
     "cancel_titlecase": "Cancel",
     "add_titlecase": "Add"

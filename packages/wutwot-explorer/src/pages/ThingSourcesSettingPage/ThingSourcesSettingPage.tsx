@@ -4,10 +4,13 @@ import { useSelector } from "react-redux";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
+import IconButton from "@material-ui/core/IconButton";
+import ErrorIcon from "@material-ui/icons/Error";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 
 import { thingSourcesSelector } from "@/services/thing-sources/selectors";
+import { thingDefinitionErrorsSelector } from "@/services/thing-definitions/selectors";
 
 import PageContainer from "@/components/PageContainer";
 
@@ -39,8 +42,23 @@ const ThingSourcesSettingPage: React.FC = () => {
     setIsAdding(false);
   }, []);
 
+  const defErrors = useSelector(thingDefinitionErrorsSelector);
+  let toolbarItems: React.ReactNode = null;
+  const errorCount = Object.keys(defErrors).length;
+  if (errorCount > 0) {
+    toolbarItems = (
+      <IconButton title={t("errors.error_count", { count: errorCount })}>
+        <ErrorIcon />
+      </IconButton>
+    );
+  }
+
   return (
-    <PageContainer title={t("thing_sources.noun_titlecase_plural")} back>
+    <PageContainer
+      title={t("thing_sources.noun_titlecase_plural")}
+      back
+      toolbarItems={toolbarItems}
+    >
       <List>
         {sourceUrls.map((source) => (
           <ThingSourceListItem key={source.id} {...source} />

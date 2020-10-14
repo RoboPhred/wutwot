@@ -35,3 +35,14 @@ export const thingDefinitionSelector = createThingDefinitionsSelector(
     return data.definition;
   },
 );
+
+export const thingDefinitionErrorsSelector = createThingDefinitionsSelector(
+  (state) => state.definitionErrorsBySourceId,
+);
+
+export const thingDefinitionErrorSelector = createThingDefinitionsSelector(
+  (state: ThingDefinitionsServiceState, sourceId: string) => {
+    const error = state.definitionErrorsBySourceId[sourceId];
+    return error ?? null;
+  },
+);

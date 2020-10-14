@@ -104,14 +104,19 @@ export class ThingDirectoryController {
   }
 
   private async _getThingDefinition(thing: Thing): Promise<TDThing> {
-    const ld = thing.toJSONLD();
-    let tdThing: TDThing = (await compact(ld, W3cWotTDContext)) as any;
+    try {
+      const ld = thing.toJSONLD();
+      let tdThing: TDThing = (await compact(ld, W3cWotTDContext)) as any;
 
-    tdThing.base = urlJoin(this._rootUrl, `/things/${thing.id}`);
+      tdThing.base = urlJoin(this._rootUrl, `/things/${thing.id}`);
 
-    // TODO: wutwot core should handle forms
-    tdThing = this._injectForms(tdThing);
-    return tdThing;
+      // TODO: wutwot core should handle forms
+      tdThing = this._injectForms(tdThing);
+      return tdThing;
+    } catch (e) {
+      e.message = `Failed to compact ${thing.id}: ${e.message}`;
+      throw e;
+    }
   }
 
   private _injectForms(thing: TDThing): TDThing {

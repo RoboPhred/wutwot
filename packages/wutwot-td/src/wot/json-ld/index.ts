@@ -1,137 +1,20 @@
-import { DataSchemaType } from "./data-schema";
+import { DataSchemaType } from "../data-schema";
 
 /**
  * A context for describing a thing description in terms of JSON-LD.
+ *
+ * Using a modified copy until {@link https://github.com/w3c/wot-thing-description/issues/988} is resolved.
  */
-export const W3cWotTDContext = "https://www.w3.org/2019/wot/td/v1#";
+// export const W3cWotTDContext = "https://www.w3.org/2019/wot/td/v1#";
+export const W3cWotTDContext = require("./wot-thing-definition-context")
+  .default;
 
 /**
  * A context for JSON Schema in JSON-LD.
- * {@link https://www.w3.org/2019/wot/json-schema#interpreting-json-schema-as-json-ld-1-1}.
- *
- * This contains the following changes from when it was copied:
- * - A duplicate "enum" entry was removed
- * - "properties"."@type" was changed from "@vocab" to "@id" to fix property name generation on compaction.
+ * Sourced from {@link https://www.w3.org/2019/wot/json-schema#interpreting-json-schema-as-json-ld-1-1}.
  */
-export const W3CWotJsonSchemaContext = {
-  td: "https://www.w3.org/2019/wot/td#",
-  jsonschema: "https://www.w3.org/2019/wot/json-schema#",
-  wotsec: "https://www.w3.org/2019/wot/security#",
-  hctl: "https://www.w3.org/2019/wot/hypermedia#",
-  dct: "http://purl.org/dc/terms/",
-  schema: "http://schema.org/",
-  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  "@vocab": "https://www.w3.org/2019/wot/json-schema#",
-  DataSchema: {
-    "@id": "jsonschema:DataSchema",
-  },
-  readOnly: {
-    "@id": "jsonschema:readOnly",
-    "@type": "xsd:boolean",
-  },
-  writeOnly: {
-    "@id": "jsonschema:writeOnly",
-    "@type": "xsd:boolean",
-  },
-  maximum: {
-    "@id": "jsonschema:maximum",
-  },
-  minimum: {
-    "@id": "jsonschema:minimum",
-  },
-  maxItems: {
-    "@id": "jsonschema:maxItems",
-    "@type": "xsd:unsignedInt",
-  },
-  minItems: {
-    "@id": "jsonschema:minItems",
-    "@type": "xsd:unsignedInt",
-  },
-  contentEncoding: {
-    "@id": "jsonschema:contentEncoding",
-    "@type": "xsd:unsignedInt",
-  },
-  minLength: {
-    "@id": "jsonschema:minLength",
-    "@type": "xsd:unsignedInt",
-  },
-  maxLength: {
-    "@id": "jsonschema:maxLength",
-    "@type": "xsd:unsignedInt",
-  },
-  contentMediaType: {
-    "@id": "jsonschema:contentMediaType",
-    "@type": "xsd:string",
-  },
-  items: {
-    "@id": "jsonschema:items",
-    "@type": "@id",
-  },
-  required: {
-    "@id": "jsonschema:required",
-    "@type": "xsd:string",
-    "@container": "@set",
-  },
-  enum: {
-    "@id": "jsonschema:enum",
-    "@container": "@set",
-  },
-  const: {
-    "@id": "jsonschema:const",
-  },
-  multipleOf: {
-    "@id": "jsonschema:multipleOf",
-  },
-  format: {
-    "@id": "jsonschema:format",
-  },
-  oneOf: {
-    "@id": "jsonschema:oneOf",
-    "@container": "@set",
-  },
-  allOf: {
-    "@id": "jsonschema:allOf",
-    "@container": "@set",
-  },
-  anyOf: {
-    "@id": "jsonschema:anyOf",
-    "@container": "@set",
-  },
-  type: {
-    "@id": "rdf:type",
-    "@type": "@vocab",
-  },
-  title: {
-    "@id": "dct:title",
-  },
-  titles: {
-    "@id": "dct:title",
-    "@container": "@language",
-  },
-  description: {
-    "@id": "dct:description",
-  },
-  descriptions: {
-    "@id": "dct:description",
-    "@container": "@language",
-  },
-  object: "jsonschema:ObjectSchema",
-  array: "jsonschema:ArraySchema",
-  boolean: "jsonschema:BooleanSchema",
-  string: "jsonschema:StringSchema",
-  number: "jsonschema:NumberSchema",
-  integer: "jsonschema:IntegerSchema",
-  null: "jsonschema:NullSchema",
-  properties: {
-    "@id": "jsonschema:properties",
-    "@container": "@index",
-    "@index": "jsonschema:propertyName",
-  },
-  unit: {
-    "@id": "schema:unitCode",
-    "@type": "@vocab",
-  },
-};
+export const W3CWotJsonSchemaContext = require("./wot-json-schema-context")
+  .default;
 
 /**
  * Collection of terms used by the [W3C Thing Definition spec]{@link https://www.w3.org/2019/wot/td}.
