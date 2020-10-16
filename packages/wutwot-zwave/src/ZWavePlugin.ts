@@ -1,5 +1,5 @@
 import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
-import { ZWaveController } from "zwave-js/build/lib/controller/Controller";
+import { ZWaveController } from "zwave-js";
 import { WutWotPlugin } from "@wutwot/core";
 
 import { ZWaveProvider, ZWaveEndpointThingMapper } from "./components";
