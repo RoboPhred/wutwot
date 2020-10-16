@@ -55,6 +55,14 @@ const ThingPropertyRow: React.FC<ThingPropertyRowProps> = ({
     propertyKey,
   );
 
+  const onSubmitValue = React.useCallback(
+    (value: any) => {
+      setValue(value);
+      onCloseWriteDialog();
+    },
+    [setValue, onCloseWriteDialog],
+  );
+
   if (!definition || !definition.properties) {
     return null;
   }
@@ -93,7 +101,7 @@ const ThingPropertyRow: React.FC<ThingPropertyRowProps> = ({
         <Dialog open={isWriteDialogOpen} onClose={onCloseWriteDialog}>
           <DialogTitle>Set Value</DialogTitle>
           <DialogContent>
-            <DataSchemaEditor schema={property} onSubmit={setValue} />
+            <DataSchemaEditor schema={property} onSubmit={onSubmitValue} />
           </DialogContent>
         </Dialog>
       </TableCell>
