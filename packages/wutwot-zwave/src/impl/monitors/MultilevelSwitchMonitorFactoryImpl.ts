@@ -1,16 +1,18 @@
 import { injectable, provides, singleton } from "microinject";
 import { autobind } from "core-decorators";
-import { ZWaveNode } from "zwave-js";
-import { ZWaveNodeValueUpdatedArgs } from "zwave-js/build/lib/node/Node";
-import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
-import { ValueMetadataNumeric } from "zwave-js/build/lib/values/Metadata";
+import {
+  ZWaveNode,
+  ZWaveNodeValueUpdatedArgs,
+  ValueMetadataNumeric,
+  ValueID,
+} from "zwave-js";
+import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
+import { CommandClasses } from "@zwave-js/core";
 import { PluginThing } from "@wutwot/core";
 import { Subject } from "rxjs";
 
 import { ZWaveEndpointMonitor } from "../../types";
 import { ZWaveEndpointMonitorFactory } from "../../contracts";
-import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
-import { ValueID } from "zwave-js/build/lib/node/ValueDB";
 
 @injectable()
 @provides(ZWaveEndpointMonitorFactory)

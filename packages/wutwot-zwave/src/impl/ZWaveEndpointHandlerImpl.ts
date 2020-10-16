@@ -136,7 +136,7 @@ function getClassNaming(node: ZWaveNode): TitleAndDescription | null {
   }
 
   return {
-    defaultTitle: deviceClass.specific.name,
-    defaultDescription: deviceClass.generic.name,
+    defaultTitle: deviceClass.specific.label,
+    defaultDescription: deviceClass.generic.label,
   };
 }

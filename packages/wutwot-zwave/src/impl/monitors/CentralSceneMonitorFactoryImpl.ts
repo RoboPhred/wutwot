@@ -1,8 +1,10 @@
-import { ZWaveNode } from "zwave-js";
+import {
+  ZWaveNode,
+  ZWaveNodeValueUpdatedArgs,
+  CentralSceneKeys,
+} from "zwave-js";
+import { CommandClasses } from "@zwave-js/core";
 import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
-import { CommandClasses } from "zwave-js/build/lib/commandclass/CommandClasses";
-import { ValueUpdatedArgs } from "zwave-js/build/lib/node/ValueDB";
-import { CentralSceneKeys } from "zwave-js/build/lib/commandclass/CentralSceneCC";
 import { PluginThing } from "@wutwot/core";
 import { injectable, singleton, provides } from "microinject";
 import { Subject } from "rxjs";
@@ -65,7 +67,7 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
   }
 
   @autobind()
-  private _onValueUpdated(node: ZWaveNode, e: ValueUpdatedArgs) {
+  private _onValueUpdated(node: ZWaveNode, e: ZWaveNodeValueUpdatedArgs) {
     if (e.commandClass !== CommandClasses["Central Scene"]) {
       return;
     }
