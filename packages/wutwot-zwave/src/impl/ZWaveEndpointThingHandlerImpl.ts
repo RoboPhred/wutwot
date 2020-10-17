@@ -1,14 +1,15 @@
 import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
-import { PluginThingsManager } from "@wutwot/core";
+import { OwnedPluginThing, PluginThingsManager } from "@wutwot/core";
 import { ZWaveNode } from "zwave-js";
 
 import { ZWaveEndpointMonitorFactory } from "../contracts";
-import { ZWaveEndpointHandler } from "../components";
+import { ZWaveThingHandler } from "../components";
 import { METADATA_ZWAVE_NODE, METADATA_ZWAVE_ENDPOINT } from "../metadata-keys";
 import { ZWaveEndpointMonitor } from "../types";
 import { isNotNull } from "../utils";
 
-export class ZWaveEndpointHandlerImpl implements ZWaveEndpointHandler {
+export class ZWaveEndpointThingHandlerImpl implements ZWaveThingHandler {
+  private _thing: OwnedPluginThing | null = null;
   private _destroyed = false;
   private _monitors: ZWaveEndpointMonitor[] = [];
 
@@ -25,6 +26,9 @@ export class ZWaveEndpointHandlerImpl implements ZWaveEndpointHandler {
     this._destroyed = true;
     this._monitors.forEach((monitor) => monitor.destroy());
     this._monitors = [];
+    if (this._thing) {
+      this._thing.delete();
+    }
   }
 
   private async initializeThing() {
@@ -38,7 +42,7 @@ export class ZWaveEndpointHandlerImpl implements ZWaveEndpointHandler {
       this._endpoint,
     );
 
-    const pluginThing = this._thingsManager.addThing({
+    this._thing = this._thingsManager.addThing({
       pluginLocalId: `${node.id}-${this._endpoint.index}`,
       defaultTitle,
       defaultDescription,
@@ -49,7 +53,7 @@ export class ZWaveEndpointHandlerImpl implements ZWaveEndpointHandler {
     });
 
     this._monitors = this._monitorFactories
-      .map((factory) => factory.createMonitor(this._endpoint, pluginThing))
+      .map((factory) => factory.createMonitor(this._endpoint, this._thing!))
       .filter(isNotNull);
   }
 }
@@ -136,7 +140,7 @@ function getClassNaming(node: ZWaveNode): TitleAndDescription | null {
   }
 
   return {
-    defaultTitle: deviceClass.specific.name,
-    defaultDescription: deviceClass.generic.name,
+    defaultTitle: deviceClass.specific.label,
+    defaultDescription: deviceClass.generic.label,
   };
 }
