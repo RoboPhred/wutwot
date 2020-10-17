@@ -2,7 +2,7 @@ import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
 import { ZWaveController } from "zwave-js";
 import { WutWotPlugin } from "@wutwot/core";
 
-import { ZWaveProvider, ZWaveEndpointThingMapper } from "./components";
+import { ZWaveProvider, ZWaveThingMapper } from "./components";
 
 import { ZWavePort } from "./config";
 import containerModule from "./module";
@@ -56,6 +56,6 @@ export class ZWavePlugin implements WutWotPlugin {
 
     // Instantiate the thing manager.
     //  It will automatically start syncing things.
-    serviceLocator.get(ZWaveEndpointThingMapper);
+    serviceLocator.get(ZWaveThingMapper);
   }
 }

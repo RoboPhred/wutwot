@@ -62,7 +62,7 @@ export class InternalThingImpl implements InternalThing {
 
   constructor(
     @injectParam(InternalThingParams.ThingDef)
-    private _def: ThingDef,
+    def: ThingDef,
     @injectParam(InternalThingParams.ThingId)
     private _id: string,
     @injectParam(InternalThingParams.Owner)
@@ -78,18 +78,15 @@ export class InternalThingImpl implements InternalThing {
     @inject(LocalEventsManager)
     private _eventsManager: LocalEventsManager,
   ) {
-    this._def = {
-      ..._def,
-    };
-    metadataObjectToMap(_def.metadata || {}, this._metadata);
+    metadataObjectToMap(def.metadata || {}, this._metadata);
 
     this._title = this._persistence.get(
       ThingPersistenceKeys.Name,
-      _def.defaultTitle,
+      def.defaultTitle,
     );
     this._description = this._persistence.get(
       ThingPersistenceKeys.Description,
-      _def.defaultDescription,
+      def.defaultDescription,
     );
 
     // Create masks of the managers to prevent

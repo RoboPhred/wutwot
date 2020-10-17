@@ -1,6 +1,7 @@
-import { Driver, ZWaveError, ZWaveErrorCodes } from "zwave-js";
+import { Driver } from "zwave-js";
 import { ZWaveController } from "zwave-js";
 import { injectable, provides, inject, singleton } from "microinject";
+import { autobind } from "core-decorators";
 
 import { ZWaveProvider, AdapterLocator } from "../components";
 
@@ -48,11 +49,12 @@ export class ZWaveProviderImpl implements ZWaveProvider {
 
     await readyPromise;
 
-    driver.addListener("error", this._handleRuntimeError.bind(this));
+    driver.addListener("error", this._handleRuntimeError);
 
     return driver.controller;
   }
 
+  @autobind()
   private _handleRuntimeError(err: Error) {
     if (
       /supports Security\, but no network key was configured/.test(err.message)
