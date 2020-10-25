@@ -1,5 +1,6 @@
 import * as React from "react";
 import keys from "lodash/keys";
+import { useTranslation } from "react-i18next";
 
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
@@ -11,36 +12,33 @@ import Paper from "@material-ui/core/Paper";
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
-import ThingPropertyRow from "./ThingPropertyRow";
+import ThingActionRow from "./ThingActionRow";
 
-export interface ThingPropertyListProps {
+export interface ThingActionListProps {
   thingDisplayId: string;
 }
 
-const ThingPropertyList: React.FC<ThingPropertyListProps> = ({
+const ThingActionList: React.FC<ThingActionListProps> = ({
   thingDisplayId,
 }) => {
+  const { t } = useTranslation();
   const definition = useAppSelector((state) =>
     thingDefinitionSelector(state, thingDisplayId),
   );
 
-  if (!definition || !definition.properties) {
+  if (!definition || !definition.actions) {
     return null;
   }
-  const propertyKeys = keys(definition.properties);
+  const actionKeys = keys(definition.actions);
 
   return (
     <div>
-      <Typography variant="overline">Properties</Typography>
+      <Typography variant="overline">{t("things.actions.action_plural")}</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>
-            {propertyKeys.map((key) => (
-              <ThingPropertyRow
-                key={key}
-                thingDisplayId={thingDisplayId}
-                propertyKey={key}
-              />
+            {actionKeys.map((key) => (
+              <ThingActionRow key={key} thingDisplayId={thingDisplayId} actionKey={key} />
             ))}
           </TableBody>
         </Table>
@@ -49,4 +47,4 @@ const ThingPropertyList: React.FC<ThingPropertyListProps> = ({
   );
 };
 
-export default ThingPropertyList;
+export default ThingActionList;

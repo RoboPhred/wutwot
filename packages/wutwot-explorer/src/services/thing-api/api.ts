@@ -1,7 +1,6 @@
 import isRelativeUrl from "is-relative-url";
 import urlJoin from "url-join";
 import { Form, Thing, FormOp } from "@wutwot/td";
-import { maybeArrayContains } from "@/types";
 
 // https://www.w3.org/TR/wot-binding-templates/#http-default-vocabulary-terms
 const DefaultHttpMethodsByOp: Partial<Record<FormOp, string>> = {
@@ -69,8 +68,8 @@ export async function executeForm(
   };
 
   if (body != undefined) {
-    (request.body = JSON.stringify(body)),
-      (request.headers["Content-Type"] = "application/json");
+    request.body = JSON.stringify(body);
+    request.headers["Content-Type"] = "application/json";
   }
 
   const response = await fetch(url, request);

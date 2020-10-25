@@ -48,6 +48,11 @@ export interface ThingActionRequest {
   readonly status: ThingActionRequestStatus;
 
   /**
+   * Gets a promise to await the result of the action request.
+   */
+  toPromise(): Promise<any>;
+
+  /**
    * Returns a JSON representation of this action request.
    */
   toJSON(): ToJSON<ThingActionRequest>;

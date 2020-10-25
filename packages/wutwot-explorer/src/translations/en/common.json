@@ -5,12 +5,23 @@
     "not_found": "Thing Not Found",
     "view_raw_definition": "View Raw Definition",
     "properties": {
+      "property_plural": "Properties",
       "id": "ID",
       "id_empty": "[No ID]",
       "title_titlecase": "Title",
       "title_empty": "[No Title]",
       "description_titlecase": "Description",
       "description_empty": "[No Description]"
+    },
+    "actions": {
+      "action_plural": "Actions",
+      "invocation": {
+        "invoke": "Invoke Action",
+        "input": "Input",
+        "execute": "Execute",
+        "last_result": "Last Invocation Result",
+        "last_error": "Last Invocation Error"
+      }
     }
   },
   "thing_definitions": {

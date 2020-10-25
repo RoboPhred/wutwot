@@ -9,6 +9,7 @@ import {
   pathParam,
   body,
   put,
+  post,
 } from "simply-express-controllers";
 import { compact } from "jsonld";
 import createError from "http-errors";
@@ -76,7 +77,7 @@ export class ThingDirectoryController {
   async setThingProperty(
     @pathParam("thingId") thingId: string,
     @pathParam("propertyId") propertyId: string,
-    @body() value: any,
+    @body({ required: true }) value: any,
   ) {
     const thing = this._wutwot.things.get(thingId);
     if (!thing) {
@@ -101,6 +102,33 @@ export class ThingDirectoryController {
 
     // Doesn't appear to be any contract for the response.
     return {};
+  }
+
+  @post("/:thingId/actions/:actionId", {
+    description: "Invoke the action",
+    tags: ["Thing", "Action"],
+  })
+  async executeThingAction(
+    @pathParam("thingId") thingId: string,
+    @pathParam("actionId") actionId: string,
+    @body() input: any,
+  ) {
+    const thing = this._wutwot.things.get(thingId);
+    if (!thing) {
+      throw createError(HttpStatusCodes.NOT_FOUND, "Thing not found.");
+    }
+    const action = thing.actions.get(actionId);
+    if (!action) {
+      throw createError(HttpStatusCodes.NOT_FOUND, "Action not found.");
+    }
+
+    try {
+      await action.invoke(input);
+    } catch (e) {
+      // TODO: Differentiate between general errors and errors due to failed invocation.
+      // Just letting it be an internal server error for now.
+      throw e;
+    }
   }
 
   private async _getThingDefinition(thing: Thing): Promise<TDThing> {
@@ -143,6 +171,22 @@ export class ThingDirectoryController {
         }
       }
     }
+
+    if (thing.actions) {
+      const actionKeys = keys(thing.actions);
+      for (const actionKey of actionKeys) {
+        const action = thing.actions[actionKey];
+        if (!action.forms) {
+          action.forms = [];
+        }
+
+        action.forms.push({
+          op: "invokeaction",
+          href: `/actions/${actionKey}`,
+        });
+      }
+    }
+
     return thing;
   }
 }

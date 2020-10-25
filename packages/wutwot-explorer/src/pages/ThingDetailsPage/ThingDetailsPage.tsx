@@ -16,6 +16,7 @@ import MenuItemLink from "@/components/MenuItemLink";
 
 import ThingHeaderValue from "./components/ThingHeaderValue";
 import ThingPropertyList from "./components/ThingPropertyList";
+import ThingActionList from "./components/ThingActionList";
 
 export interface ThingDetailsRouteParams {
   displayId: string;
@@ -94,6 +95,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
           i18nFallback="things.properties.description_empty"
           value={description}
         />
+        <ThingActionList thingDisplayId={displayId} />
         <ThingPropertyList thingDisplayId={displayId} />
       </div>
     </PageContainer>

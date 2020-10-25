@@ -1,3 +1,4 @@
+// https://www.w3.org/2019/wot/json-schema#interpreting-json-schema-as-json-ld-1-1
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",

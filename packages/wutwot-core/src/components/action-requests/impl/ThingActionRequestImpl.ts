@@ -9,6 +9,7 @@ import {
   ThingActionRequestDef,
   ThingActionRequestUpdate,
 } from "../types";
+import { createDeferred, Deferred } from "../../../utils/deferred-promise";
 
 /**
  * Provides the implementation of ThingActionRequest for public use.
@@ -19,6 +20,7 @@ export class ThingActionRequestImpl implements ThingActionRequest {
   private _timeRequested: string;
   private _input: any = undefined;
   private _output: any = undefined;
+  private _promiseDefer: Deferred<any>;
 
   constructor(
     private _id: string,
@@ -26,6 +28,7 @@ export class ThingActionRequestImpl implements ThingActionRequest {
     private _actionId: string,
     def: ThingActionRequestDef,
   ) {
+    this._promiseDefer = createDeferred();
     this._timeRequested = def.timeRequested;
     this._input = def.input;
     this._status = def.initialStatus;
@@ -37,10 +40,13 @@ export class ThingActionRequestImpl implements ThingActionRequest {
         break;
       case ThingActionRequestStatus.Completed:
         this._output = def.output;
+        this._promiseDefer.resolve(def.output);
         this._timeCompleted = def.timeCompleted;
         break;
       case ThingActionRequestStatus.Error:
         this._timeCompleted = def.timeCompleted;
+        // TODO: Spec doesn't seem to take into account error messages.
+        this._promiseDefer.reject(new Error("The action invocation failed."));
         break;
     }
   }
@@ -79,6 +85,10 @@ export class ThingActionRequestImpl implements ThingActionRequest {
     return this._status;
   }
 
+  toPromise() {
+    return this._promiseDefer.promise;
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -108,6 +118,10 @@ export class ThingActionRequestImpl implements ThingActionRequest {
         }
         if (update.status === ThingActionRequestStatus.Completed) {
           this._output = update.output;
+          this._promiseDefer.resolve(update.output);
+        } else if (update.status === ThingActionRequestStatus.Error) {
+          // TODO: Spec doesn't seem to take into account error messages.
+          this._promiseDefer.reject(new Error("The action invocation failed."));
         }
       },
       complete: () => {
@@ -115,11 +129,13 @@ export class ThingActionRequestImpl implements ThingActionRequest {
           this._status = ThingActionRequestStatus.Completed;
           this._timeCompleted = new Date().toISOString();
           // TODO: No output?
+          this._promiseDefer.resolve(undefined);
         }
       },
       error: () => {
         if (!ThingActionRequestStatus.isFinalStatus(this._status)) {
           this._status = ThingActionRequestStatus.Error;
+          this._promiseDefer.reject(new Error("The action invocation failed."));
         }
       },
     });
