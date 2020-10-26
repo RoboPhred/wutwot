@@ -7,7 +7,7 @@ import {
 } from "microinject";
 import { mapValues } from "lodash";
 import { inspect } from "util";
-import { W3cWotTDTerms, DCMITermsTerms } from "@wutwot/td";
+import { W3cWotTdIris, DCMITermsIris } from "@wutwot/td";
 
 import { makeReadOnly, createReadonlyMapWrapper } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
@@ -208,11 +208,11 @@ export class InternalThingImpl implements InternalThing {
       "@id": this.id,
       // TODO: semanticTypes should always be full resolved IRIs
       "@types": [...this.semanticTypes],
-      [DCMITermsTerms.Title]: this.title,
-      [DCMITermsTerms.Description]: this.description,
-      [W3cWotTDTerms.HasActionAffordance]: nonEmptyArray(actions, undefined),
-      [W3cWotTDTerms.HasEventAffordance]: nonEmptyArray(events, undefined),
-      [W3cWotTDTerms.HasPropertyAffordance]: nonEmptyArray(
+      [DCMITermsIris.Title]: this.title,
+      [DCMITermsIris.Description]: this.description,
+      [W3cWotTdIris.HasActionAffordance]: nonEmptyArray(actions, undefined),
+      [W3cWotTdIris.HasEventAffordance]: nonEmptyArray(events, undefined),
+      [W3cWotTdIris.HasPropertyAffordance]: nonEmptyArray(
         properties,
         undefined,
       ),

@@ -50,11 +50,11 @@ export class Endpoint implements Entrypoint {
         next: NextFunction,
       ) => {
         if (isHttpError(err) && err.expose) {
-          resp.status(err.status);
           resp.statusMessage = err.message;
+          resp.status(err.status).end();
         } else {
           console.error(err);
-          resp.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+          resp.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).end();
         }
       },
     );

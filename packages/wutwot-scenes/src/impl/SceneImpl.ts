@@ -36,6 +36,8 @@ export class SceneImpl implements Scene {
     if (persistedData) {
       this._triggers = cloneDeep(persistedData.triggers);
       this._propertySettings = cloneDeep(persistedData.propertySettings);
+    } else {
+      this._persist();
     }
 
     this._eventEventSource.on("event.raise", this._onEventRaised.bind(this));

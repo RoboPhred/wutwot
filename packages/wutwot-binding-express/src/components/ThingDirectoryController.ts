@@ -1,5 +1,10 @@
 import { provides, singleton, inject, injectable } from "microinject";
-import { WutWot, Thing, SchemaValidationError } from "@wutwot/core";
+import {
+  WutWot,
+  Thing,
+  SchemaValidationError,
+  ActionInvocationError,
+} from "@wutwot/core";
 import { ExpressController, ExpressRootUrl } from "@wutwot/servient-express";
 import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
 import HttpStatusCodes from "http-status-codes";
@@ -123,10 +128,13 @@ export class ThingDirectoryController {
     }
 
     try {
-      await action.invoke(input);
+      const result = await action.invoke(input).toPromise();
+      return result ?? null;
     } catch (e) {
-      // TODO: Differentiate between general errors and errors due to failed invocation.
-      // Just letting it be an internal server error for now.
+      if (e instanceof ActionInvocationError) {
+        throw createError(HttpStatusCodes.INTERNAL_SERVER_ERROR, e.message);
+      }
+
       throw e;
     }
   }

@@ -1,6 +1,11 @@
 import { inspect } from "util";
 import { cloneDeep } from "lodash";
-import { TypedDataSchema } from "@wutwot/td";
+import {
+  TypedDataSchema,
+  DCMITermsIris,
+  W3cWotTdIris,
+  W3CWotJsonSchemaContext,
+} from "@wutwot/td";
 
 import {
   DeepImmutable,
@@ -8,11 +13,6 @@ import {
   makeReadOnlyDeep,
 } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
-import {
-  DCMITermsTerms,
-  W3cWotTDTerms,
-  W3CWotJsonSchemaContext,
-} from "@wutwot/td";
 
 import { EventEventSink } from "../components";
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
@@ -96,9 +96,9 @@ export class ThingEventImpl implements ThingEvent {
     return {
       "@index": this.id,
       "@type": [...this.semanticTypes],
-      [DCMITermsTerms.Title]: this.title,
-      [DCMITermsTerms.Description]: this.description,
-      [W3cWotTDTerms.HasNotificationSchema]: {
+      [DCMITermsIris.Title]: this.title,
+      [DCMITermsIris.Description]: this.description,
+      [W3cWotTdIris.HasNotificationSchema]: {
         "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.data),
       },

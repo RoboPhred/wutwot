@@ -18,6 +18,9 @@ export class App {
       const entrypoints = this._container.getAll(Entrypoint);
       entrypoints.forEach((x) => x.start());
     }
+
+    // Create WutWot service to start the server.
+    this._container.get(WutWot);
   }
 
   async shutdown() {

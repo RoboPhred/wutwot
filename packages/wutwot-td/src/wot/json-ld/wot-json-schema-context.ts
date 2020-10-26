@@ -1,120 +1,34 @@
 // https://www.w3.org/2019/wot/json-schema#interpreting-json-schema-as-json-ld-1-1
 export default {
-  td: "https://www.w3.org/2019/wot/td#",
-  jsonschema: "https://www.w3.org/2019/wot/json-schema#",
-  wotsec: "https://www.w3.org/2019/wot/security#",
-  hctl: "https://www.w3.org/2019/wot/hypermedia#",
-  dct: "http://purl.org/dc/terms/",
-  schema: "http://schema.org/",
-  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "@version": 1.1,
+  xsd: "http://www.w3.org/2001/XMLSchema#",
   "@vocab": "https://www.w3.org/2019/wot/json-schema#",
-  DataSchema: {
-    "@id": "jsonschema:DataSchema",
-  },
-  readOnly: {
-    "@id": "jsonschema:readOnly",
-    "@type": "xsd:boolean",
-  },
-  writeOnly: {
-    "@id": "jsonschema:writeOnly",
-    "@type": "xsd:boolean",
-  },
-  maximum: {
-    "@id": "jsonschema:maximum",
-  },
-  minimum: {
-    "@id": "jsonschema:minimum",
-  },
-  maxItems: {
-    "@id": "jsonschema:maxItems",
-    "@type": "xsd:unsignedInt",
-  },
-  minItems: {
-    "@id": "jsonschema:minItems",
-    "@type": "xsd:unsignedInt",
-  },
-  contentEncoding: {
-    "@id": "jsonschema:contentEncoding",
-    "@type": "xsd:unsignedInt",
-  },
-  minLength: {
-    "@id": "jsonschema:minLength",
-    "@type": "xsd:unsignedInt",
-  },
-  maxLength: {
-    "@id": "jsonschema:maxLength",
-    "@type": "xsd:unsignedInt",
-  },
-  contentMediaType: {
-    "@id": "jsonschema:contentMediaType",
-    "@type": "xsd:string",
-  },
-  items: {
-    "@id": "jsonschema:items",
-    "@type": "@id",
-  },
-  required: {
-    "@id": "jsonschema:required",
-    "@type": "xsd:string",
-    "@container": "@set",
-  },
-  enum: {
-    "@id": "jsonschema:enum",
-    "@container": "@set",
-  },
-  const: {
-    "@id": "jsonschema:const",
-  },
-  multipleOf: {
-    "@id": "jsonschema:multipleOf",
-  },
-  format: {
-    "@id": "jsonschema:format",
-  },
-  oneOf: {
-    "@id": "jsonschema:oneOf",
-    "@container": "@set",
-  },
-  allOf: {
-    "@id": "jsonschema:allOf",
-    "@container": "@set",
-  },
-  anyOf: {
-    "@id": "jsonschema:anyOf",
-    "@container": "@set",
-  },
-  type: {
-    "@id": "rdf:type",
-    "@type": "@vocab",
-  },
-  title: {
-    "@id": "dct:title",
-  },
-  titles: {
-    "@id": "dct:title",
-    "@container": "@language",
-  },
-  description: {
-    "@id": "dct:description",
-  },
-  descriptions: {
-    "@id": "dct:description",
-    "@container": "@language",
-  },
-  object: "jsonschema:ObjectSchema",
-  array: "jsonschema:ArraySchema",
-  boolean: "jsonschema:BooleanSchema",
-  string: "jsonschema:StringSchema",
-  number: "jsonschema:NumberSchema",
-  integer: "jsonschema:IntegerSchema",
-  null: "jsonschema:NullSchema",
+  id: { "@id": "@id" },
+  type: { "@id": "@type" },
+  object: "ObjectSchema",
+  array: "ArraySchema",
+  boolean: "BooleanSchema",
+  string: "StringSchema",
+  number: "NumberSchema",
+  integer: "IntegerSchema",
+  null: "NullSchema",
   properties: {
-    "@id": "jsonschema:properties",
     "@container": "@index",
-    "@index": "jsonschema:propertyName",
+    "@index": "propertyName",
   },
-  unit: {
-    "@id": "schema:unitCode",
-    "@type": "@vocab",
-  },
+  items: { "@type": "@vocab" },
+  oneOf: { "@type": "@vocab", "@container": "@set" },
+  allOf: { "@type": "@vocab", "@container": "@set" },
+  anyOf: { "@type": "@vocab", "@container": "@set" },
+  minItems: { "@type": "xsd:decimal" },
+  maxItems: { "@type": "xsd:decimal" },
+  minimum: { "@type": "xsd:decimal" },
+  maximum: { "@type": "xsd:decimal" },
+  enum: { "@container": "@set", "@type": "@json" },
+  writeOnly: { "@type": "xsd:boolean" },
+  readOnly: { "@type": "xsd:boolean" },
+  format: { "@type": "xsd:string" },
+  required: { "@type": "xsd:string", "@container": "@set" },
+  title: { "@type": "xsd:string" },
+  description: { "@type": "xsd:string" },
 };

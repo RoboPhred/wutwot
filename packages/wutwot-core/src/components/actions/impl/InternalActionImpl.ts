@@ -3,8 +3,8 @@ import { inspect } from "util";
 import { isObservable } from "rxjs";
 import { cloneDeep } from "lodash";
 import {
-  DCMITermsTerms,
-  W3cWotTDTerms,
+  DCMITermsIris,
+  W3cWotTdIris,
   TypedDataSchema,
   W3CWotJsonSchemaContext,
 } from "@wutwot/td";
@@ -147,9 +147,9 @@ export class InternalActionImpl implements InternalAction {
     return {
       "@index": this.id,
       "@type": [...this.semanticTypes],
-      [DCMITermsTerms.Title]: this.title,
-      [DCMITermsTerms.Description]: this.description,
-      [W3cWotTDTerms.HasInputSchema]: {
+      [DCMITermsIris.Title]: this.title,
+      [DCMITermsIris.Description]: this.description,
+      [W3cWotTdIris.HasInputSchema]: {
         "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.input),
       },

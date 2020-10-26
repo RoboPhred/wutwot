@@ -1,3 +1,4 @@
+// https://github.com/w3c/wot-thing-description/blob/master/context/td-context-1.1.jsonld
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -128,8 +129,9 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "https://www.w3.org/2019/wot/json-schema#propertyName",
+        "@index": "propertyName",
       },
+      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -545,8 +547,9 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "https://www.w3.org/2019/wot/json-schema#propertyName",
+        "@index": "propertyName",
       },
+      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -668,8 +671,9 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "https://www.w3.org/2019/wot/json-schema#propertyName",
+        "@index": "propertyName",
       },
+      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -791,8 +795,9 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "https://www.w3.org/2019/wot/json-schema#propertyName",
+        "@index": "propertyName",
       },
+      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -914,8 +919,9 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "https://www.w3.org/2019/wot/json-schema#propertyName",
+        "@index": "propertyName",
       },
+      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -1037,8 +1043,9 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "https://www.w3.org/2019/wot/json-schema#propertyName",
+        "@index": "propertyName",
       },
+      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",

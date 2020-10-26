@@ -1,3 +1,3 @@
-export namespace SchemaOrgTerms {
-  export const Unit = "http://schema.org/unitCode";
+export namespace SchemaOrgIris {
+  export const UnitCode = "http://schema.org/unitCode";
 }

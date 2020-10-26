@@ -19,7 +19,7 @@ export const W3CWotJsonSchemaContext = require("./wot-json-schema-context")
 /**
  * Collection of terms used by the [W3C Thing Definition spec]{@link https://www.w3.org/2019/wot/td}.
  */
-export namespace W3cWotTDTerms {
+export namespace W3cWotTdIris {
   /**
    * {@link https://www.w3.org/2019/wot/td#hasactionaffordance}
    */
@@ -49,7 +49,7 @@ export namespace W3cWotTDTerms {
 /**
  * Terms for json-schema defined in the [W3C WOT Json Schema spec]{@link https://www.w3.org/2019/wot/json-schema}.
  */
-export namespace W3cWotJsonSchemaTerms {
+export namespace W3cWotJsonSchemaIris {
   /**
    * {@link https://www.w3.org/2019/wot/json-schema#maximum}
    */
