@@ -1,4 +1,4 @@
-import { Identifier } from "@wutwot/core/node_modules/microinject";
+import { Identifier } from "microinject";
 
 import createSymbol from "../create-symbol";
 import { ScenePropertySetting } from "../types";

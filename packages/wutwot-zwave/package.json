@@ -23,7 +23,6 @@
   "author": "William Matthews",
   "license": "MIT",
   "devDependencies": {
-    "@types/core-decorators": "^0.20.0",
     "@types/serialport": "^7.0.5",
     "@wutwot/core": "^1.0.0",
     "microinject": "^0.9.3",

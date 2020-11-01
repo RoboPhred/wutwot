@@ -1,11 +1,11 @@
-import { DataSchema } from "@wutwot/core/lib/components/data-schema";
+import { TypedDataSchema } from "@wutwot/td";
 
 export interface ScenePropertySetting {
   thingId: string;
   propertyId: string;
   value: any;
 }
-export const scenePropertySettingDataSchema: DataSchema = {
+export const scenePropertySettingDataSchema: TypedDataSchema = {
   type: "object",
   properties: {
     thingId: { type: "string" },

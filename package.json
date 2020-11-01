@@ -2,11 +2,25 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "postinstall": "lerna bootstrap",
-    "clean": "lerna run --parallel clean",
-    "build": "lerna run build --scope=@wutwot/server --include-dependencies",
-    "lerna": "lerna"
+    "clean:binding-express": "cd packages/wutwot-binding-express && npm run clean",
+    "build:binding-express": "cd packages/wutwot-binding-express && npm run build",
+    "clean:core": "cd packages/wutwot-core && npm run clean",
+    "build:core": "cd packages/wutwot-core && npm run build",
+    "clean:scenes": "cd packages/wutwot-scenes && npm run clean",
+    "build:scenes": "cd packages/wutwot-scenes && npm run build",
+    "clean:servient-express": "cd packages/wutwot-servient-express && npm run clean",
+    "build:servient-express": "cd packages/wutwot-servient-express && npm run build",
+    "clean:td": "cd packages/wutwot-td && npm run clean",
+    "build:td": "cd packages/wutwot-td && npm run build",
+    "clean:zwave": "cd packages/wutwot-zwave && npm run clean",
+    "build:zwave": "cd packages/wutwot-zwave && npm run build",
+    "clean": "npm run clean:binding-express && npm run clean:core && npm run clean:scenes && npm run clean:servient-express && npm run clean:td && npm run clean:zwave",
+    "build": "npm run build:td && npm run build:core && npm run build:zwave && npm run build:scenes && npm run build:servient-express && npm run build:binding-express",
+    "start": "cd packages/wutwot-server && npm run start"
   },
+  "workspaces": [
+    "./packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RoboPhred/wutwot.git"
@@ -21,8 +35,5 @@
   "bugs": {
     "url": "https://github.com/RoboPhred/wutwot/issues"
   },
-  "homepage": "https://github.com/RoboPhred/wutwot#readme",
-  "devDependencies": {
-    "lerna": "^3.22.1"
-  }
+  "homepage": "https://github.com/RoboPhred/wutwot#readme"
 }
