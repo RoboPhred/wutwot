@@ -14,8 +14,10 @@
     "build:td": "cd packages/wutwot-td && npm run build",
     "clean:zwave": "cd packages/wutwot-zwave && npm run clean",
     "build:zwave": "cd packages/wutwot-zwave && npm run build",
+    "clean:server": "cd packages/wutwot-server && npm run clean",
+    "build:server": "cd packages/wutwot-server && npm run build",
     "clean": "npm run clean:binding-express && npm run clean:core && npm run clean:scenes && npm run clean:servient-express && npm run clean:td && npm run clean:zwave",
-    "build": "npm run build:td && npm run build:core && npm run build:zwave && npm run build:scenes && npm run build:servient-express && npm run build:binding-express",
+    "build": "npm run build:td && npm run build:core && npm run build:zwave && npm run build:scenes && npm run build:servient-express && npm run build:binding-express && npm run build:server",
     "start": "cd packages/wutwot-server && npm run start"
   },
   "workspaces": [
@@ -26,7 +28,7 @@
     "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
-    "mozilla-iot",
+    "w3c-td",
     "iot",
     "zwave"
   ],
