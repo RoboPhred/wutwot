@@ -1,6 +1,10 @@
 import repl from "repl";
 import { WutWot } from "@wutwot/core";
-import { ZWavePlugin, METADATA_ZWAVE_NODE } from "@wutwot/zwave";
+import {
+  ZWavePlugin,
+  METADATA_ZWAVE_NODE,
+  METADATA_ZWAVE_ENDPOINT,
+} from "@wutwot/zwave";
 import { injectable, inject } from "microinject";
 
 import { Entrypoint } from "../../contracts";
@@ -33,6 +37,7 @@ export class ReplServer implements Entrypoint {
       context.wutwot = this._wutwot;
       context.zwave = this._zwave;
       context.zwaveNodeMetadata = METADATA_ZWAVE_NODE;
+      context.zwaveEndpointMetadata = METADATA_ZWAVE_ENDPOINT;
     };
     reset(this._replServer.context);
     this._replServer.on("exit", async () => {
