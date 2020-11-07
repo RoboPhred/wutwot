@@ -11,7 +11,7 @@ export default composeModules(
   ConfigModule,
   EndpointModule,
   WutWotModule,
-  // ReplModule,
+  ReplModule,
   ScenesModule,
-  // ZWaveModule,
+  ZWaveModule,
 );

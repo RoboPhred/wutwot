@@ -58,12 +58,13 @@ export class Endpoint implements Entrypoint {
         }
       },
     );
-    app.listen(this._port, (err) => {
-      if (err) {
-        // TODO: log better
-        console.error(err);
-      }
+
+    app.on("error", (err) => {
+      // TODO: Log error, better error handling.
+      console.error(err);
     });
+
+    app.listen(this._port);
   }
 }
 

@@ -21,7 +21,7 @@ export default new ContainerModule((bind) => {
       plugins.push(
         new ExpressServientPlugin({
           router: endpoint.router,
-          rootUrl: `${hostname}:${port}`,
+          rootUrl: `http://${hostname}:${port}`,
         }),
         new ExpressBindingPlugin(),
       );
