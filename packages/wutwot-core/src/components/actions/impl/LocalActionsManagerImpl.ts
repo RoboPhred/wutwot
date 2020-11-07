@@ -35,7 +35,7 @@ export class LocalActionsManagerImpl
     const id = formCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(
-        `Plugin ${owner.id} has already registered an action with a plugin-local id of "${def.pluginLocalId}".`,
+        `Plugin ${owner.id} has already registered an action with a plugin-local id of "${def.pluginLocalId}" on thing "${this._thingId}".`,
       );
     }
 

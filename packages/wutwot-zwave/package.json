@@ -34,7 +34,7 @@
     "@zwave-js/core": "^5.3.2",
     "core-decorators": "^0.20.0",
     "rxjs": "^6.5.5",
-    "serialport": "^7.1.5",
+    "serialport": "^9.0.1",
     "zwave-js": "^5.3.2"
   },
   "peerDependencies": {
