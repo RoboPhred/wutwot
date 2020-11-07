@@ -13,7 +13,7 @@ export default new ContainerModule((bind) => {
       if (context.has(ZWavePort)) {
         zwavePort = context.get(ZWavePort);
       }
-      return new ZWavePlugin({ pluginId: "zwave-master", port: zwavePort });
+      return new ZWavePlugin({ pluginId: "zwave", port: zwavePort });
     })
     .inSingletonScope();
 });
