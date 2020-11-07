@@ -71,9 +71,9 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
     if (e.commandClass !== CommandClasses["Central Scene"]) {
       return;
     }
-    if (e.endpoint != this._endpoint.index) {
-      return;
-    }
+
+    // At one point, zwave-js was sending us endpoint info.
+    //  However, it no longer does so.  Is Central Scene is always in endpoint 0?
 
     const key = e.newValue as number;
 
