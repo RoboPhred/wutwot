@@ -7,8 +7,8 @@
     "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js",
     "test": "jest",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config ./webpack.config.js",
-    "start:prod": "cross-env NODE_ENV=production webpack-dev-server --config ./webpack.config.js"
+    "start": "cross-env NODE_ENV=development webpack serve --config ./webpack.config.js",
+    "start:prod": "cross-env NODE_ENV=production webpack serve --config ./webpack.config.js"
   },
   "repository": {
     "type": "git",

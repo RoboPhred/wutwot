@@ -65,16 +65,12 @@ module.exports = {
 
       {
         test: /\.tsx?$/,
-        use: [
-          {
-            loader: "ts-loader",
-          },
-        ],
+        use: ["ts-loader"],
       },
 
       {
         test: /\.css$/,
-        loader: ["style-loader", "css-loader"],
+        use: ["style-loader", "css-loader"],
       },
 
       {
