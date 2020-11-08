@@ -36,7 +36,7 @@ module.exports = {
   },
 
   output: {
-    filename: "[name].[hash].bundle.js",
+    filename: "[name].[fullhash].bundle.js",
     path: PATHS.appBuild,
     publicPath: isDev ? "/" : PUBLIC_URL_PATH,
 
@@ -89,7 +89,7 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            name: "fonts/[hash].[ext]",
+            name: "fonts/[fullhash].[ext]",
           },
         },
       },
