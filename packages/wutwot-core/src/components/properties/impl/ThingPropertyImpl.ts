@@ -98,7 +98,7 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._lastValue;
   }
 
-  setValue(value: any): void {
+  setValue(value: any): Promise<void> {
     const schema: JSONSchema6 = {
       type: this._def.type,
       enum: this._def.enum,
@@ -106,7 +106,12 @@ export class ThingPropertyImpl implements ThingProperty {
       maximum: this._def.maximum,
     };
     validateOrThrow(value, schema);
-    this._def.onValueChangeRequested(this._thingId, this._id, value);
+
+    try {
+      return this._def.onValueChangeRequested(this._thingId, this._id, value);
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   toJSON() {

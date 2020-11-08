@@ -1,6 +1,6 @@
 # TODO
 
-#### Support Forms
+## Support Forms
 
 Currently each binding supplies its own forms. This prevents cross-binding discovery. For example, the directory endpoint
 for the express binding cannot list mqtt forms.
@@ -10,14 +10,7 @@ There are two ways we would want to set a form
 - Per-affordance, for affordance specific forms
 - In bulk, for bindings that map any affordance (eg binding-express)
 
-#### Stronger typings for ThingProperty.
-
-- [The Standard](https://w3c.github.io/wot-thing-description/) defines NumericThingProperty, ObjectThingProperty, and so on.
-
-Need to rework ThingProperty to match the W3c DataSchema api.
-DataSchema (and rest of W3C TD specific types) should be in new library: `@wutwot/td`
-
-#### Allow additional JSON-LD properties.
+## Allow additional JSON-LD properties.
 
 Need to support
 
@@ -27,12 +20,42 @@ Need to support
 We emit absolute IRIs for toJSONLD, which makes this a lot easier. We do not have to care
 about populating the context, all we need to do is collect the context url and allow arbitrary IRI / value pairs.
 
-`event.addExtensionProperty("http://my-context.com/c/v1", "http://my-context.com/c/terms/foobar", 42);`
-`event.addExtensionProperty({context: "http://my-context.com/c/v1", iri: "http://my-context.com/c/terms/foobar"}, 42);`
+`event.addExtensionProperty("http://my-context.com/c/terms/foobar", 42);`
 
-We then need to pass the contexts up when generating json-ld, might need to change the return type to `{context, document}`.
+No need to pass the context we want to use, leave that to the td compaction step in binding-express.
 
-#### IRI IDs.
+### Should the binding plugin be responsible for td-ification?
+
+Right now, @wutwot/binding-express takes the expanded form JSON-LD and compacts it, making it compatible with
+the td spec. This seems the right thing to do, but it does mean that we need to figure out how to deal with converting
+the custom IRIs to prefixed properties. Some prefixes td itself defines (like htv). Some IRIs have a commonly used prefix, like sarat.
+
+## Extendable behavior for Things / Properties / Actions / Events
+
+"Allow additional JSON-LD properties" implies we want to stick arbitrary properties to objects, at least for json-ld.
+
+This could be further extended by making the properties also available on the normal api service as extended properties.
+
+API for this: extendo objects (extendo api? composite objects?)
+
+An object that can be extended with other classes, similar to mixins but the plugins are kept apart. Also similar to treating the object
+as a dependency container, where the dependencies can expose properties on the main api surface of the object. API ensures
+properties are unique.
+
+Core will provide a few default extensions: Thing core (title, description), actions provider, properties provider, events provider.
+json-ld extension scans all other extensions for those that provide json-ld attributes and @types. One extension should provide an @id, with safty check to ensure no conflicting id.
+For all other conflicting json-ld attributes, bundle them up and make the attribute value an array (assume its a one-to-many attribute).
+
+Extendo object will then create a proxy that builds the public api, exposing the extension props.
+
+wutwot should support adding extensions to individual objects, and extension provides that automatically add extensions to all objects of a type (thing, action, exc).
+
+## Utility classes for plugins
+
+- Class that adds a pragmatic thing, using decorators to describe properties on getters/setters, actions, and so on.
+- Class that calls a func for every thing (or even action / property / event). On init, walk through all things, then await new things and call for them. ThingWatcher class.
+
+## IRI IDs.
 
 Currently, ids in wutwot are arbitrary strings. We pass that as the @id in jsonld, but IDs
 should be IRIs. We should generate IRIs in wutwot for ids.
@@ -41,9 +64,9 @@ Consider adding an option to wutwot core to choose how to generate ids, or at th
 clean up and document our urn. Should move all id generation into functions of a single file to
 centralize them at the very least.
 
-#### Metadata on properties, actions, events
+## Metadata on properties, actions, events
 
-#### NodeJS events for individual topics
+## NodeJS events for individual topics
 
 - Thing events
   - Property added / removed
@@ -63,35 +86,19 @@ centralize them at the very least.
 - Event events
   - event raised (new record)
 
-#### API documentation
+## API documentation
 
 https://www.npmjs.com/package/@microsoft/api-extractor
 
-#### Call remove event sink functions when things are removed.
+## Call remove event sink functions when things are removed.
 
 - Property removal
 - Event removal
 - Action removal
 - Action Request removal
 
-#### Document remaining public types
+## Document remaining public types
 
 - Thing
 - Property
 - Event
-
-#### Load previously defined things even if no plugin has defined them.
-
-DeviceStatus property supplied by internal plugin
-
-- Orphaned
-- Present
-
-Maybe make this ConnectionStatus and expose a way for plugins to set it
-
-- Orphaned
-- Disconnected
-- Sleeping
-- Connected
-
-Might not need a property at all, and rely on adding a semanticType of "Orphan" or "Unknown"

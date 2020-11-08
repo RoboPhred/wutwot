@@ -26,7 +26,11 @@ export interface ThingPropertyDef extends InteractionAffordanceDef {
 
   values: Observable<any>;
 
-  onValueChangeRequested(thingId: string, propertyId: string, value: any): void;
+  onValueChangeRequested(
+    thingId: string,
+    propertyId: string,
+    value: any,
+  ): Promise<void>;
 }
 
 export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({

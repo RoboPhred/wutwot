@@ -50,7 +50,7 @@ export interface ThingProperty extends InteractionAffordance, JSONLDAble {
    * Writes a new value to this property.
    * @param value The value to write.
    */
-  setValue(value: any): void;
+  setValue(value: any): Promise<void>;
 
   /**
    * Gets a JSON representation of this property.
