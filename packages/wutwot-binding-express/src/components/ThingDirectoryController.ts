@@ -95,7 +95,7 @@ export class ThingDirectoryController {
     }
 
     try {
-      prop.setValue(value);
+      await prop.setValue(value);
     } catch (e) {
       if (e instanceof SchemaValidationError) {
         throw createError(
