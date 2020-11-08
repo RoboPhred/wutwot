@@ -4,6 +4,7 @@ import {
   Thing,
   SchemaValidationError,
   ActionInvocationError,
+  PropertySetError,
 } from "@wutwot/core";
 import { ExpressController, ExpressRootUrl } from "@wutwot/servient-express";
 import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
@@ -100,6 +101,12 @@ export class ThingDirectoryController {
         throw createError(
           HttpStatusCodes.BAD_REQUEST,
           "Body did not match the property schema.",
+        );
+      }
+      if (e instanceof PropertySetError) {
+        throw createError(
+          HttpStatusCodes.INTERNAL_SERVER_ERROR,
+          `Failed to set value: ${e.message}`,
         );
       }
       throw e;
