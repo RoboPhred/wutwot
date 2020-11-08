@@ -73,6 +73,10 @@ export async function executeForm(
   }
 
   const response = await fetch(url, request);
+  if (response.status !== 200) {
+    throw new Error(`${response.status}: ${response.statusText}`);
+  }
+
   const responseBody = await response.json();
   return responseBody;
 }
