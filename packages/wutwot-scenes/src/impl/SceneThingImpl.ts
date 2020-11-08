@@ -22,8 +22,8 @@ export class SceneThingImpl implements SceneThing {
     });
 
     _thing.addAction({
-      pluginLocalId: "add-property-set",
-      title: "Add property",
+      pluginLocalId: "add-property-setter",
+      title: "Add Property Setter",
       input: scenePropertySettingDataSchema,
       onActionInvocationRequested: (
         invocationThingId,
