@@ -1,5 +1,5 @@
 import { Driver } from "zwave-js";
-import { ZWaveController } from "zwave-js";
+import { ZWaveController, ZWaveError } from "zwave-js";
 import { injectable, provides, inject, singleton } from "microinject";
 import { autobind } from "core-decorators";
 
@@ -56,14 +56,13 @@ export class ZWaveProviderImpl implements ZWaveProvider {
 
   @autobind()
   private _handleRuntimeError(err: Error) {
-    if (
-      /supports Security\, but no network key was configured/.test(err.message)
-    ) {
-      return;
+    // TODO: Proper logging.
+    if (err instanceof ZWaveError) {
+      console.warn(err);
+    } else {
+      // TODO: Tell server to shut down cleanly if possible.
+      console.error(err);
+      process.exit(1);
     }
-
-    // TODO: Proper logging.  Tell server to shut down cleanly if possible.
-    console.error(err);
-    process.exit(1);
   }
 }

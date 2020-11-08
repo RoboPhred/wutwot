@@ -73,7 +73,7 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
     }
 
     // At one point, zwave-js was sending us endpoint info.
-    //  However, it no longer does so.  Is Central Scene is always in endpoint 0?
+    //  However, it no longer does so.  Is Central Scene always in endpoint 0?
 
     const key = e.newValue as number;
 
