@@ -47,6 +47,24 @@ export class SceneImpl implements Scene {
     return this._sceneId;
   }
 
+  trigger(): void {
+    for (const propSetting of this._propertySettings) {
+      const { thingId, propertyId, value } = propSetting;
+
+      const thing = this._wutwot.things.get(thingId);
+      if (!thing) {
+        continue;
+      }
+
+      const prop = thing.properties.get(propertyId);
+      if (!prop) {
+        continue;
+      }
+
+      prop.setValue(value);
+    }
+  }
+
   learnTrigger(): Promise<void> {
     return new Promise((accept) => {
       this._eventEventSource.once("event.raise", ({ event, record }) => {
@@ -91,25 +109,7 @@ export class SceneImpl implements Scene {
     const { event, record } = e;
     const trigger = makeSceneTrigger(event, record);
     if (this._triggers.some((sceneTrigger) => isEqual(sceneTrigger, trigger))) {
-      this._triggerScene();
-    }
-  }
-
-  private _triggerScene() {
-    for (const propSetting of this._propertySettings) {
-      const { thingId, propertyId, value } = propSetting;
-
-      const thing = this._wutwot.things.get(thingId);
-      if (!thing) {
-        continue;
-      }
-
-      const prop = thing.properties.get(propertyId);
-      if (!prop) {
-        continue;
-      }
-
-      prop.setValue(value);
+      this.trigger();
     }
   }
 }

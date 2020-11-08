@@ -34,6 +34,19 @@ export class SceneThingImpl implements SceneThing {
         return observableOf(ThingActionRequestUpdate.completed());
       },
     });
+
+    _thing.addAction({
+      pluginLocalId: "activate-scene",
+      title: "Activate Scene",
+      onActionInvocationRequested: (
+        invocationThingId,
+        invocationActionId,
+        input: unknown,
+      ) => {
+        _scene.trigger();
+        return observableOf(ThingActionRequestUpdate.completed());
+      },
+    });
   }
 
   get scene(): Scene {

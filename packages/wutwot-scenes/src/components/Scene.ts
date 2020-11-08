@@ -11,6 +11,8 @@ export const Scene: Identifier<Scene> = createSymbol("Scene");
 export interface Scene {
   readonly sceneId: string;
 
+  trigger(): void;
+
   learnTrigger(): Promise<void>;
 
   addSceneProperty(property: ScenePropertySetting): void;
