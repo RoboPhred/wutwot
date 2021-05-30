@@ -1,13 +1,11 @@
 import { injectable, provides, singleton, inject } from "microinject";
 import { PluginThingsManager } from "@wutwot/core";
-import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
-import { ZWaveNode } from "zwave-js";
+import { Endpoint } from "zwave-js";
 
 import { ZWaveEndpointMonitorFactory } from "../contracts";
 import { ZWaveThingHandlerFactory, ZWaveThingHandler } from "../components";
 
 import { ZWaveEndpointThingHandlerImpl } from "./ZWaveEndpointThingHandlerImpl";
-import { ZWaveDeadNodeHandlerImpl } from "./ZWaveDeadNodeThingHandlerImpl";
 
 @injectable()
 @provides(ZWaveThingHandlerFactory)
@@ -25,9 +23,5 @@ export class ZWaveThingHandlerFactoryImpl implements ZWaveThingHandlerFactory {
       this._thingsManager,
       this._monitorFactories,
     );
-  }
-
-  createDeadNodeHandler(node: ZWaveNode) {
-    return new ZWaveDeadNodeHandlerImpl(node, this._thingsManager);
   }
 }

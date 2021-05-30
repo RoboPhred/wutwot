@@ -55,6 +55,7 @@ export class SceneThingsAdapterImpl
     const thing = this._pluginThingsManager.addThing({
       pluginLocalId: `scene-${scene.sceneId}`,
       defaultTitle: "New Scene",
+      defaultDescription: "Scene",
     });
 
     const sceneThing = new SceneThingImpl(scene, thing);

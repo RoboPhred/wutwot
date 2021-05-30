@@ -1,6 +1,10 @@
 import { injectable, inject, singleton, provides } from "microinject";
-import { ZWaveNode, ZWaveController } from "zwave-js";
-import { InterviewStage, NodeStatus } from "zwave-js/build/lib/node/Types";
+import {
+  ZWaveNode,
+  ZWaveController,
+  InterviewStage,
+  NodeStatus,
+} from "zwave-js";
 import { autobind } from "core-decorators";
 
 import {
@@ -34,41 +38,13 @@ export class ZWaveThingMapperImpl implements ZWaveThingMapper {
   }
 
   private _onNodeAdded(node: ZWaveNode): void {
-    node.on("dead", this._rebuildNodeThings);
     node.on("alive", this._rebuildNodeThings);
-    node.once("interview completed", this._rebuildNodeThings);
-
-    if (
-      node.status === NodeStatus.Dead ||
-      node.interviewStage === InterviewStage.Complete
-    ) {
-      this._rebuildNodeEndpointThings(node);
-    }
+    node.on("interview completed", this._rebuildNodeThings);
+    this._rebuildNodeThings(node);
   }
 
   @autobind()
-  private _rebuildNodeThings(node: ZWaveNode) {
-    switch (node.status) {
-      case NodeStatus.Alive:
-      case NodeStatus.Asleep:
-      case NodeStatus.Awake:
-        if (node.interviewStage === InterviewStage.Complete) {
-          this._rebuildNodeEndpointThings(node);
-        }
-        break;
-      case NodeStatus.Dead:
-        this._rebuildDeadNodeThing(node);
-        break;
-    }
-  }
-
-  private _rebuildDeadNodeThing(node: ZWaveNode) {
-    this._clearNodeHandlers(node);
-    const handler = this._handlerFactory.createDeadNodeHandler(node);
-    this._handlersByNodeId.set(node.id, [handler]);
-  }
-
-  private _rebuildNodeEndpointThings(node: ZWaveNode): void {
+  private _rebuildNodeThings(node: ZWaveNode): void {
     this._clearNodeHandlers(node);
 
     const handlers: ZWaveThingHandler[] = [];
@@ -86,7 +62,6 @@ export class ZWaveThingMapperImpl implements ZWaveThingMapper {
   }
 
   private _onNodeRemoved(node: ZWaveNode) {
-    node.removeListener("dead", this._rebuildNodeThings);
     node.removeListener("alive", this._rebuildNodeThings);
     node.removeListener("interview completed", this._rebuildNodeThings);
     this._clearNodeHandlers(node);

@@ -11,5 +11,4 @@ export const ZWaveThingHandlerFactory: Identifier<ZWaveThingHandlerFactory> = cr
 );
 export interface ZWaveThingHandlerFactory {
   createEndpointHandler(endpoint: Endpoint): ZWaveThingHandler;
-  createDeadNodeHandler(node: ZWaveNode): ZWaveThingHandler;
 }

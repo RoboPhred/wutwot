@@ -7,8 +7,8 @@ import {
   ValueID,
 } from "zwave-js";
 import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
-import { CommandClasses } from "@zwave-js/core";
-import { PluginThing } from "@wutwot/core";
+import { CommandClasses, ZWaveError } from "@zwave-js/core";
+import { PluginThing, PropertySetError } from "@wutwot/core";
 import { Subject } from "rxjs";
 
 import { ZWaveEndpointMonitor } from "../../types";
@@ -45,10 +45,11 @@ class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
       endpoint: endpoint.index,
     };
 
-    const initialValue = this._node.getValue({
-      ...valueId,
-      property: "currentValue",
-    });
+    const initialValue =
+      this._node.getValue({
+        ...valueId,
+        property: "currentValue",
+      }) ?? null;
     const metadata = this._node.getValueMetadata(
       valueId,
     ) as ValueMetadataNumeric;
@@ -63,8 +64,17 @@ class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
       maximum: metadata.max ?? 99,
       initialValue,
       values: this._subject,
-      onValueChangeRequested: (thingId, propertyId, value) => {
-        this._node.setValue(valueId, value);
+      onValueChangeRequested: async (thingId, propertyId, value) => {
+        try {
+          await this._node.setValue(valueId, value);
+        } catch (e) {
+          if (e instanceof ZWaveError) {
+            // Do we really gain anything by wrapping this?
+            const err = new PropertySetError(e.message);
+            err.stack = e.stack;
+            throw e;
+          }
+        }
       },
     });
 
@@ -72,6 +82,7 @@ class MultilevelSwitchMonitorImpl implements ZWaveEndpointMonitor {
   }
 
   destroy() {
+    // TODO: Remove properties
     this._node.removeListener("value updated", this._onValueUpdated);
   }
 

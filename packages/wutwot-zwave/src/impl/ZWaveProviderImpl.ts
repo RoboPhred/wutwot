@@ -30,7 +30,9 @@ export class ZWaveProviderImpl implements ZWaveProvider {
       );
     }
 
-    const driver = new Driver(port);
+    const driver = new Driver(port, {
+      timeouts: { nodeAwake: Infinity },
+    });
 
     const readyPromise = new Promise<void>((accept, reject) => {
       const onReady = () => {

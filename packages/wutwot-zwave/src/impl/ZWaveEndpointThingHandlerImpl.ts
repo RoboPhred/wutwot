@@ -1,6 +1,6 @@
 import { Endpoint } from "zwave-js/build/lib/node/Endpoint";
 import { OwnedPluginThing, PluginThingsManager } from "@wutwot/core";
-import { ZWaveNode } from "zwave-js";
+import { InterviewStage, NodeStatus, ZWaveNode } from "zwave-js";
 
 import { ZWaveEndpointMonitorFactory } from "../contracts";
 import { ZWaveThingHandler } from "../components";
@@ -100,6 +100,30 @@ async function getTitleAndDescription(
 
   const classNaming = getClassNaming(node);
   fillRemainingTitleDescription(result, classNaming);
+
+  if (!result.defaultTitle) {
+    result.defaultTitle = `Node ${node.id}-${endpoint.index}`;
+    switch (node.status) {
+      case NodeStatus.Alive:
+      case NodeStatus.Awake:
+        switch (node.interviewStage) {
+          case InterviewStage.Complete:
+            result.defaultDescription = "Unknown Device";
+            break;
+          default:
+            result.defaultDescription = "Device failed interview";
+            break;
+        }
+        break;
+      case NodeStatus.Asleep:
+        result.defaultDescription = "Sleeping Device";
+        break;
+      case NodeStatus.Dead:
+        result.defaultDescription = "Dead Device";
+      case NodeStatus.Unknown:
+        result.defaultDescription = "Unknown Device";
+    }
+  }
 
   return result as TitleAndDescription;
 }

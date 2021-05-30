@@ -63,6 +63,7 @@ class CentralSceneMonitorImpl implements ZWaveEndpointMonitor {
   }
 
   destroy() {
+    // TODO: Remove event
     this._node.removeListener("value updated", this._onValueUpdated);
   }
 
