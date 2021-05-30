@@ -64,12 +64,8 @@ interface TitleAndDescription {
 }
 function fillRemainingTitleDescription(
   input: Partial<TitleAndDescription>,
-  fill: Partial<TitleAndDescription> | null,
+  fill: Partial<TitleAndDescription>,
 ) {
-  if (!fill) {
-    return input;
-  }
-
   input.defaultTitle = input.defaultTitle ?? fill.defaultTitle;
   input.defaultDescription =
     input.defaultDescription ?? fill.defaultDescription;
@@ -130,10 +126,10 @@ async function getTitleAndDescription(
 
 async function getEndpointCCNaming(
   endpoint: Endpoint,
-): Promise<TitleAndDescription | null> {
+): Promise<Partial<TitleAndDescription>> {
   const namingAndLocation = endpoint.commandClasses["Node Naming and Location"];
   if (!namingAndLocation.isSupported()) {
-    return null;
+    return {};
   }
 
   const defaultTitle = await namingAndLocation.getName();
@@ -146,9 +142,9 @@ async function getEndpointCCNaming(
   };
 }
 
-function getConfigNaming(node: ZWaveNode): TitleAndDescription | null {
+function getConfigNaming(node: ZWaveNode): Partial<TitleAndDescription> {
   if (!node.deviceConfig) {
-    return null;
+    return {};
   }
 
   return {
@@ -157,10 +153,10 @@ function getConfigNaming(node: ZWaveNode): TitleAndDescription | null {
   };
 }
 
-function getClassNaming(node: ZWaveNode): TitleAndDescription | null {
+function getClassNaming(node: ZWaveNode): Partial<TitleAndDescription> {
   const deviceClass = node.deviceClass;
   if (!deviceClass) {
-    return null;
+    return {};
   }
 
   return {

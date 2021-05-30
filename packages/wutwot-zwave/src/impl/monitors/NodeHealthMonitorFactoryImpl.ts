@@ -116,5 +116,4 @@ const NodeInterviewStrings: Record<InterviewStage, string> = {
   [InterviewStage.None]: "None",
   [InterviewStage.OverwriteConfig]: "OverwriteConfig",
   [InterviewStage.ProtocolInfo]: "ProtocolInfo",
-  [InterviewStage.RestartFromCache]: "RestartFromCache",
 };
