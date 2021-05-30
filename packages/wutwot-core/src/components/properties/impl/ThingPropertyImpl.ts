@@ -1,11 +1,11 @@
 import { JSONSchema6 } from "json-schema";
 import { inspect } from "util";
 import {
-  DCMITermsIris,
-  W3cRdfSyntaxIris,
+  DCMITermsIRIs,
+  W3cRdfSyntaxIRIs,
   DataSchemaType,
-  W3cWotJsonSchemaIris,
-  SchemaOrgIris,
+  W3cWotJsonSchemaIRIs,
+  SchemaOrgIRIs,
   dataSchemaTypeToW3cWotClass,
 } from "@wutwot/td";
 
@@ -135,16 +135,16 @@ export class ThingPropertyImpl implements ThingProperty {
   toJSONLD() {
     return {
       "@index": this.id,
-      [DCMITermsIris.Title]: this.title,
-      [DCMITermsIris.Description]: this.description,
-      [W3cRdfSyntaxIris.Type]: {
+      [DCMITermsIRIs.Title]: this.title,
+      [DCMITermsIRIs.Description]: this.description,
+      [W3cRdfSyntaxIRIs.Type]: {
         "@id": dataSchemaTypeToW3cWotClass(this.type),
       },
-      [SchemaOrgIris.UnitCode]: this.unit,
-      [W3cWotJsonSchemaIris.Enum]: this.enum ? [...this.enum] : undefined,
-      [W3cWotJsonSchemaIris.Minimum]: this.minimum,
-      [W3cWotJsonSchemaIris.Maximum]: this.maximum,
-      [W3cWotJsonSchemaIris.ReadOnly]: this.readOnly,
+      [SchemaOrgIRIs.UnitCode]: this.unit,
+      [W3cWotJsonSchemaIRIs.Enum]: this.enum ? [...this.enum] : undefined,
+      [W3cWotJsonSchemaIRIs.Minimum]: this.minimum,
+      [W3cWotJsonSchemaIRIs.Maximum]: this.maximum,
+      [W3cWotJsonSchemaIRIs.ReadOnly]: this.readOnly,
     };
   }
 }

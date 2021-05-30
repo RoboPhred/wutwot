@@ -2,8 +2,8 @@ import { inspect } from "util";
 import { cloneDeep } from "lodash";
 import {
   TypedDataSchema,
-  DCMITermsIris,
-  W3cWotTdIris,
+  DCMITermsIRIs,
+  W3cWotTdIRIs,
   W3CWotJsonSchemaContext,
 } from "@wutwot/td";
 
@@ -96,9 +96,9 @@ export class ThingEventImpl implements ThingEvent {
     return {
       "@index": this.id,
       "@type": [...this.semanticTypes],
-      [DCMITermsIris.Title]: this.title,
-      [DCMITermsIris.Description]: this.description,
-      [W3cWotTdIris.HasNotificationSchema]: {
+      [DCMITermsIRIs.Title]: this.title,
+      [DCMITermsIRIs.Description]: this.description,
+      [W3cWotTdIRIs.HasNotificationSchema]: {
         "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.data),
       },
