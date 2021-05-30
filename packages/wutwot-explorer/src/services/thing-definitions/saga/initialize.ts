@@ -1,3 +1,4 @@
+import { SagaIterator } from "redux-saga";
 import { takeEvery, select, call } from "redux-saga/effects";
 
 import { INITIALIZE_ACTION } from "@/actions/initialize";
@@ -9,7 +10,7 @@ export default function* initializeSaga() {
   yield takeEvery(INITIALIZE_ACTION, onInitialize);
 }
 
-function* onInitialize() {
+function* onInitialize(): SagaIterator {
   const sources = yield select(thingSourcesSelector);
 
   // Try to load all in parallel and leave it up to the browser to figure out
