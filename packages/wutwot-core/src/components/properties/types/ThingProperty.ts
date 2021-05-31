@@ -22,7 +22,7 @@ export interface ThingProperty extends InteractionAffordance, JSONLDAble {
   /**
    * Allowed values.
    */
-  readonly enum: any[] | undefined;
+  readonly enum: readonly any[] | undefined;
 
   /**
    * The minimum value, if type is numeric.

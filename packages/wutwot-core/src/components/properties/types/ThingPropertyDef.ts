@@ -16,7 +16,7 @@ import {
 export interface ThingPropertyDef extends InteractionAffordanceDef {
   type: DataSchemaType;
   unit?: string;
-  enum?: string[];
+  enum?: any[];
   minimum?: number;
   maximum?: number;
   multipleOf?: number;

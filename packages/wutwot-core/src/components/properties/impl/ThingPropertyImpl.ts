@@ -1,5 +1,6 @@
-import { JSONSchema6 } from "json-schema";
+import { JSONSchema6, JSONSchema6Type } from "json-schema";
 import { inspect } from "util";
+import { cloneDeep } from "lodash";
 import {
   DCMITermsIRIs,
   W3cRdfSyntaxIRIs,
@@ -10,7 +11,11 @@ import {
 } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
-import { makeReadOnly } from "../../../immutable";
+import {
+  DeepImmutableObject,
+  makeReadOnly,
+  makeReadOnlyDeep,
+} from "../../../immutable";
 
 import { validateOrThrow } from "../../json-schema";
 
@@ -19,14 +24,15 @@ import { ThingProperty, ThingPropertyDef } from "../types";
 // TODO: Support object properties.  Currently only supports scalers
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
+  private _def: DeepImmutableObject<ThingPropertyDef>;
 
   constructor(
-    private _def: ThingPropertyDef,
+    def: ThingPropertyDef,
     private _id: string,
     private _thingId: string,
     private _owner: object,
   ) {
-    this._def = { ..._def, enum: this.enum ? [...this.enum] : undefined };
+    this._def = makeReadOnlyDeep(cloneDeep(def));
     this._lastValue = this._def.initialValue;
     this._def.values.subscribe({
       next: (value: any) => (this._lastValue = value),
@@ -74,7 +80,7 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._def.unit;
   }
 
-  get enum(): string[] | undefined {
+  get enum(): readonly string[] | undefined {
     return this._def.enum;
   }
 
@@ -101,7 +107,7 @@ export class ThingPropertyImpl implements ThingProperty {
   setValue(value: any): Promise<void> {
     const schema: JSONSchema6 = {
       type: this._def.type,
-      enum: this._def.enum,
+      enum: this._def.enum as JSONSchema6Type[],
       minimum: this._def.minimum,
       maximum: this._def.maximum,
     };
@@ -135,6 +141,7 @@ export class ThingPropertyImpl implements ThingProperty {
   toJSONLD() {
     return {
       "@index": this.id,
+      "@type": this.semanticTypes,
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
       [W3cRdfSyntaxIRIs.Type]: {
