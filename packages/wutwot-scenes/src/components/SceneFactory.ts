@@ -9,6 +9,6 @@ export const SceneFactory: Identifier<SceneFactory> = createSymbol(
   "SceneFactory",
 );
 export interface SceneFactory {
-  createScene(): Scene;
+  createScene(sceneName: string): Scene;
   restoreScene(scenePersistence: PersistedScene): Scene;
 }

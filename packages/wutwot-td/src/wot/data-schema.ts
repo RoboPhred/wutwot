@@ -146,6 +146,21 @@ export interface StringSchema extends DataSchema {
    * Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null).
    */
   type: "string";
+
+  /**
+   * Specifies the minimum length of a string. Only applicable for associated string types.
+   */
+  minLength?: number;
+
+  /**
+   * Specifies the maximum length of a string. Only applicable for associated string types.
+   */
+  maxLength?: number;
+
+  /**
+   * Provides a regular expressions to express constraints of the string value. The regular expression must follow the [ECMA-262] dialect.
+   */
+  pattern: string;
 }
 
 /**

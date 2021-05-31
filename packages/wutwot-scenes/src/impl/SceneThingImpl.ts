@@ -1,12 +1,31 @@
 import { OwnedPluginThing, ThingActionRequestUpdate } from "@wutwot/core";
-import { Observable, of as observableOf } from "rxjs";
+import { Observable, of as observableOf, Subject } from "rxjs";
+import { WutwotIRIs } from "@wutwot/td";
 
 import { Scene } from "../components";
 import { ScenePropertySetting, scenePropertySettingDataSchema } from "../types";
 import { SceneThing } from "../types/SceneThing";
 
 export class SceneThingImpl implements SceneThing {
+  private _sceneNameSubject = new Subject<string>();
+
   constructor(private _scene: Scene, private _thing: OwnedPluginThing) {
+    _thing.addProperty({
+      pluginLocalId: "scene-name",
+      title: "Name",
+      type: "string",
+      minLength: 1,
+      semanticType: [WutwotIRIs.DisplayName],
+      initialValue: _scene.sceneName,
+      values: this._sceneNameSubject,
+      onValueChangeRequested: async (value: string) => {
+        if (!value || value == "") {
+          return;
+        }
+        _scene.sceneName = value;
+      },
+    });
+
     _thing.addAction({
       pluginLocalId: "learn-trigger",
       title: "Learn Trigger",

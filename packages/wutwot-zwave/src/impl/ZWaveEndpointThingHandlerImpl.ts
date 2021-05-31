@@ -38,14 +38,12 @@ export class ZWaveEndpointThingHandlerImpl implements ZWaveThingHandler {
 
     const node = this._endpoint.getNodeUnsafe()!;
 
-    const { defaultTitle, defaultDescription } = await getTitleAndDescription(
-      this._endpoint,
-    );
+    const { title, description } = await getTitleAndDescription(this._endpoint);
 
     this._thing = this._thingsManager.addThing({
       pluginLocalId: `${node.id}-${this._endpoint.index}`,
-      defaultTitle,
-      defaultDescription,
+      title,
+      description,
       metadata: {
         [METADATA_ZWAVE_NODE]: node,
         [METADATA_ZWAVE_ENDPOINT]: this._endpoint,
@@ -59,16 +57,15 @@ export class ZWaveEndpointThingHandlerImpl implements ZWaveThingHandler {
 }
 
 interface TitleAndDescription {
-  defaultTitle: string;
-  defaultDescription: string;
+  title: string;
+  description: string;
 }
 function fillRemainingTitleDescription(
   input: Partial<TitleAndDescription>,
   fill: Partial<TitleAndDescription>,
 ) {
-  input.defaultTitle = input.defaultTitle ?? fill.defaultTitle;
-  input.defaultDescription =
-    input.defaultDescription ?? fill.defaultDescription;
+  input.title = input.title ?? fill.title;
+  input.description = input.description ?? fill.description;
 }
 
 async function getTitleAndDescription(
@@ -77,8 +74,8 @@ async function getTitleAndDescription(
   const node = endpoint.getNodeUnsafe()!;
 
   const result: Partial<TitleAndDescription> = {
-    defaultTitle: undefined,
-    defaultDescription: undefined,
+    title: undefined,
+    description: undefined,
   };
 
   const endpointNaming = await getEndpointCCNaming(endpoint);
@@ -97,27 +94,27 @@ async function getTitleAndDescription(
   const classNaming = getClassNaming(node);
   fillRemainingTitleDescription(result, classNaming);
 
-  if (!result.defaultTitle) {
-    result.defaultTitle = `Node ${node.id}-${endpoint.index}`;
+  if (!result.title) {
+    result.title = `Node ${node.id}-${endpoint.index}`;
     switch (node.status) {
       case NodeStatus.Alive:
       case NodeStatus.Awake:
         switch (node.interviewStage) {
           case InterviewStage.Complete:
-            result.defaultDescription = "Unknown Device";
+            result.description = "Unknown Device";
             break;
           default:
-            result.defaultDescription = "Device failed interview";
+            result.description = "Device failed interview";
             break;
         }
         break;
       case NodeStatus.Asleep:
-        result.defaultDescription = "Sleeping Device";
+        result.description = "Sleeping Device";
         break;
       case NodeStatus.Dead:
-        result.defaultDescription = "Dead Device";
+        result.description = "Dead Device";
       case NodeStatus.Unknown:
-        result.defaultDescription = "Unknown Device";
+        result.description = "Unknown Device";
     }
   }
 
@@ -137,8 +134,8 @@ async function getEndpointCCNaming(
   const defaultDescription = await namingAndLocation.getLocation();
 
   return {
-    defaultTitle,
-    defaultDescription,
+    title: defaultTitle,
+    description: defaultDescription,
   };
 }
 
@@ -148,8 +145,8 @@ function getConfigNaming(node: ZWaveNode): Partial<TitleAndDescription> {
   }
 
   return {
-    defaultTitle: node.deviceConfig.label,
-    defaultDescription: node.deviceConfig.description,
+    title: node.deviceConfig.label,
+    description: node.deviceConfig.description,
   };
 }
 
@@ -160,7 +157,7 @@ function getClassNaming(node: ZWaveNode): Partial<TitleAndDescription> {
   }
 
   return {
-    defaultTitle: deviceClass.specific.label,
-    defaultDescription: deviceClass.generic.label,
+    title: deviceClass.specific.label,
+    description: deviceClass.generic.label,
   };
 }

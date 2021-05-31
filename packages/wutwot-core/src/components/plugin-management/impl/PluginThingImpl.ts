@@ -45,9 +45,6 @@ export class PluginThingImpl implements OwnedPluginThing {
   get title(): string | undefined {
     return this._thing.title;
   }
-  set title(value: string | undefined) {
-    this._thing.title = value;
-  }
 
   get semanticTypes(): readonly string[] {
     return this._thing.semanticTypes;
@@ -55,9 +52,6 @@ export class PluginThingImpl implements OwnedPluginThing {
 
   get description(): string | undefined {
     return this._thing.description;
-  }
-  set description(value: string | undefined) {
-    this._thing.description = value;
   }
 
   get actions(): ReadonlyMap<string, PluginThingAction> {

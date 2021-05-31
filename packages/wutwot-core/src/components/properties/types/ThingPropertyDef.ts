@@ -20,6 +20,9 @@ export interface ThingPropertyDef extends InteractionAffordanceDef {
   minimum?: number;
   maximum?: number;
   multipleOf?: number;
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
   readOnly?: boolean;
 
   initialValue: any;

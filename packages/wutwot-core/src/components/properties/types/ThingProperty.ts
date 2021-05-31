@@ -35,6 +35,26 @@ export interface ThingProperty extends InteractionAffordance, JSONLDAble {
   readonly maximum: number | undefined;
 
   /**
+   * Specifies that the value must be a multiple of this value, if type is numeric.
+   */
+  readonly multipleOf: number | undefined;
+
+  /**
+   * The minimum length, if type is string.
+   */
+  readonly minLength: number | undefined;
+
+  /**
+   * The maximum length, if type is string.
+   */
+  readonly maxLength: number | undefined;
+
+  /**
+   * The pattern the value must match, if type is string.
+   */
+  readonly pattern: string | undefined;
+
+  /**
    * Whether the property is read ondly.
    */
   readonly readOnly: boolean;

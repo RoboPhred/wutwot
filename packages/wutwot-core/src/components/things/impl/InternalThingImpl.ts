@@ -12,6 +12,7 @@ import { W3cWotTdIRIs, DCMITermsIRIs } from "@wutwot/td";
 import { makeReadOnly, createReadonlyMapWrapper } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
 import { mapToObject } from "../../../utils/map";
+import { nonEmptyArray } from "../../../utils/types";
 
 import {
   LocalActionsManager,
@@ -30,29 +31,18 @@ import {
   ThingEvent,
   ThingEventDef,
 } from "../../thing-events";
-import { DataPersistence, DataPersistenceKey } from "../../persistence";
 import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
 
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
-import {
-  InternalThing,
-  InternalThingParams,
-  ThingLocalPersistence,
-} from "../services";
-import { nonEmptyArray } from "../../../utils/types";
-
-namespace ThingPersistenceKeys {
-  export const Name: DataPersistenceKey = ["name"];
-  export const Description: DataPersistenceKey = ["description"];
-}
+import { InternalThing, InternalThingParams } from "../services";
 
 @injectable()
 @provides(InternalThing)
 @asScope(ThingScope)
 export class InternalThingImpl implements InternalThing {
   private readonly _publicProxy: Thing;
-  private _title: string | undefined;
+  private _title: string;
   private _description: string | undefined;
   private _metadata = new Map<string | symbol, any>();
 
@@ -67,8 +57,6 @@ export class InternalThingImpl implements InternalThing {
     private _id: string,
     @injectParam(InternalThingParams.Owner)
     private _owner: object,
-    @inject(ThingLocalPersistence)
-    private _persistence: DataPersistence,
     @inject(LocalSemanticTypesManager)
     private _typesManager: LocalSemanticTypesManager,
     @inject(LocalActionsManager)
@@ -80,14 +68,8 @@ export class InternalThingImpl implements InternalThing {
   ) {
     metadataObjectToMap(def.metadata || {}, this._metadata);
 
-    this._title = this._persistence.get(
-      ThingPersistenceKeys.Name,
-      def.defaultTitle,
-    );
-    this._description = this._persistence.get(
-      ThingPersistenceKeys.Description,
-      def.defaultDescription,
-    );
+    this._title = def.title;
+    this._description = def.description;
 
     // Create masks of the managers to prevent
     //  tampering with internal properties.
@@ -125,22 +107,13 @@ export class InternalThingImpl implements InternalThing {
   get title(): string | undefined {
     return this._title;
   }
-  set title(value: string | undefined) {
-    this._title = value;
-    this._persistence.set(ThingPersistenceKeys.Name, value);
-  }
 
   get semanticTypes(): ReadonlyArray<string> {
-    // TODO: Get read only view of live data.
     return makeReadOnly(this._typesManager.getTypes());
   }
 
   get description(): string | undefined {
     return this._description;
-  }
-  set description(value: string | undefined) {
-    this._description = value;
-    this._persistence.set(ThingPersistenceKeys.Description, value);
   }
 
   get actions(): ReadonlyMap<string, InternalAction> {
@@ -248,9 +221,6 @@ function createPublicThingApi(thing: InternalThing) {
     get title(): string | undefined {
       return thing.title;
     }
-    set title(value: string | undefined) {
-      thing.title = value;
-    }
 
     get semanticTypes(): readonly string[] {
       return thing.semanticTypes;
@@ -258,9 +228,6 @@ function createPublicThingApi(thing: InternalThing) {
 
     get description(): string | undefined {
       return thing.description;
-    }
-    set description(value: string | undefined) {
-      thing.description = value;
     }
 
     get actions(): ReadonlyMap<string, ThingAction> {

@@ -23,7 +23,7 @@ export interface Thing extends MetadataProvider, JSONAble, JSONLDAble {
   /**
    * The name of the thing.
    */
-  title: string | undefined;
+  readonly title: string | undefined;
 
   /**
    * An array of semantic types describing the thing
@@ -33,7 +33,7 @@ export interface Thing extends MetadataProvider, JSONAble, JSONLDAble {
   /**
    * The description of the thing.
    */
-  description: string | undefined;
+  readonly description: string | undefined;
 
   /**
    * The actions this thing supports.

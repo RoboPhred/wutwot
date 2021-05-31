@@ -61,6 +61,21 @@ export namespace W3cWotJsonSchemaIRIs {
   export const Minimum = "https://www.w3.org/2019/wot/json-schema#minimum";
 
   /**
+   * {@link https://www.w3.org/2019/wot/json-schema#maxLength}
+   */
+  export const MaxLength = "https://www.w3.org/2019/wot/json-schema#maxLength";
+
+  /**
+   * {@link https://www.w3.org/2019/wot/json-schema#minLength}
+   */
+  export const MinLength = "https://www.w3.org/2019/wot/json-schema#minLength";
+
+  /**
+   * {@link https://www.w3.org/2019/wot/json-schema#pattern}
+   */
+  export const Pattern = "https://www.w3.org/2019/wot/json-schema#pattern";
+
+  /**
    * {@link https://www.w3.org/2019/wot/json-schema#enum}
    */
   export const Enum = "https://www.w3.org/2019/wot/json-schema#enum";

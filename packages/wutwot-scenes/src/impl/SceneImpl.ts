@@ -10,7 +10,6 @@ import { isEqual, cloneDeep } from "lodash";
 
 import { SceneParams, Scene, ScenePersistenceManager } from "../components";
 import { SceneTrigger, ScenePropertySetting, PersistedScene } from "../types";
-import { setFlagsFromString } from "v8";
 
 @injectable()
 @provides(Scene)
@@ -24,6 +23,8 @@ export class SceneImpl implements Scene {
   constructor(
     @injectParam(SceneParams.SceneId)
     private _sceneId: string,
+    @injectParam(SceneParams.SceneName)
+    private _sceneName: string,
     @injectParam(SceneParams.ScenePersistedData, { optional: true })
     persistedData: PersistedScene | null,
     @inject(EventEventSource)
@@ -34,6 +35,7 @@ export class SceneImpl implements Scene {
     private _persistence: ScenePersistenceManager,
   ) {
     if (persistedData) {
+      this._sceneName = persistedData.sceneName;
       this._triggers = cloneDeep(persistedData.triggers);
       this._propertySettings = cloneDeep(persistedData.propertySettings);
     } else {
@@ -45,6 +47,15 @@ export class SceneImpl implements Scene {
 
   get sceneId(): string {
     return this._sceneId;
+  }
+
+  get sceneName(): string {
+    return this._sceneName;
+  }
+
+  set sceneName(value: string) {
+    this._sceneName = value;
+    this._persist();
   }
 
   trigger(): void {
@@ -96,6 +107,7 @@ export class SceneImpl implements Scene {
   private _toPersistedScene(): PersistedScene {
     return {
       sceneId: this._sceneId,
+      sceneName: this._sceneName,
       triggers: cloneDeep(this._triggers),
       propertySettings: cloneDeep(this._propertySettings),
     };

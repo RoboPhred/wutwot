@@ -96,6 +96,21 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._def.multipleOf;
   }
 
+  get minLength(): number | undefined {
+    return this._def.minLength;
+  }
+
+  get maxLength(): number | undefined {
+    return this._def.maxLength;
+  }
+
+  /**
+   * The pattern the value must match, if type is string.
+   */
+  get pattern(): string | undefined {
+    return this._def.pattern;
+  }
+
   get readOnly(): boolean {
     return this._def.readOnly || false;
   }
@@ -133,6 +148,10 @@ export class ThingPropertyImpl implements ThingProperty {
       enum: this.enum ? [...this.enum] : undefined,
       minimum: this.minimum,
       maximum: this.maximum,
+      multipleOf: this.multipleOf,
+      minLength: this.minLength,
+      maxLength: this.maxLength,
+      pattern: this.pattern,
       readOnly: this.readOnly,
       value: this.value,
     };
@@ -151,6 +170,9 @@ export class ThingPropertyImpl implements ThingProperty {
       [W3cWotJsonSchemaIRIs.Enum]: this.enum ? [...this.enum] : undefined,
       [W3cWotJsonSchemaIRIs.Minimum]: this.minimum,
       [W3cWotJsonSchemaIRIs.Maximum]: this.maximum,
+      [W3cWotJsonSchemaIRIs.MinLength]: this.minLength,
+      [W3cWotJsonSchemaIRIs.MaxLength]: this.maxLength,
+      [W3cWotJsonSchemaIRIs.Pattern]: this.pattern,
       [W3cWotJsonSchemaIRIs.ReadOnly]: this.readOnly,
     };
   }

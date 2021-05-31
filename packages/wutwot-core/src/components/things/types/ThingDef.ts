@@ -18,14 +18,14 @@ export interface ThingDef {
   readonly pluginLocalId: string;
 
   /**
-   * The default title to give this thing, if none is provided by the user.
+   * The title of the thing.
    */
-  readonly defaultTitle?: string;
+  readonly title: string;
 
   /**
-   * The default description to give this thing, if none is provided by the user.
+   * The description of the thing.
    */
-  readonly defaultDescription?: string;
+  readonly description?: string;
 
   /**
    * Additional metadata to make available on this thing.

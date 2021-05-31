@@ -9,6 +9,7 @@ import {
   Scene,
 } from "../components";
 import { SceneThing } from "../types/SceneThing";
+
 import { SceneThingImpl } from "./SceneThingImpl";
 
 @injectable()
@@ -54,8 +55,8 @@ export class SceneThingsAdapterImpl
   private _createSceneThing(scene: Scene): SceneThing {
     const thing = this._pluginThingsManager.addThing({
       pluginLocalId: `scene-${scene.sceneId}`,
-      defaultTitle: "New Scene",
-      defaultDescription: "Scene",
+      title: scene.sceneName,
+      description: "Scene",
     });
 
     const sceneThing = new SceneThingImpl(scene, thing);

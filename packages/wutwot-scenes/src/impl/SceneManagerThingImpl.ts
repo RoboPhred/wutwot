@@ -14,6 +14,10 @@ import {
 } from "../components";
 import { SceneThing } from "../types";
 
+interface AddSceneActionPayload {
+  sceneName: string;
+}
+
 @injectable()
 @singleton()
 @provides(SceneManagerThing)
@@ -34,7 +38,7 @@ export class SceneManagerThingImpl implements Initializable {
     const thing = this._thingsManager
       .addThing({
         pluginLocalId: "manager",
-        defaultTitle: "Scene Manager",
+        title: "Scene Manager",
       })
       // TODO: Add semantic context
       .addSemanticType("Management");
@@ -42,18 +46,36 @@ export class SceneManagerThingImpl implements Initializable {
     thing.addAction({
       pluginLocalId: "add-scene",
       title: "Create New Scene",
+      input: {
+        type: "object",
+        properties: {
+          sceneName: {
+            title: "Scene Name",
+            type: "string",
+            minLength: 1,
+          },
+        },
+      },
       output: {
         type: "string",
       } as const,
-      onActionInvocationRequested: () => {
-        const { thing } = this._onCreateSceneThing();
+      onActionInvocationRequested: (
+        thingId,
+        actionId,
+        input: AddSceneActionPayload,
+      ) => {
+        if (!input.sceneName || input.sceneName === "") {
+          return observableOf(ThingActionRequestUpdate.error());
+        }
+
+        const { thing } = this._onCreateSceneThing(input.sceneName);
         return observableOf(ThingActionRequestUpdate.completed(thing.id));
       },
     });
   }
 
-  private _onCreateSceneThing(): SceneThing {
-    const scene = this._sceneFactory.createScene();
+  private _onCreateSceneThing(sceneName: string): SceneThing {
+    const scene = this._sceneFactory.createScene(sceneName);
     this._sceneRepository.addScene(scene);
     return this._sceneThingsAdapter.getThingForScene(scene);
   }
