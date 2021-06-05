@@ -2,11 +2,12 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { Thing } from "../types";
 import { ThingPropertyDef, ThingProperty } from "../../properties";
 import { ThingEventDef, ThingEvent } from "../../thing-events";
 import { ThingActionDef, InternalAction } from "../../actions";
-import { ReadonlyRecord } from "../../../types";
+import { DataPersistence } from "../../persistence";
+
+import { Thing } from "../types";
 
 /**
  * @internal
@@ -17,13 +18,22 @@ export namespace InternalThingParams {
   export const Owner = "thingOwner";
 }
 
+/**
+ * @internal
+ */
 export const InternalThing: Identifier<InternalThing> = createSymbol(
   "InternalThing",
 );
+
+/**
+ * @internal
+ */
 export interface InternalThing extends Thing {
   readonly publicProxy: Thing;
 
   readonly actions: ReadonlyMap<string, InternalAction>;
+
+  readonly persistence: DataPersistence;
 
   addSemanticType(type: string): void;
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty;

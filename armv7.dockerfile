@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM --platform=linux/arm/v7 node:14 as builder
 
 WORKDIR /usr/src/app
 

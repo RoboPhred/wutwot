@@ -1,7 +1,7 @@
 {
-  "name": "@wutwot/scenes",
+  "name": "@wutwot/model",
   "version": "1.0.0",
-  "description": "Scene support for wutwot Things",
+  "description": "Support for modeling graphs of things in wutwot.",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
@@ -33,8 +33,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "rxjs": "^6.5.5",
-    "uuid": "^7.0.3"
+    "rxjs": "^6.5.5"
   },
   "peerDependencies": {
     "@wutwot/core": "^1.0.0",

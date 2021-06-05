@@ -5,6 +5,7 @@ import { ThingActionDef, InternalAction } from "../../actions";
 import { ThingProperty, ThingPropertyDef } from "../../properties";
 import { ThingEvent, ThingEventDef } from "../../thing-events";
 import { MetadataIdentifier } from "../../metadata";
+import { DataPersistence } from "../../persistence";
 
 import {
   OwnedPluginThing,
@@ -14,6 +15,7 @@ import {
 } from "../types";
 
 import { PluginThingActionImpl } from "./PluginThingActionImpl";
+import { PluginLocalThingDataPersistence } from "./PluginLocalThingDataPersistence";
 
 export class PluginThingImpl implements OwnedPluginThing {
   private _pluginActionsById: ReadonlyMap<string, PluginThingAction>;
@@ -21,6 +23,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     InternalAction,
     PluginThingAction
   >();
+  private _pluginLocalPersistence: DataPersistence | null = null;
 
   constructor(
     private _thing: InternalThing,
@@ -77,6 +80,17 @@ export class PluginThingImpl implements OwnedPluginThing {
   addSemanticType(type: string): OwnedPluginThing {
     this._thing.addSemanticType(type);
     return this;
+  }
+
+  getPluginLocalPersistence(): DataPersistence {
+    if (!this._pluginLocalPersistence) {
+      this._pluginLocalPersistence = new PluginLocalThingDataPersistence(
+        this._thing.persistence,
+        this._pluginAdapter.pluginId,
+      );
+    }
+
+    return this._pluginLocalPersistence;
   }
 
   delete(): void {

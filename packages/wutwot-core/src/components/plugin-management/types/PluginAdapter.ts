@@ -3,6 +3,11 @@
  */
 export interface PluginAdapter {
   /**
+   * The ID of the plugin managed by this adapter.
+   */
+  readonly pluginId: string;
+
+  /**
    * The plugin instance managed by this adapter.
    */
   readonly plugin: object;

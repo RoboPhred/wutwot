@@ -2,13 +2,20 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { ThingDef, Thing } from "../types";
+import { ThingDef } from "../types";
 
 import { InternalThing } from "./InternalThing";
 
+/**
+ * @internal
+ */
 export const ThingsManager: Identifier<ThingsManager> = createSymbol(
   "ThingsManager",
 );
+
+/**
+ * @internal
+ */
 export interface ThingsManager extends ReadonlyMap<string, InternalThing> {
   /**
    * Creates a new thing and adds it to the thing list.

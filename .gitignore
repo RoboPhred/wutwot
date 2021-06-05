@@ -3,3 +3,4 @@ lib/
 dist/
 dts/
 /.vscode
+/pi.docker-compose.yml

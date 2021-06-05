@@ -32,10 +32,12 @@ import {
   ThingEventDef,
 } from "../../thing-events";
 import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
+import { DataPersistence } from "../../persistence";
 
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
 import { InternalThing, InternalThingParams } from "../services";
+import { ThingLocalPersistence } from "../components";
 
 @injectable()
 @provides(InternalThing)
@@ -57,6 +59,8 @@ export class InternalThingImpl implements InternalThing {
     private _id: string,
     @injectParam(InternalThingParams.Owner)
     private _owner: object,
+    @inject(ThingLocalPersistence)
+    private _persistence: DataPersistence,
     @inject(LocalSemanticTypesManager)
     private _typesManager: LocalSemanticTypesManager,
     @inject(LocalActionsManager)
@@ -126,6 +130,10 @@ export class InternalThingImpl implements InternalThing {
 
   get events(): ReadonlyMap<string, ThingEvent> {
     return this._events;
+  }
+
+  get persistence(): DataPersistence {
+    return this._persistence;
   }
 
   addSemanticType(type: string): void {

@@ -1,9 +1,8 @@
-import { ReadonlyRecord } from "../../../types";
-
 import { Thing } from "../../things";
 import { ThingActionDef } from "../../actions";
 import { ThingPropertyDef, ThingProperty } from "../../properties";
 import { ThingEventDef, ThingEvent } from "../../thing-events";
+import { DataPersistence } from "../../persistence";
 
 import { OwnedPluginThingAction, PluginThingAction } from "./PluginAction";
 
@@ -49,6 +48,11 @@ export interface PluginThing extends Thing {
    * @param def The definition of the event to add.
    */
   addEvent(def: ThingEventDef): ThingEvent;
+
+  /**
+   * Gets a persistence object for storing information related to the current plugin on the thing.
+   */
+  getPluginLocalPersistence(): DataPersistence;
 
   /**
    * Gets the public API representation of this Thing.

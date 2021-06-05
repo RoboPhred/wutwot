@@ -67,6 +67,10 @@ export class PluginAdapterImpl implements PluginAdapter {
     }
   }
 
+  get pluginId() {
+    return this._plugin.id;
+  }
+
   get plugin() {
     return this._plugin;
   }

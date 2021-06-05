@@ -6,6 +6,8 @@
     "build:binding-express": "cd packages/wutwot-binding-express && npm run build",
     "clean:core": "cd packages/wutwot-core && npm run clean",
     "build:core": "cd packages/wutwot-core && npm run build",
+    "clean:model": "cd packages/wutwot-model && npm run clean",
+    "build:model": "cd packages/wutwot-model && npm run build",
     "clean:scenes": "cd packages/wutwot-scenes && npm run clean",
     "build:scenes": "cd packages/wutwot-scenes && npm run build",
     "clean:servient-express": "cd packages/wutwot-servient-express && npm run clean",
