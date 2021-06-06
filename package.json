@@ -30,7 +30,8 @@
     "clean": "npm-run-all -p clean:prereqs clean:plugins",
     "build": "npm-run-all build:prereqs build:plugins",
     "__development": "exit 1",
-    "start": "cd packages/wutwot-server && npm run start"
+    "start": "cd packages/wutwot-server && npm run start",
+    "start:client": "cd packages/wutwot-explorer && npm run start -- --port=6060"
   },
   "workspaces": [
     "./packages/*"
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@types/react": "^17.0.8",
     "@types/react-dom": "^17.0.5",
+    "cross-env": "^7.0.3",
     "npm-run-all": "^4.1.5"
   }
 }

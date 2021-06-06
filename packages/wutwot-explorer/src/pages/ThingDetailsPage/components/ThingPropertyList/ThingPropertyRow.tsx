@@ -50,10 +50,13 @@ const ThingPropertyRow: React.FC<ThingPropertyRowProps> = ({
   const definition = useAppSelector((state) =>
     thingDefinitionSelector(state, thingDisplayId),
   );
-  const { value, refresh, setValue, errorMessage } = useThingPropertyValue(
-    thingDisplayId,
-    propertyKey,
-  );
+  const {
+    value,
+    isWritable,
+    refresh,
+    setValue,
+    errorMessage,
+  } = useThingPropertyValue(thingDisplayId, propertyKey);
 
   const onSubmitValue = React.useCallback(
     (value: any) => {
@@ -95,15 +98,19 @@ const ThingPropertyRow: React.FC<ThingPropertyRowProps> = ({
         <IconButton onClick={refresh}>
           <RefreshIcon />
         </IconButton>
-        <IconButton onClick={onOpenWriteDialog}>
-          <EditIcon />
-        </IconButton>
-        <Dialog open={isWriteDialogOpen} onClose={onCloseWriteDialog}>
-          <DialogTitle>Set Value</DialogTitle>
-          <DialogContent>
-            <DataSchemaEditor schema={property} onSubmit={onSubmitValue} />
-          </DialogContent>
-        </Dialog>
+        {isWritable && (
+          <>
+            <IconButton onClick={onOpenWriteDialog}>
+              <EditIcon />
+            </IconButton>
+            <Dialog open={isWriteDialogOpen} onClose={onCloseWriteDialog}>
+              <DialogTitle>Set Value</DialogTitle>
+              <DialogContent>
+                <DataSchemaEditor schema={property} onSubmit={onSubmitValue} />
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
       </TableCell>
     </TableRow>
   );

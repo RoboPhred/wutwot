@@ -1,4 +1,4 @@
-import { inject, injectable } from "microinject";
+import { inject, injectable, provides } from "microinject";
 import {
   Initializable,
   PluginThingsManager,
@@ -10,6 +10,7 @@ import { ThingModelPersistence } from "./ThingModelPersistence";
 
 // TODO: This sort if thing is a common use case.  Provide a core implementation of this that auto collects properties to add to every thing.
 @injectable()
+@provides(Initializable)
 export class PropertyApplicatorImpl implements Initializable {
   constructor(
     @inject(ThingEventSource) thingEvents: ThingEventSource,
@@ -39,17 +40,19 @@ export class PropertyApplicatorImpl implements Initializable {
 
     pluginThing.addProperty({
       pluginLocalId: "name",
+      title: "Name",
       type: "string",
       minLength: 0,
       maxLength: 255,
       initialValue: persistence.getName(),
-      description: "The name of this device.",
+      description: "The name of this thing.",
       values: nameSubject,
       onValueChangeRequested: async (
         thingId: string,
         propertyId: string,
         value: string,
       ) => {
+        console.log(`Setting name of ${thingId} to ${value}`);
         persistence.setName(value);
         nameSubject.next(value);
       },
@@ -57,11 +60,12 @@ export class PropertyApplicatorImpl implements Initializable {
 
     pluginThing.addProperty({
       pluginLocalId: "location",
+      title: "Location",
       type: "string",
       minLength: 0,
       maxLength: 255,
       initialValue: persistence.getLocation(),
-      description: "The location of this device.",
+      description: "The location of this thing.",
       values: locationSubject,
       onValueChangeRequested: async (
         thingId: string,

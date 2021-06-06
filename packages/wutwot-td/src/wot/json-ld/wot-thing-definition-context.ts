@@ -8,6 +8,7 @@ export default {
   xsd: "http://www.w3.org/2001/XMLSchema#",
   dct: "http://purl.org/dc/terms/",
   htv: "http://www.w3.org/2011/http#",
+  tm: "https://www.w3.org/2019/wot/tm#",
   "@vocab": "https://www.w3.org/2019/wot/td#",
   license: {
     "@id": "http://purl.org/dc/terms/license",
@@ -17,6 +18,7 @@ export default {
     "@id": "td:hasPropertyAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "propertyName",
     "@context": {
       td: "https://www.w3.org/2019/wot/td#",
       jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -29,6 +31,7 @@ export default {
       DataSchema: {
         "@id": "jsonschema:DataSchema",
       },
+      propertyName: "jsonschema:propertyName",
       readOnly: {
         "@id": "jsonschema:readOnly",
         "@type": "xsd:boolean",
@@ -36,6 +39,12 @@ export default {
       writeOnly: {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
+      },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
       },
       maximum: {
         "@id": "jsonschema:maximum",
@@ -53,7 +62,7 @@ export default {
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:unsignedInt",
+        "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
@@ -62,6 +71,10 @@ export default {
       maxLength: {
         "@id": "jsonschema:maxLength",
         "@type": "xsd:unsignedInt",
+      },
+      pattern: {
+        "@id": "jsonschema:pattern",
+        "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
@@ -82,6 +95,9 @@ export default {
       },
       const: {
         "@id": "jsonschema:const",
+      },
+      default: {
+        "@id": "jsonschema:default",
       },
       multipleOf: {
         "@id": "jsonschema:multipleOf",
@@ -129,9 +145,8 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "jsonschema:propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -227,10 +242,20 @@ export default {
       public: "wotsec:PublicSecurityScheme",
       pop: "wotsec:PoPSecurityScheme",
       oauth2: "wotsec:OAuth2SecurityScheme",
+      uriVariables: "td:uriVariables",
     },
+  },
+  schema: {
+    "@id": "hctl:hasAdditionalOutputSchema",
+    "@type": "@id",
   },
   securityDefinitions: {
     "@id": "td:securityDefinitions",
+    "@type": "@id",
+    "@container": "@index",
+  },
+  schemaDefinitions: {
+    "@id": "td:schemaDefinitions",
     "@type": "@id",
     "@container": "@index",
   },
@@ -242,6 +267,9 @@ export default {
   },
   name: {
     "@id": "td:name",
+  },
+  profile: {
+    "@id": "td:followsProfile",
   },
   created: {
     "@id": "dct:created",
@@ -294,7 +322,9 @@ export default {
       readproperty: "td:readProperty",
       writeproperty: "td:writeProperty",
       observeproperty: "td:observeProperty",
+      observeallproperties: "td:observeAllProperties",
       unobserveproperty: "td:unobserveProperty",
+      unobserveallproperties: "td:unobserveAllProperties",
       invokeaction: "td:invokeAction",
       subscribeevent: "td:subscribeEvent",
       unsubscribeevent: "td:unsubscribeEvent",
@@ -318,6 +348,10 @@ export default {
         "@id": "hctl:hasAnchor",
         "@type": "@id",
       },
+      sizes: {
+        "@id": "hctl:hasSizes",
+        "@type": "@id",
+      },
       href: {
         "@id": "hctl:hasTarget",
         "@type": "@id",
@@ -332,6 +366,16 @@ export default {
       },
       response: {
         "@id": "hctl:returns",
+      },
+      additionalResponses: {
+        "@id": "hctl:additionalReturns",
+      },
+      schema: {
+        "@id": "hctl:hasAdditionalOutputSchema",
+        "@type": "@id",
+      },
+      success: {
+        "@id": "hctl:isSuccess",
       },
     },
   },
@@ -372,7 +416,9 @@ export default {
       readproperty: "td:readProperty",
       writeproperty: "td:writeProperty",
       observeproperty: "td:observeProperty",
+      observeallproperties: "td:observeAllProperties",
       unobserveproperty: "td:unobserveProperty",
+      unobserveallproperties: "td:unobserveAllProperties",
       invokeaction: "td:invokeAction",
       subscribeevent: "td:subscribeEvent",
       unsubscribeevent: "td:unsubscribeEvent",
@@ -396,6 +442,10 @@ export default {
         "@id": "hctl:hasAnchor",
         "@type": "@id",
       },
+      sizes: {
+        "@id": "hctl:hasSizes",
+        "@type": "@id",
+      },
       href: {
         "@id": "hctl:hasTarget",
         "@type": "@id",
@@ -411,6 +461,16 @@ export default {
       response: {
         "@id": "hctl:returns",
       },
+      additionalResponses: {
+        "@id": "hctl:additionalReturns",
+      },
+      schema: {
+        "@id": "hctl:hasAdditionalOutputSchema",
+        "@type": "@id",
+      },
+      success: {
+        "@id": "hctl:isSuccess",
+      },
     },
   },
   uriVariables: {
@@ -425,6 +485,9 @@ export default {
   },
   instance: {
     "@id": "td:instance",
+  },
+  model: {
+    "@id": "td:model",
   },
   InteractionAffordance: {
     "@id": "td:InteractionAffordance",
@@ -455,6 +518,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -471,7 +540,7 @@ export default {
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:unsignedInt",
+        "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
@@ -480,6 +549,10 @@ export default {
       maxLength: {
         "@id": "jsonschema:maxLength",
         "@type": "xsd:unsignedInt",
+      },
+      pattern: {
+        "@id": "jsonschema:pattern",
+        "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
@@ -500,6 +573,9 @@ export default {
       },
       const: {
         "@id": "jsonschema:const",
+      },
+      default: {
+        "@id": "jsonschema:default",
       },
       multipleOf: {
         "@id": "jsonschema:multipleOf",
@@ -547,9 +623,8 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "jsonschema:propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -579,6 +654,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -595,7 +676,7 @@ export default {
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:unsignedInt",
+        "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
@@ -604,6 +685,10 @@ export default {
       maxLength: {
         "@id": "jsonschema:maxLength",
         "@type": "xsd:unsignedInt",
+      },
+      pattern: {
+        "@id": "jsonschema:pattern",
+        "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
@@ -624,6 +709,9 @@ export default {
       },
       const: {
         "@id": "jsonschema:const",
+      },
+      default: {
+        "@id": "jsonschema:default",
       },
       multipleOf: {
         "@id": "jsonschema:multipleOf",
@@ -671,9 +759,8 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "jsonschema:propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -703,6 +790,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -719,7 +812,7 @@ export default {
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:unsignedInt",
+        "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
@@ -728,6 +821,10 @@ export default {
       maxLength: {
         "@id": "jsonschema:maxLength",
         "@type": "xsd:unsignedInt",
+      },
+      pattern: {
+        "@id": "jsonschema:pattern",
+        "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
@@ -748,6 +845,9 @@ export default {
       },
       const: {
         "@id": "jsonschema:const",
+      },
+      default: {
+        "@id": "jsonschema:default",
       },
       multipleOf: {
         "@id": "jsonschema:multipleOf",
@@ -795,9 +895,8 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "jsonschema:propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -827,6 +926,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -843,7 +948,7 @@ export default {
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:unsignedInt",
+        "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
@@ -852,6 +957,10 @@ export default {
       maxLength: {
         "@id": "jsonschema:maxLength",
         "@type": "xsd:unsignedInt",
+      },
+      pattern: {
+        "@id": "jsonschema:pattern",
+        "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
@@ -872,6 +981,9 @@ export default {
       },
       const: {
         "@id": "jsonschema:const",
+      },
+      default: {
+        "@id": "jsonschema:default",
       },
       multipleOf: {
         "@id": "jsonschema:multipleOf",
@@ -919,9 +1031,8 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "jsonschema:propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -951,6 +1062,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -967,7 +1084,7 @@ export default {
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:unsignedInt",
+        "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
@@ -976,6 +1093,10 @@ export default {
       maxLength: {
         "@id": "jsonschema:maxLength",
         "@type": "xsd:unsignedInt",
+      },
+      pattern: {
+        "@id": "jsonschema:pattern",
+        "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
@@ -996,6 +1117,9 @@ export default {
       },
       const: {
         "@id": "jsonschema:const",
+      },
+      default: {
+        "@id": "jsonschema:default",
       },
       multipleOf: {
         "@id": "jsonschema:multipleOf",
@@ -1043,9 +1167,8 @@ export default {
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "jsonschema:propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -1068,6 +1191,9 @@ export default {
   },
   support: {
     "@id": "td:supportContact",
+  },
+  base: {
+    "@id": "td:baseURI",
   },
   "@version": 1.1,
 };

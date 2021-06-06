@@ -10,6 +10,7 @@ import { useIntervalAsync } from "@/hooks/useIntervalAsync";
 
 export interface UsePropertyValue {
   refresh(): void;
+  isWritable: boolean;
   setValue(value: any): void;
   isRefreshing: boolean;
   value: any;
@@ -43,6 +44,9 @@ export function useThingPropertyValue(
     definition: null,
     sourceId: null,
   };
+
+  const propertyAffordance =
+    (thingDefinition.properties || {})[propertyKey] ?? null;
 
   // The url the thing was sourced from.
   //  Needed as a fallback if the thing does not specify a base url.
@@ -172,6 +176,7 @@ export function useThingPropertyValue(
 
   return {
     refresh,
+    isWritable: propertyAffordance?.readOnly ?? true,
     setValue,
     isRefreshing: isReading || isWriting,
     value,
