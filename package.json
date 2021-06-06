@@ -2,24 +2,34 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "clean:binding-express": "cd packages/wutwot-binding-express && npm run clean",
-    "build:binding-express": "cd packages/wutwot-binding-express && npm run build",
+    "__core": "exit 1",
+    "clean:td": "cd packages/wutwot-td && npm run clean",
+    "build:td": "cd packages/wutwot-td && npm run build",
     "clean:core": "cd packages/wutwot-core && npm run clean",
     "build:core": "cd packages/wutwot-core && npm run build",
+    "__servients": "exit 1",
+    "clean:binding-express": "cd packages/wutwot-binding-express && npm run clean",
+    "build:binding-express": "cd packages/wutwot-binding-express && npm run build",
+    "clean:servient-express": "cd packages/wutwot-servient-express && npm run clean",
+    "build:servient-express": "cd packages/wutwot-servient-express && npm run build",
+    "__plugins": "exit 1",
     "clean:model": "cd packages/wutwot-model && npm run clean",
     "build:model": "cd packages/wutwot-model && npm run build",
     "clean:scenes": "cd packages/wutwot-scenes && npm run clean",
     "build:scenes": "cd packages/wutwot-scenes && npm run build",
-    "clean:servient-express": "cd packages/wutwot-servient-express && npm run clean",
-    "build:servient-express": "cd packages/wutwot-servient-express && npm run build",
-    "clean:td": "cd packages/wutwot-td && npm run clean",
-    "build:td": "cd packages/wutwot-td && npm run build",
     "clean:zwave": "cd packages/wutwot-zwave && npm run clean",
     "build:zwave": "cd packages/wutwot-zwave && npm run build",
+    "__server": "exit 1",
     "clean:server": "cd packages/wutwot-server && npm run clean",
     "build:server": "cd packages/wutwot-server && npm run build",
-    "clean": "npm run clean:binding-express && npm run clean:core && npm run clean:scenes && npm run clean:servient-express && npm run clean:td && npm run clean:zwave",
-    "build": "npm run build:td && npm run build:core && npm run build:zwave && npm run build:scenes && npm run build:servient-express && npm run build:binding-express && npm run build:server",
+    "__macros": "exit 1",
+    "clean:prereqs": "npm-run-all -p clean:td clean:core",
+    "build:prereqs": "npm-run-all build:td build:core",
+    "clean:plugins": "npm-run-all -p clean:model clean:scenes clean:zwave",
+    "build:plugins": "npm-run-all -p build:model build:scenes build:zwave",
+    "clean": "npm-run-all -p clean:prereqs clean:plugins",
+    "build": "npm-run-all build:prereqs build:plugins",
+    "__development": "exit 1",
     "start": "cd packages/wutwot-server && npm run start"
   },
   "workspaces": [
@@ -47,6 +57,7 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.8",
-    "@types/react-dom": "^17.0.5"
+    "@types/react-dom": "^17.0.5",
+    "npm-run-all": "^4.1.5"
   }
 }
