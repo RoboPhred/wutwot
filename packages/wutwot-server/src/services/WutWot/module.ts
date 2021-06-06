@@ -2,19 +2,25 @@ import { ContainerModule } from "microinject";
 import { WutWot } from "@wutwot/core";
 
 import { ExpressServientPlugin } from "@wutwot/servient-express";
-import { ExpressBindingPlugin } from "@wutwot/binding-express";
 
 import { Hostname, Port } from "../../config";
 
 import { Endpoint } from "../Endpoint";
 
-import { WutWotPlugin } from "./identifiers";
+import { WutWotPluginEnumeratorImpl } from "./impl/WutWotPluginEnumerator";
+import { WutWotPluginEnumerator } from "./identifiers";
 
 export default new ContainerModule((bind) => {
+  bind(WutWotPluginEnumeratorImpl);
   bind(WutWot)
     .toFactory((context) => {
-      const plugins = context.getAll(WutWotPlugin);
+      const pluginEnumerator = context.get(WutWotPluginEnumerator);
 
+      const plugins = pluginEnumerator.plugins;
+
+      // FIXME: This should be a plugin!
+      // Its currently not as it needs a live endpoint instance.
+      // Make the express provider into a plugin, and make ExpressServientPlugin rely on it.
       const endpoint = context.get(Endpoint);
       const hostname = context.get(Hostname);
       const port = context.get(Port);
@@ -23,7 +29,6 @@ export default new ContainerModule((bind) => {
           router: endpoint.router,
           rootUrl: `http://${hostname}:${port}`,
         }),
-        new ExpressBindingPlugin(),
       );
 
       return new WutWot(plugins);

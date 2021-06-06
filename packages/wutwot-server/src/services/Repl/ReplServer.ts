@@ -1,15 +1,13 @@
 import repl from "repl";
 import { WutWot } from "@wutwot/core";
-import {
-  ZWavePlugin,
-  METADATA_ZWAVE_NODE,
-  METADATA_ZWAVE_ENDPOINT,
-} from "@wutwot/zwave";
+import { METADATA_ZWAVE_NODE, METADATA_ZWAVE_ENDPOINT } from "@wutwot/zwave";
 import { injectable, inject } from "microinject";
 
 import { Entrypoint } from "../../contracts";
 
 import { App } from "../../App";
+
+import { WutWotPluginEnumerator } from "../WutWot";
 
 @injectable(Entrypoint)
 export class ReplServer implements Entrypoint {
@@ -18,7 +16,8 @@ export class ReplServer implements Entrypoint {
   constructor(
     @inject(App) private _app: App,
     @inject(WutWot) private _wutwot: WutWot,
-    @inject(ZWavePlugin) private _zwave: ZWavePlugin,
+    @inject(WutWotPluginEnumerator)
+    private _wutwotPluginEnumerator: WutWotPluginEnumerator,
   ) {}
 
   start() {
@@ -35,9 +34,12 @@ export class ReplServer implements Entrypoint {
     });
     const reset = (context: any) => {
       context.wutwot = this._wutwot;
-      context.zwave = this._zwave;
       context.zwaveNodeMetadata = METADATA_ZWAVE_NODE;
       context.zwaveEndpointMetadata = METADATA_ZWAVE_ENDPOINT;
+
+      for (var plugin of this._wutwotPluginEnumerator.plugins) {
+        context[plugin.id] = plugin;
+      }
     };
     reset(this._replServer.context);
     this._replServer.on("exit", async () => {
