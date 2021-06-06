@@ -29,6 +29,7 @@
     "@wutwot/scenes": "^1.0.0",
     "@wutwot/servient-express": "^1.0.0",
     "@wutwot/zwave": "^1.0.0",
+    "@wutwot/model": "^1.0.0",
     "ajv": "^6.10.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
