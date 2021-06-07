@@ -15,7 +15,6 @@ export class SceneThingImpl implements SceneThing {
       title: "Name",
       type: "string",
       minLength: 1,
-      semanticType: [WutwotIRIs.DisplayName],
       initialValue: _scene.sceneName,
       values: this._sceneNameSubject,
       onValueChangeRequested: async (value: string) => {
