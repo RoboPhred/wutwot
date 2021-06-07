@@ -5,4 +5,3 @@ export * from "./http";
 export * from "./rdf";
 export * from "./schema-org";
 export * from "./types";
-export * from "./wutwot";

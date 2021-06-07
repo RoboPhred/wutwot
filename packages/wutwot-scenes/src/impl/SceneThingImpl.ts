@@ -1,6 +1,5 @@
 import { OwnedPluginThing, ThingActionRequestUpdate } from "@wutwot/core";
 import { Observable, of as observableOf, Subject } from "rxjs";
-import { WutwotIRIs } from "@wutwot/td";
 
 import { Scene } from "../components";
 import { ScenePropertySetting, scenePropertySettingDataSchema } from "../types";
@@ -15,7 +14,6 @@ export class SceneThingImpl implements SceneThing {
       title: "Name",
       type: "string",
       minLength: 1,
-      semanticType: [WutwotIRIs.DisplayName],
       initialValue: _scene.sceneName,
       values: this._sceneNameSubject,
       onValueChangeRequested: async (value: string) => {
