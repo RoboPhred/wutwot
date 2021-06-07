@@ -23,6 +23,7 @@ export class SceneThingImpl implements SceneThing {
           return;
         }
         _scene.sceneName = value;
+        this._sceneNameSubject.next(value);
       },
     });
 
