@@ -34,11 +34,13 @@ export default {
       propertyName: "jsonschema:propertyName",
       readOnly: {
         "@id": "jsonschema:readOnly",
-        "@type": "xsd:boolean",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:boolean",
       },
       writeOnly: {
         "@id": "jsonschema:writeOnly",
-        "@type": "xsd:boolean",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:boolean",
       },
       exclusiveMaximum: {
         "@id": "jsonschema:exclusiveMaximum",
@@ -54,31 +56,38 @@ export default {
       },
       maxItems: {
         "@id": "jsonschema:maxItems",
-        "@type": "xsd:unsignedInt",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:unsignedInt",
       },
       minItems: {
         "@id": "jsonschema:minItems",
-        "@type": "xsd:unsignedInt",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:unsignedInt",
       },
       contentEncoding: {
         "@id": "jsonschema:contentEncoding",
-        "@type": "xsd:string",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:string",
       },
       minLength: {
         "@id": "jsonschema:minLength",
-        "@type": "xsd:unsignedInt",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:unsignedInt",
       },
       maxLength: {
         "@id": "jsonschema:maxLength",
-        "@type": "xsd:unsignedInt",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:unsignedInt",
       },
       pattern: {
         "@id": "jsonschema:pattern",
-        "@type": "xsd:string",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:string",
       },
       contentMediaType: {
         "@id": "jsonschema:contentMediaType",
-        "@type": "xsd:string",
+        // Disabled for https://github.com/w3c/wot-thing-description/issues/1160
+        // "@type": "xsd:string",
       },
       items: {
         "@id": "jsonschema:items",
