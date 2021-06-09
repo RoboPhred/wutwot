@@ -21,6 +21,11 @@ export const W3CWotJsonSchemaContext = require("./wot-json-schema-context")
  */
 export namespace W3cWotTdIRIs {
   /**
+   * {@link https://www.w3.org/2019/wot/td#name}
+   */
+  export const Name = "https://www.w3.org/2019/wot/td#name";
+
+  /**
    * {@link https://www.w3.org/2019/wot/td#hasactionaffordance}
    */
   export const HasActionAffordance =

@@ -9,6 +9,7 @@ import {
 
 import {
   DeepImmutable,
+  DeepImmutableObject,
   makeReadOnly,
   makeReadOnlyDeep,
 } from "../../../immutable";
@@ -18,7 +19,7 @@ import { EventEventSink } from "../components";
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
 
 export class ThingEventImpl implements ThingEvent {
-  private _data: DeepImmutable<TypedDataSchema> | undefined = undefined;
+  private _def: DeepImmutableObject<ThingEventDef>;
 
   /**
    * Event records sorted by date ascending.
@@ -26,16 +27,17 @@ export class ThingEventImpl implements ThingEvent {
   private _records: ThingEventRecord[] = [];
 
   constructor(
-    private _def: ThingEventDef,
+    def: ThingEventDef,
     private _id: string,
     private _thingId: string,
     private _owner: object,
     private _eventSink: EventEventSink,
   ) {
-    _def.eventSource.subscribe(this._onEventRaised.bind(this));
-    if (_def.data) {
-      this._data = makeReadOnlyDeep(cloneDeep(_def.data));
-    }
+    this._def = {
+      ...makeReadOnlyDeep(cloneDeep(def)),
+      eventSource: def.eventSource,
+    };
+    this._def.eventSource.subscribe(this._onEventRaised.bind(this));
   }
 
   [inspect.custom] = makeInspectJson("ThingEvent");
@@ -72,7 +74,7 @@ export class ThingEventImpl implements ThingEvent {
   }
 
   get data(): DeepImmutable<TypedDataSchema> | undefined {
-    return this._data;
+    return this._def.data;
   }
 
   get records(): readonly ThingEventRecord[] {
@@ -94,7 +96,7 @@ export class ThingEventImpl implements ThingEvent {
 
   toJSONLD() {
     return {
-      "@index": this.id,
+      [W3cWotTdIRIs.Name]: this.id,
       "@type": [...this.semanticTypes],
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
