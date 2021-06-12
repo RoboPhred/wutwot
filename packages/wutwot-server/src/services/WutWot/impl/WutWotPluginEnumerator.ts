@@ -39,7 +39,7 @@ export class WutWotPluginEnumeratorImpl implements WutWotPluginEnumerator {
   }
 
   private _resolvePlugin(pluginString: string): WutWotPlugin {
-    const parts = pluginString.split(":");
+    const parts = pluginString.split("?");
     const pluginConstructor = this._requirePlugin(parts[0]);
     // TODO: More advanced splitting so we can quote values that contain &
     let options: Record<string, any> = {};
@@ -49,7 +49,12 @@ export class WutWotPluginEnumeratorImpl implements WutWotPluginEnumerator {
         options[parts[0]] = parts[1] ?? true;
       });
     }
-    return new pluginConstructor(options);
+    try {
+      return new pluginConstructor(options);
+    } catch (e) {
+      e.message = `Failed to resolve plugin ${parts[0]}: ${e.message}`;
+      throw e;
+    }
   }
 
   private _requirePlugin(pluginName: string): WutwotPluginConstructable {
@@ -60,6 +65,7 @@ export class WutWotPluginEnumeratorImpl implements WutWotPluginEnumerator {
         throw e;
       }
     }
+
     const exports = require(pluginName);
 
     return exports.default;

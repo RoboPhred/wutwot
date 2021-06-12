@@ -11,12 +11,15 @@ import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
 import HttpStatusCodes from "http-status-codes";
 import {
   controller,
+  use,
   get,
   pathParam,
   body,
   put,
   post,
 } from "simply-express-controllers";
+import cors from "cors";
+import nocache from "nocache";
 import { compact } from "jsonld";
 import createError from "http-errors";
 import keys from "lodash/keys";
@@ -26,6 +29,7 @@ import urlJoin from "url-join";
 @singleton()
 @provides(ExpressController)
 @controller("/things")
+@use(cors({ origin: "*" }), nocache())
 export class ThingDirectoryController {
   constructor(
     @inject(WutWot) private _wutwot: WutWot,

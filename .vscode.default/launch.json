@@ -9,12 +9,13 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/packages/wutwot-server/src/index.ts",
-      "outFiles": ["${workspaceFolder}/packages/wutwot-server/lib/**/*.js"],
+      "outFiles": ["${workspaceFolder}/packages/*/lib/**/*.js"],
       "cwd": "${workspaceFolder}/packages/wutwot-server",
       "sourceMaps": true,
       "console": "integratedTerminal",
       "env": {
-        "HOMECTRL_ZWAVE_PORT": "COM3"
+        "WUTWOT_PLUGINS": "@wutwot/model;@wutwot/scenes;@wutwot/z-wave;@wutwot/servient-express;@wutwot/binding-express",
+        "PORT": "8080"
       }
     }
   ]
