@@ -113,7 +113,7 @@ export class InternalThingImpl implements InternalThing {
   }
 
   get semanticTypes(): ReadonlyArray<string> {
-    return makeReadOnly(this._typesManager.getTypes());
+    return makeReadOnly([W3cWotTdIRIs.Thing, ...this._typesManager.getTypes()]);
   }
 
   get description(): string | undefined {

@@ -145,7 +145,7 @@ export class InternalActionImpl implements InternalAction {
 
   toJSONLD() {
     return {
-      [W3cWotTdIRIs.Name]: this.id,
+      "@index": this.id,
       "@type": [...this.semanticTypes],
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,

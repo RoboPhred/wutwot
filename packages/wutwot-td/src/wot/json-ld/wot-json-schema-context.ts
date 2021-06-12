@@ -1,5 +1,7 @@
-// https://github.com/w3c/wot-thing-description/pull/1169
-// https://github.com/w3c/wot-thing-description/blob/da6956a5e92af5ec4769ef4b748d075241d5555b/context/json-schema-context.jsonld
+// Source: https://github.com/w3c/wot-thing-description/blob/main/context/json-schema-context.jsonld @ eef349b
+// Fix applied: https://github.com/w3c/wot-thing-description/pull/1169
+// Fix applied: https://github.com/w3c/wot-thing-description/issues/1170
+// Fix applied: https://github.com/w3c/wot-thing-description/issues/1160
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -8,7 +10,6 @@ export default {
   dct: "http://purl.org/dc/terms/",
   schema: "http://schema.org/",
   rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  // Added missing xsd prefix
   xsd: "http://www.w3.org/2001/XMLSchema#",
   "@vocab": "https://www.w3.org/2019/wot/json-schema#",
   DataSchema: {
@@ -16,11 +17,9 @@ export default {
   },
   readOnly: {
     "@id": "jsonschema:readOnly",
-    "@type": "xsd:boolean",
   },
   writeOnly: {
     "@id": "jsonschema:writeOnly",
-    "@type": "xsd:boolean",
   },
   exclusiveMaximum: {
     "@id": "jsonschema:exclusiveMaximum",
@@ -36,27 +35,24 @@ export default {
   },
   maxItems: {
     "@id": "jsonschema:maxItems",
-    "@type": "xsd:unsignedInt",
   },
   minItems: {
     "@id": "jsonschema:minItems",
-    "@type": "xsd:unsignedInt",
   },
   contentEncoding: {
     "@id": "jsonschema:contentEncoding",
-    "@type": "xsd:unsignedInt",
   },
   minLength: {
     "@id": "jsonschema:minLength",
-    "@type": "xsd:unsignedInt",
   },
   maxLength: {
     "@id": "jsonschema:maxLength",
-    "@type": "xsd:unsignedInt",
+  },
+  pattern: {
+    "@id": "jsonschema:pattern",
   },
   contentMediaType: {
     "@id": "jsonschema:contentMediaType",
-    "@type": "xsd:string",
   },
   items: {
     "@id": "jsonschema:items",
@@ -64,7 +60,6 @@ export default {
   },
   required: {
     "@id": "jsonschema:required",
-    "@type": "xsd:string",
     "@container": "@set",
   },
   enum: {
@@ -73,6 +68,9 @@ export default {
   },
   const: {
     "@id": "jsonschema:const",
+  },
+  default: {
+    "@id": "jsonschema:default",
   },
   multipleOf: {
     "@id": "jsonschema:multipleOf",

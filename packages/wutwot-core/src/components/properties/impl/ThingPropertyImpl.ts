@@ -8,8 +8,6 @@ import {
   W3cWotJsonSchemaIRIs,
   SchemaOrgIRIs,
   dataSchemaTypeToW3cWotClass,
-  W3cWotTDContext,
-  W3cWotTdIRIs,
 } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
@@ -171,7 +169,7 @@ export class ThingPropertyImpl implements ThingProperty {
 
   toJSONLD() {
     return {
-      [W3cWotTdIRIs.Name]: this.id,
+      "@index": this.id,
       "@type": this.semanticTypes,
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,

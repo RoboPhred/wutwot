@@ -25,6 +25,8 @@ export namespace W3cWotTdIRIs {
    */
   export const Name = "https://www.w3.org/2019/wot/td#name";
 
+  export const Thing = "https://www.w3.org/2019/wot/td#thing";
+
   /**
    * {@link https://www.w3.org/2019/wot/td#hasactionaffordance}
    */
