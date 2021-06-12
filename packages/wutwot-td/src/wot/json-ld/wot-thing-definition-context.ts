@@ -1,4 +1,5 @@
-// https://github.com/w3c/wot-thing-description/blob/master/context/td-context-1.1.jsonld
+// https://github.com/w3c/wot-thing-description/pull/1169
+// https://github.com/w3c/wot-thing-description/blob/da6956a5e92af5ec4769ef4b748d075241d5555b/context/td-context-1.1.jsonld
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -13,10 +14,14 @@ export default {
     "@id": "http://purl.org/dc/terms/license",
   },
   id: "@id",
+  name: {
+    "@id": "td:name",
+  },
   properties: {
     "@id": "td:hasPropertyAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "name",
     "@context": {
       td: "https://www.w3.org/2019/wot/td#",
       jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -36,6 +41,12 @@ export default {
       writeOnly: {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
+      },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
       },
       maximum: {
         "@id": "jsonschema:maximum",
@@ -126,12 +137,19 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
+      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "name",
+        "@context": {
+          properties: {
+            "@id": "jsonschema:properties",
+            "@container": "@index",
+            "@index": "propertyName",
+          },
+        },
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -142,11 +160,13 @@ export default {
     "@id": "td:hasActionAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "name",
   },
   events: {
     "@id": "td:hasEventAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "name",
   },
   security: {
     "@id": "td:hasSecurityConfiguration",
@@ -227,6 +247,7 @@ export default {
       public: "wotsec:PublicSecurityScheme",
       pop: "wotsec:PoPSecurityScheme",
       oauth2: "wotsec:OAuth2SecurityScheme",
+      uriVariables: "td:uriVariables",
     },
   },
   securityDefinitions: {
@@ -239,9 +260,6 @@ export default {
   },
   EventAffordance: {
     "@id": "td:EventAffordance",
-  },
-  name: {
-    "@id": "td:name",
   },
   created: {
     "@id": "dct:created",
@@ -294,7 +312,9 @@ export default {
       readproperty: "td:readProperty",
       writeproperty: "td:writeProperty",
       observeproperty: "td:observeProperty",
+      observeallproperties: "td:observeAllProperties",
       unobserveproperty: "td:unobserveProperty",
+      unobserveallproperties: "td:unobserveAllProperties",
       invokeaction: "td:invokeAction",
       subscribeevent: "td:subscribeEvent",
       unsubscribeevent: "td:unsubscribeEvent",
@@ -372,7 +392,9 @@ export default {
       readproperty: "td:readProperty",
       writeproperty: "td:writeProperty",
       observeproperty: "td:observeProperty",
+      observeallproperties: "td:observeAllProperties",
       unobserveproperty: "td:unobserveProperty",
+      unobserveallproperties: "td:unobserveAllProperties",
       invokeaction: "td:invokeAction",
       subscribeevent: "td:subscribeEvent",
       unsubscribeevent: "td:unsubscribeEvent",
@@ -415,7 +437,9 @@ export default {
   },
   uriVariables: {
     "@id": "td:hasUriTemplateSchema",
+    "@type": "@id",
     "@container": "@index",
+    "@index": "name",
   },
   safe: {
     "@id": "td:isSafe",
@@ -425,6 +449,9 @@ export default {
   },
   instance: {
     "@id": "td:instance",
+  },
+  model: {
+    "@id": "td:model",
   },
   InteractionAffordance: {
     "@id": "td:InteractionAffordance",
@@ -455,6 +482,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -544,12 +577,12 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
+      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -579,6 +612,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -668,12 +707,12 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
+      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -703,6 +742,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -792,12 +837,12 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
+      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -827,6 +872,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -916,12 +967,12 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
+      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
@@ -951,6 +1002,12 @@ export default {
         "@id": "jsonschema:writeOnly",
         "@type": "xsd:boolean",
       },
+      exclusiveMaximum: {
+        "@id": "jsonschema:exclusiveMaximum",
+      },
+      exclusiveMinimum: {
+        "@id": "jsonschema:exclusiveMinimum",
+      },
       maximum: {
         "@id": "jsonschema:maximum",
       },
@@ -1040,12 +1097,12 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
+      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
       },
-      propertyName: "jsonschema:propertyName",
       unit: {
         "@id": "schema:unitCode",
         "@type": "@vocab",
