@@ -6,9 +6,8 @@ import { DataSchemaType } from "../data-schema";
  * Using a modified copy until {@link https://github.com/w3c/wot-thing-description/issues/988} is resolved.
  */
 // export const W3cWotTDContext = "https://www.w3.org/2019/wot/td/v1#";
-// export const W3cWotTDContext = require("./wot-thing-definition-context")
-//   .default;
-export const W3cWotTDContext = "http://www.w3.org/ns/td";
+export const W3cWotTDContext = require("./wot-thing-definition-context")
+  .default;
 
 /**
  * A context for JSON Schema in JSON-LD.
@@ -21,6 +20,11 @@ export const W3CWotJsonSchemaContext = require("./wot-json-schema-context")
  * Collection of terms used by the [W3C Thing Definition spec]{@link https://www.w3.org/2019/wot/td}.
  */
 export namespace W3cWotTdIRIs {
+  /**
+   * {@link https://www.w3.org/2019/wot/td#name}
+   */
+  export const Name = "https://www.w3.org/2019/wot/td#name";
+
   /**
    * {@link https://www.w3.org/2019/wot/td#hasactionaffordance}
    */

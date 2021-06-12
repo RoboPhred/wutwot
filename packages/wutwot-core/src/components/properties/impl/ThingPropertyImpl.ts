@@ -8,6 +8,8 @@ import {
   W3cWotJsonSchemaIRIs,
   SchemaOrgIRIs,
   dataSchemaTypeToW3cWotClass,
+  W3cWotTDContext,
+  W3cWotTdIRIs,
 } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
@@ -32,10 +34,20 @@ export class ThingPropertyImpl implements ThingProperty {
     private _thingId: string,
     private _owner: object,
   ) {
-    this._def = makeReadOnlyDeep(cloneDeep(def));
+    this._def = {
+      ...makeReadOnlyDeep(cloneDeep(def)),
+      // Do not mess with the values observable.  There is no point freezing it
+      // as its entire purpose is to give us live values, and the cloning process
+      // will break the observable.
+      values: def.values,
+    };
+
     this._lastValue = this._def.initialValue;
     this._def.values.subscribe({
-      next: (value: any) => (this._lastValue = value),
+      next: (value: any) => {
+        // TODO: Raise event
+        this._lastValue = value;
+      },
     });
   }
 
@@ -159,7 +171,7 @@ export class ThingPropertyImpl implements ThingProperty {
 
   toJSONLD() {
     return {
-      "@index": this.id,
+      [W3cWotTdIRIs.Name]: this.id,
       "@type": this.semanticTypes,
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
