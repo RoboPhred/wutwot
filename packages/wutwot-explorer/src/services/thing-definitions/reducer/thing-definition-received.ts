@@ -31,7 +31,7 @@ export default createThingDefinitionsReducer(
           "untitled",
       );
       const displayId = createId(
-        `${sourceId}--${title.replace(/![a-zA-Z0-9]/g, "")}`,
+        `${sourceId}--${title}`,
         Object.keys(state.thingDataByDisplayId),
       );
       state = fpSet(state, "thingDataByDisplayId", displayId, {
