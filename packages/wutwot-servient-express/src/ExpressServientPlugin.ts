@@ -72,13 +72,14 @@ export class ExpressServientPlugin implements WutWotPlugin {
         throw new Error("ExpressServientPlugin: No port configured.");
       }
 
+      const portStr = configuredPort == 80 ? "" : `:${configuredPort}`;
       if (configuredHostname && configuredHostname != "") {
-        this._rootUrl = `http://${configuredHostname}`;
+        this._rootUrl = `http://${configuredHostname}${portStr}`;
         // A specific hostname has been specified, so limit the host to it.
         server.listen(configuredPort, configuredHostname);
       } else {
         // Assume we are using the host's hostname.
-        this._rootUrl = `http://${getHostname()}`;
+        this._rootUrl = `http://${getHostname()}${portStr}`;
         // Don't limit the connections to the assumed hostname, however.
         server.listen(configuredPort);
       }

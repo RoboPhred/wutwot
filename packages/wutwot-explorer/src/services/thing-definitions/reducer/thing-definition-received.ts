@@ -1,34 +1,44 @@
 import { AnyAction } from "redux";
-import { v4 as uuidV4 } from "uuid";
 
-import { isThingDefinitionRecievedAction } from "@/actions/thing-definition-received";
+import { DCMITermsIRIs } from "@wutwot/td";
+
+import { isThingDefinitionsRecievedAction } from "@/actions/thing-definition-received";
+
 import { fpSet } from "@/utils/fpSet";
+import { createId } from "@/utils/id";
+import { getExpandedValueOrId } from "@/utils/json-ld";
 
 import { createThingDefinitionsReducer } from "../utils";
 import {
   ThingDefinitionsServiceState,
   defaultThingDefinitionsServiceState,
 } from "../state";
-import { createId } from "@/utils/id";
 
 export default createThingDefinitionsReducer(
   (
     state: ThingDefinitionsServiceState = defaultThingDefinitionsServiceState,
     action: AnyAction,
   ) => {
-    if (!isThingDefinitionRecievedAction(action)) {
+    if (!isThingDefinitionsRecievedAction(action)) {
       return state;
     }
 
     const { sourceId, definitions } = action.payload;
 
-    for (let i = 0; i < definitions.length; i++) {
-      const definition = definitions[i];
-      const displayId = createId(`${sourceId}-${definition.title}`);
+    for (const { definition, expandedDefinition } of definitions) {
+      const title = String(
+        getExpandedValueOrId(expandedDefinition, DCMITermsIRIs.Title) ??
+          "untitled",
+      );
+      const displayId = createId(
+        `${sourceId}--${title.replace(/![a-zA-Z0-9]/g, "")}`,
+        Object.keys(state.thingDataByDisplayId),
+      );
       state = fpSet(state, "thingDataByDisplayId", displayId, {
-        displayId,
         sourceId,
+        displayId,
         definition,
+        expandedDefinition,
       });
     }
 

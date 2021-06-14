@@ -1,21 +1,22 @@
 import { AnyAction } from "redux";
-import { Thing } from "@wutwot/td";
 
 import { asArray, MaybeArray } from "@/types";
+import { ResolvedThingDefinition } from "@/services/thing-definitions/types";
 
-export const THING_DEFINITION_RECEIVED_ACTION = "thing-definition-received" as const;
-export const thingDefinitionReceived = (
+export const THING_DEFITNITION_RECEIVED_ACTION =
+  "thing-definition-received" as const;
+export const thingDefinitionsReceived = (
   sourceId: string,
-  definition: MaybeArray<Thing>,
+  definitions: MaybeArray<ResolvedThingDefinition>,
 ) => ({
-  type: THING_DEFINITION_RECEIVED_ACTION,
-  payload: { sourceId, definitions: asArray(definition) },
+  type: THING_DEFITNITION_RECEIVED_ACTION,
+  payload: { sourceId, definitions: asArray(definitions) },
 });
-export type ThingDefinitionReceivedAction = ReturnType<
-  typeof thingDefinitionReceived
+export type ThingDefinitionsReceivedAction = ReturnType<
+  typeof thingDefinitionsReceived
 >;
-export function isThingDefinitionRecievedAction(
+export function isThingDefinitionsRecievedAction(
   action: AnyAction,
-): action is ThingDefinitionReceivedAction {
-  return action.type === THING_DEFINITION_RECEIVED_ACTION;
+): action is ThingDefinitionsReceivedAction {
+  return action.type === THING_DEFITNITION_RECEIVED_ACTION;
 }

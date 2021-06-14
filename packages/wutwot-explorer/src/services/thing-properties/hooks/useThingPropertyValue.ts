@@ -37,13 +37,11 @@ export function useThingPropertyValue(
   propertyKey: string,
 ): UsePropertyValue {
   // Details about the thing we are handling values for.
-  const {
-    definition: thingDefinition,
-    sourceId: thingSourceId,
-  } = useAppSelector((state) => thingDataSelector(state, thingDisplayId)) ?? {
-    definition: null,
-    sourceId: null,
-  };
+  const { definition: thingDefinition, sourceId: thingSourceId } =
+    useAppSelector((state) => thingDataSelector(state, thingDisplayId)) ?? {
+      definition: null,
+      sourceId: null,
+    };
 
   const propertyAffordance =
     (thingDefinition.properties || {})[propertyKey] ?? null;
@@ -89,9 +87,8 @@ export function useThingPropertyValue(
   // The timestamp when we last wrote a value.  Used to poll the value after write.
   const lastWriteCompleteTimeRef = React.useRef<number>(0);
   // The value we have just written, and which we are waiting for a read to return.  Used to poll the value after write.
-  const [awaitingWriteValue, setAwaitingWriteValue] = React.useState<any>(
-    NOT_AWAITING_VALUE,
-  );
+  const [awaitingWriteValue, setAwaitingWriteValue] =
+    React.useState<any>(NOT_AWAITING_VALUE);
   // Whether we are currently awaiting a value to be successfully written.
   const isAwaitingWriteValue = awaitingWriteValue != NOT_AWAITING_VALUE;
 
@@ -176,7 +173,7 @@ export function useThingPropertyValue(
 
   return {
     refresh,
-    isWritable: propertyAffordance?.readOnly ?? true,
+    isWritable: propertyAffordance?.readOnly !== true,
     setValue,
     isRefreshing: isReading || isWriting,
     value,

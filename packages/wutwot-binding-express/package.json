@@ -48,7 +48,7 @@
     "jsonld": "^3.2.0",
     "lodash": "^4.17.15",
     "nocache": "^2.1.0",
-    "simply-express-controllers": "^1.2.0",
+    "simply-express-controllers": "^1.2.3",
     "url-join": "^4.0.1"
   }
 }

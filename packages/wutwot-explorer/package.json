@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
+    "@types/jsonld": "^1.5.5",
     "@types/lodash": "^4.14.150",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
@@ -61,6 +62,7 @@
     "http-status-codes": "^1.4.0",
     "i18next": "^19.4.2",
     "is-relative-url": "^3.0.0",
+    "jsonld": "^3.3.2",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

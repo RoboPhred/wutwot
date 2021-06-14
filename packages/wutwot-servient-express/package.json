@@ -35,7 +35,7 @@
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
     "http-status-codes": "^2.1.4",
-    "simply-express-controllers": "^1.2.0"
+    "simply-express-controllers": "^1.2.3"
   },
   "peerDependencies": {
     "@wutwot/core": "^1.0.0",
