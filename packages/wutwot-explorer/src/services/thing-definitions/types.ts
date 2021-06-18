@@ -2,7 +2,7 @@ import { Thing } from "@wutwot/td";
 
 export interface ResolvedThingDefinition {
   definition: Thing;
-  expandedDefinition: any;
+  rawDefinition: any;
 }
 
 export interface ThingData extends ResolvedThingDefinition {

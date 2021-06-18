@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { DCMITermsIRIs } from "@wutwot/td";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { useAppSelector } from "@/store/selectors";
@@ -24,7 +24,7 @@ const ThingListItem: React.FC<ThingListItemProps> = ({ id }) => {
 
   return (
     <ListItemLink to={`/things/${encodeURIComponent(id)}`} button>
-      <ListItemText primary={title} secondary={description} />
+      <ListItemText primary={title ?? "untitled"} secondary={description} />
     </ListItemLink>
   );
 };

@@ -1,7 +1,7 @@
 import { all, call, put, select } from "redux-saga/effects";
 import HttpStatusCodes from "http-status-codes";
-import { expand } from "jsonld";
-import { Thing, validateThing } from "@wutwot/td";
+import { expand, compact } from "jsonld";
+import { Thing, validateThing, W3cWotTDContext } from "@wutwot/td";
 
 import { asArray } from "@/types";
 
@@ -66,10 +66,23 @@ async function fetchThingDefinitionsFromSource(
 }
 
 async function resolveThingDefinition(
-  definition: Thing,
+  rawDefinition: Thing,
 ): Promise<ResolvedThingDefinition> {
+  // FIXME: Re-enable when td / jsonld.js can round trip:
+  // https://github.com/w3c/wot-thing-description/issues/1161#issuecomment-864270699
+  // // Reflow the thing document to our context.
+  // // Currently should be a no-op, but it might correct some valid json-ld things.
+  // // Later, we might have our own prefixes like iotschema.
+  // const expanded = await expand(rawDefinition);
+  // const definition = (await compact(
+  //   expanded,
+  //   W3cWotTDContext,
+  // )) as unknown as Thing;
+
+  const definition = rawDefinition;
+
   return {
     definition,
-    expandedDefinition: (await expand(definition))[0],
+    rawDefinition,
   };
 }

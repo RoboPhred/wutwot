@@ -1,12 +1,9 @@
 import { AnyAction } from "redux";
 
-import { DCMITermsIRIs } from "@wutwot/td";
-
 import { isThingDefinitionsRecievedAction } from "@/actions/thing-definition-received";
 
 import { fpSet } from "@/utils/fpSet";
 import { createId } from "@/utils/id";
-import { getExpandedValueOrId } from "@/utils/json-ld";
 
 import { createThingDefinitionsReducer } from "../utils";
 import {
@@ -25,11 +22,8 @@ export default createThingDefinitionsReducer(
 
     const { sourceId, definitions } = action.payload;
 
-    for (const { definition, expandedDefinition } of definitions) {
-      const title = String(
-        getExpandedValueOrId(expandedDefinition, DCMITermsIRIs.Title) ??
-          "untitled",
-      );
+    for (const { definition, rawDefinition } of definitions) {
+      const title = String(definition.title ?? "untitled");
       const displayId = createId(
         `${sourceId}--${title}`,
         Object.keys(state.thingDataByDisplayId),
@@ -38,7 +32,7 @@ export default createThingDefinitionsReducer(
         sourceId,
         displayId,
         definition,
-        expandedDefinition,
+        rawDefinition,
       });
     }
 
