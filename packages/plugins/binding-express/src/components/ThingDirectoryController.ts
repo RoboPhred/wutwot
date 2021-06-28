@@ -160,8 +160,8 @@ export class ThingDirectoryController {
 
       tdThing.base = urlJoin(this._rootUrl, `/things/${thing.id}`);
 
-      // TODO: wutwot core should handle forms
       tdThing = this._injectForms(tdThing);
+      tdThing = this._injectSecurity(tdThing);
       return tdThing;
     } catch (e) {
       e.message = `Failed to compact ${thing.id}: ${e.message}`;
@@ -169,7 +169,19 @@ export class ThingDirectoryController {
     }
   }
 
+  private _injectSecurity(thing: TDThing): TDThing {
+    // TODO: Plugins should be able to offer security.  binding-express should probably handle this.
+    thing.security = ["nosec"];
+    thing.securityDefinitions = {
+      nosec: {
+        scheme: "nosec",
+      },
+    };
+    return thing;
+  }
+
   private _injectForms(thing: TDThing): TDThing {
+    // TODO: Forms should be pluggable from other plugins.  Core should probably handle this.
     if (thing.properties) {
       const propertyKeys = keys(thing.properties);
       for (const propertyKey of propertyKeys) {

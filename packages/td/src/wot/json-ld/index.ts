@@ -51,6 +51,19 @@ export namespace W3cWotTdIRIs {
    */
   export const HasNotificationSchema =
     "https://www.w3.org/2019/wot/td#hasNotificationSchema";
+
+  /**
+   * {@link https://www.w3.org/2019/wot/td#hasSecurityConfiguration}
+   */
+  export const HasSecurityConfiguration =
+    "https://www.w3.org/2019/wot/td#hasSecurityConfiguration";
+}
+
+/**
+ * Terms for the [Web of Things Security spec]{@link https://www.w3.org/2019/wot/security}.
+ */
+export namespace W3cWotSecIRIs {
+  export const NoSec = "https://www.w3.org/2019/wot/security#NoSecurityScheme";
 }
 
 /**
