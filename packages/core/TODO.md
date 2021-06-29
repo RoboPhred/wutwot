@@ -14,7 +14,7 @@ There are two ways we would want to set a form
 
 Need to support
 
-- JSON-LD Types in semanticType (prefixed from Context, according to the spec. also allow IRIs?)
+- semanticType should be json-ld IRI types.
 - Additional JSON-LD extensions on everything.
 
 We emit absolute IRIs for toJSONLD, which makes this a lot easier. We do not have to care
@@ -77,7 +77,7 @@ centralize them at the very least.
     - Action requested / started / cancelled / completed
     - Event raised
       Action events
-- Action requestet
+- Action requested
   - Mirror events from action requests?
     Action request events
   - started / cancelled / completed
@@ -96,9 +96,3 @@ https://www.npmjs.com/package/@microsoft/api-extractor
 - Event removal
 - Action removal
 - Action Request removal
-
-## Document remaining public types
-
-- Thing
-- Property
-- Event

@@ -25,7 +25,6 @@ import {
   ThingProperty,
   ThingPropertyDef,
 } from "../../properties";
-import { LocalSemanticTypesManager } from "../../semantic-types";
 import {
   LocalEventsManager,
   ThingEvent,
@@ -46,6 +45,7 @@ export class InternalThingImpl implements InternalThing {
   private readonly _publicProxy: Thing;
   private _title: string;
   private _description: string | undefined;
+  private _semanticTypes = new Set<string>();
   private _metadata = new Map<string | symbol, any>();
 
   private _actions: ReadonlyMap<string, InternalAction>;
@@ -61,8 +61,6 @@ export class InternalThingImpl implements InternalThing {
     private _owner: object,
     @inject(ThingLocalPersistence)
     private _persistence: DataPersistence,
-    @inject(LocalSemanticTypesManager)
-    private _typesManager: LocalSemanticTypesManager,
     @inject(LocalActionsManager)
     private _actionsManager: LocalActionsManager,
     @inject(LocalPropertiesManager)
@@ -113,7 +111,7 @@ export class InternalThingImpl implements InternalThing {
   }
 
   get semanticTypes(): ReadonlyArray<string> {
-    return makeReadOnly([W3cWotTdIRIs.Thing, ...this._typesManager.getTypes()]);
+    return makeReadOnly([W3cWotTdIRIs.Thing, ...this._semanticTypes]);
   }
 
   get description(): string | undefined {
@@ -137,7 +135,7 @@ export class InternalThingImpl implements InternalThing {
   }
 
   addSemanticType(type: string): void {
-    this._typesManager.addType(type);
+    this._semanticTypes.add(type);
   }
 
   addProperty(def: ThingPropertyDef, owner: object): ThingProperty {

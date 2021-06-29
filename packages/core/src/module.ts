@@ -6,7 +6,6 @@ import persistenceModule from "./components/persistence/module";
 import pluginModule from "./components/plugin-management/module";
 import propertiesModule from "./components/properties/module";
 import thingEventsModule from "./components/thing-events/module";
-import thingTypesModule from "./components/semantic-types/module";
 import thingModule from "./components/things/module";
 
 const wutwotModule = composeModules(
@@ -16,7 +15,6 @@ const wutwotModule = composeModules(
   pluginModule,
   propertiesModule,
   thingEventsModule,
-  thingTypesModule,
   thingModule,
 );
 export default wutwotModule;

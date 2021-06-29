@@ -8,6 +8,10 @@ import { JSONLDAble } from "../../json-ld";
 // TODO: According to the specs, this inherits from DataSchema.
 //  However, DataSchema is multiple types combined, so we need to implement each one.
 // Maybe we should provide multiple ThingProperty interfaces based on the core type?
+
+/**
+ * Describes a property of a thing.
+ */
 export interface ThingProperty extends InteractionAffordance, JSONLDAble {
   /**
    * The data type of this property.
