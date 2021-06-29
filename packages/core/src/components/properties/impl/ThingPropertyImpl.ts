@@ -114,9 +114,6 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._def.maxLength;
   }
 
-  /**
-   * The pattern the value must match, if type is string.
-   */
   get pattern(): string | undefined {
     return this._def.pattern;
   }

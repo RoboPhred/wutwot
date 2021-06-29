@@ -4,16 +4,13 @@ import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { ToJSON } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
-import {
-  InteractionAffordance,
-  InteractionAffordanceKeys,
-} from "../../affordance";
+import { Interaction, InteractionKeys } from "../../interactions";
 import { JSONLDAble } from "../../json-ld";
 
 /**
  * Represents an Action on a {@link Thing}.
  */
-export interface ThingAction extends InteractionAffordance, JSONLDAble {
+export interface ThingAction extends Interaction, JSONLDAble {
   /**
    * JSON Schema describing this action's input.
    */
@@ -46,7 +43,7 @@ export interface ThingAction extends InteractionAffordance, JSONLDAble {
  * An array of keys making up the public api of a {@link ThingAction}.
  */
 export const ThingActionKeys = makeReadOnly<(keyof ThingAction)[]>([
-  ...InteractionAffordanceKeys,
+  ...InteractionKeys,
   "input",
   "output",
   "requests",

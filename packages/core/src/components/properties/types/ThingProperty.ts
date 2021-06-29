@@ -2,7 +2,7 @@ import { DataSchemaType } from "@wutwot/td";
 
 import { ToJSON } from "../../../types";
 
-import { InteractionAffordance } from "../../affordance";
+import { Interaction } from "../../interactions";
 import { JSONLDAble } from "../../json-ld";
 
 // TODO: According to the specs, this inherits from DataSchema.
@@ -12,7 +12,7 @@ import { JSONLDAble } from "../../json-ld";
 /**
  * Describes a property of a thing.
  */
-export interface ThingProperty extends InteractionAffordance, JSONLDAble {
+export interface ThingProperty extends Interaction, JSONLDAble {
   /**
    * The data type of this property.
    */

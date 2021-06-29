@@ -3,9 +3,9 @@ import { JSONSchema6 } from "json-schema";
 import { DeepImmutable, makeReadOnly } from "../../../immutable";
 
 /**
- * Defines the properties required when creating an {@link InteractionAffordance}
+ * Defines the properties required when creating an {@link Interaction}
  */
-export interface InteractionAffordanceDef {
+export interface InteractionDef {
   /**
    * The ID of this affordance unique to all affordances
    * of this type on the target thing within the plugin that created it.
@@ -29,15 +29,13 @@ export interface InteractionAffordanceDef {
   readonly semanticType?: string | string[];
 }
 
-export const interactionAffordanceDefSchema: DeepImmutable<JSONSchema6> = makeReadOnly(
-  {
-    type: "object",
-    properties: {
-      pluginLocalId: { type: "string", minLength: 1 },
-      title: { type: "string", minLength: 1 },
-      description: { type: "string", minLength: 1 },
-      semanticType: { type: ["string", "array"], items: { type: "string" } },
-    },
-    required: ["pluginLocalId"],
+export const interactionDefSchema: DeepImmutable<JSONSchema6> = makeReadOnly({
+  type: "object",
+  properties: {
+    pluginLocalId: { type: "string", minLength: 1 },
+    title: { type: "string", minLength: 1 },
+    description: { type: "string", minLength: 1 },
+    semanticType: { type: ["string", "array"], items: { type: "string" } },
   },
-);
+  required: ["pluginLocalId"],
+});

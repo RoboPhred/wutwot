@@ -6,15 +6,12 @@ import { DeepImmutableObject, makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
 import { ThingActionRequestUpdate } from "../../action-requests";
-import {
-  InteractionAffordanceDef,
-  interactionAffordanceDefSchema,
-} from "../../affordance";
+import { InteractionDef, interactionDefSchema } from "../../interactions";
 
 /**
  * Defines the information required to create a {@link ThingAction}
  */
-export interface ThingActionDef extends InteractionAffordanceDef {
+export interface ThingActionDef extends InteractionDef {
   /**
    * JSON Schema describing the input this action takes.
    */
@@ -62,7 +59,7 @@ export const actionDefSchema = makeReadOnlyDeep<JSONSchema6>({
  * details about the validation.
  */
 export const validateActionDef = makeValidator(
-  interactionAffordanceDefSchema,
+  interactionDefSchema,
   actionDefSchema,
 );
 

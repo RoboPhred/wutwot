@@ -9,7 +9,7 @@
  *
  * {@see https://w3c.github.io/wot-thing-description/#interactionaffordance}
  */
-export interface InteractionAffordance {
+export interface Interaction {
   /**
    * The ID of this action.
    */
@@ -40,7 +40,7 @@ export interface InteractionAffordance {
    */
   readonly description: string | undefined;
 }
-export const InteractionAffordanceKeys: (keyof InteractionAffordance)[] = [
+export const InteractionKeys: (keyof Interaction)[] = [
   "id",
   "thingId",
   "ownerPlugin",

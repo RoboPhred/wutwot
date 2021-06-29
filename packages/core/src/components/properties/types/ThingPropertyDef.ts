@@ -5,15 +5,12 @@ import { DataSchemaType, DataSchemaTypes } from "@wutwot/td";
 import { makeReadOnlyDeep } from "../../../immutable";
 
 import { makeValidator, makeValidateOrThrow } from "../../json-schema";
-import {
-  InteractionAffordanceDef,
-  interactionAffordanceDefSchema,
-} from "../../affordance";
+import { InteractionDef, interactionDefSchema } from "../../interactions";
 
 // TODO: This should extend DataSchema
 //  or more probably, there should be multiple of these that collectively
 //  each extend one of the DataSchema sub types.
-export interface ThingPropertyDef extends InteractionAffordanceDef {
+export interface ThingPropertyDef extends InteractionDef {
   type: DataSchemaType;
   unit?: string;
   enum?: any[];
@@ -51,9 +48,8 @@ export const propertyDefSchema = makeReadOnlyDeep<JSONSchema6>({
 });
 
 export const validatePropertyDef = makeValidator(
-  interactionAffordanceDefSchema,
+  interactionDefSchema,
   propertyDefSchema,
 );
-export const validatePropertyDefOrThrow = makeValidateOrThrow(
-  validatePropertyDef,
-);
+export const validatePropertyDefOrThrow =
+  makeValidateOrThrow(validatePropertyDef);
