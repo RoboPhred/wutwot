@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@wutwot/td": "^1.0.0",
+    "ajv": "^6.12.6",
     "cors": "^2.8.5",
     "http-errors": "^1.7.3",
     "http-status-codes": "^1.4.0",

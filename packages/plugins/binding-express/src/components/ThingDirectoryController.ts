@@ -28,6 +28,8 @@ import createError from "http-errors";
 import keys from "lodash/keys";
 import urlJoin from "url-join";
 
+import { JSONSchema6 } from "json-schema";
+
 @injectable()
 @singleton()
 @provides(ExpressController)
@@ -145,6 +147,9 @@ export class ThingDirectoryController {
       const result = await action.invoke(input).toPromise();
       return result ?? null;
     } catch (e) {
+      if (e instanceof SchemaValidationError) {
+        throw createError(HttpStatusCodes.BAD_REQUEST, e.message);
+      }
       if (e instanceof ActionInvocationError) {
         throw createError(HttpStatusCodes.INTERNAL_SERVER_ERROR, e.message);
       }
