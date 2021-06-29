@@ -9,7 +9,7 @@ import containerModule from "./module";
 
 export interface ZWavePluginOptions {
   pluginId?: string;
-  port?: string;
+  device?: string;
 }
 export class ZWavePlugin implements WutWotPlugin {
   private _controller: ZWaveController | null = null;
@@ -20,8 +20,8 @@ export class ZWavePlugin implements WutWotPlugin {
   get id(): string {
     if (this._opts.pluginId) {
       return this._opts.pluginId;
-    } else if (this._opts.port) {
-      return `zwave[port='${this._opts.port}']`;
+    } else if (this._opts.device) {
+      return `zwave[port='${this._opts.device}']`;
     } else {
       return "zwave[auto]";
     }
@@ -39,7 +39,7 @@ export class ZWavePlugin implements WutWotPlugin {
   }
 
   onRegisterPrivateServices(bind: BindFunction): RegistryModule {
-    bind(ZWavePort).toConstantValue(this._opts.port);
+    bind(ZWavePort).toConstantValue(this._opts.device);
     return containerModule;
   }
 
