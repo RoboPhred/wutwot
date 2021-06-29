@@ -17,6 +17,11 @@ export const W3CWotJsonSchemaContext =
   require("./wot-json-schema-context").default;
 
 /**
+ * A context for thing description forms in JSON-LD.
+ */
+export const W3cWotFormContext = require("./wot-form-context").default;
+
+/**
  * Collection of terms used by the [W3C Thing Definition spec]{@link https://www.w3.org/2019/wot/td}.
  */
 export namespace W3cWotTdIRIs {
@@ -57,6 +62,9 @@ export namespace W3cWotTdIRIs {
    */
   export const HasSecurityConfiguration =
     "https://www.w3.org/2019/wot/td#hasSecurityConfiguration";
+
+  /** {@link https://www.w3.org/2019/wot/td#hasForm} */
+  export const HasForm = "https://www.w3.org/2019/wot/td#hasForm";
 }
 
 /**

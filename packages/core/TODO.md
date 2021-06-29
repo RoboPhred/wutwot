@@ -50,6 +50,10 @@ Extendo object will then create a proxy that builds the public api, exposing the
 
 wutwot should support adding extensions to individual objects, and extension provides that automatically add extensions to all objects of a type (thing, action, exc).
 
+## Make public api proxies for actions/properties/events
+
+Things do this. Other interactions should too.
+
 ## Utility classes for plugins
 
 - Class that adds a pragmatic thing, using decorators to describe properties on getters/setters, actions, and so on.

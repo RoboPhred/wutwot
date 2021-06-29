@@ -2,6 +2,7 @@ import { BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 
 import { ThingDirectoryController } from "./components/ThingDirectoryController";
+import { HttpPropertyFormProvider } from "./components/HttpPropertyFormProvider";
 
 export interface ExpressBindingPluginOptions {
   pluginId?: string;
@@ -22,5 +23,6 @@ export class ExpressBindingPlugin implements WutWotPlugin {
 
   onRegisterPublicServices(bind: BindFunction) {
     bind(ThingDirectoryController);
+    bind(HttpPropertyFormProvider);
   }
 }

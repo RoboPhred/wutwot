@@ -1,4 +1,5 @@
-import { DataSchemaType } from "@wutwot/td";
+import { DataSchemaType, Form } from "@wutwot/td";
+import { DeepImmutableArray } from "../../../immutable";
 
 import { ToJSON } from "../../../types";
 
@@ -69,6 +70,11 @@ export interface ThingProperty extends Interaction, JSONLDAble {
    * The value of this property.
    */
   readonly value: any;
+
+  /**
+   * An array of forms for manipulating this property.
+   */
+  readonly forms: DeepImmutableArray<Form>;
 
   /**
    * Writes a new value to this property.

@@ -8,10 +8,16 @@ import {
   W3cWotJsonSchemaIRIs,
   SchemaOrgIRIs,
   dataSchemaTypeToW3cWotClass,
+  Form,
+  W3cWotTdIRIs,
+  W3cWotFormContext,
 } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
+import { addContext } from "../../../utils/json-ld";
 import {
+  DeepImmutable,
+  DeepImmutableArray,
   DeepImmutableObject,
   makeReadOnly,
   makeReadOnlyDeep,
@@ -25,6 +31,8 @@ import { ThingProperty, ThingPropertyDef } from "../types";
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
   private _def: DeepImmutableObject<ThingPropertyDef>;
+  // Default value is important here as this is the only property not initialized by the time the form providers are called on this property.
+  private _externalForms: DeepImmutableArray<Form> = [];
 
   constructor(
     def: ThingPropertyDef,
@@ -47,9 +55,16 @@ export class ThingPropertyImpl implements ThingProperty {
         this._lastValue = value;
       },
     });
+
+    // Do this last, as the form provider needs a reference to us.  All properties (except for external forms) must be initialized by this point.
   }
 
   [inspect.custom] = makeInspectJson("ThingProperty");
+
+  /** @internal */
+  updateForms(forms: Form[]) {
+    this._externalForms = makeReadOnlyDeep(forms);
+  }
 
   get ownerPlugin(): object {
     return this._owner;
@@ -126,6 +141,10 @@ export class ThingPropertyImpl implements ThingProperty {
     return this._lastValue;
   }
 
+  get forms(): DeepImmutableArray<Form> {
+    return this._externalForms;
+  }
+
   setValue(value: any): Promise<void> {
     const schema: JSONSchema6 = {
       type: this._def.type,
@@ -181,6 +200,9 @@ export class ThingPropertyImpl implements ThingProperty {
       [W3cWotJsonSchemaIRIs.MaxLength]: this.maxLength,
       [W3cWotJsonSchemaIRIs.Pattern]: this.pattern,
       [W3cWotJsonSchemaIRIs.ReadOnly]: this.readOnly,
+      [W3cWotTdIRIs.HasForm]: [
+        ...cloneDeep(this._externalForms).map(addContext(W3cWotFormContext)),
+      ],
     };
   }
 }

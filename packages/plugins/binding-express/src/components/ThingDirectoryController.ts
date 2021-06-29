@@ -28,8 +28,6 @@ import createError from "http-errors";
 import keys from "lodash/keys";
 import urlJoin from "url-join";
 
-import { JSONSchema6 } from "json-schema";
-
 @injectable()
 @singleton()
 @provides(ExpressController)
@@ -41,6 +39,7 @@ export class ThingDirectoryController {
     @inject(ExpressRootUrl) private _rootUrl: ExpressRootUrl,
   ) {}
 
+  // TODO: Deprecate in favor of a plugin providing the (Thing Discovery API)[https://www.w3.org/TR/wot-discovery/]
   @get("/", {
     description: "Gets an array of all thing descriptions",
     tags: ["Thing"],
@@ -187,29 +186,29 @@ export class ThingDirectoryController {
 
   private _injectForms(thing: TDThing): TDThing {
     // TODO: Forms should be pluggable from other plugins.  Core should probably handle this.
-    if (thing.properties) {
-      const propertyKeys = keys(thing.properties);
-      for (const propertyKey of propertyKeys) {
-        const property = thing.properties[propertyKey];
-        if (!property.forms) {
-          property.forms = [];
-        }
+    // if (thing.properties) {
+    //   const propertyKeys = keys(thing.properties);
+    //   for (const propertyKey of propertyKeys) {
+    //     const property = thing.properties[propertyKey];
+    //     if (!property.forms) {
+    //       property.forms = [];
+    //     }
 
-        if (!property.writeOnly) {
-          property.forms.push({
-            op: "readproperty",
-            href: `/properties/${propertyKey}`,
-          });
+    //     if (!property.writeOnly) {
+    //       property.forms.push({
+    //         op: "readproperty",
+    //         href: `/properties/${propertyKey}`,
+    //       });
 
-          if (!property.readOnly) {
-            property.forms.push({
-              op: "writeproperty",
-              href: `/properties/${propertyKey}`,
-            });
-          }
-        }
-      }
-    }
+    //       if (!property.readOnly) {
+    //         property.forms.push({
+    //           op: "writeproperty",
+    //           href: `/properties/${propertyKey}`,
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
 
     if (thing.actions) {
       const actionKeys = keys(thing.actions);

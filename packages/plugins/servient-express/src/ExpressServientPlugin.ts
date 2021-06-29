@@ -93,6 +93,8 @@ export class ExpressServientPlugin implements WutWotPlugin {
             for (const header of Object.keys(headers)) {
               res.header(header, headers[header]);
             }
+            // TODO: Use [problem detail](https://datatracker.ietf.org/doc/html/rfc7807).
+            // This is requested by the Thing Discovery api.
             res.status(err.statusCode).end({
               message: err.message,
             });
