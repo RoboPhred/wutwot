@@ -210,20 +210,20 @@ export class ThingDirectoryController {
     //   }
     // }
 
-    if (thing.actions) {
-      const actionKeys = keys(thing.actions);
-      for (const actionKey of actionKeys) {
-        const action = thing.actions[actionKey];
-        if (!action.forms) {
-          action.forms = [];
-        }
+    // if (thing.actions) {
+    //   const actionKeys = keys(thing.actions);
+    //   for (const actionKey of actionKeys) {
+    //     const action = thing.actions[actionKey];
+    //     if (!action.forms) {
+    //       action.forms = [];
+    //     }
 
-        action.forms.push({
-          op: "invokeaction",
-          href: `/actions/${actionKey}`,
-        });
-      }
-    }
+    //     action.forms.push({
+    //       op: "invokeaction",
+    //       href: `/actions/${actionKey}`,
+    //     });
+    //   }
+    // }
 
     return thing;
   }

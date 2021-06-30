@@ -1,6 +1,10 @@
-import { TypedDataSchema } from "@wutwot/td";
+import { Form, TypedDataSchema } from "@wutwot/td";
 
-import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
+import {
+  DeepImmutableArray,
+  DeepImmutableObject,
+  makeReadOnly,
+} from "../../../immutable";
 import { ToJSON } from "../../../types";
 
 import { ThingActionRequest } from "../../action-requests";
@@ -25,6 +29,11 @@ export interface ThingAction extends Interaction, JSONLDAble {
    * A read-only array of requests made to this action.
    */
   readonly requests: ReadonlyArray<ThingActionRequest>;
+
+  /**
+   * An array of forms for manipulating this action.
+   */
+  readonly forms: DeepImmutableArray<Form>;
 
   /**
    * Requests the execution of this action.

@@ -4,7 +4,7 @@ import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonly
 
 import { InternalThingParams, inThingScope } from "../../things";
 import { WutWotPlugin } from "../../plugin-management";
-import { DuplicateIDError, formCompoundId } from "../../id-mapping";
+import { DuplicateIDError, makeCompoundId } from "../../id-mapping";
 
 import { ThingEvent, ThingEventDef, validateEventDefOrThrow } from "../types";
 import { LocalEventsManager } from "../services";
@@ -17,7 +17,8 @@ import { ThingEventImpl } from "./ThingEventImpl";
 @provides(LocalEventsManager)
 export class EventServiceImpl
   extends SelfPopulatingReadonlyMap<string, ThingEvent>
-  implements LocalEventsManager {
+  implements LocalEventsManager
+{
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
@@ -30,7 +31,7 @@ export class EventServiceImpl
   createEvent(def: ThingEventDef, owner: WutWotPlugin): ThingEvent {
     validateEventDefOrThrow(def);
 
-    const id = formCompoundId(owner.id, def.pluginLocalId);
+    const id = makeCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(
         `Plugin ${owner.id} has already registered an event with a plugin-local id of "${def.pluginLocalId}".`,

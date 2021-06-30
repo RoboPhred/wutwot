@@ -16,7 +16,6 @@ import {
 import { makeInspectJson } from "../../../utils/inspect";
 import { addContext } from "../../../utils/json-ld";
 import {
-  DeepImmutable,
   DeepImmutableArray,
   DeepImmutableObject,
   makeReadOnly,
@@ -39,13 +38,15 @@ export class ThingPropertyImpl implements ThingProperty {
     private _id: string,
     private _thingId: string,
     private _owner: object,
+    formCollector: (self: ThingProperty) => Form[],
   ) {
+    // Do not mess with the values observable.  There is no point freezing it
+    // as its entire purpose is to give us live values, and the cloning process
+    // will break the observable.
+    const { values, ...staticDef } = def;
     this._def = {
-      ...makeReadOnlyDeep(cloneDeep(def)),
-      // Do not mess with the values observable.  There is no point freezing it
-      // as its entire purpose is to give us live values, and the cloning process
-      // will break the observable.
-      values: def.values,
+      ...makeReadOnlyDeep(cloneDeep(staticDef)),
+      values,
     };
 
     this._lastValue = this._def.initialValue;
@@ -57,14 +58,10 @@ export class ThingPropertyImpl implements ThingProperty {
     });
 
     // Do this last, as the form provider needs a reference to us.  All properties (except for external forms) must be initialized by this point.
+    this._externalForms = makeReadOnlyDeep(formCollector(this));
   }
 
   [inspect.custom] = makeInspectJson("ThingProperty");
-
-  /** @internal */
-  updateForms(forms: Form[]) {
-    this._externalForms = makeReadOnlyDeep(forms);
-  }
 
   get ownerPlugin(): object {
     return this._owner;

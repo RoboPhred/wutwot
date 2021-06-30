@@ -9,6 +9,7 @@ import { LocalActionRequestsManager } from "../services";
 import { ActionRequestEventSink } from "../components";
 
 import { ThingActionRequestImpl } from "./ThingActionRequestImpl";
+import { Thing } from "../../things";
 
 /**
  * An implementation of the LocalActionRequestManager service.
@@ -20,12 +21,13 @@ import { ThingActionRequestImpl } from "./ThingActionRequestImpl";
 @inActionScope()
 @provides(LocalActionRequestsManager)
 export class LocalActionRequestsManagerImpl
-  implements LocalActionRequestsManager {
+  implements LocalActionRequestsManager
+{
   private _requestsById = new Map<string, ThingActionRequest>();
 
   constructor(
-    @injectParam(InternalActionParams.ThingId)
-    private _thingId: string,
+    @injectParam(InternalActionParams.Thing)
+    private _thing: Thing,
     @injectParam(InternalActionParams.ActionId)
     private _actionId: string,
     @inject(ActionRequestEventSink)
@@ -40,7 +42,7 @@ export class LocalActionRequestsManagerImpl
     const id = uuidV4();
     const request = new ThingActionRequestImpl(
       id,
-      this._thingId,
+      this._thing.id,
       this._actionId,
       def,
     );

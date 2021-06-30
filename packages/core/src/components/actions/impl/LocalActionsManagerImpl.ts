@@ -3,7 +3,7 @@ import { injectable, provides, injectParam, inject } from "microinject";
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
 import { InternalThingParams, inThingScope } from "../../things";
-import { formCompoundId, DuplicateIDError } from "../../id-mapping";
+import { makeCompoundId, DuplicateIDError } from "../../id-mapping";
 
 import { ThingActionDef } from "../types";
 
@@ -19,7 +19,8 @@ import { WutWotPlugin } from "../../plugin-management";
 @provides(LocalActionsManager)
 export class LocalActionsManagerImpl
   extends SelfPopulatingReadonlyMap<string, InternalAction>
-  implements LocalActionsManager {
+  implements LocalActionsManager
+{
   constructor(
     @injectParam(InternalThingParams.ThingId)
     private _thingId: string,
@@ -32,7 +33,7 @@ export class LocalActionsManagerImpl
   }
 
   createAction(def: ThingActionDef, owner: WutWotPlugin): InternalAction {
-    const id = formCompoundId(owner.id, def.pluginLocalId);
+    const id = makeCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(
         `Plugin ${owner.id} has already registered an action with a plugin-local id of "${def.pluginLocalId}" on thing "${this._thingId}".`,

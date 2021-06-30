@@ -2,9 +2,15 @@ import { injectable, provides, inject, injectParam } from "microinject";
 
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
-import { inThingScope, InternalThingParams, ThingsManager } from "../../things";
+import {
+  inThingScope,
+  InternalThingParams,
+  ThingsManager,
+  Thing,
+} from "../../things";
 import { WutWotPlugin } from "../../plugin-management";
-import { formCompoundId, DuplicateIDError } from "../../id-mapping";
+import { makeCompoundId, DuplicateIDError } from "../../id-mapping";
+import { FormProvider, getPropertyForms } from "../../forms";
 
 import {
   ThingProperty,
@@ -16,8 +22,6 @@ import { LocalPropertiesManager } from "../services";
 import { PropertyEventSink } from "../components";
 
 import { ThingPropertyImpl } from "./ThingPropertyImpl";
-import { PropertyFormProvider } from "../contracts";
-import { flatMap } from "lodash";
 
 @injectable()
 @inThingScope()
@@ -33,8 +37,8 @@ export class LocalPropertiesManagerImpl
     private _eventSink: PropertyEventSink,
     @inject(ThingsManager)
     private _thingsManager: ThingsManager,
-    @inject(PropertyFormProvider, { all: true, optional: true })
-    private _formProviders: PropertyFormProvider[] = [],
+    @inject(FormProvider, { all: true, optional: true })
+    private _formProviders: FormProvider[] = [],
   ) {
     super("PropertiesManager");
   }
@@ -42,7 +46,7 @@ export class LocalPropertiesManagerImpl
   createProperty(def: ThingPropertyDef, owner: WutWotPlugin): ThingProperty {
     validatePropertyDefOrThrow(def);
 
-    const id = formCompoundId(owner.id, def.pluginLocalId);
+    const id = makeCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(
         `Plugin ${owner.id} has already registered a property with a plugin-local id of "${def.pluginLocalId}".`,
@@ -58,13 +62,16 @@ export class LocalPropertiesManagerImpl
       );
     }
 
-    const property = new ThingPropertyImpl(def, id, this._thingId, owner);
-    this._set(id, property);
-
-    const forms = flatMap(this._formProviders, (provider) =>
-      provider.getPropertyForms(ownerThing?.publicProxy, property),
+    // TODO: Use injected factory, like actions.
+    const property = new ThingPropertyImpl(
+      def,
+      id,
+      this._thingId,
+      owner,
+      (self) =>
+        getPropertyForms(this._formProviders, ownerThing!.publicProxy, self),
     );
-    property.updateForms(forms);
+    this._set(id, property);
 
     this._eventSink.onPropertyAdded(property);
 

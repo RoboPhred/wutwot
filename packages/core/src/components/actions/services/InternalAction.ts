@@ -16,8 +16,8 @@ import { ThingAction } from "../types";
 export namespace InternalActionParams {
   export const ActionDef = "actionDef";
   export const ActionId = "actionId";
-  export const ThingId = "actionOwnerThingId";
-  export const Owner = "actionOwner";
+  export const Thing = "actionOwnerThing";
+  export const Plugin = "actionOwnerPlugin";
 }
 
 /**
@@ -25,9 +25,8 @@ export namespace InternalActionParams {
  *
  * This identifier can be used to create InternalActions.
  */
-export const InternalAction: Identifier<InternalAction> = createSymbol(
-  "InternalAction",
-);
+export const InternalAction: Identifier<InternalAction> =
+  createSymbol("InternalAction");
 
 /**
  * Defines an InternalAction.

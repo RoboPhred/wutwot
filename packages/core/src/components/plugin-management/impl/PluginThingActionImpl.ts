@@ -1,6 +1,6 @@
-import { TypedDataSchema } from "@wutwot/td";
+import { Form, TypedDataSchema } from "@wutwot/td";
 
-import { DeepImmutableObject } from "../../../immutable";
+import { DeepImmutableArray, DeepImmutableObject } from "../../../immutable";
 
 import { InternalAction, ThingAction } from "../../actions";
 import {
@@ -50,6 +50,10 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
 
   get requests(): readonly ThingActionRequest[] {
     return this._action.requests;
+  }
+
+  get forms(): DeepImmutableArray<Form> {
+    return this._action.forms;
   }
 
   isOwned(): this is OwnedPluginThingAction {

@@ -8,7 +8,7 @@ export function validateCompoundIdFragment(fragment: string) {
   }
 }
 
-export function formCompoundId(...fragments: string[]): string {
+export function makeCompoundId(...fragments: string[]): string {
   fragments.forEach(validateCompoundIdFragment);
   return fragments.join(ID_FRAGMENT_SEPERATOR);
 }

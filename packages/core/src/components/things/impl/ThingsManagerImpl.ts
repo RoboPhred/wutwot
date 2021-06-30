@@ -2,7 +2,7 @@ import { injectable, singleton, provides, inject } from "microinject";
 
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 import { WutWotPlugin } from "../../plugin-management";
-import { DuplicateIDError, formCompoundId } from "../../id-mapping";
+import { DuplicateIDError, makeCompoundId } from "../../id-mapping";
 
 import { ThingDef } from "../types";
 import { InternalThingFactory, ThingEventSink } from "../components";
@@ -13,7 +13,8 @@ import { ThingsManager, InternalThing } from "../services";
 @provides(ThingsManager)
 export class ThingsManagerImpl
   extends SelfPopulatingReadonlyMap<string, InternalThing>
-  implements ThingsManager {
+  implements ThingsManager
+{
   constructor(
     @inject(InternalThingFactory) private _factory: InternalThingFactory,
     @inject(ThingEventSink) private _eventSink: ThingEventSink,
@@ -22,7 +23,7 @@ export class ThingsManagerImpl
   }
 
   createThing(def: ThingDef, owner: WutWotPlugin): InternalThing {
-    const id = formCompoundId(owner.id, def.pluginLocalId);
+    const id = makeCompoundId(owner.id, def.pluginLocalId);
     if (this.has(id)) {
       throw new DuplicateIDError(
         `Plugin ${owner.id} has already registered a thing with a plugin-local id of "${def.pluginLocalId}".`,

@@ -7,9 +7,16 @@ import {
   W3cWotTdIRIs,
   TypedDataSchema,
   W3CWotJsonSchemaContext,
+  Form,
+  W3cWotFormContext,
 } from "@wutwot/td";
 
-import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
+import {
+  DeepImmutableArray,
+  DeepImmutableObject,
+  makeReadOnly,
+  makeReadOnlyDeep,
+} from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
 
 import { PluginError } from "../../../errors";
@@ -21,6 +28,10 @@ import {
   LocalActionRequestsManager,
   ThingActionRequestStatus,
 } from "../../action-requests";
+import { Thing } from "../../things";
+import { FormProvider } from "../../properties";
+import { getActionForms } from "../../forms";
+import { addContext } from "../../../utils/json-ld";
 
 import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
@@ -34,21 +45,31 @@ export class InternalActionImpl implements InternalAction {
 
   private _def: ThingActionDef;
 
+  // Default value is important here as this is the only property not initialized by the time the form providers are called on this property.
+  private _externalForms: DeepImmutableArray<Form> = [];
+
   constructor(
     @injectParam(InternalActionParams.ActionDef)
     def: ThingActionDef,
     @injectParam(InternalActionParams.ActionId)
     private _id: string,
-    @injectParam(InternalActionParams.ThingId)
-    private _thingId: string,
-    @injectParam(InternalActionParams.Owner)
+    @injectParam(InternalActionParams.Thing)
+    private _thing: Thing,
+    @injectParam(InternalActionParams.Plugin)
     private _owner: WutWotPlugin,
     @inject(LocalActionRequestsManager)
     private _requestsManager: LocalActionRequestsManager,
+    @inject(FormProvider, { all: true, optional: true })
+    private _formProviders: FormProvider[],
   ) {
     this._def = { ...def };
 
     this._publicAPI = createPublicActionApi(this);
+
+    // Do this last, as the form provider needs a reference to us.  All properties (except for external forms) must be initialized by this point.
+    this._externalForms = makeReadOnlyDeep(
+      getActionForms(this._formProviders, this._thing, this._publicAPI),
+    );
   }
 
   [inspect.custom] = makeInspectJson("ThingAction");
@@ -62,7 +83,7 @@ export class InternalActionImpl implements InternalAction {
   }
 
   get thingId(): string {
-    return this._thingId;
+    return this._thing.id;
   }
 
   get ownerPlugin(): object {
@@ -101,6 +122,10 @@ export class InternalActionImpl implements InternalAction {
     return makeReadOnly(this._requestsManager.getAllRequests());
   }
 
+  get forms(): DeepImmutableArray<Form> {
+    return this._externalForms;
+  }
+
   invoke(input: any): ThingActionRequest {
     const { input: inputSchema, onActionInvocationRequested } = this._def;
 
@@ -109,7 +134,7 @@ export class InternalActionImpl implements InternalAction {
       validateOrThrow(input, inputSchema as any);
     }
 
-    const status = onActionInvocationRequested(this._thingId, this._id, input);
+    const status = onActionInvocationRequested(this._thing.id, this._id, input);
 
     if (!isObservable(status)) {
       // TODO: More details about the plugin that caused the error.
@@ -155,6 +180,9 @@ export class InternalActionImpl implements InternalAction {
         "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.input),
       },
+      [W3cWotTdIRIs.HasForm]: [
+        ...cloneDeep(this._externalForms).map(addContext(W3cWotFormContext)),
+      ],
     };
   }
 }
@@ -201,6 +229,10 @@ function createPublicActionApi(action: InternalAction): ThingAction {
 
     get requests() {
       return action.requests;
+    }
+
+    get forms() {
+      return action.forms;
     }
 
     invoke(input: any) {
