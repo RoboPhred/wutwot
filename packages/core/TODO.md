@@ -22,7 +22,11 @@ about populating the context, all we need to do is collect the context url and a
 
 `event.addExtensionProperty("http://my-context.com/c/terms/foobar", 42);`
 
-No need to pass the context we want to use, leave that to the td compaction step in binding-express.
+Function would return an object that can be used to revoke or change the property value.
+
+Multiple registrations of the same IRI turn it into an array, as is usual for json-ld.
+
+Compaction step might need to determine a prefix to use for the property, or can we leave it as IRIs?
 
 ### Should the binding plugin be responsible for td-ification?
 
