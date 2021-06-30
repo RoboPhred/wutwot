@@ -12,8 +12,9 @@ import {
 import { DeepImmutableObject, makeReadOnly } from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
 
+import { PluginError } from "../../../errors";
+import { WutWotPlugin } from "../../plugin-management";
 import { validateOrThrow } from "../../json-schema";
-
 import {
   ThingActionRequest,
   ThingActionRequestDef,
@@ -41,7 +42,7 @@ export class InternalActionImpl implements InternalAction {
     @injectParam(InternalActionParams.ThingId)
     private _thingId: string,
     @injectParam(InternalActionParams.Owner)
-    private _owner: object,
+    private _owner: WutWotPlugin,
     @inject(LocalActionRequestsManager)
     private _requestsManager: LocalActionRequestsManager,
   ) {
@@ -113,8 +114,9 @@ export class InternalActionImpl implements InternalAction {
     if (!isObservable(status)) {
       // TODO: More details about the plugin that caused the error.
       //  This is being thrown to the requester, but it is the fault of the plugin.
-      throw new TypeError(
-        "Expected onActionInvocationRequested to return an observable.",
+      throw new PluginError(
+        this._owner.id,
+        `Action "${this._def.pluginLocalId}" from plugin "${this._owner.id}" must return an observable.`,
       );
     }
 

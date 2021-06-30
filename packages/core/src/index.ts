@@ -11,4 +11,6 @@ export * from "./components/things/public";
 
 export * from "./contracts";
 
+export * from "./errors";
+
 export * from "./WutWot";
