@@ -150,7 +150,10 @@ export class ThingDirectoryController {
         throw createError(HttpStatusCodes.BAD_REQUEST, e.message);
       }
       if (e instanceof ActionInvocationError) {
-        throw createError(HttpStatusCodes.INTERNAL_SERVER_ERROR, e.message);
+        throw createError(
+          HttpStatusCodes.INTERNAL_SERVER_ERROR,
+          `Failed to invoke action: ${e.message}`,
+        );
       }
 
       throw e;
