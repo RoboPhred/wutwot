@@ -25,7 +25,6 @@ import cors from "cors";
 import nocache from "nocache";
 import { compact } from "jsonld";
 import createError from "http-errors";
-import keys from "lodash/keys";
 import urlJoin from "url-join";
 
 @injectable()
@@ -39,7 +38,7 @@ export class ThingDirectoryController {
     @inject(ExpressRootUrl) private _rootUrl: ExpressRootUrl,
   ) {}
 
-  // TODO: Deprecate in favor of a plugin providing the (Thing Discovery API)[https://www.w3.org/TR/wot-discovery/]
+  // TODO: Deprecate in favor of a plugin providing the [Thing Discovery API](https://www.w3.org/TR/wot-discovery/)
   @get("/", {
     description: "Gets an array of all thing descriptions",
     tags: ["Thing"],
@@ -51,6 +50,7 @@ export class ThingDirectoryController {
     return tds;
   }
 
+  // TODO: Deprecate in favor of a plugin providing the [Thing Discovery API](https://www.w3.org/TR/wot-discovery/)
   @get("/:thingId", {
     description: "Gets a thing by its id",
     tags: ["Thing"],
@@ -164,7 +164,6 @@ export class ThingDirectoryController {
 
       tdThing.base = urlJoin(this._rootUrl, `/things/${thing.id}`);
 
-      tdThing = this._injectForms(tdThing);
       tdThing = this._injectSecurity(tdThing);
       return tdThing;
     } catch (e) {
@@ -181,50 +180,6 @@ export class ThingDirectoryController {
         scheme: "nosec",
       },
     };
-    return thing;
-  }
-
-  private _injectForms(thing: TDThing): TDThing {
-    // TODO: Forms should be pluggable from other plugins.  Core should probably handle this.
-    // if (thing.properties) {
-    //   const propertyKeys = keys(thing.properties);
-    //   for (const propertyKey of propertyKeys) {
-    //     const property = thing.properties[propertyKey];
-    //     if (!property.forms) {
-    //       property.forms = [];
-    //     }
-
-    //     if (!property.writeOnly) {
-    //       property.forms.push({
-    //         op: "readproperty",
-    //         href: `/properties/${propertyKey}`,
-    //       });
-
-    //       if (!property.readOnly) {
-    //         property.forms.push({
-    //           op: "writeproperty",
-    //           href: `/properties/${propertyKey}`,
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
-
-    // if (thing.actions) {
-    //   const actionKeys = keys(thing.actions);
-    //   for (const actionKey of actionKeys) {
-    //     const action = thing.actions[actionKey];
-    //     if (!action.forms) {
-    //       action.forms = [];
-    //     }
-
-    //     action.forms.push({
-    //       op: "invokeaction",
-    //       href: `/actions/${actionKey}`,
-    //     });
-    //   }
-    // }
-
     return thing;
   }
 }
