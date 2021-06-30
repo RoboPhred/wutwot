@@ -2,15 +2,10 @@ import { injectable, provides, inject, injectParam } from "microinject";
 
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
-import {
-  inThingScope,
-  InternalThingParams,
-  ThingsManager,
-  Thing,
-} from "../../things";
+import { inThingScope, InternalThingParams, ThingsManager } from "../../things";
 import { WutWotPlugin } from "../../plugin-management";
 import { makeCompoundId, DuplicateIDError } from "../../id-mapping";
-import { FormProvider, getPropertyForms } from "../../forms";
+import { FormProvider } from "../../forms";
 
 import {
   ThingProperty,
@@ -55,21 +50,19 @@ export class LocalPropertiesManagerImpl
 
     // TODO: Not happy with this code...
     // We need to get the forms for the property, and to do that we need the reference to the thing and the thing property.
-    const ownerThing = this._thingsManager.get(this._thingId);
-    if (!ownerThing) {
+    const thing = this._thingsManager.get(this._thingId);
+    if (!thing) {
       throw new Error(
         "Tried to create a property for a Thing that is not yet registered.",
       );
     }
 
-    // TODO: Use injected factory, like actions.
     const property = new ThingPropertyImpl(
       def,
       id,
-      this._thingId,
+      thing,
       owner,
-      (self) =>
-        getPropertyForms(this._formProviders, ownerThing!.publicProxy, self),
+      this._formProviders,
     );
     this._set(id, property);
 

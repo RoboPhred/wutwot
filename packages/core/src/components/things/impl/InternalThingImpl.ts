@@ -5,11 +5,21 @@ import {
   injectParam,
   provides,
 } from "microinject";
-import { mapValues } from "lodash";
+import { cloneDeep, mapValues } from "lodash";
 import { inspect } from "util";
-import { W3cWotTdIRIs, DCMITermsIRIs } from "@wutwot/td";
+import {
+  W3cWotTdIRIs,
+  DCMITermsIRIs,
+  Form,
+  W3cWotFormContext,
+} from "@wutwot/td";
 
-import { makeReadOnly, createReadonlyMapWrapper } from "../../../immutable";
+import {
+  makeReadOnly,
+  createReadonlyMapWrapper,
+  DeepImmutableArray,
+  makeReadOnlyDeep,
+} from "../../../immutable";
 import { makeInspectJson } from "../../../utils/inspect";
 import { mapToObject } from "../../../utils/map";
 import { nonEmptyArray } from "../../../utils/types";
@@ -21,6 +31,7 @@ import {
   InternalAction,
 } from "../../actions";
 import {
+  FormProvider,
   LocalPropertiesManager,
   ThingProperty,
   ThingPropertyDef,
@@ -37,6 +48,8 @@ import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
 import { InternalThing, InternalThingParams } from "../services";
 import { ThingLocalPersistence } from "../components";
+import { getThingForms } from "../../forms";
+import { addContext } from "../../../utils/json-ld";
 
 @injectable()
 @provides(InternalThing)
@@ -67,6 +80,8 @@ export class InternalThingImpl implements InternalThing {
     private _propertiesManager: LocalPropertiesManager,
     @inject(LocalEventsManager)
     private _eventsManager: LocalEventsManager,
+    @inject(FormProvider)
+    private _formProviders: FormProvider[],
   ) {
     metadataObjectToMap(def.metadata || {}, this._metadata);
 
@@ -128,6 +143,12 @@ export class InternalThingImpl implements InternalThing {
 
   get events(): ReadonlyMap<string, ThingEvent> {
     return this._events;
+  }
+
+  get forms(): DeepImmutableArray<Form> {
+    return makeReadOnlyDeep(
+      cloneDeep(getThingForms(this._formProviders, this)),
+    );
   }
 
   get persistence(): DataPersistence {
@@ -195,6 +216,10 @@ export class InternalThingImpl implements InternalThing {
         properties,
         undefined,
       ),
+      [W3cWotTdIRIs.HasForm]: nonEmptyArray(
+        this.forms.map(addContext(W3cWotFormContext)),
+        undefined,
+      ),
     };
   }
 }
@@ -248,6 +273,10 @@ function createPublicThingApi(thing: InternalThing) {
     get events(): ReadonlyMap<string, ThingEvent> {
       // Already masked by InternalThing
       return thing.events;
+    }
+
+    get forms(): DeepImmutableArray<Form> {
+      return thing.forms;
     }
 
     getMetadataKeys() {

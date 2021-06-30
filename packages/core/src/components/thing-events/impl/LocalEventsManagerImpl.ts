@@ -2,7 +2,7 @@ import { injectable, provides, injectParam, inject } from "microinject";
 
 import { SelfPopulatingReadonlyMap } from "../../../utils/SelfPopulatingReadonlyMap";
 
-import { InternalThingParams, inThingScope } from "../../things";
+import { InternalThingParams, inThingScope, ThingsManager } from "../../things";
 import { WutWotPlugin } from "../../plugin-management";
 import { DuplicateIDError, makeCompoundId } from "../../id-mapping";
 
@@ -11,6 +11,7 @@ import { LocalEventsManager } from "../services";
 import { EventEventSink } from "../components";
 
 import { ThingEventImpl } from "./ThingEventImpl";
+import { FormProvider } from "../../properties";
 
 @injectable()
 @inThingScope()
@@ -24,6 +25,10 @@ export class EventServiceImpl
     private _thingId: string,
     @inject(EventEventSink)
     private _eventSink: EventEventSink,
+    @inject(ThingsManager)
+    private _thingsManager: ThingsManager,
+    @inject(FormProvider, { all: true, optional: true })
+    private _formProviders: FormProvider[] = [],
   ) {
     super("EventsManager");
   }
@@ -38,12 +43,22 @@ export class EventServiceImpl
       );
     }
 
+    const thing = this._thingsManager.get(this._thingId);
+    if (!thing) {
+      throw new Error(
+        "Tried to create an action for a Thing that is not yet registered.",
+      );
+    }
+
+    // TODO: Use factory or parameterized construction.
+
     const event = new ThingEventImpl(
       def,
       id,
-      this._thingId,
+      thing,
       owner,
       this._eventSink,
+      this._formProviders,
     );
     this._set(id, event);
     this._eventSink.onEventAdded(event);

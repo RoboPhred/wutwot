@@ -1,3 +1,5 @@
+import { Form } from "@wutwot/td";
+
 import { ToJSON, JSONAble } from "../../../types";
 
 import { ThingAction } from "../../actions";
@@ -5,6 +7,7 @@ import { ThingProperty } from "../../properties";
 import { ThingEvent } from "../../thing-events";
 import { MetadataProvider } from "../../metadata";
 import { JSONLD, JSONLDAble } from "../../json-ld";
+import { DeepImmutableArray } from "../../../immutable";
 
 /**
  * Describes a thing in the system.
@@ -49,6 +52,11 @@ export interface Thing extends MetadataProvider, JSONAble, JSONLDAble {
    * The events this thing supports.
    */
   readonly events: ReadonlyMap<string, ThingEvent>;
+
+  /**
+   * An array of forms describing methods of interacting with this thing.
+   */
+  readonly forms: DeepImmutableArray<Form>;
 
   /**
    * Produces a JSON representation of this thing.

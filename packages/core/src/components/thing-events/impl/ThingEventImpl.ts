@@ -5,10 +5,13 @@ import {
   DCMITermsIRIs,
   W3cWotTdIRIs,
   W3CWotJsonSchemaContext,
+  Form,
+  W3cWotFormContext,
 } from "@wutwot/td";
 
 import {
   DeepImmutable,
+  DeepImmutableArray,
   DeepImmutableObject,
   makeReadOnly,
   makeReadOnlyDeep,
@@ -17,6 +20,11 @@ import { makeInspectJson } from "../../../utils/inspect";
 
 import { EventEventSink } from "../components";
 import { ThingEventDef, ThingEvent, ThingEventRecord } from "../types";
+import { Thing } from "../../things";
+import { FormProvider } from "../../properties";
+import { getEventForms } from "../../forms";
+import { nonEmptyArray } from "../../../utils/types";
+import { addContext } from "../../../utils/json-ld";
 
 export class ThingEventImpl implements ThingEvent {
   private _def: DeepImmutableObject<ThingEventDef>;
@@ -29,9 +37,10 @@ export class ThingEventImpl implements ThingEvent {
   constructor(
     def: ThingEventDef,
     private _id: string,
-    private _thingId: string,
+    private _thing: Thing,
     private _owner: object,
     private _eventSink: EventEventSink,
+    private _formProviders: FormProvider[],
   ) {
     this._def = {
       ...makeReadOnlyDeep(cloneDeep(def)),
@@ -47,7 +56,7 @@ export class ThingEventImpl implements ThingEvent {
   }
 
   get thingId(): string {
-    return this._thingId;
+    return this._thing.id;
   }
 
   get ownerPlugin(): object {
@@ -81,6 +90,12 @@ export class ThingEventImpl implements ThingEvent {
     return makeReadOnly([...this._records]);
   }
 
+  get forms(): DeepImmutableArray<Form> {
+    return makeReadOnlyDeep(
+      cloneDeep(getEventForms(this._formProviders, this._thing, this)),
+    );
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -104,6 +119,10 @@ export class ThingEventImpl implements ThingEvent {
         "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.data),
       },
+      [W3cWotTdIRIs.HasForm]: nonEmptyArray(
+        this.forms.map(addContext(W3cWotFormContext)),
+        undefined,
+      ),
     };
   }
 

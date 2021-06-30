@@ -1,7 +1,7 @@
-import { TypedDataSchema } from "@wutwot/td";
+import { Form, TypedDataSchema } from "@wutwot/td";
 
 import { ToJSON } from "../../../types";
-import { DeepImmutable } from "../../../immutable";
+import { DeepImmutable, DeepImmutableArray } from "../../../immutable";
 
 import { Interaction } from "../../interactions";
 import { JSONLDAble } from "../../json-ld";
@@ -25,6 +25,11 @@ export interface ThingEvent extends Interaction, JSONLDAble {
    * An array of records of raised events, in chronological order.
    */
   readonly records: readonly ThingEventRecord[];
+
+  /**
+   * An array of forms describing methods of interacting with this event.
+   */
+  readonly forms: DeepImmutableArray<Form>;
 
   /**
    * Gets a JSON representation of this event.

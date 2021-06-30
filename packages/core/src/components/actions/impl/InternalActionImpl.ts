@@ -36,6 +36,7 @@ import { addContext } from "../../../utils/json-ld";
 import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
+import { nonEmptyArray } from "../../../utils/types";
 
 @injectable()
 @asActionScope()
@@ -44,9 +45,6 @@ export class InternalActionImpl implements InternalAction {
   private _publicAPI: ThingAction;
 
   private _def: ThingActionDef;
-
-  // Default value is important here as this is the only property not initialized by the time the form providers are called on this property.
-  private _externalForms: DeepImmutableArray<Form> = [];
 
   constructor(
     @injectParam(InternalActionParams.ActionDef)
@@ -65,11 +63,6 @@ export class InternalActionImpl implements InternalAction {
     this._def = { ...def };
 
     this._publicAPI = createPublicActionApi(this);
-
-    // Do this last, as the form provider needs a reference to us.  All properties (except for external forms) must be initialized by this point.
-    this._externalForms = makeReadOnlyDeep(
-      getActionForms(this._formProviders, this._thing, this._publicAPI),
-    );
   }
 
   [inspect.custom] = makeInspectJson("ThingAction");
@@ -123,7 +116,11 @@ export class InternalActionImpl implements InternalAction {
   }
 
   get forms(): DeepImmutableArray<Form> {
-    return this._externalForms;
+    return makeReadOnlyDeep(
+      cloneDeep(
+        getActionForms(this._formProviders, this._thing, this._publicAPI),
+      ),
+    );
   }
 
   invoke(input: any): ThingActionRequest {
@@ -180,9 +177,10 @@ export class InternalActionImpl implements InternalAction {
         "@context": W3CWotJsonSchemaContext,
         ...cloneDeep(this.input),
       },
-      [W3cWotTdIRIs.HasForm]: [
-        ...cloneDeep(this._externalForms).map(addContext(W3cWotFormContext)),
-      ],
+      [W3cWotTdIRIs.HasForm]: nonEmptyArray(
+        this.forms.map(addContext(W3cWotFormContext)),
+        undefined,
+      ),
     };
   }
 }

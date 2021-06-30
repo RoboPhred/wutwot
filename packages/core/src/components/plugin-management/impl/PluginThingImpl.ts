@@ -1,4 +1,9 @@
-import { createReadonlyMapWrapper } from "../../../immutable";
+import { Form } from "@wutwot/td";
+
+import {
+  createReadonlyMapWrapper,
+  DeepImmutableArray,
+} from "../../../immutable";
 
 import { Thing, ThingsManager, InternalThing } from "../../things";
 import { ThingActionDef, InternalAction } from "../../actions";
@@ -67,6 +72,10 @@ export class PluginThingImpl implements OwnedPluginThing {
 
   get events(): ReadonlyMap<string, ThingEvent> {
     return this._thing.events;
+  }
+
+  get forms(): DeepImmutableArray<Form> {
+    return this._thing.forms;
   }
 
   getMetadataKeys(): MetadataIdentifier<unknown>[] {

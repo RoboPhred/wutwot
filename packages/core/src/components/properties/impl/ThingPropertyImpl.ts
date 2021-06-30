@@ -15,6 +15,7 @@ import {
 
 import { makeInspectJson } from "../../../utils/inspect";
 import { addContext } from "../../../utils/json-ld";
+import { nonEmptyArray } from "../../../utils/types";
 import {
   DeepImmutableArray,
   DeepImmutableObject,
@@ -24,21 +25,22 @@ import {
 
 import { validateOrThrow } from "../../json-schema";
 
+import { FormProvider, getPropertyForms } from "../../forms";
+import { Thing } from "../../things";
+
 import { ThingProperty, ThingPropertyDef } from "../types";
 
 // TODO: Support object properties.  Currently only supports scalers
 export class ThingPropertyImpl implements ThingProperty {
   private _lastValue: any;
   private _def: DeepImmutableObject<ThingPropertyDef>;
-  // Default value is important here as this is the only property not initialized by the time the form providers are called on this property.
-  private _externalForms: DeepImmutableArray<Form> = [];
 
   constructor(
     def: ThingPropertyDef,
     private _id: string,
-    private _thingId: string,
+    private _thing: Thing,
     private _owner: object,
-    formCollector: (self: ThingProperty) => Form[],
+    private _formProviders: FormProvider[],
   ) {
     // Do not mess with the values observable.  There is no point freezing it
     // as its entire purpose is to give us live values, and the cloning process
@@ -56,9 +58,6 @@ export class ThingPropertyImpl implements ThingProperty {
         this._lastValue = value;
       },
     });
-
-    // Do this last, as the form provider needs a reference to us.  All properties (except for external forms) must be initialized by this point.
-    this._externalForms = makeReadOnlyDeep(formCollector(this));
   }
 
   [inspect.custom] = makeInspectJson("ThingProperty");
@@ -72,7 +71,7 @@ export class ThingPropertyImpl implements ThingProperty {
   }
 
   get thingId(): string {
-    return this._thingId;
+    return this._thing.id;
   }
 
   get title(): string | undefined {
@@ -139,7 +138,9 @@ export class ThingPropertyImpl implements ThingProperty {
   }
 
   get forms(): DeepImmutableArray<Form> {
-    return this._externalForms;
+    return makeReadOnlyDeep(
+      cloneDeep(getPropertyForms(this._formProviders, this._thing, this)),
+    );
   }
 
   setValue(value: any): Promise<void> {
@@ -152,7 +153,7 @@ export class ThingPropertyImpl implements ThingProperty {
     validateOrThrow(value, schema);
 
     try {
-      return this._def.onValueChangeRequested(this._thingId, this._id, value);
+      return this._def.onValueChangeRequested(this._thing.id, this._id, value);
     } catch (e) {
       return Promise.reject(e);
     }
@@ -197,9 +198,10 @@ export class ThingPropertyImpl implements ThingProperty {
       [W3cWotJsonSchemaIRIs.MaxLength]: this.maxLength,
       [W3cWotJsonSchemaIRIs.Pattern]: this.pattern,
       [W3cWotJsonSchemaIRIs.ReadOnly]: this.readOnly,
-      [W3cWotTdIRIs.HasForm]: [
-        ...cloneDeep(this._externalForms).map(addContext(W3cWotFormContext)),
-      ],
+      [W3cWotTdIRIs.HasForm]: nonEmptyArray(
+        this.forms.map(addContext(W3cWotFormContext)),
+        undefined,
+      ),
     };
   }
 }

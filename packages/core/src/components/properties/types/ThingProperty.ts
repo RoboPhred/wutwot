@@ -72,7 +72,7 @@ export interface ThingProperty extends Interaction, JSONLDAble {
   readonly value: any;
 
   /**
-   * An array of forms for manipulating this property.
+   * An array of forms describing methods of interacting with this property.
    */
   readonly forms: DeepImmutableArray<Form>;
 

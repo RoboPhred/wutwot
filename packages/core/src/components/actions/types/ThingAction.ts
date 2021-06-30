@@ -31,7 +31,7 @@ export interface ThingAction extends Interaction, JSONLDAble {
   readonly requests: ReadonlyArray<ThingActionRequest>;
 
   /**
-   * An array of forms for manipulating this action.
+   * An array of forms describing methods of interacting with this action.
    */
   readonly forms: DeepImmutableArray<Form>;
 
