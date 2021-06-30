@@ -6,10 +6,7 @@ import {
   ActionInvocationError,
   PropertySetError,
 } from "@wutwot/core";
-import {
-  ExpressController,
-  ExpressRootUrl,
-} from "@wutwot/plugin-servient-express";
+import { HttpController, HttpRootUrl } from "@wutwot/plugin-servient-http";
 import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
 import HttpStatusCodes from "http-status-codes";
 import {
@@ -29,13 +26,13 @@ import urlJoin from "url-join";
 
 @injectable()
 @singleton()
-@provides(ExpressController)
+@provides(HttpController)
 @controller("/things")
 @use(cors({ origin: "*" }), nocache())
 export class ThingDirectoryController {
   constructor(
     @inject(WutWot) private _wutwot: WutWot,
-    @inject(ExpressRootUrl) private _rootUrl: ExpressRootUrl,
+    @inject(HttpRootUrl) private _rootUrl: HttpRootUrl,
   ) {}
 
   // TODO: Deprecate in favor of a plugin providing the [Thing Discovery API](https://www.w3.org/TR/wot-discovery/)

@@ -4,9 +4,9 @@ import { WutWotPlugin } from "@wutwot/core";
 import { ThingDirectoryController } from "./components/ThingDirectoryController";
 import { HttpBindingFormProvider } from "./components/HttpBindingFormProvider";
 
-export class ExpressBindingPlugin implements WutWotPlugin {
+export class HttpBindingPlugin implements WutWotPlugin {
   get id(): string {
-    return "bindings-express";
+    return "binding-http";
   }
 
   onRegisterPublicServices(bind: BindFunction) {

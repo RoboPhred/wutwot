@@ -1,7 +1,7 @@
 {
-  "name": "@wutwot/plugin-servient-express",
+  "name": "@wutwot/plugin-servient-http",
   "version": "1.0.0",
-  "description": "Express route servient for wutwot",
+  "description": "HTTP servient for wutwot",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",

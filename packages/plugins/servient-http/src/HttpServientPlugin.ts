@@ -12,30 +12,30 @@ import { ServiceLocator, BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
 
-import { ExpressRouter, ExpressRootUrl } from "./services";
-import { ExpressController } from "./contracts";
+import { HttpRouter, HttpRootUrl } from "./services";
+import { HttpController } from "./contracts";
 
-export type ExpressServientPluginOptions =
-  | InternalExpressServientPluginOptions
-  | ExternalExpressServientPluginOptions;
-export interface CommonExpressServientPluginOptions {
+export type HttpServientPluginOptions =
+  | InternalHttpServientPluginOptions
+  | ExternalHttpServientPluginOptions;
+export interface CommonHttpServientPluginOptions {
   pluginId?: string;
 }
 
-export interface InternalExpressServientPluginOptions
-  extends CommonExpressServientPluginOptions {
+export interface InternalHttpServientPluginOptions
+  extends CommonHttpServientPluginOptions {
   hostname?: string;
   port?: number;
 }
 
-export interface ExternalExpressServientPluginOptions
-  extends CommonExpressServientPluginOptions {
+export interface ExternalHttpServientPluginOptions
+  extends CommonHttpServientPluginOptions {
   rootUrl: string;
   router: IRouter;
 }
 function isExternalOptions(
-  opts: ExpressServientPluginOptions,
-): opts is ExternalExpressServientPluginOptions {
+  opts: HttpServientPluginOptions,
+): opts is ExternalHttpServientPluginOptions {
   return "router" in opts;
 }
 
@@ -44,7 +44,7 @@ export class ExpressServientPlugin implements WutWotPlugin {
   private _rootUrl: string;
   private _router: IRouter;
 
-  constructor(opts: ExpressServientPluginOptions) {
+  constructor(opts: HttpServientPluginOptions) {
     this._pluginId = opts.pluginId ?? "express-servient";
 
     if (isExternalOptions(opts)) {
@@ -111,13 +111,13 @@ export class ExpressServientPlugin implements WutWotPlugin {
   }
 
   onRegisterPublicServices(bind: BindFunction) {
-    bind(ExpressRouter).toConstantValue(this._router);
-    bind(ExpressRootUrl).toConstantValue(this._rootUrl);
+    bind(HttpRouter).toConstantValue(this._router);
+    bind(HttpRootUrl).toConstantValue(this._rootUrl);
   }
 
   onPluginInitialize(serviceLocator: ServiceLocator) {
-    if (serviceLocator.has(ExpressController)) {
-      const controllers = serviceLocator.getAll(ExpressController);
+    if (serviceLocator.has(HttpController)) {
+      const controllers = serviceLocator.getAll(HttpController);
       const controllerRoute = createControllerRoute(...controllers);
       this._router.use(controllerRoute);
     }

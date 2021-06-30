@@ -1,13 +1,13 @@
 import { inject, injectable, provides, singleton } from "microinject";
 import { FormProvider, Thing, ThingAction, ThingProperty } from "@wutwot/core";
-import { ExpressRootUrl } from "@wutwot/plugin-servient-express";
+import { HttpRootUrl } from "@wutwot/plugin-servient-http";
 import { Form } from "@wutwot/td";
 
 @injectable()
 @singleton()
 @provides(FormProvider)
 export class HttpBindingFormProvider implements FormProvider {
-  constructor(@inject(ExpressRootUrl) private _rootUrl: ExpressRootUrl) {}
+  constructor(@inject(HttpRootUrl) private _rootUrl: HttpRootUrl) {}
 
   getPropertyForms(thing: Thing, property: ThingProperty): Form | Form[] {
     // We used to use relative paths to the TDThing's base property.
