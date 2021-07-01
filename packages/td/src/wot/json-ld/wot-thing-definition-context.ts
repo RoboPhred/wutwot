@@ -1,6 +1,4 @@
-// Source: https://github.com/w3c/wot-thing-description/blob/main/context/td-context-1.1.jsonld @ ddf2088
-// Fix applied: https://github.com/w3c/wot-thing-description/pull/1169/files
-// Fix applied: https://github.com/w3c/wot-thing-description/issues/1160
+// Source: https://github.com/w3c/wot-thing-description/blob/main/context/td-context-1.1.jsonld @ 8dda72f
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -20,6 +18,7 @@ export default {
     "@id": "td:hasPropertyAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "name",
     "@context": {
       td: "https://www.w3.org/2019/wot/td#",
       jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -132,11 +131,20 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
-      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
-        "@index": "propertyName",
+        "@index": "name",
+        "@context": {
+          properties: {
+            "@id": "jsonschema:properties",
+            "@container": "@index",
+            "@index": "propertyName",
+          },
+        },
+      },
+      propertyName: {
+        "@id": "jsonschema:propertyName",
       },
       unit: {
         "@id": "schema:unitCode",
@@ -148,11 +156,13 @@ export default {
     "@id": "td:hasActionAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "name",
   },
   events: {
     "@id": "td:hasEventAffordance",
     "@type": "@id",
     "@container": "@index",
+    "@index": "name",
   },
   security: {
     "@id": "td:hasSecurityConfiguration",
@@ -244,6 +254,84 @@ export default {
     "@id": "td:securityDefinitions",
     "@type": "@id",
     "@container": "@index",
+    "@context": {
+      td: "https://www.w3.org/2019/wot/td#",
+      jsonschema: "https://www.w3.org/2019/wot/json-schema#",
+      wotsec: "https://www.w3.org/2019/wot/security#",
+      hctl: "https://www.w3.org/2019/wot/hypermedia#",
+      dct: "http://purl.org/dc/terms/",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "@vocab": "https://www.w3.org/2019/wot/security#",
+      in: {
+        "@id": "wotsec:in",
+      },
+      name: {
+        "@id": "wotsec:name",
+      },
+      authorization: {
+        "@id": "wotsec:authorization",
+        "@type": "@id",
+      },
+      token: {
+        "@id": "wotsec:token",
+        "@type": "@id",
+      },
+      refresh: {
+        "@id": "wotsec:refresh",
+        "@type": "@id",
+      },
+      proxy: {
+        "@id": "wotsec:proxy",
+        "@type": "@id",
+      },
+      scopes: {
+        "@id": "wotsec:scopes",
+      },
+      flow: {
+        "@id": "wotsec:flow",
+      },
+      qop: {
+        "@id": "wotsec:qop",
+      },
+      alg: {
+        "@id": "wotsec:alg",
+      },
+      format: {
+        "@id": "wotsec:format",
+      },
+      identity: {
+        "@id": "wotsec:identity",
+      },
+      allOf: {
+        "@id": "wotsec:allOf",
+      },
+      oneOf: {
+        "@id": "wotsec:oneOf",
+      },
+      scheme: {
+        "@id": "rdf:type",
+        "@type": "@vocab",
+      },
+      description: {
+        "@id": "dct:description",
+      },
+      descriptions: {
+        "@id": "dct:description",
+        "@container": "@language",
+      },
+      nosec: "wotsec:NoSecurityScheme",
+      combo: "wotsec:ComboSecurityScheme",
+      basic: "wotsec:BasicSecurityScheme",
+      digest: "wotsec:DigestSecurityScheme",
+      apikey: "wotsec:APIKeySecurityScheme",
+      bearer: "wotsec:BearerSecurityScheme",
+      cert: "wotsec:CertSecurityScheme",
+      psk: "wotsec:PSKSecurityScheme",
+      public: "wotsec:PublicSecurityScheme",
+      pop: "wotsec:PoPSecurityScheme",
+      oauth2: "wotsec:OAuth2SecurityScheme",
+      uriVariables: "td:uriVariables",
+    },
   },
   schemaDefinitions: {
     "@id": "td:schemaDefinitions",
@@ -264,9 +352,11 @@ export default {
   },
   created: {
     "@id": "dct:created",
+    "@type": "xsd:dateTime",
   },
   modified: {
     "@id": "dct:modified",
+    "@type": "xsd:dateTime",
   },
   observable: {
     "@id": "td:isObservable",
@@ -455,7 +545,9 @@ export default {
   },
   uriVariables: {
     "@id": "td:hasUriTemplateSchema",
+    "@type": "@id",
     "@container": "@index",
+    "@index": "name",
   },
   safe: {
     "@id": "td:isSafe",
@@ -590,11 +682,13 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
-      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
+      },
+      propertyName: {
+        "@id": "jsonschema:propertyName",
       },
       unit: {
         "@id": "schema:unitCode",
@@ -717,11 +811,13 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
-      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
+      },
+      propertyName: {
+        "@id": "jsonschema:propertyName",
       },
       unit: {
         "@id": "schema:unitCode",
@@ -844,11 +940,13 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
-      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
+      },
+      propertyName: {
+        "@id": "jsonschema:propertyName",
       },
       unit: {
         "@id": "schema:unitCode",
@@ -971,11 +1069,13 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
-      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
+      },
+      propertyName: {
+        "@id": "jsonschema:propertyName",
       },
       unit: {
         "@id": "schema:unitCode",
@@ -1098,11 +1198,13 @@ export default {
       number: "jsonschema:NumberSchema",
       integer: "jsonschema:IntegerSchema",
       null: "jsonschema:NullSchema",
-      propertyName: "jsonschema:propertyName",
       properties: {
         "@id": "jsonschema:properties",
         "@container": "@index",
         "@index": "propertyName",
+      },
+      propertyName: {
+        "@id": "jsonschema:propertyName",
       },
       unit: {
         "@id": "schema:unitCode",

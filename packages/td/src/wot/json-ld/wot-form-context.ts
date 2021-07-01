@@ -1,3 +1,4 @@
+// Extracted from https://github.com/w3c/wot-thing-description/blob/main/context/td-context-1.1.jsonld @ 8dda72f
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",
