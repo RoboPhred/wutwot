@@ -68,18 +68,15 @@ async function fetchThingDefinitionsFromSource(
 async function resolveThingDefinition(
   rawDefinition: Thing,
 ): Promise<ResolvedThingDefinition> {
-  // FIXME: Re-enable when td / jsonld.js can round trip:
-  // https://github.com/w3c/wot-thing-description/issues/1161#issuecomment-864270699
-  // // Reflow the thing document to our context.
-  // // Currently should be a no-op, but it might correct some valid json-ld things.
-  // // Later, we might have our own prefixes like iotschema.
-  // const expanded = await expand(rawDefinition);
-  // const definition = (await compact(
-  //   expanded,
-  //   W3cWotTDContext,
-  // )) as unknown as Thing;
-
-  const definition = rawDefinition;
+  // Reflow the thing document to our context.
+  // Currently should be a no-op, but it might correct some valid json-ld things.
+  // Later, we might have our own prefixes like iotschema.
+  const expanded = await expand(rawDefinition);
+  const definition = (await compact(
+    expanded,
+    // jsonld typings are wrong: This accepts url strings.
+    W3cWotTDContext as any,
+  )) as unknown as Thing;
 
   return {
     definition,
