@@ -14,7 +14,7 @@ import {
 } from "@wutwot/td";
 
 import { makeInspectJson } from "../../../utils/inspect";
-import { addContext } from "../../../utils/json-ld";
+import { addContext, asID } from "../../../utils/json-ld";
 import { nonEmptyArray } from "../../../utils/types";
 import {
   DeepImmutableArray,
@@ -183,13 +183,14 @@ export class ThingPropertyImpl implements ThingProperty {
 
   toJSONLD() {
     return {
-      "@index": this.id,
+      [W3cWotTdIRIs.Name]: this.id,
       "@type": this.semanticTypes,
+      // [W3cRdfSyntaxIRIs.Type]: nonEmptyArray(
+      //   this.semanticTypes.map(asID()),
+      //   undefined,
+      // ),
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
-      [W3cRdfSyntaxIRIs.Type]: {
-        "@id": dataSchemaTypeToW3cWotClass(this.type),
-      },
       [SchemaOrgIRIs.UnitCode]: this.unit,
       [W3cWotJsonSchemaIRIs.Enum]: this.enum ? [...this.enum] : undefined,
       [W3cWotJsonSchemaIRIs.Minimum]: this.minimum,

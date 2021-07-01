@@ -53,9 +53,9 @@
     "typescript": "^4.3.2"
   },
   "optionalDependencies": {
-    "@wutwot/plugin-binding-express": "^1.0.0",
+    "@wutwot/plugin-binding-http": "^1.0.0",
     "@wutwot/plugin-scenes": "^1.0.0",
-    "@wutwot/plugin-servient-express": "^1.0.0",
+    "@wutwot/plugin-servient-http": "^1.0.0",
     "@wutwot/plugin-zwave": "^1.0.0",
     "@wutwot/plugin-model": "^1.0.0"
   }

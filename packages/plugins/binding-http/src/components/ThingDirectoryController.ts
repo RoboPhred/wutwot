@@ -160,7 +160,8 @@ export class ThingDirectoryController {
   private async _getThingDefinition(thing: Thing): Promise<TDThing> {
     try {
       const ld = thing.toJSONLD();
-      let tdThing: TDThing = (await compact(ld, W3cWotTDContext)) as any;
+      // jsonld typings are wrong: compact accepts a url for context.
+      let tdThing: TDThing = (await compact(ld, W3cWotTDContext as any)) as any;
 
       tdThing.base = urlJoin(this._rootUrl, `/things/${thing.id}`);
 

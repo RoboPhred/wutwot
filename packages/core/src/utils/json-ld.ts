@@ -23,3 +23,11 @@ export function addContext(context: any): (jsonld: any) => any {
     };
   };
 }
+
+export function asID(): (jsonld: any) => any {
+  return (jsonld: any) => {
+    return {
+      "@id": jsonld,
+    };
+  };
+}

@@ -1,7 +1,4 @@
-// Source: https://github.com/w3c/wot-thing-description/blob/main/context/json-schema-context.jsonld @ eef349b
-// Fix applied: https://github.com/w3c/wot-thing-description/pull/1169
-// Fix applied: https://github.com/w3c/wot-thing-description/issues/1170
-// Fix applied: https://github.com/w3c/wot-thing-description/issues/1160
+// Source: https://github.com/w3c/wot-thing-description/blob/main/context/json-schema-context.jsonld @ 2d07ce8
 export default {
   td: "https://www.w3.org/2019/wot/td#",
   jsonschema: "https://www.w3.org/2019/wot/json-schema#",
@@ -10,7 +7,6 @@ export default {
   dct: "http://purl.org/dc/terms/",
   schema: "http://schema.org/",
   rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-  xsd: "http://www.w3.org/2001/XMLSchema#",
   "@vocab": "https://www.w3.org/2019/wot/json-schema#",
   DataSchema: {
     "@id": "jsonschema:DataSchema",
@@ -115,11 +111,13 @@ export default {
   number: "jsonschema:NumberSchema",
   integer: "jsonschema:IntegerSchema",
   null: "jsonschema:NullSchema",
-  propertyName: "jsonschema:propertyName",
   properties: {
     "@id": "jsonschema:properties",
     "@container": "@index",
     "@index": "propertyName",
+  },
+  propertyName: {
+    "@id": "jsonschema:propertyName",
   },
   unit: {
     "@id": "schema:unitCode",

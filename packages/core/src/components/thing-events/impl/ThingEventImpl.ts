@@ -7,6 +7,7 @@ import {
   W3CWotJsonSchemaContext,
   Form,
   W3cWotFormContext,
+  W3cRdfSyntaxIRIs,
 } from "@wutwot/td";
 
 import {
@@ -24,7 +25,7 @@ import { Thing } from "../../things";
 import { FormProvider } from "../../properties";
 import { getEventForms } from "../../forms";
 import { nonEmptyArray } from "../../../utils/types";
-import { addContext } from "../../../utils/json-ld";
+import { addContext, asID } from "../../../utils/json-ld";
 
 export class ThingEventImpl implements ThingEvent {
   private _def: DeepImmutableObject<ThingEventDef>;
@@ -111,8 +112,12 @@ export class ThingEventImpl implements ThingEvent {
 
   toJSONLD() {
     return {
-      "@index": this.id,
-      "@type": [...this.semanticTypes],
+      [W3cWotTdIRIs.Name]: this.id,
+      "@type": this.semanticTypes,
+      // [W3cRdfSyntaxIRIs.Type]: nonEmptyArray(
+      //   this.semanticTypes.map(asID()),
+      //   undefined,
+      // ),
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
       [W3cWotTdIRIs.HasNotificationSchema]: {

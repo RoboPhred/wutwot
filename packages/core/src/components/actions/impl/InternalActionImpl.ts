@@ -9,6 +9,7 @@ import {
   W3CWotJsonSchemaContext,
   Form,
   W3cWotFormContext,
+  W3cRdfSyntaxIRIs,
 } from "@wutwot/td";
 
 import {
@@ -31,7 +32,7 @@ import {
 import { Thing } from "../../things";
 import { FormProvider } from "../../properties";
 import { getActionForms } from "../../forms";
-import { addContext } from "../../../utils/json-ld";
+import { addContext, asID } from "../../../utils/json-ld";
 
 import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
@@ -169,8 +170,12 @@ export class InternalActionImpl implements InternalAction {
 
   toJSONLD() {
     return {
-      "@index": this.id,
-      "@type": [...this.semanticTypes],
+      [W3cWotTdIRIs.Name]: this.id,
+      "@type": this.semanticTypes,
+      // [W3cRdfSyntaxIRIs.Type]: nonEmptyArray(
+      //   this.semanticTypes.map(asID()),
+      //   undefined,
+      // ),
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
       [W3cWotTdIRIs.HasInputSchema]: {

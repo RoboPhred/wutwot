@@ -12,6 +12,7 @@ import {
   DCMITermsIRIs,
   Form,
   W3cWotFormContext,
+  W3cRdfSyntaxIRIs,
 } from "@wutwot/td";
 
 import {
@@ -49,7 +50,7 @@ import { ThingScope } from "../scopes";
 import { InternalThing, InternalThingParams } from "../services";
 import { ThingLocalPersistence } from "../components";
 import { getThingForms } from "../../forms";
-import { addContext } from "../../../utils/json-ld";
+import { addContext, asID } from "../../../utils/json-ld";
 
 @injectable()
 @provides(InternalThing)
@@ -206,8 +207,8 @@ export class InternalThingImpl implements InternalThing {
 
     return {
       "@id": this.id,
-      // TODO: semanticTypes should always be full resolved IRIs
-      "@types": [...this.semanticTypes],
+      "@type": this.semanticTypes,
+      // [W3cRdfSyntaxIRIs.Type]: this.semanticTypes.map(asID()),
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
       [W3cWotTdIRIs.HasActionAffordance]: nonEmptyArray(actions, undefined),
