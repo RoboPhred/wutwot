@@ -102,13 +102,13 @@ export class ExpressServientPlugin implements WutWotPlugin {
 
     const portStr = configuredPort == 80 ? "" : `:${configuredPort}`;
     if (configuredHostname && configuredHostname != "") {
-      rootUrl = `http://${configuredHostname}${portStr}`;
+      rootUrl = `https://${configuredHostname}${portStr}`;
       // A specific hostname has been specified, so limit the host to it.
       bindPort = configuredPort;
       bindHostname = configuredHostname;
     } else {
       // Assume we are using the host's hostname.
-      rootUrl = `http://${getHostname()}${portStr}`;
+      rootUrl = `https://${getHostname()}${portStr}`;
       // Don't limit the connections to the assumed hostname, however.
       bindPort = configuredPort;
     }
