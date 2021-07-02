@@ -52,7 +52,11 @@ export class WutWotPluginEnumeratorImpl implements WutWotPluginEnumerator {
     try {
       return new pluginConstructor(options);
     } catch (e) {
-      e.message = `Failed to resolve plugin ${parts[0]}: ${e.message}`;
+      if (e.code === "ENOENT") {
+        e.message = `Failed to resolve plugin ${parts[0]}: ${e.message}`;
+      } else {
+        e.message = `Failed to initialize plugin ${parts[0]}: ${e.message}`;
+      }
       throw e;
     }
   }

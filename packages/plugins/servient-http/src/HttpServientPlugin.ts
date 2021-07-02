@@ -1,3 +1,5 @@
+import https from "https";
+import fs from "fs";
 import express, {
   Router,
   IRouter,
@@ -11,6 +13,7 @@ import HttpStatusCodes from "http-status-codes";
 import { ServiceLocator, BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
+import { pki } from "node-forge";
 
 import { HttpRouter, HttpRootUrl } from "./services";
 import { HttpController } from "./contracts";
@@ -26,6 +29,8 @@ export interface InternalHttpServientPluginOptions
   extends CommonHttpServientPluginOptions {
   hostname?: string;
   port?: number;
+  certificate: string;
+  privateKey: string;
 }
 
 export interface ExternalHttpServientPluginOptions
@@ -56,53 +61,9 @@ export class ExpressServientPlugin implements WutWotPlugin {
       this._router = opts.router;
       this._rootUrl = opts.rootUrl;
     } else {
-      var server = express();
-      server.on("error", (err) => {
-        // TODO: Log error, better error handling.
-        console.error(err);
-      });
-
-      this._router = Router();
-      server.use(this._router);
-
-      const configuredHostname = opts.hostname ?? process.env.HOSTNAME;
-
-      const configuredPort = opts.port ?? Number(process.env.PORT);
-      if (Number.isNaN(configuredPort)) {
-        throw new Error("ExpressServientPlugin: No port configured.");
-      }
-
-      const portStr = configuredPort == 80 ? "" : `:${configuredPort}`;
-      if (configuredHostname && configuredHostname != "") {
-        this._rootUrl = `http://${configuredHostname}${portStr}`;
-        // A specific hostname has been specified, so limit the host to it.
-        server.listen(configuredPort, configuredHostname);
-      } else {
-        // Assume we are using the host's hostname.
-        this._rootUrl = `http://${getHostname()}${portStr}`;
-        // Don't limit the connections to the assumed hostname, however.
-        server.listen(configuredPort);
-      }
-
-      server.use(
-        (err: Error, req: Request, res: Response, next: NextFunction) => {
-          // TODO: Log error
-
-          if (isHttpError(err)) {
-            const headers = err.headers ?? {};
-            for (const header of Object.keys(headers)) {
-              res.header(header, headers[header]);
-            }
-            // TODO: Use [problem detail](https://datatracker.ietf.org/doc/html/rfc7807).
-            // This is requested by the Thing Discovery api.
-            res.status(err.statusCode).end({
-              message: err.message,
-            });
-          } else {
-            res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).end();
-          }
-        },
-      );
+      const [generatedUrl, generatedRouter] = this._configureInternal(opts);
+      this._rootUrl = generatedUrl;
+      this._router = generatedRouter;
     }
   }
 
@@ -122,4 +83,173 @@ export class ExpressServientPlugin implements WutWotPlugin {
       this._router.use(controllerRoute);
     }
   }
+
+  private _configureInternal(
+    opts: InternalHttpServientPluginOptions,
+  ): [string, Router] {
+    let router: Router = Router();
+    let rootUrl: string;
+    let bindPort: number;
+    let bindHostname: string | null = null;
+
+    const configuredHostname = opts.hostname ?? process.env.HOSTNAME;
+
+    const configuredPort = opts.port ?? Number(process.env.PORT);
+    if (Number.isNaN(configuredPort)) {
+      throw new Error("ExpressServientPlugin: No port configured.");
+    }
+
+    const portStr = configuredPort == 80 ? "" : `:${configuredPort}`;
+    if (configuredHostname && configuredHostname != "") {
+      rootUrl = `http://${configuredHostname}${portStr}`;
+      // A specific hostname has been specified, so limit the host to it.
+      bindPort = configuredPort;
+      bindHostname = configuredHostname;
+    } else {
+      // Assume we are using the host's hostname.
+      rootUrl = `http://${getHostname()}${portStr}`;
+      // Don't limit the connections to the assumed hostname, however.
+      bindPort = configuredPort;
+    }
+
+    var app = express();
+    app.on("error", (err) => {
+      // TODO: Log error, better error handling.
+      console.error(err);
+    });
+
+    app.use(router);
+
+    app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      // TODO: Log error
+
+      if (isHttpError(err)) {
+        const headers = err.headers ?? {};
+        for (const header of Object.keys(headers)) {
+          res.header(header, headers[header]);
+        }
+        // TODO: Use [problem detail](https://datatracker.ietf.org/doc/html/rfc7807).
+        // This is requested by the Thing Discovery api.
+        res.status(err.statusCode).end({
+          message: err.message,
+        });
+      } else {
+        res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).end();
+      }
+    });
+
+    const [cert, key] = this._loadCertificate(
+      opts,
+      bindHostname ?? getHostname(),
+    );
+
+    const server = https.createServer({ key, cert }, app);
+
+    server.listen(configuredPort, configuredHostname);
+
+    return [rootUrl, router];
+  }
+
+  private _loadCertificate(
+    opts: InternalHttpServientPluginOptions,
+    hostname: string,
+  ): [certificate: string | Buffer, privateKey: string | Buffer] {
+    const { certificate, privateKey } = opts;
+    if (certificate || privateKey) {
+      if (isNullOrEmpty(certificate) || isNullOrEmpty(privateKey)) {
+        throw new Error(
+          "Both the certificate and the private key must be specified.",
+        );
+      }
+
+      const cert = fs.readFileSync(certificate);
+      const pk = fs.readFileSync(privateKey);
+      return [cert, pk];
+    } else {
+      return this._generateCertificate(hostname);
+    }
+  }
+
+  _generateCertificate(
+    hostname: string,
+  ): [certificate: string, privateKey: string] {
+    const keyPair = pki.rsa.generateKeyPair(2048);
+
+    const cert = pki.createCertificate();
+    cert.publicKey = keyPair.publicKey;
+    cert.serialNumber = "01";
+    cert.validity.notBefore = new Date();
+    cert.validity.notAfter = new Date();
+    cert.validity.notAfter.setFullYear(
+      cert.validity.notBefore.getFullYear() + 1,
+    );
+
+    cert.setSubject([
+      {
+        shortName: "O",
+        value: "Self-Signed Certificate for WutWot",
+      },
+      {
+        shortName: "CN",
+        value: hostname,
+      },
+    ]);
+
+    cert.setIssuer([
+      {
+        shortName: "C",
+        value: "US",
+      },
+      {
+        shortName: "ST",
+        value: "New York",
+      },
+      {
+        shortName: "L",
+        value: "New York",
+      },
+      {
+        shortName: "O",
+        value: "Self-Signed Certificate for WutWot",
+      },
+      {
+        shortName: "CN",
+        value: hostname,
+      },
+    ]);
+
+    cert.setExtensions([
+      {
+        name: "basicConstraints",
+        critical: true,
+        value: "CA:FALSE",
+      },
+      {
+        name: "keyUsage",
+        critical: true,
+        value: "digitalSignature, keyEncipherment",
+      },
+      {
+        name: "extKeyUsage",
+        critical: true,
+        value: "serverAuth, clientAuth",
+      },
+      {
+        name: "subjectAltName",
+        critical: false,
+        value: `DNS:${hostname}`,
+      },
+    ]);
+
+    cert.sign(keyPair.privateKey);
+
+    return [
+      pki.certificateToPem(cert),
+      pki.privateKeyToPem(keyPair.privateKey),
+    ];
+  }
+}
+
+function isNullOrEmpty(str: string): boolean {
+  return str == null || str == "";
 }
