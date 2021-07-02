@@ -181,7 +181,10 @@ export class ExpressServientPlugin implements WutWotPlugin {
     cert.serialNumber = createHash("sha1")
       .update(hostname + Date.now())
       .digest("hex");
+
+    const fullYear = new Date().getFullYear();
     cert.validity.notBefore = new Date();
+    cert.validity.notBefore.setFullYear(fullYear - 1);
     cert.validity.notAfter = new Date();
     cert.validity.notAfter.setFullYear(
       cert.validity.notBefore.getFullYear() + 1,
