@@ -1,5 +1,6 @@
 import https from "https";
 import fs from "fs";
+import { createHash } from "crypto";
 import express, {
   Router,
   IRouter,
@@ -177,7 +178,9 @@ export class ExpressServientPlugin implements WutWotPlugin {
 
     const cert = pki.createCertificate();
     cert.publicKey = keyPair.publicKey;
-    cert.serialNumber = "01";
+    cert.serialNumber = createHash("sha1")
+      .update(hostname + Date.now())
+      .digest("hex");
     cert.validity.notBefore = new Date();
     cert.validity.notAfter = new Date();
     cert.validity.notAfter.setFullYear(
@@ -227,12 +230,12 @@ export class ExpressServientPlugin implements WutWotPlugin {
       {
         name: "keyUsage",
         critical: true,
-        value: "digitalSignature, keyEncipherment",
+        value: "digitalSignature",
       },
       {
         name: "extKeyUsage",
         critical: true,
-        value: "serverAuth, clientAuth",
+        value: "serverAuth",
       },
       {
         name: "subjectAltName",
