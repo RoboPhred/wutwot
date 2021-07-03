@@ -2,19 +2,16 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { Actor, ActorCredentials } from "../types";
+import {
+  Actor,
+  ActorCredentials,
+  ConnectionCredentialRequestDetails,
+} from "../types";
 
-const ActorProvider: Identifier<ActorProvider> = createSymbol("ActorProvider");
-export type ActorProvider = BasicActorProvider | CredentialedActorProvider;
+export const ActorCredentialsHandler: Identifier<ActorCredentialsHandler> =
+  createSymbol("ActorCredentialsHandler");
 
-export interface BasicActorProvider {
-  /**
-   * Gets an actor by the provider-local id.
-   */
-  getActor(id: string): Promise<Actor>;
-}
-
-export interface CredentialedActorProvider extends BasicActorProvider {
+export interface ActorCredentialsHandler {
   /**
    * Checks to see if this credential is supported by this provider.
    */
@@ -24,4 +21,12 @@ export interface CredentialedActorProvider extends BasicActorProvider {
    * Resolves the actor from the given credentials.
    */
   getActorFromCredentials(credentials: ActorCredentials): Promise<Actor>;
+
+  /**
+   * Create a credential to associate a connection with an actor.
+   */
+  createConnectionCredentials?(
+    actor: Actor,
+    details: ConnectionCredentialRequestDetails,
+  ): Promise<ActorCredentials>;
 }

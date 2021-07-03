@@ -1,6 +1,6 @@
 export class ActorNotFoundError extends Error {
   code: string;
-  constructor(message: string) {
+  constructor(message: string = "Actor not found.") {
     super(message);
     this.code = "ACTOR_NOT_FOUND";
     this.message = message;
