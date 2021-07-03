@@ -161,10 +161,12 @@ export class InternalActionImpl implements InternalAction {
       thingId: this.thingId,
       ownerPlugin: this.ownerPlugin,
       title: this.title,
-      semanticType: this.semanticTypes,
+      semanticTypes: cloneDeep(this.semanticTypes),
       description: this.description,
       input: cloneDeep(this.input),
+      output: cloneDeep(this.output),
       requests: this.requests.map((x) => x.toJSON()),
+      forms: cloneDeep(this.forms),
     };
   }
 

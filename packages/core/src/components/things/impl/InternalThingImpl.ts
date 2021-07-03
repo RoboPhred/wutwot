@@ -195,6 +195,7 @@ export class InternalThingImpl implements InternalThing {
         property.toJSON(),
       ),
       events: mapValues(mapToObject(this.events), (event) => event.toJSON()),
+      forms: this.forms,
     };
   }
 

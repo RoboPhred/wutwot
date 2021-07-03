@@ -165,11 +165,11 @@ export class ThingPropertyImpl implements ThingProperty {
       id: this.id,
       thingId: this.thingId,
       title: this.title,
-      semanticTypes: this.semanticTypes,
+      semanticTypes: cloneDeep(this.semanticTypes),
       description: this.description,
       type: this.type,
       unit: this.unit,
-      enum: this.enum ? [...this.enum] : undefined,
+      enum: this.enum ? cloneDeep(this.enum) : undefined,
       minimum: this.minimum,
       maximum: this.maximum,
       multipleOf: this.multipleOf,
@@ -178,6 +178,7 @@ export class ThingPropertyImpl implements ThingProperty {
       pattern: this.pattern,
       readOnly: this.readOnly,
       value: this.value,
+      forms: cloneDeep(this.forms),
     };
   }
 
