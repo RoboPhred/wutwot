@@ -131,7 +131,7 @@ export class ExpressServientPlugin implements WutWotPlugin {
         }
         // TODO: Use [problem detail](https://datatracker.ietf.org/doc/html/rfc7807).
         // This is requested by the Thing Discovery api.
-        res.status(err.statusCode).end({
+        res.status(err.statusCode).send({
           message: err.message,
         });
       } else {

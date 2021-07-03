@@ -56,6 +56,7 @@
     "@wutwot/plugin-binding-http": "^1.0.0",
     "@wutwot/plugin-scenes": "^1.0.0",
     "@wutwot/plugin-servient-http": "^1.0.0",
+    "@wutwot/plugin-security-oauth2": "^1.0.0",
     "@wutwot/plugin-zwave": "^1.0.0",
     "@wutwot/plugin-model": "^1.0.0"
   }
