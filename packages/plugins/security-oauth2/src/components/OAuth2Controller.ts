@@ -20,15 +20,18 @@ import OAuth2Server, {
   Token,
   RefreshToken,
 } from "oauth2-server";
-import { Request, Response } from "express";
+import { query, Request, Response } from "express";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
+import cookieParser from "cookie-parser";
+import { v4 as uuidv4 } from "uuid";
 
 @injectable()
 @singleton()
 @provides(HttpController)
 @controller("/oauth2")
 @use(
+  cookieParser(),
   bodyParser.urlencoded({ extended: false }),
   cors({ origin: "*" }),
   nocache(),
@@ -163,26 +166,35 @@ export class OAuth2Controller {
     authorizeLink.searchParams.set("redirect_uri", redirectUri);
     authorizeLink.searchParams.set("response_type", responseType);
     authorizeLink.searchParams.set("scope", scope);
-    res.header("Content-Type", "text/html").send(`
-      <html>
-      <head>
-      </head>
-      <body>
-        <a href="${authorizeLink.toString()}">Authorize</a>
-      </body>
-      </html>
-    `);
+
+    const csrf = uuidv4();
+    authorizeLink.searchParams.set("csrf", csrf);
+
+    return result
+      .html(
+        `
+          <html>
+          <head>
+          </head>
+          <body>
+            <a href="${authorizeLink.toString()}">Authorize</a>
+          </body>
+          </html>
+        `,
+      )
+      .cookie("csrf", csrf, { secure: true, sameSite: "strict" });
   }
 
   @get("/grant_access")
   async grantAccess(
+    @queryParam("csrf") csrf: string,
     @expressRequest() req: Request,
     @expressResponse() res: Response,
   ) {
-    // TODO: What's to stop sites just linking to grant_access directly?
-    // I suppose we need to demand the user's credentials and check them here,
-    // to prove the user intended to grant access.
-    // Google oauth sign-in just has a single button though...
+    // TODO: Cookie decorator for simply-express-controllers
+    if (csrf !== req.cookies.csrf) {
+      throw createError(HttpStatusCodes.UNAUTHORIZED, "Invalid CSRF token.");
+    }
 
     try {
       const authResult = await this._oauth.authorize(
