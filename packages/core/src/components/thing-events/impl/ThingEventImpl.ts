@@ -103,10 +103,11 @@ export class ThingEventImpl implements ThingEvent {
       thingId: this.thingId,
       ownerPlugin: this.ownerPlugin,
       title: this.title,
-      semanticTypes: this.semanticTypes,
+      semanticTypes: cloneDeep(this.semanticTypes),
       description: this.description,
       data: cloneDeep(this.data),
-      records: this.records,
+      records: cloneDeep(this.records),
+      forms: cloneDeep(this.forms),
     };
   }
 

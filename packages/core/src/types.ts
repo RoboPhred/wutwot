@@ -4,23 +4,28 @@ export type ReadonlyRecord<K extends string | number | symbol, V> = Readonly<
 export type ArrayItem<T> = T extends (infer A)[] ? A : never;
 
 export type Scaler = undefined | null | boolean | string | number;
+export type KeyCompatibleMap<K extends string | number | symbol, V> = Map<K, V>;
+export type KeyCompatibleReadonlyMap<
+  K extends string | number | symbol,
+  V,
+> = ReadonlyMap<K, V>;
 export type ToJSON<T> = T extends Scaler
   ? T
   : T extends Array<infer U>
   ? ToJSONArray<U>
   : T extends Function
   ? never
-  : ToJSONObject<Pick<T, JSONKeys<T>>>;
+  : T extends KeyCompatibleMap<infer K, infer V>
+  ? Record<K, ToJSON<V>>
+  : T extends KeyCompatibleReadonlyMap<infer K, infer V>
+  ? Record<K, ToJSON<V>>
+  : ToJSONObject<T>;
 export interface ToJSONArray<T> extends Array<ToJSON<T>> {}
 export type ToJSONObject<T> = {
-  [K in keyof T]: ToJSON<T[K]>;
+  [P in keyof T as T[P] extends Function ? never : P]: ToJSON<T[P]>;
 };
-export type JSONKeys<T> = {
-  [P in keyof T]: T[P] extends Scaler ? P : never;
-}[keyof T];
-
 export interface JSONAble<T = any> {
-  toJSON(): T;
+  toJSON(): ToJSON<T>;
 }
 
 export function isJSONAble(obj: any): obj is JSONAble {
