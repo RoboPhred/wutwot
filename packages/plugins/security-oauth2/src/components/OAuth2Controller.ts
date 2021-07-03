@@ -145,27 +145,22 @@ export class OAuth2Controller {
 
   @get("/authorize")
   async authorize(
-    @queryParam("client_id") clientId: string,
-    @queryParam("redirect_uri") redirectUri: string,
-    @queryParam("response_type") responseType: string,
-    @queryParam("scope") scope: string,
-    @expressRequest() req: Request,
-    @expressResponse() res: Response,
+    @queryParam("client_id", { required: true }) clientId: string,
+    @queryParam("redirect_uri", { required: true }) redirectUri: string,
+    @queryParam("response_type", { required: true, schema: { const: "code" } })
+    responseType: string,
+    @queryParam("scope", { required: true }) scope: string,
+    @queryParam("state") state: string,
   ) {
-    if (responseType !== "code") {
-      // No idea how to implement the other response types...
-      throw createError(
-        HttpStatusCodes.BAD_REQUEST,
-        "Only code responses are accepted.",
-      );
-    }
-
     const authorizeLink = new URL(this._rootUrl);
     authorizeLink.pathname = "/oauth2/grant_access";
     authorizeLink.searchParams.set("client_id", clientId);
     authorizeLink.searchParams.set("redirect_uri", redirectUri);
     authorizeLink.searchParams.set("response_type", responseType);
     authorizeLink.searchParams.set("scope", scope);
+    if (state) {
+      authorizeLink.searchParams.set("state", state);
+    }
 
     const csrf = uuidv4();
     authorizeLink.searchParams.set("csrf", csrf);
@@ -174,11 +169,11 @@ export class OAuth2Controller {
       .html(
         `
           <html>
-          <head>
-          </head>
-          <body>
-            <a href="${authorizeLink.toString()}">Authorize</a>
-          </body>
+            <head>
+            </head>
+            <body>
+              <a href="${authorizeLink.toString()}">Authorize</a>
+            </body>
           </html>
         `,
       )
