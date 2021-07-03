@@ -1,14 +1,8 @@
 # TODO
 
-## Support Forms
+## Support per-affordance forms
 
-Currently each binding supplies its own forms. This prevents cross-binding discovery. For example, the directory endpoint
-for the express binding cannot list mqtt forms.
-
-There are two ways we would want to set a form
-
-- Per-affordance, for affordance specific forms
-- In bulk, for bindings that map any affordance (eg binding-express)
+We support bulk forms, but should also support per-affordance if any plugin has its own side channel.
 
 ## Allow additional JSON-LD properties.
 
@@ -94,13 +88,10 @@ centralize them at the very least.
 - Event events
   - event raised (new record)
 
+## Actor support on invoking actions and setting properties
+
+Contract should be called both before and after the action / set, allowing for both access denial and audit logging.
+
 ## API documentation
 
 https://www.npmjs.com/package/@microsoft/api-extractor
-
-## Call remove event sink functions when things are removed.
-
-- Property removal
-- Event removal
-- Action removal
-- Action Request removal
