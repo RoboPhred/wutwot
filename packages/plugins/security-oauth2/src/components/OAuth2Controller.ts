@@ -25,10 +25,21 @@ import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
+import {
+  Actor,
+  ActorCredentials,
+  ActorCredentialsHandler,
+  ActorNotFoundError,
+  isTokenActorCredentials,
+  PluginThingsManager,
+} from "../../../../core/lib";
+
+// TODO: Split out the multiple concerns in this class
 
 @injectable()
 @singleton()
 @provides(HttpController)
+@provides(ActorCredentialsHandler)
 @controller("/oauth2")
 @use(
   cookieParser(),
@@ -36,7 +47,7 @@ import { v4 as uuidv4 } from "uuid";
   cors({ origin: "*" }),
   nocache(),
 )
-export class OAuth2Controller {
+export class OAuth2Controller implements ActorCredentialsHandler {
   private _oauth: OAuth2Server;
 
   private _clients = new Map<string, Client>();
@@ -46,7 +57,11 @@ export class OAuth2Controller {
   private _tokens = new Map<string, Token>();
   private _refreshTokens = new Map<string, RefreshToken>();
 
-  constructor(@inject(HttpRootUrl) private readonly _rootUrl: string) {
+  constructor(
+    @inject(HttpRootUrl) private readonly _rootUrl: string,
+    @inject(PluginThingsManager)
+    private readonly _thingsManager: PluginThingsManager,
+  ) {
     this._clients.set("internal", {
       id: "internal",
       grants: ["password"],
@@ -141,6 +156,36 @@ export class OAuth2Controller {
         },
       },
     });
+  }
+
+  isSupportedCredentials(credentials: ActorCredentials): boolean {
+    if (!isTokenActorCredentials(credentials)) {
+      return false;
+    }
+
+    // TODO: Decode jwt and see if we are an oauth2 credential.
+    return true;
+  }
+
+  async getActorFromCredentials(credentials: ActorCredentials): Promise<Actor> {
+    if (!isTokenActorCredentials(credentials)) {
+      throw new ActorNotFoundError("Credential type not supported.");
+    }
+
+    const { token } = credentials;
+
+    if (!this._tokens.has(token)) {
+      throw new ActorNotFoundError();
+    }
+
+    // TODO: Use persisted things, do not generate them on the fly.
+    return this._thingsManager
+      .addThing({
+        pluginLocalId: `actor-${token}`,
+        title: `Actor ${token}`,
+        description: "TODO use persisted things for oauth2 actors.",
+      })
+      .toThing();
   }
 
   @get("/authorize")

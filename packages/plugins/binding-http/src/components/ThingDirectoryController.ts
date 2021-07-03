@@ -5,6 +5,9 @@ import {
   SchemaValidationError,
   ActionInvocationError,
   PropertySetError,
+  ActorResolver,
+  ActorNotFoundError,
+  Actor,
 } from "@wutwot/core";
 import { HttpController, HttpRootUrl } from "@wutwot/plugin-servient-http";
 import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
@@ -17,12 +20,14 @@ import {
   body,
   put,
   post,
+  expressRequest,
 } from "simply-express-controllers";
 import cors from "cors";
 import nocache from "nocache";
 import { compact } from "jsonld";
 import createError from "http-errors";
 import urlJoin from "url-join";
+import { Request } from "express";
 
 @injectable()
 @singleton()
@@ -33,6 +38,7 @@ export class ThingDirectoryController {
   constructor(
     @inject(WutWot) private _wutwot: WutWot,
     @inject(HttpRootUrl) private _rootUrl: HttpRootUrl,
+    @inject(ActorResolver) private _actorResolver: ActorResolver,
   ) {}
 
   // TODO: Deprecate in favor of a plugin providing the [Thing Discovery API](https://www.w3.org/TR/wot-discovery/)
@@ -52,7 +58,11 @@ export class ThingDirectoryController {
     description: "Gets a thing by its id",
     tags: ["Thing"],
   })
-  async getThing(@pathParam("thingId") thingId: string) {
+  async getThing(
+    @expressRequest() req: Request,
+    @pathParam("thingId") thingId: string,
+  ) {
+    this._requireCredentials(req);
     const thing = this._wutwot.things.get(thingId);
     if (!thing) {
       throw createError(HttpStatusCodes.NOT_FOUND, "Thing not found.");
@@ -66,9 +76,12 @@ export class ThingDirectoryController {
     tags: ["Thing", "Property"],
   })
   async getThingProperty(
+    @expressRequest() req: Request,
     @pathParam("thingId") thingId: string,
     @pathParam("propertyId") propertyId: string,
   ) {
+    this._requireCredentials(req);
+
     const thing = this._wutwot.things.get(thingId);
     if (!thing) {
       throw createError(HttpStatusCodes.NOT_FOUND, "Thing not found.");
@@ -86,10 +99,13 @@ export class ThingDirectoryController {
     tags: ["Thing", "Property"],
   })
   async setThingProperty(
+    @expressRequest() req: Request,
     @pathParam("thingId") thingId: string,
     @pathParam("propertyId") propertyId: string,
     @body({ required: true }) value: any,
   ) {
+    this._requireCredentials(req);
+
     const thing = this._wutwot.things.get(thingId);
     if (!thing) {
       throw createError(HttpStatusCodes.NOT_FOUND, "Thing not found.");
@@ -126,10 +142,13 @@ export class ThingDirectoryController {
     tags: ["Thing", "Action"],
   })
   async executeThingAction(
+    @expressRequest() req: Request,
     @pathParam("thingId") thingId: string,
     @pathParam("actionId") actionId: string,
     @body() input: any,
   ) {
+    this._requireCredentials(req);
+
     const thing = this._wutwot.things.get(thingId);
     if (!thing) {
       throw createError(HttpStatusCodes.NOT_FOUND, "Thing not found.");
@@ -151,6 +170,28 @@ export class ThingDirectoryController {
           HttpStatusCodes.INTERNAL_SERVER_ERROR,
           `Failed to invoke action: ${e.message}`,
         );
+      }
+
+      throw e;
+    }
+  }
+
+  // FIXME: Make a feature of simply-express-controllers to make this an in-class middleware.
+  private async _requireCredentials(req: Request): Promise<Actor> {
+    const auth =
+      req.cookies["Authorization"] ?? req.headers["Authorization"] ?? "";
+    if (!auth.starsWith("Bearer ")) {
+      throw createError(HttpStatusCodes.UNAUTHORIZED);
+    }
+
+    const token = auth.substring(7);
+
+    try {
+      const actor = await this._actorResolver.getActorFromCredentials(token);
+      return actor;
+    } catch (e) {
+      if (e instanceof ActorNotFoundError) {
+        throw createError(HttpStatusCodes.UNAUTHORIZED);
       }
 
       throw e;

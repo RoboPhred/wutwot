@@ -17,10 +17,19 @@ export interface UnknownActorCredentials {
   [key: string]: any;
 }
 
-export interface Actor extends Thing {
+export type Actor = Thing;
+
+/**
+ * Provides additional details about the connection the credentials are being requested for.
+ */
+export interface ConnectionCredentialRequestDetails {
   /**
-   * Gets the grants for this actor.
-   * This is an alias to the actor's thing property that represents the actor's grants.
+   * The source of the connection, such as http, websocket, or mqtt.
    */
-  readonly grants: string[];
+  source: string;
+
+  /**
+   * The remote endpoint of the connection.
+   */
+  clientEndpoint?: string;
 }
