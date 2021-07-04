@@ -22,7 +22,7 @@ import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
 import { OAuth2ClientProvider } from "./OAuth2ClientProvider";
 import { OAuth2CredentialManager } from "./OAuth2CredentialManager";
-import { ActorResolver } from "../../../../core/lib";
+import { ActorResolver } from "@wutwot/core";
 
 // TODO: Split out the multiple concerns in this class
 
