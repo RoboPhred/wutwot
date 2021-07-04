@@ -115,6 +115,8 @@ export class OAuth2Controller {
         getClient: async (clientId: string) => {
           return this._clientProvider.getClient(clientId) ?? false;
         },
+        // Note: Only used by the default authenticationHandler.
+        // We overrode that so we can look up a user from other credential handlers.
         getAccessToken: async (accessToken) => {
           return this._credentialManager.getAccessToken(accessToken);
         },

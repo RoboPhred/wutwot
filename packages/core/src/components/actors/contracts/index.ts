@@ -1,1 +1,1 @@
-export * from "./ActorProvider";
+export * from "./ActorCredentialsHandler";
