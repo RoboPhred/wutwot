@@ -1,6 +1,9 @@
 import { Thing } from "../things";
 
-export type ActorCredentials = TokenActorCredentials | UnknownActorCredentials;
+export type ActorCredentials =
+  | TokenActorCredentials
+  | AnonymousActorCredentials
+  | UnknownActorCredentials;
 
 export interface TokenActorCredentials {
   type: "token";
@@ -10,6 +13,26 @@ export function isTokenActorCredentials(
   credentials: ActorCredentials,
 ): credentials is TokenActorCredentials {
   return credentials.type === "token";
+}
+export function TokenActorCredentials(token: string): TokenActorCredentials {
+  return {
+    type: "token",
+    token,
+  };
+}
+
+export interface AnonymousActorCredentials {
+  type: "anonymous";
+}
+export function isAnonymousActorCredentials(
+  credentials: ActorCredentials,
+): credentials is AnonymousActorCredentials {
+  return credentials.type === "anonymous";
+}
+export function AnonymousActorCredentials(): AnonymousActorCredentials {
+  return {
+    type: "anonymous",
+  };
 }
 
 export interface UnknownActorCredentials {

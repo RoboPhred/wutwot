@@ -1,20 +1,27 @@
-# @wutwot/binding-http
+# @wutwot/plugin-binding-http
 
 Provides HTTP bindings for things.
 
 Additionally, provides a `/things` and `/things/:thingId` endpoint for fetching thing descriptions.
 
-This plugin requires an http servient. Nominally, `@wutwot/plugin-servient-http` can be used, or any other plugin providing compatible services.
+## Requirements
+
+- This plugin requires an http servient. Nominally, `@wutwot/plugin-servient-http` can be used, or any other plugin providing compatible services.
+
+- This plugin requires a credential handler service, otherwise the endpoints will always return `401 Unauthorized`. Some options are:
+  - `@wutwot/plugins-security-oauth2` - Note: This plugin requires an additional credential handler to complete the oauth2 code flow.
+
+## Security
+
+The http endpoints provided by this plugin will check for a Authorization header or cookie, try to resolve either the `token` or `anonymous` credentials it receives against any `ActorCredentialsHandler` service available.
+By default, WutWot Core will reject all credentials unless at least one other plugin provides a `ActorCredentialsHandler` service. You must supply a plugin providing this service.
 
 ## Plugin services
 
 ### Required services
 
-- `Symbol.for("https://github.com/robophred/wutwot#servient-http:HttpRootUrl")` - This services needs to know the root url of the http servient to provide the thing description forms.
-
-### Optional Services
-
-- `Symbol.for("https://github.com/robophred/wutwot#core:ActorCredentialsHandler")` - If present, this service will gate its endpoint behind token based authentication provided by any plugin providing this service.
+- `Symbol.for("https://github.com/robophred/wutwot#servient-http:HttpRootUrl")` - This plugin needs to know the root url of the http servient to provide the thing description forms.
+- `Symbol.for("https://github.com/robophred/wutwot#core:ActorCredentialsHandler")` - This plugin authenticates endpoint requests with either a `token` or `anonymous` credentials, depending on the connection.
 
 ### Provided services
 

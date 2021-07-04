@@ -8,6 +8,9 @@ import {
   ActorResolver,
   ActorNotFoundError,
   Actor,
+  ActorCredentials,
+  TokenActorCredentials,
+  AnonymousActorCredentials,
 } from "@wutwot/core";
 import { HttpController, HttpRootUrl } from "@wutwot/plugin-servient-http";
 import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
@@ -180,14 +183,20 @@ export class ThingDirectoryController {
   private async _requireCredentials(req: Request): Promise<Actor> {
     const auth =
       req.cookies["Authorization"] ?? req.headers["Authorization"] ?? "";
-    if (!auth.starsWith("Bearer ")) {
-      throw createError(HttpStatusCodes.UNAUTHORIZED);
+
+    let credentials: ActorCredentials;
+
+    if (auth.starsWith("Bearer ")) {
+      const token = auth.substring(7);
+      credentials = TokenActorCredentials(token);
+    } else {
+      credentials = AnonymousActorCredentials();
     }
 
-    const token = auth.substring(7);
-
     try {
-      const actor = await this._actorResolver.getActorFromCredentials(token);
+      const actor = await this._actorResolver.getActorFromCredentials(
+        credentials,
+      );
       return actor;
     } catch (e) {
       if (e instanceof ActorNotFoundError) {
