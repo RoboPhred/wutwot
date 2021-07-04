@@ -61,6 +61,7 @@ export class OAuth2Controller {
 
           const token = auth.substring(7);
 
+          // This can find an actor either from us, or from other credential handlers.
           const actor = await this._actorResolver.getActorFromCredentials({
             type: "token",
             token,
@@ -150,6 +151,8 @@ export class OAuth2Controller {
     @queryParam("scope", { required: true }) scope: string,
     @queryParam("state") state: string,
   ) {
+    // TODO: If user is not logged in, log them in then redirect back here.
+
     const authorizeLink = new URL(this._rootUrl);
     authorizeLink.pathname = "/oauth2/grant_access";
     authorizeLink.searchParams.set("client_id", clientId);
