@@ -2,7 +2,16 @@
 
 ## Major Bug: public services cannot access private services
 
-This prevents any public service from ever creating things.
+Attempting to fix this by removing the concept of public and private services, and scoping plugin thing creation under plugin.
+However, this is not workable, as plugins can provide singleton services that then need to create the plugin things. As they are
+singleton services, they exist outside the plugin scope, and are unable to find the scope root for the Plugin.
+
+Also explored allowing microinject to take an overriding ServiceLocator in a binding, to let public container bindings
+access private services. However, that rapidly became a mess and seemed unworkable.
+
+First thing I tried was allowing access to private service locator while binding public services, and to then bind the public
+services as factories that take from the private service. This did not work, as the items instantiated in the private services
+themselves might want other public services.
 
 ## Provide thing discovery
 
