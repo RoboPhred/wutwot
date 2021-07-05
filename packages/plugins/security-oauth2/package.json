@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.2",
     "@types/http-errors": "^1.8.0",
     "@types/json-schema": "^7.0.4",
     "@types/oauth2-server": "^3.0.12",
@@ -42,7 +41,6 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
     "core-decorators": "^0.20.0",
     "cors": "^2.8.5",
     "http-errors": "^1.8.0",

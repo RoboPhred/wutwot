@@ -24,6 +24,7 @@ import {
   put,
   post,
   expressRequest,
+  result,
 } from "simply-express-controllers";
 import cors from "cors";
 import nocache from "nocache";
@@ -43,6 +44,13 @@ export class ThingDirectoryController {
     @inject(HttpRootUrl) private _rootUrl: HttpRootUrl,
     @inject(ActorResolver) private _actorResolver: ActorResolver,
   ) {}
+
+  // TODO: Remove testing code
+  @get("/whoami")
+  async whoAmI(@expressRequest() req: Request) {
+    const actor = await this._requireCredentials(req);
+    return result.text(actor.id);
+  }
 
   // TODO: Deprecate in favor of a plugin providing the [Thing Discovery API](https://www.w3.org/TR/wot-discovery/)
   @get("/", {
@@ -181,12 +189,14 @@ export class ThingDirectoryController {
 
   // FIXME: Make a feature of simply-express-controllers to make this an in-class middleware.
   private async _requireCredentials(req: Request): Promise<Actor> {
-    const auth =
-      req.cookies["Authorization"] ?? req.headers["Authorization"] ?? "";
+    const auth: string =
+      (req.cookies && req.cookies["Authorization"]) ??
+      (req.headers && req.headers["Authorization"]) ??
+      "";
 
     let credentials: ActorCredentials;
 
-    if (auth.starsWith("Bearer ")) {
+    if (auth.startsWith("Bearer ")) {
       const token = auth.substring(7);
       credentials = TokenActorCredentials(token);
     } else {

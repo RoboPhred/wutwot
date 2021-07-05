@@ -15,9 +15,9 @@ import { AnonymousActor } from "./AnonymousActorFactory";
 export default class NosecCredentialsHandler
   implements ActorCredentialsHandler
 {
-  constructor(
-    @inject(AnonymousActor) private readonly _anonymousActor: Actor,
-  ) {}
+  constructor() // FIXME: We cannot use this until we can access private services from public services.
+  //@inject(AnonymousActor) private readonly _anonymousActor: Actor,
+  {}
 
   isSupportedCredentials(credentials: ActorCredentials): boolean {
     return isAnonymousActorCredentials(credentials);
@@ -28,6 +28,10 @@ export default class NosecCredentialsHandler
       throw new ActorNotFoundError();
     }
 
-    return this._anonymousActor;
+    // FIXME: Return a real actor/thing
+    // return this._anonymousActor;
+    return {
+      id: "security-nosec:anonymous-actor--HACK",
+    } as any;
   }
 }
