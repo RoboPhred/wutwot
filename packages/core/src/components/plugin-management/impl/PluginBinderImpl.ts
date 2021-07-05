@@ -8,8 +8,7 @@ import {
   provides,
   ServiceLocator,
 } from "microinject";
-import { ThingsManager } from "../../things";
-import { PluginThingFactory } from "../components";
+
 import { WutWotPlugin } from "../contracts";
 import { PluginBinder, PluginBinderParameters } from "../services";
 import { PluginScope } from "../scopes";
@@ -24,9 +23,6 @@ export class PluginBinderImpl implements PluginBinder {
     @injectParam(PluginBinderParameters.Plugin)
     private readonly _plugin: WutWotPlugin,
     @inject(Container) container: Container,
-    @inject(ThingsManager) thingManager: ThingsManager,
-    @inject(PluginThingFactory)
-    pluginThingFactory: PluginThingFactory,
   ) {
     const pluginIdentifier = Symbol(
       `plugin::${uuidV4()}`,
@@ -38,7 +34,7 @@ export class PluginBinderImpl implements PluginBinder {
     // Additionally, we need to capture the plugin's factory context so that onPluginInitialize can
     // also get the PluginThingsManager.
 
-    const binder = container
+    container
       .bind(pluginIdentifier)
       .toFactory((context) => {
         if (this._serviceLocator) {
@@ -47,9 +43,8 @@ export class PluginBinderImpl implements PluginBinder {
         this._serviceLocator = context;
         return _plugin;
       })
-      .asScope(PluginScope);
-    // TODO: Update microinject so we get the typings for this.
-    (binder as any).inSingletonScope();
+      .asScope(PluginScope)
+      .inSingletonScope();
 
     // Re-get the plugin so that the factory function is called.
     // This should be the only time this plugin is ever fetched from the container.
