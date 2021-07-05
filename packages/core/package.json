@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A plugin based Web of Things manager.",
   "main": "lib/index.js",
+  "engines": {
+    "node": ">= 14"
+  },
   "scripts": {
     "clean": "rimraf lib",
     "build": "tsc -p src --incremental",
@@ -13,7 +16,12 @@
     "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
-    "IOT"
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions"
   ],
   "bugs": {
     "url": "https://github.com/RoboPhred/wutwot/issues"
@@ -24,11 +32,12 @@
   "devDependencies": {
     "@types/json-schema": "^7.0.4",
     "@types/lodash": "^4.14.149",
+    "@types/node": "^14.17.4",
     "@types/uuid": "^7.0.2",
     "microinject": "^0.9.3",
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "@wutwot/td": "^1.0.0",

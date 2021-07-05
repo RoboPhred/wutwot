@@ -12,8 +12,14 @@
     "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
-    "wutwot",
-    "express"
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions",
+    "WutWot",
+    "Binding"
   ],
   "author": "William Matthews",
   "license": "MIT",

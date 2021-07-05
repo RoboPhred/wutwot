@@ -10,6 +10,16 @@
   },
   "author": "William Matthews",
   "license": "MIT",
+  "keywords": [
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions",
+    "WutWot",
+    "UI"
+  ],
   "dependencies": {
     "@wutwot/explorer": "^1.0.0"
   },

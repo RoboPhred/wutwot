@@ -8,6 +8,11 @@
     "clean:core": "cd packages/core && npm run clean",
     "build:core": "cd packages/core && npm run build",
     "__servients": "exit 1",
+    "clean:servients": "npm run clean:servient-http",
+    "build:servients": "npm run build:servient-http",
+    "clean:servient-consumers": "npm-run-all -p clean:binding-http clean:security-oauth2 clean:webui",
+    "build:servient-consumers": "npm-run-all -p build:binding-http build:security-oauth2 build:webui",
+    "build:servients-and-consumers": "npm-run-all build:servients build:servient-consumers",
     "clean:binding-http": "cd packages/plugins/binding-http && npm run clean",
     "build:binding-http": "cd packages/plugins/binding-http && npm run build",
     "clean:servient-http": "cd packages/plugins/servient-http && npm run clean",
@@ -23,14 +28,16 @@
     "build:scenes": "cd packages/plugins/scenes && npm run build",
     "clean:zwave": "cd packages/plugins/zwave && npm run clean",
     "build:zwave": "cd packages/plugins/zwave && npm run build",
+    "clean:security-nosec": "cd packages/plugins/security-nosec && npm run clean",
+    "build:security-nosec": "cd packages/plugins/security-nosec && npm run build",
     "__server": "exit 1",
     "clean:server": "cd packages/server && npm run clean",
     "build:server": "cd packages/server && npm run build",
     "__macros": "exit 1",
     "clean:prereqs": "npm-run-all -p clean:td clean:core",
     "build:prereqs": "npm-run-all build:td build:core",
-    "clean:plugins": "npm-run-all -p clean:model clean:scenes clean:zwave clean:servient-http clean:binding-http clean:security-oauth2 clean:webui",
-    "build:plugins": "npm-run-all -p build:model build:scenes build:zwave build:servient-http build:binding-http build:security-oauth2 build:webui",
+    "clean:plugins": "npm-run-all -p clean:model clean:scenes clean:zwave clean:security-nosec clean:servients clean:servient-consumers",
+    "build:plugins": "npm-run-all -p build:model build:scenes build:zwave build:security-nosec build:servients-and-consumers",
     "clean": "npm-run-all -p clean:prereqs clean:plugins",
     "build": "npm-run-all build:prereqs build:plugins build:server",
     "__development": "exit 1",
@@ -49,9 +56,12 @@
     "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
-    "w3c-td",
-    "iot",
-    "zwave"
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions"
   ],
   "author": "William Matthews",
   "license": "MIT",
@@ -60,6 +70,7 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
+    "@types/node": "^14.17.4",
     "cross-env": "^7.0.3",
     "npm-run-all": "^4.1.5"
   }

@@ -1,5 +1,6 @@
 export * from "./components/action-requests/public";
 export * from "./components/actions/public";
+export * from "./components/actors/public";
 export * from "./components/forms/public";
 export * from "./components/id-mapping/public";
 export * from "./components/json-schema/public";

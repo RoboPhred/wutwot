@@ -14,7 +14,13 @@
   },
   "keywords": [
     "IOT",
-    "ZWave"
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions",
+    "WutWot",
+    "Z-Wave"
   ],
   "bugs": {
     "url": "https://github.com/RoboPhred/wutwot/issues"

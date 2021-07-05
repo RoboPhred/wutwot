@@ -1,7 +1,7 @@
 {
-  "name": "@wutwot/plugin-servient-http",
+  "name": "@wutwot/plugin-security-nosec",
   "version": "1.0.0",
-  "description": "HTTP servient for wutwot",
+  "description": "Anonymous access security provider for wutwot",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
@@ -19,7 +19,8 @@
     "W3C",
     "Thing Descriptions",
     "WutWot",
-    "Servient"
+    "Security",
+    "NoSec"
   ],
   "author": "William Matthews",
   "license": "MIT",
@@ -28,28 +29,13 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.2",
-    "@types/express": "^4.17.6",
-    "@types/http-errors": "^1.8.0",
-    "@types/json-schema": "^7.0.4",
-    "@types/node-forge": "^0.10.0",
     "@wutwot/core": "^1.0.0",
-    "express": "^4.17.1",
     "microinject": "^0.9.3",
     "rimraf": "^3.0.2",
-    "simply-express-controllers": "^1.4.0",
     "typescript": "^4.3.2"
-  },
-  "dependencies": {
-    "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
-    "helmet": "^3.23.3",
-    "http-errors": "^1.8.0",
-    "http-status-codes": "^2.1.4",
-    "node-forge": "^0.10.0"
   },
   "peerDependencies": {
     "@wutwot/core": "^1.0.0",
-    "microinject": "^0.9.2"
+    "microinject": "^0.10.0"
   }
 }

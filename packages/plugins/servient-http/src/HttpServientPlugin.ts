@@ -14,6 +14,8 @@ import HttpStatusCodes from "http-status-codes";
 import { ServiceLocator, BindFunction } from "microinject";
 import { WutWotPlugin } from "@wutwot/core";
 import { createControllerRoute } from "simply-express-controllers";
+import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import { pki } from "node-forge";
 
 import { HttpRouter, HttpRootUrl } from "./services";
@@ -114,6 +116,9 @@ export class ExpressServientPlugin implements WutWotPlugin {
     }
 
     var app = express();
+    app.use(cookieParser());
+    app.use(helmet());
+
     app.on("error", (err) => {
       // TODO: Log error, better error handling.
       console.error(err);
@@ -135,6 +140,7 @@ export class ExpressServientPlugin implements WutWotPlugin {
           message: err.message,
         });
       } else {
+        console.error(err);
         res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).end();
       }
     });

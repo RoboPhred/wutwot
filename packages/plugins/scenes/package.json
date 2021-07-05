@@ -13,7 +13,13 @@
     "url": "git+https://github.com/RoboPhred/wutwot.git"
   },
   "keywords": [
-    "WutWot"
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions",
+    "Scenes"
   ],
   "author": "William Matthews",
   "license": "MIT",

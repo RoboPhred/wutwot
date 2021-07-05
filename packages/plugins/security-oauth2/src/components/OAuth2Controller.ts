@@ -14,24 +14,22 @@ import {
 import bodyParser from "body-parser";
 import cors from "cors";
 import nocache from "nocache";
-import OAuth2Server, {
-  AuthorizationCode,
-  Client,
-  Token,
-  RefreshToken,
-} from "oauth2-server";
-import { query, Request, Response } from "express";
+import OAuth2Server, { AuthorizationCode, Token } from "oauth2-server";
+import { Request, Response } from "express";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
-import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
+import { OAuth2ClientProvider } from "./OAuth2ClientProvider";
+import { OAuth2CredentialManager } from "./OAuth2CredentialManager";
+import { ActorResolver } from "@wutwot/core";
+
+// TODO: Split out the multiple concerns in this class
 
 @injectable()
 @singleton()
 @provides(HttpController)
 @controller("/oauth2")
 @use(
-  cookieParser(),
   bodyParser.urlencoded({ extended: false }),
   cors({ origin: "*" }),
   nocache(),
@@ -39,33 +37,46 @@ import { v4 as uuidv4 } from "uuid";
 export class OAuth2Controller {
   private _oauth: OAuth2Server;
 
-  private _clients = new Map<string, Client>();
-
-  // TODO: Handle expirations for these.
   private _authorizationsByCode = new Map<string, AuthorizationCode>();
-  private _tokens = new Map<string, Token>();
-  private _refreshTokens = new Map<string, RefreshToken>();
 
-  constructor(@inject(HttpRootUrl) private readonly _rootUrl: string) {
-    this._clients.set("internal", {
-      id: "internal",
-      grants: ["password"],
-    });
-    this._clients.set("external", {
-      id: "external",
-      redirectUris: ["https://oauthdebugger.com/debug"],
-      grants: ["authorization_code", "refresh_token"],
-    });
-
+  constructor(
+    @inject(HttpRootUrl) private readonly _rootUrl: string,
+    @inject(ActorResolver) private readonly _actorResolver: ActorResolver,
+    @inject(OAuth2ClientProvider)
+    private readonly _clientProvider: OAuth2ClientProvider,
+    @inject(OAuth2CredentialManager)
+    private readonly _credentialManager: OAuth2CredentialManager,
+  ) {
     this._oauth = new OAuth2Server({
       allowEmptyState: true,
-      model: {
-        getUser: async (username, password) => {
-          if (username === "test" && password === "test") {
-            return { id: "test" };
+      authenticateHandler: {
+        handle: async (req: Request, res: Response) => {
+          const auth =
+            req.cookies["Authorization"] ?? req.headers["Authorization"] ?? "";
+          if (!auth.starsWith("Bearer ")) {
+            throw createError(HttpStatusCodes.UNAUTHORIZED);
           }
-          return false;
+
+          const token = auth.substring(7);
+
+          // This can find an actor either from us, or from other credential handlers.
+          const actor = await this._actorResolver.getActorFromCredentials({
+            type: "token",
+            token,
+          });
+          if (!actor) {
+            throw createError(HttpStatusCodes.UNAUTHORIZED);
+          }
+          return { id: actor.id };
         },
+      },
+      model: {
+        // getUser: async (username, password) => {
+        //   if (username === "test" && password === "test") {
+        //     return { id: "test" };
+        //   }
+        //   return false;
+        // },
         saveAuthorizationCode: async (code, client, user) => {
           const authCode = {
             ...code,
@@ -77,20 +88,20 @@ export class OAuth2Controller {
 
           return authCode;
         },
-        getAuthorizationCode: async (code: string) => {
-          const auth = this._authorizationsByCode.get(code);
+        getAuthorizationCode: async (authorizationCode: string) => {
+          const auth = this._authorizationsByCode.get(authorizationCode);
           if (!auth) {
             return false;
           }
 
           if (auth.expires < Date.now()) {
-            this._authorizationsByCode.delete(code);
+            this._authorizationsByCode.delete(authorizationCode);
             return false;
           }
 
-          const client = this._clients.get(auth.client.id);
+          const client = this._clientProvider.getClient(auth.client.id);
           if (!client) {
-            this._authorizationsByCode.delete(code);
+            this._authorizationsByCode.delete(authorizationCode);
             return false;
           }
 
@@ -100,20 +111,15 @@ export class OAuth2Controller {
           return this._authorizationsByCode.delete(code.authorizationCode);
         },
         getClient: async (clientId: string) => {
-          return this._clients.get(clientId) ?? false;
+          return this._clientProvider.getClient(clientId) ?? false;
         },
+        // Note: Only used by the default authenticationHandler.
+        // We overrode that so we can look up a user from other credential handlers.
         getAccessToken: async (accessToken) => {
-          const token = this._tokens.get(accessToken);
-          if (!token) {
-            return false;
-          }
-
-          if (token.expires < Date.now()) {
-            this._tokens.delete(accessToken);
-            return false;
-          }
-
-          return token;
+          return this._credentialManager.getAccessToken(accessToken);
+        },
+        getRefreshToken: async (refreshToken) => {
+          return this._credentialManager.getRefreshToken(refreshToken);
         },
         saveToken: async (partialToken, client, user) => {
           const token: Token = {
@@ -121,15 +127,8 @@ export class OAuth2Controller {
             client,
             user,
           };
-          this._tokens.set(partialToken.accessToken, token);
-          if (token.refreshToken) {
-            this._refreshTokens.set(token.refreshToken, {
-              refreshToken: token.refreshToken,
-              refreshTokenExpiresAt: token.refreshTokenExpiresAt,
-              client,
-              user,
-            });
-          }
+
+          this._credentialManager.saveAccessToken(token);
 
           return token;
         },
@@ -152,6 +151,8 @@ export class OAuth2Controller {
     @queryParam("scope", { required: true }) scope: string,
     @queryParam("state") state: string,
   ) {
+    // TODO: If user is not logged in, log them in then redirect back here.
+
     const authorizeLink = new URL(this._rootUrl);
     authorizeLink.pathname = "/oauth2/grant_access";
     authorizeLink.searchParams.set("client_id", clientId);
