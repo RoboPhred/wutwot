@@ -1,46 +1,57 @@
-import { inject, injectable, singleton, provides } from "microinject";
+import {
+  inject,
+  injectable,
+  singleton,
+  provides,
+  Container,
+} from "microinject";
 
 import { Initializable } from "../../../contracts";
 
 import { DuplicateIDError } from "../../id-mapping";
 
-import { WutWotPlugin, PluginAdapter } from "../types";
-import { PluginAdapterFactory } from "../components";
+import { PluginsManager } from "../services/PluginsManager";
 
-import { PluginManager } from "../services/PluginManager";
+import { WutWotPlugin } from "../contracts";
+import { PluginBinder, PluginBinderParameters } from "../services";
 
 @injectable()
 @singleton()
-@provides(PluginManager)
+@provides(PluginsManager)
 @provides(Initializable)
-export class PluginManagerImpl implements PluginManager, Initializable {
+export class PluginManagerImpl implements PluginsManager, Initializable {
   private _initialized = false;
-  private readonly _adaptersByPluginId = new Map<string, PluginAdapter>();
+  private readonly _pluginData = new Map<string, PluginBinder>();
 
-  constructor(
-    @inject(PluginAdapterFactory)
-    private _pluginAdapterFactory: PluginAdapterFactory,
-  ) {}
+  constructor(@inject(Container) private readonly _container: Container) {}
 
   onInitialize() {
     if (this._initialized) {
       return;
     }
     this._initialized = true;
-    this._adaptersByPluginId.forEach((adapter) => adapter.initialize());
+
+    Array.from(this._pluginData.values()).forEach((binder) =>
+      binder.onPluginInitialize(),
+    );
   }
 
   registerPlugin(plugin: WutWotPlugin): void {
-    if (this._adaptersByPluginId.has(plugin.id)) {
+    const id = plugin.id;
+
+    if (this._pluginData.has(id)) {
       throw new DuplicateIDError(
-        `A plugin with id "${plugin.id}" already exists.  Please reconfigure the plugin to use a different ID.`,
+        `A plugin with id "${id}" already exists.  Please reconfigure the plugin to use a different ID.`,
       );
     }
 
-    const adapter = this._pluginAdapterFactory.createPluginAdapter(plugin);
-    this._adaptersByPluginId.set(plugin.id, adapter);
-    if (this._initialized) {
-      adapter.initialize();
+    const binder = this._container.get(PluginBinder, {
+      [PluginBinderParameters.Plugin]: plugin,
+    });
+    this._pluginData.set(id, binder);
+
+    if (this._initialized && plugin.onPluginInitialize) {
+      binder.onPluginInitialize();
     }
   }
 }

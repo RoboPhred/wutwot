@@ -2,11 +2,12 @@ import { injectable, provides, singleton, inject } from "microinject";
 
 import { ThingsManager, InternalThing } from "../../things";
 
-import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
+import { PluginThing, OwnedPluginThing } from "../types";
 
 import { PluginThingFactory } from "../components/PluginThingFactory";
 
 import { PluginThingImpl } from "./PluginThingImpl";
+import { WutWotPlugin } from "../contracts";
 
 @injectable()
 @singleton()
@@ -19,8 +20,8 @@ export class PluginThingFactoryImpl implements PluginThingFactory {
 
   getPluginThing(
     thing: InternalThing,
-    pluginAdapter: PluginAdapter,
+    plugin: WutWotPlugin,
   ): PluginThing | OwnedPluginThing {
-    return new PluginThingImpl(thing, pluginAdapter, this._thingsManager);
+    return new PluginThingImpl(thing, plugin, this._thingsManager);
   }
 }

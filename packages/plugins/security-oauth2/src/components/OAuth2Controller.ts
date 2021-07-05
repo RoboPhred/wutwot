@@ -18,7 +18,6 @@ import OAuth2Server, { AuthorizationCode, Token } from "oauth2-server";
 import { Request, Response } from "express";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
-import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
 import { OAuth2ClientProvider } from "./OAuth2ClientProvider";
 import { OAuth2CredentialManager } from "./OAuth2CredentialManager";
@@ -31,7 +30,6 @@ import { ActorResolver } from "@wutwot/core";
 @provides(HttpController)
 @controller("/oauth2")
 @use(
-  cookieParser(),
   bodyParser.urlencoded({ extended: false }),
   cors({ origin: "*" }),
   nocache(),

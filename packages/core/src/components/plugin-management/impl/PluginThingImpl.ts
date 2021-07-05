@@ -16,8 +16,8 @@ import {
   OwnedPluginThing,
   PluginThingAction,
   OwnedPluginThingAction,
-  PluginAdapter,
 } from "../types";
+import { WutWotPlugin } from "../contracts";
 
 import { PluginThingActionImpl } from "./PluginThingActionImpl";
 import { PluginLocalThingDataPersistence } from "./PluginLocalThingDataPersistence";
@@ -31,9 +31,9 @@ export class PluginThingImpl implements OwnedPluginThing {
   private _pluginLocalPersistence: DataPersistence | null = null;
 
   constructor(
-    private _thing: InternalThing,
-    private _pluginAdapter: PluginAdapter,
-    private _thingManager: ThingsManager,
+    private readonly _thing: InternalThing,
+    private readonly _plugin: WutWotPlugin,
+    private readonly _thingManager: ThingsManager,
   ) {
     this._pluginActionsById = createReadonlyMapWrapper(
       this._thing.actions,
@@ -95,7 +95,7 @@ export class PluginThingImpl implements OwnedPluginThing {
     if (!this._pluginLocalPersistence) {
       this._pluginLocalPersistence = new PluginLocalThingDataPersistence(
         this._thing.persistence,
-        this._pluginAdapter.pluginId,
+        this._plugin.id,
       );
     }
 
@@ -112,23 +112,23 @@ export class PluginThingImpl implements OwnedPluginThing {
   }
 
   isOwned(): this is OwnedPluginThing {
-    return this._thing.ownerPlugin === this._pluginAdapter.plugin;
+    return this._thing.ownerPlugin === this._plugin;
   }
 
   addAction(def: ThingActionDef): OwnedPluginThingAction {
-    const action = this._thing.addAction(def, this._pluginAdapter.plugin);
+    const action = this._thing.addAction(def, this._plugin);
     return new PluginThingActionImpl(
       action,
-      this._pluginAdapter,
+      this._plugin,
     ) as OwnedPluginThingAction;
   }
 
   addProperty(def: ThingPropertyDef): ThingProperty {
-    return this._thing.addProperty(def, this._pluginAdapter.plugin);
+    return this._thing.addProperty(def, this._plugin);
   }
 
   addEvent(def: ThingEventDef): ThingEvent {
-    const event = this._thing.addEvent(def, this._pluginAdapter.plugin);
+    const event = this._thing.addEvent(def, this._plugin);
     return event;
   }
 
@@ -147,7 +147,7 @@ export class PluginThingImpl implements OwnedPluginThing {
   private _getPluginAction(action: InternalAction): PluginThingAction {
     let pluginAction = this._pluginActionsByInternal.get(action);
     if (!pluginAction) {
-      pluginAction = new PluginThingActionImpl(action, this._pluginAdapter);
+      pluginAction = new PluginThingActionImpl(action, this._plugin);
       this._pluginActionsByInternal.set(action, pluginAction);
     }
     return pluginAction;

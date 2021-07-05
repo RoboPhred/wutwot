@@ -12,6 +12,8 @@ export interface ZWavePluginOptions {
   device?: string;
 }
 export class ZWavePlugin implements WutWotPlugin {
+  static readonly supportsMultipleInstances = true;
+
   private _controller: ZWaveController | null = null;
   private _controllerError: Error | null = null;
 

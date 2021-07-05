@@ -1,12 +1,11 @@
 {
-  "name": "@wutwot/plugin-scenes",
+  "name": "@wutwot/plugin-security-nosec",
   "version": "1.0.0",
-  "description": "Scene support for wutwot Things",
+  "description": "Anonymous access security provider for wutwot",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
-    "build": "tsc -p src --incremental",
-    "format": "prettier --write src/**/*.ts"
+    "build": "tsc -p src --incremental"
   },
   "repository": {
     "type": "git",
@@ -19,7 +18,9 @@
     "Web of Things",
     "W3C",
     "Thing Descriptions",
-    "Scenes"
+    "WutWot",
+    "Security",
+    "NoSec"
   ],
   "author": "William Matthews",
   "license": "MIT",
@@ -28,23 +29,13 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
-    "@types/lodash": "^4.14.149",
-    "@types/node": "^13.11.0",
-    "@types/uuid": "^7.0.2",
     "@wutwot/core": "^1.0.0",
     "microinject": "^0.10.0",
-    "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
     "typescript": "^4.3.2"
   },
-  "dependencies": {
-    "lodash": "^4.17.15",
-    "rxjs": "^6.5.5",
-    "uuid": "^7.0.3"
-  },
   "peerDependencies": {
     "@wutwot/core": "^1.0.0",
-    "@wutwot/td": "^1.0.0",
     "microinject": "^0.10.0"
   }
 }

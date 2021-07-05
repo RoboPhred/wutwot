@@ -8,13 +8,11 @@ import {
   ThingActionRequestDef,
 } from "../../action-requests";
 
-import { OwnedPluginThingAction, PluginAdapter } from "../types";
+import { OwnedPluginThingAction } from "../types";
+import { WutWotPlugin } from "../contracts";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
-  constructor(
-    private _action: InternalAction,
-    private _pluginAdapter: PluginAdapter,
-  ) {}
+  constructor(private _action: InternalAction, private _plugin: WutWotPlugin) {}
 
   get id(): string {
     return this._action.id;
@@ -57,7 +55,7 @@ export class PluginThingActionImpl implements OwnedPluginThingAction {
   }
 
   isOwned(): this is OwnedPluginThingAction {
-    return this._action.ownerPlugin === this._pluginAdapter.plugin;
+    return this._action.ownerPlugin === this._plugin;
   }
 
   addRequest(def: ThingActionRequestDef): ThingActionRequest {

@@ -2,23 +2,22 @@ import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";
 
-import { WutWotPlugin } from "../types";
+import { WutWotPlugin } from "../contracts";
 
 /**
  * Identifies the PluginManager service.
  *
  * The PluginManager service handles the creation and management of plugins.
  */
-export const PluginManager: Identifier<PluginManager> = createSymbol(
-  "PluginManager",
-);
+export const PluginsManager: Identifier<PluginsManager> =
+  createSymbol("PluginsManager");
 
 /**
  * Defines the PluginManager service.
  *
  * The PluginManager service handles the creation and management of plugins.
  */
-export interface PluginManager {
+export interface PluginsManager {
   /**
    * Add a new plugin to the system.
    *

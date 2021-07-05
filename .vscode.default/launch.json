@@ -14,7 +14,7 @@
       "sourceMaps": true,
       "console": "integratedTerminal",
       "env": {
-        "WUTWOT_PLUGINS": "@wutwot/model;@wutwot/scenes;@wutwot/z-wave;@wutwot/servient-express;@wutwot/binding-express",
+        "WUTWOT_PLUGINS": "@wutwot/model;@wutwot/scenes;@wutwot/z-wave;@wutwot/servient-http;@wutwot/binding-http;@wutwot/security-nosec",
         "PORT": "8080"
       }
     }

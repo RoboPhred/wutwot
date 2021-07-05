@@ -72,7 +72,7 @@ export class ExpressServientPlugin implements WutWotPlugin {
     return this._pluginId;
   }
 
-  onRegisterPublicServices(bind: BindFunction) {
+  onRegisterServices(bind: BindFunction) {
     bind(HttpRouter).toConstantValue(this._router);
     bind(HttpRootUrl).toConstantValue(this._rootUrl);
   }

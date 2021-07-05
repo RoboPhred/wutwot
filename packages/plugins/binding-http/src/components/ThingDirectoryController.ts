@@ -24,6 +24,7 @@ import {
   put,
   post,
   expressRequest,
+  result,
 } from "simply-express-controllers";
 import cors from "cors";
 import nocache from "nocache";
@@ -43,6 +44,21 @@ export class ThingDirectoryController {
     @inject(HttpRootUrl) private _rootUrl: HttpRootUrl,
     @inject(ActorResolver) private _actorResolver: ActorResolver,
   ) {}
+
+  // Testing
+  @get("/whoami")
+  async whoAmI(@expressRequest() req: Request) {
+    try {
+      const actor = await this._requireCredentials(req);
+      return result.text(actor.id);
+    } catch (e) {
+      if (e instanceof ActorNotFoundError) {
+        throw createError(HttpStatusCodes.UNAUTHORIZED);
+      }
+
+      throw e;
+    }
+  }
 
   // TODO: Deprecate in favor of a plugin providing the [Thing Discovery API](https://www.w3.org/TR/wot-discovery/)
   @get("/", {
@@ -181,12 +197,14 @@ export class ThingDirectoryController {
 
   // FIXME: Make a feature of simply-express-controllers to make this an in-class middleware.
   private async _requireCredentials(req: Request): Promise<Actor> {
-    const auth =
-      req.cookies["Authorization"] ?? req.headers["Authorization"] ?? "";
+    const auth: string =
+      (req.cookies && req.cookies["Authorization"]) ??
+      (req.headers && req.headers["Authorization"]) ??
+      "";
 
     let credentials: ActorCredentials;
 
-    if (auth.starsWith("Bearer ")) {
+    if (auth.startsWith("Bearer ")) {
       const token = auth.substring(7);
       credentials = TokenActorCredentials(token);
     } else {
@@ -225,10 +243,20 @@ export class ThingDirectoryController {
 
   private _injectSecurity(thing: TDThing): TDThing {
     // TODO: Plugins should be able to offer security.  binding-express should probably handle this.
-    thing.security = ["nosec"];
+    thing.security = ["httpBindingSecurity"];
     thing.securityDefinitions = {
+      httpBindingSecurity: {
+        scheme: "combo",
+        oneOf: ["nosec", "oauth2"],
+      },
       nosec: {
         scheme: "nosec",
+      },
+      oauth2: {
+        scheme: "oauth2",
+        flow: "code",
+        authorization: urlJoin(this._rootUrl, "/oauth2/authorize"),
+        token: urlJoin(this._rootUrl, "/oauth2/token"),
       },
     };
     return thing;

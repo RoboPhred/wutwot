@@ -9,11 +9,12 @@ export type SecurityScheme =
   | APIKeySecurityScheme
   | BearerSecurityScheme
   | PSKSecurityScheme
-  | OAuth2SecurityScheme;
+  | OAuth2SecurityScheme
+  | ComboSecurityScheme;
 
 /**
  * Metadata describing the configuration of a security mechanism. The value assigned to the name scheme MUST be defined within a Vocabulary included in the Thing Description, either in the standard Vocabulary defined in § 5. TD Information Model or in a TD Context Extension.
- * {@link https://w3c.github.io/wot-thing-description/#securityscheme}
+ * {@link https://www.w3.org/2019/wot/security#SecurityScheme}
  */
 export interface SecuritySchemeBase {
   /**
@@ -44,7 +45,7 @@ export interface SecuritySchemeBase {
 
 /**
  * A security configuration corresponding to identified by the Vocabulary Term nosec (i.e., "scheme": "nosec"), indicating there is no authentication or other mechanism required to access the resource.
- * {@link https://w3c.github.io/wot-thing-description/#nosecurityscheme}
+ * {@link https://www.w3.org/2019/wot/security#NoSecurityScheme}
  */
 export interface NoSecurityScheme {
   /**
@@ -55,7 +56,7 @@ export interface NoSecurityScheme {
 
 /**
  * Basic Authentication [RFC7617] security configuration identified by the Vocabulary Term basic (i.e., "scheme": "basic"), using an unencrypted username and password. This scheme should be used with some other security mechanism providing confidentiality, for example, TLS.
- * {@link https://w3c.github.io/wot-thing-description/#basicsecurityscheme}
+ * {@link https://www.w3.org/2019/wot/security#BasicSecurityScheme}
  */
 export interface BasicSecurityScheme {
   /**
@@ -76,7 +77,7 @@ export interface BasicSecurityScheme {
 
 /**
  * Digest Access Authentication [RFC7616] security configuration identified by the Vocabulary Term digest (i.e., "scheme": "digest"). This scheme is similar to basic authentication but with added features to avoid man-in-the-middle attacks.
- * {@link https://w3c.github.io/wot-thing-description/#digestsecurityscheme}
+ * {@link https://www.w3.org/2019/wot/security#DigestSecurityScheme}
  */
 export interface DigestSecurityScheme {
   /**
@@ -102,7 +103,7 @@ export interface DigestSecurityScheme {
 
 /**
  * API key authentication security configuration identified by the Vocabulary Term apikey (i.e., "scheme": "apikey"). This is for the case where the access token is opaque and is not using a standard token format.
- * {@link https://w3c.github.io/wot-thing-description/#apikeysecurityscheme}
+ * {@link https://www.w3.org/2019/wot/security#APIKeySecurityScheme}
  */
 export interface APIKeySecurityScheme {
   /**
@@ -123,7 +124,7 @@ export interface APIKeySecurityScheme {
 
 /**
  * Bearer Token [RFC6750] security configuration identified by the Vocabulary Term bearer (i.e., "scheme": "bearer") for situations where bearer tokens are used independently of OAuth2. If the oauth2 scheme is specified it is not generally necessary to specify this scheme as well as it is implied. For format, the value jwt indicates conformance with [RFC7519], jws indicates conformance with [RFC7797], cwt indicates conformance with [RFC8392], and jwe indicates conformance with [RFC7516], with values for alg interpreted consistently with those standards. Other formats and algorithms for bearer tokens MAY be specified in vocabulary extensions.
- * {@link https://w3c.github.io/wot-thing-description/#bearersecurityscheme}
+ * {@link https://www.w3.org/2019/wot/security#BearerSecurityScheme}
  */
 export interface BearerSecurityScheme {
   /**
@@ -159,7 +160,7 @@ export interface BearerSecurityScheme {
 
 /**
  * Pre-shared key authentication security configuration identified by the Vocabulary Term psk (i.e., "scheme": "psk").
- * {@link https://w3c.github.io/wot-thing-description/#psksecurityscheme}
+ * {@link https://www.w3.org/2019/wot/security#PSKSecurityScheme}
  */
 export interface PSKSecurityScheme {
   /**
@@ -175,7 +176,7 @@ export interface PSKSecurityScheme {
 
 /**
  * OAuth2 authentication security configuration for systems conformant with [RFC6749] and [RFC8252], identified by the Vocabulary Term oauth2 (i.e., "scheme": "oauth2"). For the code flow both authorization and token MUST be included. If no scopes are defined in the SecurityScheme then they are considered to be empty.
- * {@link https://w3c.github.io/wot-thing-description/#oauth2securityscheme}
+ * {@link https://www.w3.org/2019/wot/security#OAuth2SecurityScheme}
  */
 export interface OAuth2SecurityScheme {
   /**
@@ -207,4 +208,25 @@ export interface OAuth2SecurityScheme {
    * Authorization flow.
    */
   flow: string;
+}
+
+/**
+ * A combination of other security schemes identified by the Vocabulary Term combo (i.e., "scheme": "combo").
+ * {@link https://www.w3.org/2019/wot/security#ComboSecurityScheme}
+ */
+export interface ComboSecurityScheme {
+  /**
+   * Identification of the security mechanism being configured.
+   */
+  scheme: "combo";
+
+  /**
+   * Array of two or more strings identifying other named security scheme definitions, all of which must be satisfied for access.
+   */
+  allOf?: string[];
+
+  /**
+   * Array of two or more strings identifying other named security scheme definitions, any one of which, when satisfied, will allow access. Only one may be chosen for use.
+   */
+  oneOf?: string[];
 }

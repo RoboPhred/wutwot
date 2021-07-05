@@ -9,7 +9,8 @@ Additionally, provides a `/things` and `/things/:thingId` endpoint for fetching 
 - This plugin requires an http servient. Nominally, `@wutwot/plugin-servient-http` can be used, or any other plugin providing compatible services.
 
 - This plugin requires a credential handler service, otherwise the endpoints will always return `401 Unauthorized`. Some options are:
-  - `@wutwot/plugins-security-oauth2` - Note: This plugin requires an additional credential handler to complete the oauth2 code flow.
+  - `@wutwot/plugins-security-nosec` - Provides anonymous access.
+  - `@wutwot/plugins-security-oauth2` - Provides OAuth2 access mechanisms.
 
 ## Security
 

@@ -1,5 +1,12 @@
 # TODO
 
+## Fix plugins being able to change their ID
+
+This is especially problematic as the PluginDataPersistence can get a different ID than the plugin initialized with, potentially allowing a plugin to
+stomp another plugin's data.
+
+Best way is probably to require ids be passed externally, so we can pre-bind the id inside the plugin scope.
+
 ## Support per-affordance forms
 
 We support bulk forms, but should also support per-affordance if any plugin has its own side channel.

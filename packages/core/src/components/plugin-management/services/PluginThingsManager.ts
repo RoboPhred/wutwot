@@ -13,9 +13,8 @@ import { OwnedPluginThing, PluginThing } from "../types/PluginThing";
  * This service is relative to the plugin that requests it, and is only present
  * within a plugin service scope.
  */
-export const PluginThingsManager: Identifier<PluginThingsManager> = createSymbol(
-  "PluginThingsManager",
-);
+export const PluginThingsManager: Identifier<PluginThingsManager> =
+  createSymbol("PluginThingsManager");
 
 /**
  * Defines the PluginThingsManager service

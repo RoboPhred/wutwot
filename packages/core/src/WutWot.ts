@@ -8,14 +8,14 @@ import { isNotNull } from "./utils/types";
 import { mapToObject } from "./utils/map";
 
 import { Thing, ThingsManager } from "./components/things";
-import { PluginManager, WutWotPlugin } from "./components/plugin-management";
+import { PluginsManager, WutWotPlugin } from "./components/plugin-management";
 
 import { Initializable, Shutdownable } from "./contracts";
 import { createReadonlyMapWrapper } from "./immutable";
 
 export class WutWot {
   private _container: Container = new Container();
-  private _pluginManager: PluginManager;
+  private _pluginManager: PluginsManager;
   private _thingManager: ThingsManager;
   private _publicThingsMap: ReadonlyMap<string, Thing>;
 
@@ -24,7 +24,7 @@ export class WutWot {
     this._container.bind(WutWot).toConstantValue(this);
     this._container.load(containerModule);
 
-    this._pluginManager = this._container.get(PluginManager);
+    this._pluginManager = this._container.get(PluginsManager);
 
     this._thingManager = this._container.get(ThingsManager);
     this._publicThingsMap = createReadonlyMapWrapper(

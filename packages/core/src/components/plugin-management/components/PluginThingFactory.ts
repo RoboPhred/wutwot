@@ -3,8 +3,9 @@ import { Identifier } from "microinject";
 import createSymbol from "../../../create-symbol";
 
 import { InternalThing } from "../../things";
+import { WutWotPlugin } from "../contracts";
 
-import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
+import { PluginThing, OwnedPluginThing } from "../types";
 
 /**
  * Identifies the PluginThingFactory service.
@@ -12,9 +13,8 @@ import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
  * The PluginThingFactory service is responsible for creating {@link PluginThing}s and {@link OwnedPluginThing}s
  * given a {@link InternalThing} and a {@link PluginAdapter} to create it for.
  */
-export const PluginThingFactory: Identifier<PluginThingFactory> = createSymbol(
-  "PluginThingFactory",
-);
+export const PluginThingFactory: Identifier<PluginThingFactory> =
+  createSymbol("PluginThingFactory");
 
 /**
  * Defines the PluginThingFactory service.
@@ -31,6 +31,6 @@ export interface PluginThingFactory {
    */
   getPluginThing(
     thing: InternalThing,
-    pluginAdapter: PluginAdapter,
+    plugin: WutWotPlugin,
   ): PluginThing | OwnedPluginThing;
 }
