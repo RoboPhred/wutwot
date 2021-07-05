@@ -1,0 +1,41 @@
+{
+  "name": "@wutwot/plugin-security-nosec",
+  "version": "1.0.0",
+  "description": "Anonymous access security provider for wutwot",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc -p src --incremental"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/wutwot.git"
+  },
+  "keywords": [
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions",
+    "WutWot",
+    "Security",
+    "NoSec"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoboPhred/wutwot/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/wutwot#readme",
+  "devDependencies": {
+    "@wutwot/core": "^1.0.0",
+    "microinject": "^0.9.3",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.3.2"
+  },
+  "peerDependencies": {
+    "@wutwot/core": "^1.0.0",
+    "microinject": "^0.10.0"
+  }
+}
