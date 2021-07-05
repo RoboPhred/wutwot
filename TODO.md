@@ -1,4 +1,10 @@
-#### Provide thing discovery
+# TODO
+
+## Major Bug: public services cannot access private services
+
+This prevents any public service from ever creating things.
+
+## Provide thing discovery
 
 Currently, this binding supplies a `/things` endpoint that returns an array of all things.
 However, this isnt part of the spec, and is specific to us.
