@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.6",
     "@types/http-errors": "^1.6.3",
     "@types/json-schema": "^7.0.4",

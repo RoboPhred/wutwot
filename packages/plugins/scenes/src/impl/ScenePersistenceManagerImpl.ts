@@ -3,14 +3,17 @@ import { PluginDataPersistence } from "@wutwot/core";
 import { values } from "lodash";
 
 import { PersistedScene } from "../types";
-import { ScenePersistenceManager } from "../components";
+import {
+  ScenePersistenceManager,
+  ScenePluginDataPersistence,
+} from "../components";
 
 @injectable()
 @singleton()
 @provides(ScenePersistenceManager)
 export class ScenePersistenceManagerImpl {
   constructor(
-    @inject(PluginDataPersistence)
+    @inject(ScenePluginDataPersistence)
     private _dataPersistence: PluginDataPersistence,
   ) {}
 

@@ -7,6 +7,7 @@ import {
   SceneThingsAdapter,
   SceneRegistry,
   Scene,
+  ScenePluginThingManager,
 } from "../components";
 import { SceneThing } from "../types/SceneThing";
 
@@ -17,11 +18,14 @@ import { SceneThingImpl } from "./SceneThingImpl";
 @provides(SceneThingsAdapter)
 @provides(Initializable)
 export class SceneThingsAdapterImpl
-  implements SceneThingsAdapter, Initializable {
+  implements SceneThingsAdapter, Initializable
+{
+  private _initialized = false;
+
   private _sceneThingsBySceneId = new Map<string, SceneThing>();
 
   constructor(
-    @inject(PluginThingsManager)
+    @inject(ScenePluginThingManager)
     private _pluginThingsManager: PluginThingsManager,
     @inject(SceneRegistry)
     private _sceneRegistry: SceneRegistry,
@@ -43,9 +47,15 @@ export class SceneThingsAdapterImpl
     for (const scene of this._sceneRegistry) {
       this._createSceneThing(scene);
     }
+
+    this._initialized = true;
   }
 
   private _handleSceneAdded(e: SceneAddedEventArgs) {
+    if (!this._initialized) {
+      return;
+    }
+
     const { scene } = e;
     if (!this._sceneThingsBySceneId.has(scene.sceneId)) {
       this._createSceneThing(scene);

@@ -1,11 +1,13 @@
-import { WutWotPlugin } from "@wutwot/core";
-import { ServiceLocator, RegistryModule } from "microinject";
+import { PluginServices, WutWotPlugin } from "@wutwot/core";
+import { ServiceLocator, RegistryModule, BindFunction } from "microinject";
 
-import privateModule from "./module";
+import servicesModule from "./module";
 import {
+  ScenePluginThingManager,
   SceneFactory,
   ScenePersistenceManager,
   SceneRepository,
+  ScenePluginDataPersistence,
 } from "./components";
 
 export class ScenesPlugin implements WutWotPlugin {
@@ -13,8 +15,13 @@ export class ScenesPlugin implements WutWotPlugin {
     return "scenes";
   }
 
-  onRegisterPrivateServices(): RegistryModule {
-    return privateModule;
+  onRegisterServices(
+    bind: BindFunction,
+    { thingManager, dataPersistence }: PluginServices,
+  ): RegistryModule {
+    bind(ScenePluginThingManager).toConstantValue(thingManager);
+    bind(ScenePluginDataPersistence).toConstantValue(dataPersistence);
+    return servicesModule;
   }
 
   onPluginInitialize(serviceLocator: ServiceLocator) {
