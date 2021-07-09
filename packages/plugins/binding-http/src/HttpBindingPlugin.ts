@@ -9,7 +9,7 @@ export class HttpBindingPlugin implements WutWotPlugin {
     return "binding-http";
   }
 
-  onRegisterPublicServices(bind: BindFunction) {
+  onRegisterServices(bind: BindFunction) {
     bind(ThingDirectoryController);
     bind(HttpBindingFormProvider);
   }

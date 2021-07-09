@@ -1,4 +1,4 @@
-import { WutWotPlugin } from "@wutwot/core";
+import { PluginServices, WutWotPlugin } from "@wutwot/core";
 import { BindFunction } from "microinject";
 import {
   AnonymousActor,
@@ -11,11 +11,10 @@ export class SecurityNosecPlugin implements WutWotPlugin {
     return "security-nosec";
   }
 
-  onRegisterPrivateServices(bind: BindFunction) {
-    bind(AnonymousActor).toFactory(anonymousActorFactory);
-  }
-
-  onRegisterPublicServices(bind: BindFunction) {
+  onRegisterServices(bind: BindFunction, { thingManager }: PluginServices) {
+    bind(AnonymousActor).toFactory((context) =>
+      anonymousActorFactory(context, thingManager),
+    );
     bind(NosecCredentialsHandler);
   }
 }
