@@ -1,4 +1,4 @@
 export * from "./WutWotPlugin";
 export * from "./PluginAction";
-export * from "./PluginAdapter";
+export * from "./PluginServices";
 export * from "./PluginThing";

@@ -8,10 +8,13 @@ import {
 
 import { ThingsManager } from "../../things";
 
-import { WutWotPlugin, PluginAdapter } from "../types";
+import { WutWotPlugin } from "../types";
 
-import { PluginAdapterFactory } from "../components/PluginAdapterFactory";
-import { PluginThingFactory } from "../components/PluginThingFactory";
+import {
+  PluginAdapterFactory,
+  PluginThingFactory,
+  PluginAdapter,
+} from "../components";
 
 import { PluginAdapterImpl } from "./PluginAdapterImpl";
 

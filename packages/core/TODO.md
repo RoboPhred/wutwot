@@ -1,5 +1,17 @@
 # TODO
 
+## Support injection of plugin services.
+
+Services used to have public and private containers, where plugin specific services were exposed in the private container.
+However, this results in being unable to use private services on services you want to be public, and the inability to use public
+services in private ones.
+
+Since we cannot expose private service bindings per plugin, we have to pass plugin services manually and trust the plugin
+to do what it wants with them. Typically this would involve passing them in a factory constructor or re-binding them with a private symbol.
+
+This can probably be fixed if we add the ability to tag bindings and determine injection based on binding tags. This would let us specially
+mark bindings made by plugins and resolve the plugin's specific services when injected.
+
 ## Support per-affordance forms
 
 We support bulk forms, but should also support per-affordance if any plugin has its own side channel.

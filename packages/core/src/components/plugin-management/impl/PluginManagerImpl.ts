@@ -4,8 +4,8 @@ import { Initializable } from "../../../contracts";
 
 import { DuplicateIDError } from "../../id-mapping";
 
-import { WutWotPlugin, PluginAdapter } from "../types";
-import { PluginAdapterFactory } from "../components";
+import { WutWotPlugin } from "../types";
+import { PluginAdapter, PluginAdapterFactory } from "../components";
 
 import { PluginManager } from "../services/PluginManager";
 

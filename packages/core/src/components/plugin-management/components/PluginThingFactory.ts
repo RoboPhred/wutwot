@@ -4,7 +4,8 @@ import createSymbol from "../../../create-symbol";
 
 import { InternalThing } from "../../things";
 
-import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
+import { PluginThing, OwnedPluginThing } from "../types";
+import { PluginAdapter } from "../components";
 
 /**
  * Identifies the PluginThingFactory service.
@@ -12,9 +13,8 @@ import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
  * The PluginThingFactory service is responsible for creating {@link PluginThing}s and {@link OwnedPluginThing}s
  * given a {@link InternalThing} and a {@link PluginAdapter} to create it for.
  */
-export const PluginThingFactory: Identifier<PluginThingFactory> = createSymbol(
-  "PluginThingFactory",
-);
+export const PluginThingFactory: Identifier<PluginThingFactory> =
+  createSymbol("PluginThingFactory");
 
 /**
  * Defines the PluginThingFactory service.

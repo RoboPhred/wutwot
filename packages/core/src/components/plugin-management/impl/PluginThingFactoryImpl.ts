@@ -2,9 +2,8 @@ import { injectable, provides, singleton, inject } from "microinject";
 
 import { ThingsManager, InternalThing } from "../../things";
 
-import { PluginThing, OwnedPluginThing, PluginAdapter } from "../types";
-
-import { PluginThingFactory } from "../components/PluginThingFactory";
+import { PluginThing, OwnedPluginThing } from "../types";
+import { PluginThingFactory, PluginAdapter } from "../components";
 
 import { PluginThingImpl } from "./PluginThingImpl";
 

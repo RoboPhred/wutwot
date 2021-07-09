@@ -16,8 +16,8 @@ import {
   OwnedPluginThing,
   PluginThingAction,
   OwnedPluginThingAction,
-  PluginAdapter,
 } from "../types";
+import { PluginAdapter } from "../components";
 
 import { PluginThingActionImpl } from "./PluginThingActionImpl";
 import { PluginLocalThingDataPersistence } from "./PluginLocalThingDataPersistence";

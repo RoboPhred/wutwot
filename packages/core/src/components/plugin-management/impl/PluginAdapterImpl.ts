@@ -3,66 +3,42 @@ import { Container } from "microinject";
 import { ThingsManager, ThingDef } from "../../things";
 import { Database } from "../../persistence";
 
-import {
-  WutWotPlugin,
-  OwnedPluginThing,
-  PluginThing,
-  PluginAdapter,
-} from "../types";
-import { PluginThingsManager, PluginDataPersistence } from "../services";
-
-import { PluginThingFactory } from "../components";
+import { WutWotPlugin, OwnedPluginThing, PluginThing } from "../types";
+import { PluginThingsManager } from "../services";
+import { PluginAdapter, PluginThingFactory } from "../components";
 
 import { PluginDataPersistenceImpl } from "./PluginDataPersistenceImpl";
-import { Initializable } from "../../../contracts";
 
 export class PluginAdapterImpl implements PluginAdapter {
   private _initialized = false;
-  private _privateContainer: Container;
 
   constructor(
     private _plugin: WutWotPlugin,
-    publicContainer: Container,
+    private _publicContainer: Container,
     private _thingManager: ThingsManager,
     private _pluginThingFactory: PluginThingFactory,
   ) {
-    this._privateContainer = new Container();
-    this._privateContainer.parent = publicContainer;
-
     const pluginThingManager: PluginThingsManager = {
       addThing: this._addThing.bind(this),
       getThing: this._getThing.bind(this),
       getThings: this._getThings.bind(this),
       getOwnThings: this._getOwnThings.bind(this),
     };
-    this._privateContainer
-      .bind(PluginThingsManager)
-      .toConstantValue(pluginThingManager);
+    const dataPersistence = new PluginDataPersistenceImpl(
+      _plugin.id,
+      _publicContainer.get(Database),
+    );
 
-    this._privateContainer
-      .bind(PluginDataPersistence)
-      .toConstantValue(
-        new PluginDataPersistenceImpl(
-          _plugin.id,
-          publicContainer.get(Database),
-        ),
-      );
-
-    if (_plugin.onRegisterPublicServices) {
-      const registryModule = _plugin.onRegisterPublicServices(
-        publicContainer.bind.bind(publicContainer),
+    if (_plugin.onRegisterServices) {
+      const registryModule = _plugin.onRegisterServices(
+        _publicContainer.bind.bind(_publicContainer),
+        {
+          thingManager: pluginThingManager,
+          dataPersistence,
+        },
       );
       if (registryModule) {
-        publicContainer.load(registryModule);
-      }
-    }
-
-    if (_plugin.onRegisterPrivateServices) {
-      const registryModule = _plugin.onRegisterPrivateServices(
-        this._privateContainer.bind.bind(this._privateContainer),
-      );
-      if (registryModule) {
-        this._privateContainer.load(registryModule);
+        _publicContainer.load(registryModule);
       }
     }
   }
@@ -81,12 +57,8 @@ export class PluginAdapterImpl implements PluginAdapter {
     }
     this._initialized = true;
 
-    this._privateContainer
-      .getAll(Initializable)
-      .forEach((x) => x.onInitialize());
-
     if (this._plugin.onPluginInitialize) {
-      this._plugin.onPluginInitialize(this._privateContainer);
+      this._plugin.onPluginInitialize(this._publicContainer);
     }
   }
 

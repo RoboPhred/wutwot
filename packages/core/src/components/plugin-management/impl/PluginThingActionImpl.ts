@@ -8,7 +8,8 @@ import {
   ThingActionRequestDef,
 } from "../../action-requests";
 
-import { OwnedPluginThingAction, PluginAdapter } from "../types";
+import { OwnedPluginThingAction } from "../types";
+import { PluginAdapter } from "../components";
 
 export class PluginThingActionImpl implements OwnedPluginThingAction {
   constructor(
