@@ -7,7 +7,7 @@ import {
   SceneThingsAdapter,
   SceneRegistry,
   Scene,
-  ScenePluginThingManager,
+  ScenePluginThingsManager,
 } from "../components";
 import { SceneThing } from "../types/SceneThing";
 
@@ -25,7 +25,7 @@ export class SceneThingsAdapterImpl
   private _sceneThingsBySceneId = new Map<string, SceneThing>();
 
   constructor(
-    @inject(ScenePluginThingManager)
+    @inject(ScenePluginThingsManager)
     private _pluginThingsManager: PluginThingsManager,
     @inject(SceneRegistry)
     private _sceneRegistry: SceneRegistry,

@@ -6,7 +6,7 @@ import { ZWaveEndpointMonitorFactory } from "../contracts";
 import {
   ZWaveThingHandlerFactory,
   ZWaveThingHandler,
-  ZWavePluginThingManager,
+  ZWavePluginThingsManager,
 } from "../components";
 
 import { ZWaveEndpointThingHandlerImpl } from "./ZWaveEndpointThingHandlerImpl";
@@ -16,7 +16,7 @@ import { ZWaveEndpointThingHandlerImpl } from "./ZWaveEndpointThingHandlerImpl";
 @singleton()
 export class ZWaveThingHandlerFactoryImpl implements ZWaveThingHandlerFactory {
   constructor(
-    @inject(ZWavePluginThingManager)
+    @inject(ZWavePluginThingsManager)
     private _thingsManager: PluginThingsManager,
     @inject(ZWaveEndpointMonitorFactory, { all: true })
     private _monitorFactories: ZWaveEndpointMonitorFactory[],

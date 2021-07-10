@@ -3,7 +3,7 @@ import { ZWaveController } from "zwave-js";
 import { PluginServices, WutWotPlugin } from "@wutwot/core";
 
 import {
-  ZWavePluginThingManager,
+  ZWavePluginThingsManager,
   ZWaveProvider,
   ZWaveThingMapper,
 } from "./components";
@@ -44,9 +44,9 @@ export class ZWavePlugin implements WutWotPlugin {
 
   onRegisterServices(
     bind: BindFunction,
-    { thingManager }: PluginServices,
+    { thingsManager }: PluginServices,
   ): RegistryModule {
-    bind(ZWavePluginThingManager).toConstantValue(thingManager);
+    bind(ZWavePluginThingsManager).toConstantValue(thingsManager);
     bind(ZWavePort).toConstantValue(this._opts.device);
     return containerModule;
   }

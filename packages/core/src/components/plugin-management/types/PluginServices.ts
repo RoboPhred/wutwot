@@ -9,7 +9,7 @@ export interface PluginServices {
   /**
    * A service for creating and retrieving mutable things for this plugin.
    */
-  thingManager: PluginThingsManager;
+  thingsManager: PluginThingsManager;
 
   /**
    * Persistent data services for this plugin.

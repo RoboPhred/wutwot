@@ -4,6 +4,5 @@
 import { Identifier } from "microinject";
 import { PluginThingsManager } from "@wutwot/core";
 
-export const ZWavePluginThingsManager: Identifier<PluginThingsManager> = Symbol(
-  "PluginThingsManager::zwave",
-);
+export const OAuth2PluginThingsManager: Identifier<PluginThingsManager> =
+  Symbol("PluginThingsManager::oauth");

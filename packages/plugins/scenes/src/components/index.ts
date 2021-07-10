@@ -4,7 +4,7 @@ export * from "./SceneFactory";
 export * from "./SceneManagerThing";
 export * from "./ScenePersistenceManager";
 export * from "./ScenePluginDataPersistence";
-export * from "./ScenePluginThingManager";
+export * from "./ScenePluginThingsManager";
 export * from "./SceneRegistry";
 export * from "./SceneRepository";
 export * from "./SceneThingsAdapter";

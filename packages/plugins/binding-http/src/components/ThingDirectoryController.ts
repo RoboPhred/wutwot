@@ -191,7 +191,7 @@ export class ThingDirectoryController {
   private async _requireCredentials(req: Request): Promise<Actor> {
     const auth: string =
       (req.cookies && req.cookies["Authorization"]) ??
-      (req.headers && req.headers["Authorization"]) ??
+      (req.headers && req.headers["authorization"]) ??
       "";
 
     let credentials: ActorCredentials;

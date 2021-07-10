@@ -11,9 +11,9 @@ export class SecurityNosecPlugin implements WutWotPlugin {
     return "security-nosec";
   }
 
-  onRegisterServices(bind: BindFunction, { thingManager }: PluginServices) {
+  onRegisterServices(bind: BindFunction, { thingsManager }: PluginServices) {
     bind(AnonymousActor).toFactory((context) =>
-      anonymousActorFactory(context, thingManager),
+      anonymousActorFactory(context, thingsManager),
     );
     bind(NosecCredentialsHandler);
   }

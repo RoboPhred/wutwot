@@ -3,7 +3,7 @@ import { ServiceLocator, RegistryModule, BindFunction } from "microinject";
 
 import servicesModule from "./module";
 import {
-  ScenePluginThingManager,
+  ScenePluginThingsManager,
   SceneFactory,
   ScenePersistenceManager,
   SceneRepository,
@@ -17,9 +17,9 @@ export class ScenesPlugin implements WutWotPlugin {
 
   onRegisterServices(
     bind: BindFunction,
-    { thingManager, dataPersistence }: PluginServices,
+    { thingsManager, dataPersistence }: PluginServices,
   ): RegistryModule {
-    bind(ScenePluginThingManager).toConstantValue(thingManager);
+    bind(ScenePluginThingsManager).toConstantValue(thingsManager);
     bind(ScenePluginDataPersistence).toConstantValue(dataPersistence);
     return servicesModule;
   }

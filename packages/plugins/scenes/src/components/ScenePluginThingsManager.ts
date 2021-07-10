@@ -4,6 +4,6 @@
 import { Identifier } from "microinject";
 import { PluginThingsManager } from "@wutwot/core";
 
-export const ScenePluginThingManager: Identifier<PluginThingsManager> = Symbol(
-  "PluginThingManager::scenes",
+export const ScenePluginThingsManager: Identifier<PluginThingsManager> = Symbol(
+  "PluginThingsManager::scenes",
 );

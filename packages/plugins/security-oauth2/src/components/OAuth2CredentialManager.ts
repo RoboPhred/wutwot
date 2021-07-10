@@ -8,9 +8,11 @@ import {
   isTokenActorCredentials,
   ActorNotFoundError,
   Actor,
+  WutWot,
 } from "@wutwot/core";
 
 import { OAuth2CredentialActor } from "./OAuth2CredentialActor";
+import { OAuth2PluginThingsManager } from "./OAuth2PluginThingsManager";
 
 @injectable()
 @singleton()
@@ -19,7 +21,8 @@ export class OAuth2CredentialManager implements ActorCredentialsHandler {
   private _actors: OAuth2CredentialActor[] = [];
 
   constructor(
-    @inject(PluginThingsManager)
+    @inject(WutWot) private _wutwot: WutWot,
+    @inject(OAuth2PluginThingsManager)
     private _pluginThingsManager: PluginThingsManager,
   ) {}
 
@@ -77,7 +80,9 @@ export class OAuth2CredentialManager implements ActorCredentialsHandler {
       actor.setToken(token);
     } else {
       this._actors.push(
+        // FIXME: Passing all our injections straight into this.  Use a factory instead.
         new OAuth2CredentialActor(
+          this._wutwot,
           this._pluginThingsManager,
           token,
           this._onRevoke,

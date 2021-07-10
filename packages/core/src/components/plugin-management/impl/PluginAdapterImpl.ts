@@ -18,7 +18,7 @@ export class PluginAdapterImpl implements PluginAdapter {
     private _thingManager: ThingsManager,
     private _pluginThingFactory: PluginThingFactory,
   ) {
-    const pluginThingManager: PluginThingsManager = {
+    const pluginThingsManager: PluginThingsManager = {
       addThing: this._addThing.bind(this),
       getThing: this._getThing.bind(this),
       getThings: this._getThings.bind(this),
@@ -33,7 +33,7 @@ export class PluginAdapterImpl implements PluginAdapter {
       const registryModule = _plugin.onRegisterServices(
         _publicContainer.bind.bind(_publicContainer),
         {
-          thingManager: pluginThingManager,
+          thingsManager: pluginThingsManager,
           dataPersistence,
         },
       );

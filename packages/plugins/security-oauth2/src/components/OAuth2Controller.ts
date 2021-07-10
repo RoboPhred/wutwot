@@ -1,5 +1,12 @@
 import { URL } from "url";
 import { inject, injectable, provides, singleton } from "microinject";
+import {
+  ActorCredentials,
+  ActorNotFoundError,
+  ActorResolver,
+  AnonymousActorCredentials,
+  TokenActorCredentials,
+} from "@wutwot/core";
 import { HttpController, HttpRootUrl } from "@wutwot/plugin-servient-http";
 import {
   controller,
@@ -19,9 +26,9 @@ import { Request, Response } from "express";
 import createError from "http-errors";
 import HttpStatusCodes from "http-status-codes";
 import { v4 as uuidv4 } from "uuid";
+
 import { OAuth2ClientProvider } from "./OAuth2ClientProvider";
 import { OAuth2CredentialManager } from "./OAuth2CredentialManager";
-import { ActorResolver } from "@wutwot/core";
 
 // TODO: Split out the multiple concerns in this class
 
@@ -51,23 +58,32 @@ export class OAuth2Controller {
       allowEmptyState: true,
       authenticateHandler: {
         handle: async (req: Request, res: Response) => {
-          const auth =
-            req.cookies["Authorization"] ?? req.headers["Authorization"] ?? "";
-          if (!auth.starsWith("Bearer ")) {
-            throw createError(HttpStatusCodes.UNAUTHORIZED);
+          const auth: string =
+            (req.cookies && req.cookies["Authorization"]) ??
+            (req.headers && req.headers["authorization"]) ??
+            "";
+
+          let credentials: ActorCredentials;
+
+          if (auth.startsWith("Bearer ")) {
+            const token = auth.substring(7);
+            credentials = TokenActorCredentials(token);
+          } else {
+            credentials = AnonymousActorCredentials();
           }
 
-          const token = auth.substring(7);
+          try {
+            const actor = await this._actorResolver.getActorFromCredentials(
+              credentials,
+            );
+            return { id: actor.id };
+          } catch (e) {
+            if (e instanceof ActorNotFoundError) {
+              throw createError(HttpStatusCodes.UNAUTHORIZED);
+            }
 
-          // This can find an actor either from us, or from other credential handlers.
-          const actor = await this._actorResolver.getActorFromCredentials({
-            type: "token",
-            token,
-          });
-          if (!actor) {
-            throw createError(HttpStatusCodes.UNAUTHORIZED);
+            throw e;
           }
-          return { id: actor.id };
         },
       },
       model: {
@@ -144,6 +160,7 @@ export class OAuth2Controller {
 
   @get("/authorize")
   async authorize(
+    @expressRequest() req: Request,
     @queryParam("client_id", { required: true }) clientId: string,
     @queryParam("redirect_uri", { required: true }) redirectUri: string,
     @queryParam("response_type", { required: true, schema: { const: "code" } })
@@ -202,10 +219,10 @@ export class OAuth2Controller {
       res.redirect(url.toString());
       return result.handled();
     } catch (e) {
-      console.error(e);
       if (e.statusCode) {
         throw createError(e.statusCode, e.message);
       }
+      throw e;
     }
   }
 

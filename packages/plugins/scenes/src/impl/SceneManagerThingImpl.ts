@@ -11,7 +11,7 @@ import {
   SceneManagerThing,
   SceneThingsAdapter,
   SceneRepository,
-  ScenePluginThingManager,
+  ScenePluginThingsManager,
 } from "../components";
 import { SceneThing } from "../types";
 
@@ -25,7 +25,7 @@ interface AddSceneActionPayload {
 @provides(Initializable)
 export class SceneManagerThingImpl implements Initializable {
   constructor(
-    @inject(ScenePluginThingManager)
+    @inject(ScenePluginThingsManager)
     private _thingsManager: PluginThingsManager,
     @inject(SceneFactory)
     private _sceneFactory: SceneFactory,

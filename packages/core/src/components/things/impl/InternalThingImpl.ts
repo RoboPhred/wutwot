@@ -12,7 +12,6 @@ import {
   DCMITermsIRIs,
   Form,
   W3cWotFormContext,
-  W3cRdfSyntaxIRIs,
 } from "@wutwot/td";
 
 import {
@@ -24,6 +23,7 @@ import {
 import { makeInspectJson } from "../../../utils/inspect";
 import { mapToObject } from "../../../utils/map";
 import { nonEmptyArray } from "../../../utils/types";
+import { addContext } from "../../../utils/json-ld";
 
 import {
   LocalActionsManager,
@@ -44,13 +44,12 @@ import {
 } from "../../thing-events";
 import { metadataObjectToMap, MetadataIdentifier } from "../../metadata";
 import { DataPersistence } from "../../persistence";
+import { getThingForms } from "../../forms";
 
 import { ThingDef, Thing } from "../types";
 import { ThingScope } from "../scopes";
 import { InternalThing, InternalThingParams } from "../services";
 import { ThingLocalPersistence } from "../components";
-import { getThingForms } from "../../forms";
-import { addContext, asID } from "../../../utils/json-ld";
 
 @injectable()
 @provides(InternalThing)

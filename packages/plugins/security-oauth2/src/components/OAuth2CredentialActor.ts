@@ -4,6 +4,7 @@ import {
   PluginThingsManager,
   PropertySetError,
   ThingActionRequestUpdate,
+  WutWot,
 } from "@wutwot/core";
 import { RefreshToken, Token } from "oauth2-server";
 import { Subject, of as observableOf } from "rxjs";
@@ -17,22 +18,26 @@ export class OAuth2CredentialActor {
   private _disposed = false;
 
   constructor(
-    pluginThingManager: PluginThingsManager,
+    wutwot: WutWot,
+    pluginThingsManager: PluginThingsManager,
     private _token: Token,
     private _onRevoke: (actor: OAuth2CredentialActor) => void,
   ) {
     this._clientId = this._token.client.id;
     this._actorId = this._token.user.id;
 
-    const ownerThing = pluginThingManager.getThing(this._actorId);
+    const ownerThing = wutwot.things.get(this._actorId);
     if (!ownerThing) {
       throw new Error(
         "Cannot create a credential actor for an actor that does not exist.",
       );
     }
 
-    this._thing = pluginThingManager.addThing({
-      pluginLocalId: `client:${this._clientId}-actor:${this._actorId}`,
+    this._thing = pluginThingsManager.addThing({
+      pluginLocalId: `client:${this._clientId}--actor:${this._actorId.replace(
+        "::",
+        "-",
+      )}`,
       title: `OAuth2 Authorization for ${this._clientId}`,
       description: `Authorized on the behalf of ${ownerThing.title}`,
     });
