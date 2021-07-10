@@ -3,7 +3,11 @@ import { PluginThingsManager } from "@wutwot/core";
 import { Endpoint } from "zwave-js";
 
 import { ZWaveEndpointMonitorFactory } from "../contracts";
-import { ZWaveThingHandlerFactory, ZWaveThingHandler } from "../components";
+import {
+  ZWaveThingHandlerFactory,
+  ZWaveThingHandler,
+  ZWavePluginThingManager,
+} from "../components";
 
 import { ZWaveEndpointThingHandlerImpl } from "./ZWaveEndpointThingHandlerImpl";
 
@@ -12,7 +16,8 @@ import { ZWaveEndpointThingHandlerImpl } from "./ZWaveEndpointThingHandlerImpl";
 @singleton()
 export class ZWaveThingHandlerFactoryImpl implements ZWaveThingHandlerFactory {
   constructor(
-    @inject(PluginThingsManager) private _thingsManager: PluginThingsManager,
+    @inject(ZWavePluginThingManager)
+    private _thingsManager: PluginThingsManager,
     @inject(ZWaveEndpointMonitorFactory, { all: true })
     private _monitorFactories: ZWaveEndpointMonitorFactory[],
   ) {}

@@ -1,8 +1,12 @@
 import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
 import { ZWaveController } from "zwave-js";
-import { WutWotPlugin } from "@wutwot/core";
+import { PluginServices, WutWotPlugin } from "@wutwot/core";
 
-import { ZWaveProvider, ZWaveThingMapper } from "./components";
+import {
+  ZWavePluginThingManager,
+  ZWaveProvider,
+  ZWaveThingMapper,
+} from "./components";
 
 import { ZWavePort } from "./config";
 import containerModule from "./module";
@@ -38,7 +42,11 @@ export class ZWavePlugin implements WutWotPlugin {
     return this._controller;
   }
 
-  onRegisterPrivateServices(bind: BindFunction): RegistryModule {
+  onRegisterServices(
+    bind: BindFunction,
+    { thingManager }: PluginServices,
+  ): RegistryModule {
+    bind(ZWavePluginThingManager).toConstantValue(thingManager);
     bind(ZWavePort).toConstantValue(this._opts.device);
     return containerModule;
   }
