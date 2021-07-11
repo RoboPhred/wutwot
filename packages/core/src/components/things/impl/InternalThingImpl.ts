@@ -7,12 +7,8 @@ import {
 } from "microinject";
 import { cloneDeep, mapValues } from "lodash";
 import { inspect } from "util";
-import {
-  W3cWotTdIRIs,
-  DCMITermsIRIs,
-  Form,
-  W3cWotFormContext,
-} from "@wutwot/td";
+import { DCMITermsIRIs } from "@wutwot/ld";
+import { W3cWotTdIRIs, Form, W3cWotFormContext } from "@wutwot/w3c-td";
 
 import {
   makeReadOnly,

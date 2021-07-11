@@ -1,4 +1,4 @@
-import { Form } from "@wutwot/td";
+import { Form } from "@wutwot/w3c-td";
 import { Identifier } from "microinject";
 
 import createSymbol from "../../../create-symbol";

@@ -3,8 +3,10 @@
   "private": true,
   "scripts": {
     "__core": "exit 1",
-    "clean:td": "cd packages/td && npm run clean",
-    "build:td": "cd packages/td && npm run build",
+    "clean:ld": "cd packages/ld && npm run clean",
+    "build:ld": "cd packages/ld && npm run build",
+    "clean:td": "cd packages/w3c-td && npm run clean",
+    "build:td": "cd packages/w3c-td && npm run build",
     "clean:core": "cd packages/core && npm run clean",
     "build:core": "cd packages/core && npm run build",
     "__servients": "exit 1",
@@ -34,8 +36,8 @@
     "clean:server": "cd packages/server && npm run clean",
     "build:server": "cd packages/server && npm run build",
     "__macros": "exit 1",
-    "clean:prereqs": "npm-run-all -p clean:td clean:core",
-    "build:prereqs": "npm-run-all build:td build:core",
+    "clean:prereqs": "npm-run-all -p clean:ld clean:td clean:core",
+    "build:prereqs": "npm-run-all build:ld build:td build:core",
     "clean:plugins": "npm-run-all -p clean:model clean:scenes clean:zwave clean:security-nosec clean:servients clean:servient-consumers",
     "build:plugins": "npm-run-all -p build:model build:scenes build:zwave build:security-nosec build:servients-and-consumers",
     "clean": "npm-run-all -p clean:prereqs clean:plugins",
@@ -45,8 +47,9 @@
     "start:client": "cd packages/explorer && npm run start -- --port=6060"
   },
   "workspaces": [
+    "./packages/ld",
     "./packages/core",
-    "./packages/td",
+    "./packages/w3c-td",
     "./packages/plugins/*",
     "./packages/explorer",
     "./packages/server"

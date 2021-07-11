@@ -1,14 +1,13 @@
 import { inspect } from "util";
 import { cloneDeep } from "lodash";
+import { DCMITermsIRIs } from "@wutwot/ld";
 import {
   TypedDataSchema,
-  DCMITermsIRIs,
   W3cWotTdIRIs,
   W3CWotJsonSchemaContext,
   Form,
   W3cWotFormContext,
-  W3cRdfSyntaxIRIs,
-} from "@wutwot/td";
+} from "@wutwot/w3c-td";
 
 import {
   DeepImmutable,

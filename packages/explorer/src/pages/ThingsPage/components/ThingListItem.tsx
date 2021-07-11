@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DCMITermsIRIs } from "@wutwot/td";
+import { DCMITermsIRIs } from "@wutwot/w3c-td";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { useAppSelector } from "@/store/selectors";

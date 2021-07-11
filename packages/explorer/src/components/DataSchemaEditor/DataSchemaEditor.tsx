@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DataSchema } from "@wutwot/td";
+import { DataSchema } from "@wutwot/w3c-td";
 import Form from "@rjsf/material-ui";
 import { IChangeEvent, ISubmitEvent } from "@rjsf/core";
 

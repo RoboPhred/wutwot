@@ -13,7 +13,7 @@ import {
   AnonymousActorCredentials,
 } from "@wutwot/core";
 import { HttpController, HttpRootUrl } from "@wutwot/plugin-servient-http";
-import { Thing as TDThing, W3cWotTDContext } from "@wutwot/td";
+import { Thing as TDThing, W3cWotTDContext } from "@wutwot/w3c-td";
 import HttpStatusCodes from "http-status-codes";
 import {
   controller,

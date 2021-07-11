@@ -1,7 +1,7 @@
 import { ContainerModule } from "microinject";
 
-import { PropertyApplicatorImpl } from "./impl/PropertyApplicatorImpl";
+import { PropertyApplicator } from "./components/PropertyApplicator";
 
 export default new ContainerModule((bind) => {
-  bind(PropertyApplicatorImpl);
+  bind(PropertyApplicator);
 });

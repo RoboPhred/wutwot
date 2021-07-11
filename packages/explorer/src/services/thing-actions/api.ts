@@ -1,4 +1,4 @@
-import { Thing } from "@wutwot/td";
+import { Thing } from "@wutwot/w3c-td";
 import find from "lodash/find";
 
 import { maybeArrayContains } from "@/types";

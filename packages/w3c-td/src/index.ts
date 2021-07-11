@@ -10,4 +10,5 @@ export * from "./multi-language";
 export * from "./property-affordance";
 export * from "./security-scheme";
 export * from "./thing";
+export * from "./types";
 export * from "./version-info";

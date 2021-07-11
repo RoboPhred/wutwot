@@ -1,4 +1,4 @@
-import { Thing } from "@wutwot/td";
+import { Thing } from "@wutwot/w3c-td";
 
 export interface ResolvedThingDefinition {
   definition: Thing;

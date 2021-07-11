@@ -1,5 +1,4 @@
-import { MaybeArray } from "../types";
-import { LDType } from "../json-ld";
+import { MaybeArray } from "./types";
 import { MultiLanguage } from "./multi-language";
 
 export type SecurityScheme =
@@ -19,7 +18,7 @@ export interface SecuritySchemeBase {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types).
    */
-  "@type": MaybeArray<LDType>;
+  "@type": string[];
 
   /**
    * Identification of the security mechanism being configured.

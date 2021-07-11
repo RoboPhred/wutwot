@@ -2,15 +2,14 @@ import { injectable, injectParam, inject, provides } from "microinject";
 import { inspect } from "util";
 import { isObservable } from "rxjs";
 import { cloneDeep } from "lodash";
+import { DCMITermsIRIs } from "@wutwot/ld";
 import {
-  DCMITermsIRIs,
   W3cWotTdIRIs,
   TypedDataSchema,
   W3CWotJsonSchemaContext,
   Form,
   W3cWotFormContext,
-  W3cRdfSyntaxIRIs,
-} from "@wutwot/td";
+} from "@wutwot/w3c-td";
 
 import {
   DeepImmutableArray,
@@ -32,12 +31,12 @@ import {
 import { Thing } from "../../things";
 import { FormProvider } from "../../properties";
 import { getActionForms } from "../../forms";
-import { addContext, asID } from "../../../utils/json-ld";
+import { addContext } from "../../../utils/json-ld";
+import { nonEmptyArray } from "../../../utils/types";
 
 import { ThingAction, ThingActionDef } from "../types";
 import { InternalActionParams, InternalAction } from "../services";
 import { asActionScope } from "../scopes";
-import { nonEmptyArray } from "../../../utils/types";
 
 @injectable()
 @asActionScope()

@@ -1,20 +1,17 @@
 import { JSONSchema6, JSONSchema6Type } from "json-schema";
 import { inspect } from "util";
 import { cloneDeep } from "lodash";
+import { DCMITermsIRIs, SchemaOrgIRIs } from "@wutwot/ld";
 import {
-  DCMITermsIRIs,
-  W3cRdfSyntaxIRIs,
   DataSchemaType,
   W3cWotJsonSchemaIRIs,
-  SchemaOrgIRIs,
-  dataSchemaTypeToW3cWotClass,
   Form,
   W3cWotTdIRIs,
   W3cWotFormContext,
-} from "@wutwot/td";
+} from "@wutwot/w3c-td";
 
 import { makeInspectJson } from "../../../utils/inspect";
-import { addContext, asID } from "../../../utils/json-ld";
+import { addContext } from "../../../utils/json-ld";
 import { nonEmptyArray } from "../../../utils/types";
 import {
   DeepImmutableArray,

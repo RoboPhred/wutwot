@@ -1,4 +1,4 @@
-import { Thing, W3cWotTdIRIs } from "@wutwot/td";
+import { Thing, W3cWotTdIRIs } from "@wutwot/w3c-td";
 import find from "lodash/find";
 import { NodeObject } from "jsonld";
 

@@ -1,4 +1,4 @@
-import { TypedDataSchema } from "@wutwot/td";
+import { TypedDataSchema } from "@wutwot/w3c-td";
 
 export interface ScenePropertySetting {
   thingId: string;

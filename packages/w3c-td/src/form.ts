@@ -1,4 +1,4 @@
-import { MaybeArray } from "../types";
+import { MaybeArray } from "./types";
 import { ExpectedResponse } from "./expected-response";
 
 /**

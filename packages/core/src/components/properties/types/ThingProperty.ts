@@ -1,4 +1,4 @@
-import { DataSchemaType, Form } from "@wutwot/td";
+import { DataSchemaType, Form } from "@wutwot/w3c-td";
 import { DeepImmutableArray } from "../../../immutable";
 
 import { ToJSON } from "../../../types";

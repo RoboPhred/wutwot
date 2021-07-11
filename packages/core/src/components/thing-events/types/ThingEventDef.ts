@@ -1,6 +1,6 @@
 import { JSONSchema6 } from "json-schema";
 import { Observable } from "rxjs";
-import { TypedDataSchema } from "@wutwot/td";
+import { TypedDataSchema } from "@wutwot/w3c-td";
 
 import { makeReadOnlyDeep } from "../../../immutable";
 

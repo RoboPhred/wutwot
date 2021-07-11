@@ -40,7 +40,8 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@wutwot/td": "^1.0.0",
+    "@wutwot/ld": "^1.0.0",
+    "@wutwot/w3c-td": "^1.0.0",
     "ajv": "^6.12.0",
     "lodash": "^4.17.15",
     "rxjs": "^6.5.5",

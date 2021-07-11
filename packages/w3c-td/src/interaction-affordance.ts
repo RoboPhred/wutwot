@@ -1,4 +1,3 @@
-import { LDType } from "../json-ld";
 import { MultiLanguage } from "./multi-language";
 import { Form } from "./form";
 import { TypedDataSchema } from "./data-schema";
@@ -12,7 +11,7 @@ export interface InteractionAffordance {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types).
    */
-  "@type"?: LDType;
+  "@type"?: string[];
 
   /**
    * Provides a human-readable title (e.g., display a text for UI representation) based on a default language.

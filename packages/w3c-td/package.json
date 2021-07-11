@@ -1,5 +1,5 @@
 {
-  "name": "@wutwot/td",
+  "name": "@wutwot/w3c-td",
   "version": "1.0.0",
   "description": "Types, schemas, and utils for W3C Thing Definitions.",
   "main": "lib/index.js",

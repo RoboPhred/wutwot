@@ -1,7 +1,7 @@
 import { all, call, put, select } from "redux-saga/effects";
 import HttpStatusCodes from "http-status-codes";
 import { expand, compact } from "jsonld";
-import { Thing, validateThing, W3cWotTDContext } from "@wutwot/td";
+import { Thing, validateThing, W3cWotTDContext } from "@wutwot/w3c-td";
 
 import { asArray } from "@/types";
 

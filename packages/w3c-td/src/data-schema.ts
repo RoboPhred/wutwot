@@ -1,5 +1,4 @@
-import { LDType } from "../json-ld";
-import { MaybeArray } from "../types";
+import { MaybeArray } from "./types";
 import { MultiLanguage } from "./multi-language";
 
 /**
@@ -182,7 +181,7 @@ export interface DataSchema {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types)
    */
-  "@type"?: LDType;
+  "@type"?: string[];
 
   /**
    * Provides a human-readable title (e.g., display a text for UI representation) based on a default language.

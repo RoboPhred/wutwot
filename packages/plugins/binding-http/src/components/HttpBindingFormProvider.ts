@@ -1,7 +1,7 @@
 import { inject, injectable, provides, singleton } from "microinject";
 import { FormProvider, Thing, ThingAction, ThingProperty } from "@wutwot/core";
 import { HttpRootUrl } from "@wutwot/plugin-servient-http";
-import { Form } from "@wutwot/td";
+import { Form } from "@wutwot/w3c-td";
 
 @injectable()
 @singleton()

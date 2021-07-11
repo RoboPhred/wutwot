@@ -1,6 +1,6 @@
 import isRelativeUrl from "is-relative-url";
 import urlJoin from "url-join";
-import { Form, Thing, FormOp } from "@wutwot/td";
+import { Form, Thing, FormOp } from "@wutwot/w3c-td";
 
 // https://www.w3.org/TR/wot-binding-templates/#http-default-vocabulary-terms
 const DefaultHttpMethodsByOp: Partial<Record<FormOp, string>> = {

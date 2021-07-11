@@ -1,4 +1,4 @@
-import { Form, TypedDataSchema } from "@wutwot/td";
+import { Form, TypedDataSchema } from "@wutwot/w3c-td";
 
 import {
   DeepImmutableArray,

@@ -7,14 +7,15 @@ import {
 import { Subject } from "rxjs";
 
 import { ThingModelPersistence } from "./ThingModelPersistence";
+import { ModelPluginThingsManager } from "./ModelPluginThingsManager";
 
 // TODO: This sort if thing is a common use case.  Provide a core implementation of this that auto collects properties to add to every thing.
 @injectable()
 @provides(Initializable)
-export class PropertyApplicatorImpl implements Initializable {
+export class PropertyApplicator implements Initializable {
   constructor(
     @inject(ThingEventSource) thingEvents: ThingEventSource,
-    @inject(PluginThingsManager)
+    @inject(ModelPluginThingsManager)
     private _pluginThingsManager: PluginThingsManager,
   ) {
     thingEvents.on("thing.add", (e) => this._attachProps(e.thingId));

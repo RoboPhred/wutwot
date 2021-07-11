@@ -1,0 +1,39 @@
+{
+  "name": "@wutwot/ld",
+  "version": "1.0.0",
+  "description": "A collection of JSON-LD schemas and IRIs used throughout WutWot.",
+  "main": "lib/index.js",
+  "types": "dts/index.d.ts",
+  "files": [
+    "src/**",
+    "dts/**"
+  ],
+  "scripts": {
+    "clean": "rimraf lib dts",
+    "build": "tsc -p src --incremental"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/wutwot.git"
+  },
+  "keywords": [
+    "IOT",
+    "WOT",
+    "Internet of Things",
+    "Web of Things",
+    "W3C",
+    "Thing Descriptions",
+    "WutWot",
+    "JSON-LD"
+  ],
+  "author": "William Matthews",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoboPhred/wutwot/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/wutwot#readme",
+  "devDependencies": {
+    "rimraf": "3.0.2",
+    "typescript": "^4.3.2"
+  }
+}
