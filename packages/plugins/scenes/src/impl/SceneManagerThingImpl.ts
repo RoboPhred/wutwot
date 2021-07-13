@@ -4,6 +4,7 @@ import {
   ThingActionRequestUpdate,
   Initializable,
 } from "@wutwot/core";
+import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 import { of as observableOf } from "rxjs";
 
 import {
@@ -14,7 +15,6 @@ import {
   ScenePluginThingsManager,
 } from "../components";
 import { SceneThing } from "../types";
-import { WutWotTDIRIs } from "../../../../wutwot-td/dts";
 
 interface AddSceneActionPayload {
   sceneName: string;
