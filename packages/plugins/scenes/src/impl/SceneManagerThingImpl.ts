@@ -1,9 +1,5 @@
 import { singleton, inject, injectable, provides } from "microinject";
-import {
-  PluginThingsManager,
-  ThingActionRequestUpdate,
-  Initializable,
-} from "@wutwot/core";
+import { PluginThingsManager, ThingActionRequestUpdate } from "@wutwot/core";
 import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 import { of as observableOf } from "rxjs";
 
@@ -23,8 +19,7 @@ interface AddSceneActionPayload {
 @injectable()
 @singleton()
 @provides(SceneManagerThing)
-@provides(Initializable)
-export class SceneManagerThingImpl implements Initializable {
+export class SceneManagerThingImpl {
   constructor(
     @inject(ScenePluginThingsManager)
     private _thingsManager: PluginThingsManager,

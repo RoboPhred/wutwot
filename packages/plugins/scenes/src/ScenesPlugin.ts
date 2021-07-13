@@ -8,6 +8,7 @@ import {
   ScenePersistenceManager,
   SceneRepository,
   ScenePluginDataPersistence,
+  SceneManagerThing,
 } from "./components";
 
 export class ScenesPlugin implements WutWotPlugin {
@@ -33,5 +34,7 @@ export class ScenesPlugin implements WutWotPlugin {
       const scene = factory.restoreScene(persistedScene);
       repository.addScene(scene);
     }
+
+    serviceLocator.get(SceneManagerThing).onInitialize();
   }
 }

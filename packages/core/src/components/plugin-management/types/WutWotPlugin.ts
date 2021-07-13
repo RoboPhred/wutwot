@@ -43,4 +43,12 @@ export interface WutWotPlugin {
    * @param serviceLocator A service locator used to gain access to any services your plugin needs.
    */
   onPluginInitialize?(serviceLocator: ServiceLocator): void;
+
+  /**
+   * Callback called when all plugins are initialized.
+   *
+   * Assuming most plugins will initialize their things during {@see onPluginInitialize},
+   * it can be assumed that most things will have been initialized by this point.
+   */
+  onPluginPostInitialize?(serviceLocator: ServiceLocator): void;
 }

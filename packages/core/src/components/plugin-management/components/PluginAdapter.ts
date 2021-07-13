@@ -18,4 +18,11 @@ export interface PluginAdapter {
    * This should only be called after all PluginAdapters are created.
    */
   initialize(): void;
+
+  /**
+   * Trigger the plugin's post initialization code.
+   *
+   * This should only be called after adapters are initialized.
+   */
+  postInitialize(): void;
 }

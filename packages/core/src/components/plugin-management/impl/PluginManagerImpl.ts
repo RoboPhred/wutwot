@@ -28,6 +28,7 @@ export class PluginManagerImpl implements PluginManager, Initializable {
     }
     this._initialized = true;
     this._adaptersByPluginId.forEach((adapter) => adapter.initialize());
+    this._adaptersByPluginId.forEach((adapter) => adapter.postInitialize());
   }
 
   registerPlugin(plugin: WutWotPlugin): void {

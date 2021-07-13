@@ -22,7 +22,7 @@ export class SceneThingImpl implements SceneThing {
       metadata: {
         // Let the model plugin that we provide our own name.
         [Symbol.for(
-          "https://github.com/robophred/wutwot#model:SelfNamedThing",
+          "https://github.com/robophred/wutwot#model:IsSelfNamedThing",
         )]: true,
       },
     });

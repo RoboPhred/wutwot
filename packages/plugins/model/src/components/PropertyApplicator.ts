@@ -14,8 +14,7 @@ import { IsSelfNamedThingMetadata } from "../thing-metadata";
 
 // TODO: This sort if thing is a common use case.  Provide a core implementation of this that auto collects properties to add to every thing.
 @injectable()
-@provides(Initializable)
-export class PropertyApplicator implements Initializable {
+export class PropertyApplicator {
   private _initialized = false;
 
   constructor(
@@ -26,7 +25,7 @@ export class PropertyApplicator implements Initializable {
     thingEvents.on("thing.add", (e) => this._attachProps(e.thingId));
   }
 
-  onInitialize(): void {
+  onPostInitialize(): void {
     this._initialized = true;
     for (const thing of this._pluginThingsManager.getThings()) {
       this._attachProps(thing.id);

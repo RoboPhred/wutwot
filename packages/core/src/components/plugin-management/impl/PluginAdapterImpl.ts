@@ -1,6 +1,6 @@
 import { Container } from "microinject";
 
-import { ThingsManager, ThingDef } from "../../things";
+import { ThingsManager, ThingDef, ThingEventSource } from "../../things";
 import { Database } from "../../persistence";
 
 import { WutWotPlugin, OwnedPluginThing, PluginThing } from "../types";
@@ -11,6 +11,7 @@ import { PluginDataPersistenceImpl } from "./PluginDataPersistenceImpl";
 
 export class PluginAdapterImpl implements PluginAdapter {
   private _initialized = false;
+  private _postInitialized = false;
 
   constructor(
     private _plugin: WutWotPlugin,
@@ -59,6 +60,16 @@ export class PluginAdapterImpl implements PluginAdapter {
 
     if (this._plugin.onPluginInitialize) {
       this._plugin.onPluginInitialize(this._publicContainer);
+    }
+  }
+
+  postInitialize() {
+    if (!this._initialized || this._postInitialized) {
+      return;
+    }
+    this._postInitialized = true;
+    if (this._plugin.onPluginPostInitialize) {
+      this._plugin.onPluginPostInitialize(this._publicContainer);
     }
   }
 
