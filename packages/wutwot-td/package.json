@@ -1,10 +1,15 @@
 {
-  "name": "@wutwot/plugin-security-nosec",
+  "name": "@wutwot/wutwot-td",
   "version": "1.0.0",
-  "description": "Anonymous access security provider for wutwot",
+  "description": "RDF types and json-ld context for WutWot extensions of the W3C Thing Definition.",
   "main": "lib/index.js",
+  "types": "dts/index.d.ts",
+  "files": [
+    "src/**",
+    "dts/**"
+  ],
   "scripts": {
-    "clean": "rimraf lib",
+    "clean": "rimraf lib dts",
     "build": "tsc -p src --incremental"
   },
   "repository": {
@@ -19,8 +24,7 @@
     "W3C",
     "Thing Descriptions",
     "WutWot",
-    "Security",
-    "NoSec"
+    "JSON-LD"
   ],
   "author": "William Matthews",
   "license": "MIT",
@@ -29,16 +33,7 @@
   },
   "homepage": "https://github.com/RoboPhred/wutwot#readme",
   "devDependencies": {
-    "@wutwot/core": "^1.0.0",
-    "microinject": "^0.9.3",
-    "rimraf": "^3.0.2",
+    "rimraf": "3.0.2",
     "typescript": "^4.3.2"
-  },
-  "peerDependencies": {
-    "@wutwot/core": "^1.0.0",
-    "microinject": "^0.10.0"
-  },
-  "dependencies": {
-    "@wutwot/wutwot-td": "^1.0.0"
   }
 }

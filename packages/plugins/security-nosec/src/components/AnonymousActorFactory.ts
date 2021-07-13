@@ -1,5 +1,6 @@
 import { Context } from "microinject";
 import { Actor, PluginThingsManager } from "@wutwot/core";
+import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 
 export const AnonymousActor = Symbol.for(
   "https://github.com/robophred/wutwot#security-nosec:AnonymousActor",
@@ -14,5 +15,6 @@ export function anonymousActorFactory(
       title: "Anonymous",
       description: `Anonymous user for "nosec" security.`,
     })
+    .addSemanticType(WutWotTDIRIs.User)
     .toThing();
 }

@@ -63,13 +63,7 @@ export class SceneThingsAdapterImpl
   }
 
   private _createSceneThing(scene: Scene): SceneThing {
-    const thing = this._pluginThingsManager.addThing({
-      pluginLocalId: `scene-${scene.sceneId}`,
-      title: scene.sceneName,
-      description: "Scene",
-    });
-
-    const sceneThing = new SceneThingImpl(scene, thing);
+    const sceneThing = new SceneThingImpl(scene, this._pluginThingsManager);
     this._sceneThingsBySceneId.set(scene.sceneId, sceneThing);
     return sceneThing;
   }

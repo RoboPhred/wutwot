@@ -1,18 +1,23 @@
 import { inject, injectable, provides } from "microinject";
 import {
   Initializable,
+  PluginThing,
   PluginThingsManager,
   ThingEventSource,
 } from "@wutwot/core";
+import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 import { Subject } from "rxjs";
 
 import { ThingModelPersistence } from "./ThingModelPersistence";
 import { ModelPluginThingsManager } from "./ModelPluginThingsManager";
+import { IsSelfNamedThingMetadata } from "../thing-metadata";
 
 // TODO: This sort if thing is a common use case.  Provide a core implementation of this that auto collects properties to add to every thing.
 @injectable()
 @provides(Initializable)
 export class PropertyApplicator implements Initializable {
+  private _initialized = false;
+
   constructor(
     @inject(ThingEventSource) thingEvents: ThingEventSource,
     @inject(ModelPluginThingsManager)
@@ -22,14 +27,23 @@ export class PropertyApplicator implements Initializable {
   }
 
   onInitialize(): void {
+    this._initialized = true;
     for (const thing of this._pluginThingsManager.getThings()) {
       this._attachProps(thing.id);
     }
   }
 
   private _attachProps(thingId: string) {
+    if (!this._initialized) {
+      return;
+    }
+
     const pluginThing = this._pluginThingsManager.getThing(thingId);
     if (!pluginThing) {
+      return;
+    }
+
+    if (!shouldProvideName(pluginThing)) {
       return;
     }
 
@@ -37,12 +51,12 @@ export class PropertyApplicator implements Initializable {
       pluginThing.getPluginLocalPersistence(),
     );
     const nameSubject = new Subject<string>();
-    const locationSubject = new Subject<string>();
 
     pluginThing.addProperty({
       pluginLocalId: "name",
       title: "Name",
       type: "string",
+      semanticType: [WutWotTDIRIs.TitleProperty],
       minLength: 0,
       maxLength: 255,
       initialValue: persistence.getName(),
@@ -53,29 +67,27 @@ export class PropertyApplicator implements Initializable {
         propertyId: string,
         value: string,
       ) => {
-        console.log(`Setting name of ${thingId} to ${value}`);
         persistence.setName(value);
         nameSubject.next(value);
       },
     });
-
-    pluginThing.addProperty({
-      pluginLocalId: "location",
-      title: "Location",
-      type: "string",
-      minLength: 0,
-      maxLength: 255,
-      initialValue: persistence.getLocation(),
-      description: "The location of this thing.",
-      values: locationSubject,
-      onValueChangeRequested: async (
-        thingId: string,
-        propertyId: string,
-        value: string,
-      ) => {
-        persistence.setLocation(value);
-        locationSubject.next(value);
-      },
-    });
   }
+}
+
+function shouldProvideName(thing: PluginThing) {
+  const isSelfNamed = thing.getMetadata(IsSelfNamedThingMetadata);
+  if (isSelfNamed) {
+    return false;
+  }
+
+  const semanticTypes = thing.semanticTypes;
+
+  if (
+    semanticTypes.includes(WutWotTDIRIs.User) ||
+    semanticTypes.includes(WutWotTDIRIs.Management)
+  ) {
+    return false;
+  }
+
+  return true;
 }

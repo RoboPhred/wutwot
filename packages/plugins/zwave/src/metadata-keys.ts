@@ -1,10 +1,11 @@
+import { MetadataIdentifier } from "@wutwot/core";
+import { Endpoint, ZWaveNode } from "zwave-js";
+
 import createSymbol from "./create-symbol";
-import { createMetadataIdentifier } from "@wutwot/core";
 
-export const METADATA_ZWAVE_NODE = createMetadataIdentifier(
-  createSymbol("metadata/ZWaveNode"),
-);
+export const ZWaveNodeMetadata: MetadataIdentifier<ZWaveNode> =
+  createSymbol("metadata/ZWaveNode");
 
-export const METADATA_ZWAVE_ENDPOINT = createMetadataIdentifier(
-  createSymbol("metadata/ZWaveEndpoint"),
+export const ZWaveEndpointMetadata: MetadataIdentifier<Endpoint> = createSymbol(
+  "metadata/ZWaveEndpoint",
 );

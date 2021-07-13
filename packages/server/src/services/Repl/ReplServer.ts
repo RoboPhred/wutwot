@@ -1,9 +1,6 @@
 import repl from "repl";
 import { WutWot } from "@wutwot/core";
-import {
-  METADATA_ZWAVE_NODE,
-  METADATA_ZWAVE_ENDPOINT,
-} from "@wutwot/plugin-zwave";
+import { ZWaveNodeMetadata, ZWaveEndpointMetadata } from "@wutwot/plugin-zwave";
 import { injectable, inject } from "microinject";
 
 import { Entrypoint } from "../../contracts";
@@ -37,8 +34,8 @@ export class ReplServer implements Entrypoint {
     });
     const reset = (context: any) => {
       context.wutwot = this._wutwot;
-      context.zwaveNodeMetadata = METADATA_ZWAVE_NODE;
-      context.zwaveEndpointMetadata = METADATA_ZWAVE_ENDPOINT;
+      context.zwaveNodeMetadata = ZWaveNodeMetadata;
+      context.zwaveEndpointMetadata = ZWaveEndpointMetadata;
 
       for (var plugin of this._wutwotPluginEnumerator.plugins) {
         context[plugin.id] = plugin;

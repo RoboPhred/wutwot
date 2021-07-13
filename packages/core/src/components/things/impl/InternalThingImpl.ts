@@ -175,6 +175,11 @@ export class InternalThingImpl implements InternalThing {
     return this._metadata.get(identifier) as T;
   }
 
+  addMetadata<T>(identifier: MetadataIdentifier<T>, value: T): this {
+    this._metadata.set(identifier, value);
+    return this;
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -282,6 +287,11 @@ function createPublicThingApi(thing: InternalThing) {
 
     getMetadata<T>(identifier: MetadataIdentifier<T>): T | undefined {
       return thing.getMetadata(identifier);
+    }
+
+    addMetadata<T>(identifier: MetadataIdentifier<T>, value: T): this {
+      thing.addMetadata(identifier, value);
+      return this;
     }
 
     toJSON() {

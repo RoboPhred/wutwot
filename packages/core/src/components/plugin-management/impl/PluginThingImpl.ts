@@ -86,7 +86,12 @@ export class PluginThingImpl implements OwnedPluginThing {
     return this._thing.getMetadata(identifier);
   }
 
-  addSemanticType(type: string): OwnedPluginThing {
+  addMetadata<T>(identifier: MetadataIdentifier<T>, value: T): this {
+    this._thing.addMetadata(identifier, value);
+    return this;
+  }
+
+  addSemanticType(type: string): this {
     this._thing.addSemanticType(type);
     return this;
   }

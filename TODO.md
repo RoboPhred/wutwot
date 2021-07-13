@@ -1,17 +1,10 @@
 # TODO
 
-## Major Bug: public services cannot access private services
+## Allow plugin specific services to be injected.
 
-Attempting to fix this by removing the concept of public and private services, and scoping plugin thing creation under plugin.
-However, this is not workable, as plugins can provide singleton services that then need to create the plugin things. As they are
-singleton services, they exist outside the plugin scope, and are unable to find the scope root for the Plugin.
-
-Also explored allowing microinject to take an overriding ServiceLocator in a binding, to let public container bindings
-access private services. However, that rapidly became a mess and seemed unworkable.
-
-First thing I tried was allowing access to private service locator while binding public services, and to then bind the public
-services as factories that take from the private service. This did not work, as the items instantiated in the private services
-themselves might want other public services.
+Previously, we had private and public services, and injected plugin specific services into the private container.
+However, this was not tenuable, as it meant public services could not consume private services.
+We should come up with a way to tag what plugin provided a binding, and inject plugin specific services based on that tag.
 
 ## Provide thing discovery
 
@@ -27,6 +20,10 @@ The directory thing can self advertise our discovered thing a directory using md
 Problem: WoT Thing Discovery claims any directory MUST allow others to upload and modify custom TDs. We cannot do that, as we are an authoritative source of our own things and third parties
 should not be able to modify them.
 See https://github.com/w3c/wot-discovery/issues/208
+
+### Provide management actions as actions on the root thing.
+
+Thing Discovery relies on having a root thing. We should be able to attach management actions to this, such as creating scenes or setting zwave to inclusion mode.
 
 ## Security scheme providers
 

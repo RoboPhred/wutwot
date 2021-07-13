@@ -5,14 +5,14 @@ import { ToJSON, JSONAble } from "../../../types";
 import { ThingAction } from "../../actions";
 import { ThingProperty } from "../../properties";
 import { ThingEvent } from "../../thing-events";
-import { MetadataProvider } from "../../metadata";
+import { MetadataContainer } from "../../metadata";
 import { JSONLD, JSONLDAble } from "../../json-ld";
 import { DeepImmutableArray } from "../../../immutable";
 
 /**
  * Describes a thing in the system.
  */
-export interface Thing extends MetadataProvider, JSONAble, JSONLDAble {
+export interface Thing extends MetadataContainer, JSONAble, JSONLDAble {
   /**
    * The ID of this thing.
    */

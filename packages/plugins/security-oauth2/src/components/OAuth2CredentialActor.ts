@@ -6,6 +6,7 @@ import {
   ThingActionRequestUpdate,
   WutWot,
 } from "@wutwot/core";
+import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 import { RefreshToken, Token } from "oauth2-server";
 import { Subject, of as observableOf } from "rxjs";
 
@@ -41,6 +42,8 @@ export class OAuth2CredentialActor {
       title: `OAuth2 Authorization for ${this._clientId}`,
       description: `Authorized on the behalf of ${ownerThing.title}`,
     });
+
+    this._thing.addSemanticType(WutWotTDIRIs.User);
 
     this._thing.addProperty({
       pluginLocalId: "clientId",

@@ -5,6 +5,7 @@ import { ThingEventDef, ThingEvent } from "../../thing-events";
 import { DataPersistence } from "../../persistence";
 
 import { OwnedPluginThingAction, PluginThingAction } from "./PluginAction";
+import { MetadataIdentifier } from "../../metadata";
 
 /**
  * An instance of a WutWot Thing, with additional functionality for use by plugins.
@@ -29,7 +30,7 @@ export interface PluginThing extends Thing {
    * Adds a semantic type to a Thing.
    * @param type The semantic type to add.
    */
-  addSemanticType(type: string): PluginThing;
+  addSemanticType(type: string): this;
 
   /**
    * Adds an action to a Thing.
@@ -55,6 +56,11 @@ export interface PluginThing extends Thing {
   getPluginLocalPersistence(): DataPersistence;
 
   /**
+   * Adds additional metadata to this thing.
+   */
+  addMetadata<T>(identifier: MetadataIdentifier<T>, value: T): this;
+
+  /**
    * Gets the public API representation of this Thing.
    */
   toThing(): Thing;
@@ -64,12 +70,6 @@ export interface PluginThing extends Thing {
  * Describes capabilities of a Plugin Thing that are only available to a plugin that owns the Thing.
  */
 export interface OwnedPluginThing extends PluginThing {
-  /**
-   * Adds a semantic type to a Thing.
-   * @param type The semantic type to add.
-   */
-  addSemanticType(type: string): OwnedPluginThing;
-
   /**
    * Deletes the thing from the WOT network.
    */

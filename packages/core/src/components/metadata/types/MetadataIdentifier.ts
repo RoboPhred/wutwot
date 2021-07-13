@@ -1,1 +1,1 @@
-export type MetadataIdentifier<T> = symbol & { __type: T & never };
+export type MetadataIdentifier<T> = symbol & { __type?: T };

@@ -10,7 +10,7 @@ export class ModelPlugin implements WutWotPlugin {
     return "model";
   }
 
-  onRegisterPrivateServices(
+  onRegisterServices(
     bind: BindFunction,
     { thingsManager }: PluginServices,
   ): RegistryModule {

@@ -4,7 +4,7 @@ import { InterviewStage, NodeStatus, ZWaveNode } from "zwave-js";
 
 import { ZWaveEndpointMonitorFactory } from "../contracts";
 import { ZWaveThingHandler } from "../components";
-import { METADATA_ZWAVE_NODE, METADATA_ZWAVE_ENDPOINT } from "../metadata-keys";
+import { ZWaveNodeMetadata, ZWaveEndpointMetadata } from "../metadata-keys";
 import { ZWaveEndpointMonitor } from "../types";
 import { isNotNull } from "../utils";
 
@@ -45,8 +45,8 @@ export class ZWaveEndpointThingHandlerImpl implements ZWaveThingHandler {
       title,
       description,
       metadata: {
-        [METADATA_ZWAVE_NODE]: node,
-        [METADATA_ZWAVE_ENDPOINT]: this._endpoint,
+        [ZWaveNodeMetadata]: node,
+        [ZWaveEndpointMetadata]: this._endpoint,
       },
     });
 
