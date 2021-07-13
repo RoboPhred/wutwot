@@ -42,6 +42,7 @@ export class SceneManagerThingImpl {
     thing.addAction({
       pluginLocalId: "add-scene",
       title: "Create New Scene",
+      semanticType: [WutWotTDIRIs.Management],
       input: {
         type: "object",
         properties: {

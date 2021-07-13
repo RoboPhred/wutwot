@@ -47,6 +47,7 @@ export class SceneThingImpl implements SceneThing {
     this._thing.addAction({
       pluginLocalId: "learn-trigger",
       title: "Learn Trigger",
+      semanticType: [WutWotTDIRIs.Management],
       onActionInvocationRequested: () => {
         return new Observable((subscriber) => {
           subscriber.next(ThingActionRequestUpdate.started());
@@ -61,6 +62,7 @@ export class SceneThingImpl implements SceneThing {
     this._thing.addAction({
       pluginLocalId: "add-property-setter",
       title: "Add Property Setter",
+      semanticType: [WutWotTDIRIs.Management],
       input: scenePropertySettingDataSchema,
       onActionInvocationRequested: (
         invocationThingId,
