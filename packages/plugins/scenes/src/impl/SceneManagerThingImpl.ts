@@ -14,6 +14,7 @@ import {
   ScenePluginThingsManager,
 } from "../components";
 import { SceneThing } from "../types";
+import { WutWotTDIRIs } from "../../../../wutwot-td/dts";
 
 interface AddSceneActionPayload {
   sceneName: string;
@@ -41,8 +42,7 @@ export class SceneManagerThingImpl implements Initializable {
         pluginLocalId: "manager",
         title: "Scene Manager",
       })
-      // TODO: Add semantic context
-      .addSemanticType("Management");
+      .addSemanticType(WutWotTDIRIs.Management);
 
     thing.addAction({
       pluginLocalId: "add-scene",
