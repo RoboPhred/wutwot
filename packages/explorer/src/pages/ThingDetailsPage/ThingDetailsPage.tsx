@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
+import { ThingDefinitionPagePath } from "@/paths";
+
 import { useLatchState } from "@/hooks/useLatchState";
 
 import PageContainer from "@/components/PageContainer";
@@ -22,9 +24,8 @@ export interface ThingDetailsRouteParams {
   displayId: string;
 }
 
-export type ThingDetailsPageProps = RouteComponentProps<
-  ThingDetailsRouteParams
->;
+export type ThingDetailsPageProps =
+  RouteComponentProps<ThingDetailsRouteParams>;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,7 +65,7 @@ const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
       onClose={setMenuClosed}
     >
       <MenuItemLink
-        to={`/things/${match.params.displayId}/definition`}
+        to={ThingDefinitionPagePath.fromDisplayId(match.params.displayId)}
         onClick={setMenuClosed}
       >
         {t("things.view_raw_definition")}

@@ -7,6 +7,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Divider from "@material-ui/core/Divider";
 
+import { ThingDetailsPagePath } from "@/paths";
+
 import { useThings } from "@/services/thing-definitions/hooks/useThings";
 
 import ListItemLink from "@/components/ListItemLink";
@@ -26,7 +28,10 @@ const SettingsPage: React.FC = () => {
             <ListSubheader>{t("settings.thing_settings")}</ListSubheader>
             {managementThings.map(({ title, description, displayId }) => (
               // TODO: Link to settings page for thing
-              <ListItemLink button to={`/things/${displayId}`}>
+              <ListItemLink
+                button
+                to={ThingDetailsPagePath.fromDisplayId(displayId)}
+              >
                 <ListItemText primary={title} secondary={description} />
               </ListItemLink>
             ))}

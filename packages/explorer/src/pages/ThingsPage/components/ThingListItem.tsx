@@ -4,6 +4,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
+import { ThingDetailsPagePath } from "@/paths";
+
 import ListItemLink from "@/components/ListItemLink";
 
 export interface ThingListItemProps {
@@ -22,7 +24,7 @@ const ThingListItem: React.FC<ThingListItemProps> = ({ id }) => {
   const { title, description } = definition;
 
   return (
-    <ListItemLink to={`/things/${encodeURIComponent(id)}`} button>
+    <ListItemLink to={ThingDetailsPagePath.fromDisplayId(id)} button>
       <ListItemText primary={title ?? "untitled"} secondary={description} />
     </ListItemLink>
   );
