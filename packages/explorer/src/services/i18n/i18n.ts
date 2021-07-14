@@ -23,7 +23,7 @@ i18n.use(initReactI18next).init({
   },
 
   react: {
-    wait: true,
+    useSuspense: true,
   },
 });
 
