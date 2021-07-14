@@ -29,7 +29,8 @@
   },
   "settings": {
     "noun_titlecase_plural": "Settings",
-    "thing_sources": "Thing Sources"
+    "thing_settings": "Thing Settings",
+    "explorer_settings": "Explorer Settings"
   },
   "thing_sources": {
     "noun_titlecase_plural": "Thing Sources",

@@ -71,7 +71,7 @@ async function resolveThingDefinition(
   // Reflow the thing document to our context.
   // Currently should be a no-op, but it might correct some valid json-ld things.
   // Later, we might have our own prefixes like iotschema.
-  const expanded = await expand(rawDefinition);
+  const expanded = await expand(rawDefinition as any);
   const definition = (await compact(
     expanded,
     // jsonld typings are wrong: This accepts url strings.

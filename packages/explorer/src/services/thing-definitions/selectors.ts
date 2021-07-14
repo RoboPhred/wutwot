@@ -1,9 +1,11 @@
 import { createSelector } from "reselect";
 import keys from "lodash/keys";
 import values from "lodash/values";
+import mapValues from "lodash/mapValues";
 
 import { createThingDefinitionsSelector } from "./utils";
 import { ThingDefinitionsServiceState } from "./state";
+import { ThingWithDisplayId } from "./types";
 
 export const thingIdsSelector = createThingDefinitionsSelector(
   createSelector(
@@ -24,6 +26,31 @@ export const thingDataSelector = createThingDefinitionsSelector(
     const data = state.thingDataByDisplayId[displayId];
     return data;
   },
+);
+
+export const thingDefinitionsByIdSelector = createThingDefinitionsSelector(
+  createSelector(
+    (state: ThingDefinitionsServiceState) => state.thingDataByDisplayId,
+    (thingDataByDisplayId) =>
+      mapValues(thingDataByDisplayId, (data) => data.definition),
+  ),
+);
+
+export const thingDefinitionsSelector = createThingDefinitionsSelector(
+  createSelector(
+    (state: ThingDefinitionsServiceState) => state.thingDataByDisplayId,
+    (thingDataByDisplayId) => {
+      const things: ThingWithDisplayId[] = [];
+      for (const displayId of Object.keys(thingDataByDisplayId)) {
+        const thingData = thingDataByDisplayId[displayId];
+        things.push({
+          ...thingData.definition,
+          displayId,
+        });
+      }
+      return things;
+    },
+  ),
 );
 
 export const thingDefinitionSelector = createThingDefinitionsSelector(

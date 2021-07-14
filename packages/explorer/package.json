@@ -58,6 +58,7 @@
     "@rjsf/material-ui": "^2.0.0",
     "@types/uuid": "^7.0.3",
     "@wutwot/w3c-td": "^1.0.0",
+    "@wutwot/wutwot-td": "^1.0.0",
     "es6-promise": "^4.2.8",
     "http-status-codes": "^1.4.0",
     "i18next": "^19.4.2",

@@ -9,3 +9,5 @@ export interface ThingData extends ResolvedThingDefinition {
   displayId: string;
   sourceId: string;
 }
+
+export type ThingWithDisplayId = Thing & { displayId: string };

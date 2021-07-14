@@ -20,7 +20,7 @@ export interface Thing {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types).
    */
-  "@type": string[];
+  "@type": MaybeArray<string>;
 
   /**
    * Identifier of the Thing in form of a URI [RFC3986] (e.g., stable URI, temporary and mutable URI, URI with local IP address, URN, etc.).
