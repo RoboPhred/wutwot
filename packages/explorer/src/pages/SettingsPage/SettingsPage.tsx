@@ -3,15 +3,14 @@ import { useTranslation } from "react-i18next";
 import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Divider from "@material-ui/core/Divider";
 
+import { useThings } from "@/services/thing-definitions/hooks/useThings";
+
 import ListItemLink from "@/components/ListItemLink";
 import PageContainer from "@/components/PageContainer";
-
-import { useThings } from "@/services/thing-definitions/hooks/useThings";
 
 const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -25,11 +24,11 @@ const SettingsPage: React.FC = () => {
         {managementThings.length > 0 && (
           <>
             <ListSubheader>{t("settings.thing_settings")}</ListSubheader>
-            {managementThings.map(({ title, description }) => (
+            {managementThings.map(({ title, description, displayId }) => (
               // TODO: Link to settings page for thing
-              <ListItem>
+              <ListItemLink button to={`/things/${displayId}`}>
                 <ListItemText primary={title} secondary={description} />
-              </ListItem>
+              </ListItemLink>
             ))}
             <Divider />
           </>
