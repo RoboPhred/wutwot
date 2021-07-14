@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
-import { ThingDefinitionPagePath } from "@/paths";
+import { ThingDetailsPagePath, ThingDefinitionPagePath } from "@/paths";
 
 import { useLatchState } from "@/hooks/useLatchState";
 
@@ -20,12 +20,8 @@ import ThingHeaderValue from "./components/ThingHeaderValue";
 import ThingPropertyList from "./components/ThingPropertyList";
 import ThingActionList from "./components/ThingActionList";
 
-export interface ThingDetailsRouteParams {
-  displayId: string;
-}
-
 export type ThingDetailsPageProps =
-  RouteComponentProps<ThingDetailsRouteParams>;
+  RouteComponentProps<ThingDetailsPagePath.PathParams>;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const ThingDetailsPage: React.FC<ThingDetailsPageProps> = ({ match }) => {
-  let { displayId } = match.params;
+  let displayId = match.params[ThingDetailsPagePath.DisplayIdParam];
   displayId = decodeURIComponent(displayId);
 
   const classes = useStyles();

@@ -4,22 +4,19 @@ import { useTranslation } from "react-i18next";
 
 import Typography from "@material-ui/core/Typography";
 
+import { ThingDefinitionPagePath } from "@/paths";
+
 import PageContainer from "@/components/PageContainer";
 import { useAppSelector } from "@/store/selectors";
 import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
 
-export interface ThingRawDefinitionRouteParams {
-  displayId: string;
-}
-
-export type ThingRawDefinitionPageProps = RouteComponentProps<
-  ThingRawDefinitionRouteParams
->;
+export type ThingRawDefinitionPageProps =
+  RouteComponentProps<ThingDefinitionPagePath.PathParams>;
 
 const ThingRawDefinitionPage: React.FC<ThingRawDefinitionPageProps> = ({
   match,
 }) => {
-  let { displayId } = match.params;
+  let displayId = match.params[ThingDefinitionPagePath.DisplayIdParam];
   displayId = decodeURIComponent(displayId);
 
   const { t } = useTranslation();

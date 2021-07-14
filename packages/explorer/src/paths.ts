@@ -4,18 +4,24 @@ export namespace ThingsPagePath {
 }
 
 export namespace ThingDetailsPagePath {
-  export const route = `${ThingsPagePath.route}/thing/:thingId`;
+  export interface PathParams {
+    displayId: string;
+  }
+  export const DisplayIdParam = "displayId";
+  export const route = `${ThingsPagePath.route}/thing/:${DisplayIdParam}`;
 
   export function fromDisplayId(displayId: string) {
-    return route.replace(":thingId", encodeURIComponent(displayId));
+    return route.replace(`:${DisplayIdParam}`, encodeURIComponent(displayId));
   }
 }
 
 export namespace ThingDefinitionPagePath {
+  export type PathParams = ThingDetailsPagePath.PathParams;
+  export const DisplayIdParam = ThingDetailsPagePath.DisplayIdParam;
   export const route = `${ThingDetailsPagePath.route}/definition`;
 
   export function fromDisplayId(displayId: string) {
-    return route.replace(":thingId", encodeURIComponent(displayId));
+    return route.replace(`:${DisplayIdParam}`, encodeURIComponent(displayId));
   }
 }
 

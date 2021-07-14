@@ -181,7 +181,7 @@ export interface DataSchema {
   /**
    * JSON-LD keyword to label the object with semantic tags (or types)
    */
-  "@type"?: string[];
+  "@type"?: MaybeArray<string>;
 
   /**
    * Provides a human-readable title (e.g., display a text for UI representation) based on a default language.

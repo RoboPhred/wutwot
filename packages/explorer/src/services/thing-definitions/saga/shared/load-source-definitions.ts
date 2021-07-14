@@ -69,8 +69,9 @@ async function resolveThingDefinition(
   rawDefinition: Thing,
 ): Promise<ResolvedThingDefinition> {
   // Reflow the thing document to our context.
-  // Currently should be a no-op, but it might correct some valid json-ld things.
-  // Later, we might have our own prefixes like iotschema.
+  // This will ensure all prefixes are established per the td spec, and unprefix everything else.
+  // Note: I was planning on adding prefixes for our own extensions here,
+  // but it is more convienent to match them as fully qualified IRIs.
   const expanded = await expand(rawDefinition as any);
   const definition = (await compact(
     expanded,
