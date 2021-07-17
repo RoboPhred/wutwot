@@ -1,12 +1,16 @@
 import * as React from "react";
 import isEqual from "lodash/isEqual";
+import entries from "lodash/entries";
+import first from "lodash/first";
 
 import { useAppSelector } from "@/store/selectors";
 
 import { thingDataSelector } from "@/services/thing-definitions/selectors";
-import { getThingPropertyValue, setThingPropertyValue } from "../api";
 import { thingSourceUrlSelector } from "@/services/thing-sources/selectors";
 import { useIntervalAsync } from "@/hooks/useIntervalAsync";
+
+import { getThingPropertyValue, setThingPropertyValue } from "../api";
+import { asArray, MaybeArray } from "@/types";
 
 export interface UsePropertyValue {
   refresh(): void;
@@ -32,10 +36,22 @@ const SYNC_WRITE_MAX = 15000;
  */
 const NOT_AWAITING_VALUE = Symbol("NOT_AWAITING_VALUE");
 
+export interface PropertySelector {
+  propertyKey?: string;
+  semanticTypes?: MaybeArray<string>;
+}
+
 export function useThingPropertyValue(
   thingDisplayId: string,
-  propertyKey: string,
+  propertySelector: string | PropertySelector,
 ): UsePropertyValue {
+  let normalizedPropertySelector: PropertySelector;
+  if (typeof propertySelector === "string") {
+    normalizedPropertySelector = { propertyKey: propertySelector };
+  } else {
+    normalizedPropertySelector = propertySelector;
+  }
+
   // Details about the thing we are handling values for.
   const { definition: thingDefinition, sourceId: thingSourceId } =
     useAppSelector((state) => thingDataSelector(state, thingDisplayId)) ?? {
@@ -43,8 +59,34 @@ export function useThingPropertyValue(
       sourceId: null,
     };
 
+  let propertyKey =
+    first(
+      entries(thingDefinition.properties ?? {})
+        .filter(([key, property]) => {
+          if (
+            normalizedPropertySelector.propertyKey &&
+            normalizedPropertySelector.propertyKey !== key
+          ) {
+            return false;
+          }
+
+          if (
+            normalizedPropertySelector.semanticTypes &&
+            !asArray(normalizedPropertySelector.semanticTypes).every(
+              (semanticType) =>
+                property["@type"] && property["@type"].includes(semanticType),
+            )
+          ) {
+            return false;
+          }
+
+          return true;
+        })
+        .map((x) => x[0]),
+    ) ?? null;
+
   const propertyAffordance =
-    (thingDefinition.properties || {})[propertyKey] ?? null;
+    propertyKey != null ? thingDefinition.properties![propertyKey] : null;
 
   // The url the thing was sourced from.
   //  Needed as a fallback if the thing does not specify a base url.
@@ -63,7 +105,7 @@ export function useThingPropertyValue(
     setReading(true);
     setErrorMessage(null);
     try {
-      if (!thingDefinition || !thingSourceUrl) {
+      if (!thingDefinition || !thingSourceUrl || !propertyKey) {
         throw new Error("Property not found.");
       }
       const value = await getThingPropertyValue(
@@ -76,7 +118,6 @@ export function useThingPropertyValue(
       return value;
     } catch (e) {
       setErrorMessage(e.message);
-      throw e;
     } finally {
       setReading(false);
     }
@@ -146,7 +187,7 @@ export function useThingPropertyValue(
         setWriting(true);
         setErrorMessage(null);
         try {
-          if (!thingDefinition || !thingSourceUrl) {
+          if (!thingDefinition || !thingSourceUrl || !propertyKey) {
             throw new Error("Property not found.");
           }
 

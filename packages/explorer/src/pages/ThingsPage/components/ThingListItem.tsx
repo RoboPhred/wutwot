@@ -1,10 +1,14 @@
 import * as React from "react";
+import { WutWotTDIRIs } from "@wutwot/wutwot-td";
+import isEmpty from "lodash/isEmpty";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import { useAppSelector } from "@/store/selectors";
-import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
-
 import { ThingDetailsPagePath } from "@/paths";
+
+import { useAppSelector } from "@/store/selectors";
+
+import { thingDefinitionSelector } from "@/services/thing-definitions/selectors";
+import { useThingPropertyValue } from "@/services/thing-properties/hooks/useThingPropertyValue";
 
 import ListItemLink from "@/components/ListItemLink";
 
@@ -17,6 +21,13 @@ const ThingListItem: React.FC<ThingListItemProps> = ({ id }) => {
     thingDefinitionSelector(state, id),
   );
 
+  let { value: titlePropertyValue } = useThingPropertyValue(id, {
+    semanticTypes: WutWotTDIRIs.TitleProperty,
+  });
+  if (isEmpty(titlePropertyValue)) {
+    titlePropertyValue = null;
+  }
+
   if (!definition) {
     return null;
   }
@@ -25,7 +36,10 @@ const ThingListItem: React.FC<ThingListItemProps> = ({ id }) => {
 
   return (
     <ListItemLink to={ThingDetailsPagePath.fromDisplayId(id)} button>
-      <ListItemText primary={title ?? "untitled"} secondary={description} />
+      <ListItemText
+        primary={titlePropertyValue ?? title ?? "untitled"}
+        secondary={description}
+      />
     </ListItemLink>
   );
 };

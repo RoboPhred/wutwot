@@ -4,7 +4,7 @@ import { NodeObject } from "jsonld";
 
 import { maybeArrayContains } from "@/types";
 
-import { executeForm, isSupportedForm } from "../thing-api/api";
+import { executeForm, isSupportedForm } from "../thing-forms/api";
 
 // TODO: Should this exist?  Apparently I saw some default op assignment somewhere, but I am unable to find it again.
 const DefaultPropertyOp = ["readproperty", "writeproperty"];

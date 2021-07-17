@@ -1,13 +1,11 @@
 import * as React from "react";
 
-import { Thing } from "@wutwot/w3c-td";
 import { useSelector } from "react-redux";
 
 import { asArray, maybeArrayContains } from "@/types";
 
 import { thingDefinitionsSelector } from "../selectors";
-
-export type ThingWithDisplayId = Thing & { displayId: string };
+import { ThingWithDisplayId } from "../types";
 
 export type UseThings = ThingWithDisplayId[];
 

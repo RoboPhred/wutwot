@@ -44,8 +44,6 @@ export async function executeForm(
   // TODO: htv:headers, uriVariables
   // https://www.w3.org/TR/wot-binding-templates/#http-vocabulary-terms
 
-  // TODO: define htv method on Form, as the official spec includes it by default
-  // TODO: expand definition and get from IRI, in case the def is using a different prefix.
   let method = (form as any)["htv:methodName"];
   if (!method) {
     method = DefaultHttpMethodsByOp[op];
