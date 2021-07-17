@@ -2,7 +2,7 @@ import { PluginServices, WutWotPlugin } from "@wutwot/core";
 import { BindFunction, RegistryModule, ServiceLocator } from "microinject";
 
 import { ModelPluginThingsManager } from "./components/ModelPluginThingsManager";
-import { PropertyApplicator } from "./components/PropertyApplicator";
+import { ModelPropertyApplicator } from "./components/ModelPropertyApplicator";
 
 import privateModule from "./module";
 
@@ -20,6 +20,6 @@ export class ModelPlugin implements WutWotPlugin {
   }
 
   onPluginPostInitialize(serviceLocator: ServiceLocator) {
-    serviceLocator.get(PropertyApplicator).onPostInitialize();
+    serviceLocator.get(ModelPropertyApplicator).onPostInitialize();
   }
 }

@@ -22,4 +22,9 @@ export namespace WutWotTDIRIs {
    * Specifies that the property is analogous to the thing's title.
    */
   export const TitleProperty = `${WutWotTdContextIRI}TitleProperty`;
+
+  /**
+   * Specifies that the property indicates the location of the thing.
+   */
+  export const LocationProperty = `${WutWotTdContextIRI}LocationProperty`;
 }

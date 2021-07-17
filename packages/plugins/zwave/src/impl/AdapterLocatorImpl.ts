@@ -60,7 +60,7 @@ function pickUsbSerialPort(ports: PortInfo[]): string | null {
 
     const port = findSerialPortByIDs(ports, vendor, product);
     if (port) {
-      return `\\\\.\\${port.comName}`;
+      return `\\\\.\\${port.path}`;
     }
   }
 

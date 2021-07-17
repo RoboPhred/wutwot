@@ -30,7 +30,13 @@ export class ZWaveProviderImpl implements ZWaveProvider {
       );
     }
 
-    const driver = new Driver(port);
+    const driver = new Driver(port, {
+      // TODO: Get wutwot logging and bridge zwave logs into it.
+      logConfig: {
+        filename: "zwave.log",
+        level: "error",
+      },
+    });
 
     const readyPromise = new Promise<void>((accept, reject) => {
       const onReady = () => {

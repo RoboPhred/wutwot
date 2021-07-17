@@ -9,12 +9,15 @@ import { WutWotTDIRIs } from "@wutwot/wutwot-td";
 import { Subject } from "rxjs";
 
 import { ThingModelPersistence } from "./ThingModelPersistence";
-import { ModelPluginThingsManager } from "./ModelPluginThingsManager";
+import { ModelPluginThingsManager } from "../components/ModelPluginThingsManager";
 import { IsSelfNamedThingMetadata } from "../thing-metadata";
+
+import { ModelPropertyApplicator } from "../components/ModelPropertyApplicator";
 
 // TODO: This sort if thing is a common use case.  Provide a core implementation of this that auto collects properties to add to every thing.
 @injectable()
-export class PropertyApplicator {
+@provides(ModelPropertyApplicator)
+export class ModelPropertyApplicatorImpl implements ModelPropertyApplicator {
   private _initialized = false;
 
   constructor(
@@ -49,7 +52,9 @@ export class PropertyApplicator {
     const persistence = new ThingModelPersistence(
       pluginThing.getPluginLocalPersistence(),
     );
+
     const nameSubject = new Subject<string>();
+    const locationSubject = new Subject<string>();
 
     pluginThing.addProperty({
       pluginLocalId: "name",
@@ -68,6 +73,26 @@ export class PropertyApplicator {
       ) => {
         persistence.setName(value);
         nameSubject.next(value);
+      },
+    });
+
+    pluginThing.addProperty({
+      pluginLocalId: "location",
+      title: "Location",
+      type: "string",
+      semanticType: [WutWotTDIRIs.LocationProperty],
+      minLength: 0,
+      maxLength: 255,
+      initialValue: persistence.getLocation(),
+      description: "The location of this thing.",
+      values: nameSubject,
+      onValueChangeRequested: async (
+        thingId: string,
+        propertyId: string,
+        value: string,
+      ) => {
+        persistence.setLocation(value);
+        locationSubject.next(value);
       },
     });
   }
