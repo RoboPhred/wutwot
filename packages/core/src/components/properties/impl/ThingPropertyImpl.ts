@@ -1,13 +1,14 @@
 import { JSONSchema6, JSONSchema6Type } from "json-schema";
 import { inspect } from "util";
 import { cloneDeep } from "lodash";
-import { DCMITermsIRIs, SchemaOrgIRIs } from "@wutwot/ld";
+import { DCMITermsIRIs, SchemaOrgIRIs, W3cRdfSyntaxIRIs } from "@wutwot/ld";
 import {
   DataSchemaType,
   W3cWotJsonSchemaIRIs,
   Form,
   W3cWotTdIRIs,
   W3cWotFormContext,
+  dataSchemaTypeToW3cWotClass,
 } from "@wutwot/w3c-td";
 
 import { makeInspectJson } from "../../../utils/inspect";
@@ -183,10 +184,9 @@ export class ThingPropertyImpl implements ThingProperty {
     return {
       [W3cWotTdIRIs.Name]: this.id,
       "@type": this.semanticTypes,
-      // [W3cRdfSyntaxIRIs.Type]: nonEmptyArray(
-      //   this.semanticTypes.map(asID()),
-      //   undefined,
-      // ),
+      [W3cRdfSyntaxIRIs.Type]: {
+        "@id": dataSchemaTypeToW3cWotClass(this.type),
+      },
       [DCMITermsIRIs.Title]: this.title,
       [DCMITermsIRIs.Description]: this.description,
       [SchemaOrgIRIs.UnitCode]: this.unit,
