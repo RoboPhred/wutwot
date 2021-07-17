@@ -1,3 +1,5 @@
+import { deepFreeze } from "@/utils/deepFreeze";
+
 import { ThingData } from "./types";
 
 export interface ThingDefinitionsServiceState {
@@ -14,9 +16,9 @@ export interface ThingDefinitionsServiceState {
   definitionErrorsBySourceId: Record<string, string>;
 }
 
-export const defaultThingDefinitionsServiceState: Readonly<ThingDefinitionsServiceState> = Object.freeze(
-  {
-    thingDataByDisplayId: {},
-    definitionErrorsBySourceId: {},
-  },
-);
+const _defaultState: ThingDefinitionsServiceState = {
+  thingDataByDisplayId: {},
+  definitionErrorsBySourceId: {},
+};
+
+export const defaultThingDefinitionsServiceState = deepFreeze(_defaultState);

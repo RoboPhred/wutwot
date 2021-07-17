@@ -1,6 +1,5 @@
-import { Thing, W3cWotTdIRIs } from "@wutwot/w3c-td";
+import { Thing } from "@wutwot/w3c-td";
 import find from "lodash/find";
-import { NodeObject } from "jsonld";
 
 import { maybeArrayContains } from "@/types";
 
@@ -8,20 +7,6 @@ import { executeForm, isSupportedForm } from "../thing-forms/api";
 
 // TODO: Should this exist?  Apparently I saw some default op assignment somewhere, but I am unable to find it again.
 const DefaultPropertyOp = ["readproperty", "writeproperty"];
-
-export function getPropertyAffordance(
-  expandedDefinition: NodeObject,
-  propertyKey: string,
-): NodeObject | undefined {
-  const properties = expandedDefinition[
-    W3cWotTdIRIs.HasPropertyAffordance
-  ] as NodeObject[];
-  if (!Array.isArray(properties)) {
-    return undefined;
-  }
-
-  return properties.find((prop) => prop["@index"] === propertyKey);
-}
 
 export async function getThingPropertyValue(
   thing: Thing,

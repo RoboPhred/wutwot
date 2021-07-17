@@ -3,6 +3,10 @@ import {
   defaultThingDefinitionsServiceState,
 } from "@/services/thing-definitions/state";
 import {
+  ThingPropertiesState,
+  defaultThingPropertiesState,
+} from "@/services/thing-properties/state";
+import {
   defaultThingSourcesState,
   ThingSourcesState,
 } from "@/services/thing-sources/state";
@@ -10,6 +14,7 @@ import {
 export interface AppState {
   services: {
     thingDefinitions: ThingDefinitionsServiceState;
+    thingProperties: ThingPropertiesState;
     thingSources: ThingSourcesState;
   };
 }
@@ -17,6 +22,7 @@ export interface AppState {
 export const defaultAppState: Readonly<AppState> = Object.freeze({
   services: {
     thingDefinitions: defaultThingDefinitionsServiceState,
+    thingProperties: defaultThingPropertiesState,
     thingSources: defaultThingSourcesState,
   },
 });
