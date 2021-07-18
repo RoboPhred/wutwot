@@ -5,7 +5,9 @@ import {
   all,
   put,
   cancelled,
-  takeLatest,
+  fork,
+  race,
+  take,
 } from "redux-saga/effects";
 import { SagaIterator } from "redux-saga";
 
@@ -28,24 +30,13 @@ import {
 } from "../types";
 
 export function* takeObservationsSaga() {
-  yield takeLatest(THING_PROPERTY_OBSERVE_ACTION, takeObservationsLoop);
+  yield fork(takeObservationsLoop);
 }
 
 function* takeObservationsLoop() {
-  // Debounce in case another observation is taken immediately.
-  yield delay(10);
-  if ((yield cancelled()) as boolean) {
-    return;
-  }
-
-  // Keep looping to update the values.
-  // A future observation request will cancel this saga and take over from us.
   while (true) {
+    yield race([delay(10000), take(THING_PROPERTY_OBSERVE_ACTION)]);
     yield call(takeObservations);
-    yield delay(10000);
-    if ((yield cancelled()) as boolean) {
-      return;
-    }
   }
 }
 
